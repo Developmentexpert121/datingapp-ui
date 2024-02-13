@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "jsx": "react", // or "react-native" if it's a React Native project
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
+    // other compiler options...
+  },
+  "extends": "@react-native/typescript-config/tsconfig.json"
+}
