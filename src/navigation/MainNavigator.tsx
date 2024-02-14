@@ -1,10 +1,10 @@
 // navigation/MainNavigator.tsx
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-import { enableScreens } from 'react-native-screens';
+import {createStackNavigator} from '@react-navigation/stack';
+import {enableScreens} from 'react-native-screens';
 import HomeScreen from '../screens/Home/homeScreen';
-import ChatHome from '../components/Chat/chatSection';
-import { RootStackParamList } from "../types";
+import ChatScreen from '../components/Chat/chatSection';
+import {RootStackParamList} from '../types';
 import LikedScreen from '../components/Dashboard/liked/liked';
 import NotificationScreen from '../components/Dashboard/Notification/notification';
 import FilterScreen from '../components/Dashboard/FilterSection/filterSection';
@@ -26,9 +26,8 @@ const MainNavigator = () => (
     <Stack.Screen name="Profile" component={ProfileScreen} />
     <Stack.Screen name="Settings" component={SettingsScreen} />
     <Stack.Screen name="UpdateProfile" component={UpdateProfileScreen} />
-    <Stack.Screen name="Chat" component={ChatHome} />
+    <Stack.Screen name="Chat" component={ChatScreen} />
     <Stack.Screen name="ChatPage" component={ChatPage} />
-
   </Stack.Navigator>
 );
 
