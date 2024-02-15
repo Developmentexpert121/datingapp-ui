@@ -1,64 +1,90 @@
 // ChatScreen.js
 import React, {useState} from 'react';
-import { View, Text, FlatList, StyleSheet, TextInput } from 'react-native';
-import { ListItem, Avatar, SearchBar } from 'react-native-elements';
-import CommonBackbutton from "../commonBackbutton/backButton"
-import Ionicons from "react-native-vector-icons/Ionicons"
-import { useNavigation } from '@react-navigation/native';
-const ChatScreen = () => {
+import {View, Text, FlatList, StyleSheet, TextInput} from 'react-native';
+import {ListItem, Avatar, SearchBar} from 'react-native-elements';
+import CommonBackbutton from '../commonBackbutton/backButton';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useNavigation} from '@react-navigation/native';
+
+const ChatSection = () => {
   const [search, setSearch] = useState<any>("");
   const navigation = useNavigation();
   const data = [
-    { id: '1', name: 'User 1', time:'10 min ago',  lastMessage: 'Hello!', avatar: 'https://placekitten.com/50/50' },
-    { id: '2', name: 'User 2', time:'30 min ago', lastMessage: 'Hi there!', avatar: 'https://placekitten.com/50/50' },
-    { id: '3', name: 'User 3', time:'20 min ago',  lastMessage: 'Hello!', avatar: 'https://placekitten.com/50/50' },
-    { id: '4', name: 'User 4', time:'40 min ago',  lastMessage: 'Hi there!', avatar: 'https://placekitten.com/50/50' },
+    {
+      id: '1',
+      name: 'User 1',
+      time: '10 min ago',
+      lastMessage: 'Hello!',
+      avatar: 'https://placekitten.com/50/50',
+    },
+    {
+      id: '2',
+      name: 'User 2',
+      time: '30 min ago',
+      lastMessage: 'Hi there!',
+      avatar: 'https://placekitten.com/50/50',
+    },
+    {
+      id: '3',
+      name: 'User 3',
+      time: '20 min ago',
+      lastMessage: 'Hello!',
+      avatar: 'https://placekitten.com/50/50',
+    },
+    {
+      id: '4',
+      name: 'User 4',
+      time: '40 min ago',
+      lastMessage: 'Hi there!',
+      avatar: 'https://placekitten.com/50/50',
+    },
   ];
 
-  const filteredData:any = data.filter(item => {
+  const filteredData: any = data.filter(item => {
     return item.name.toLowerCase().includes(search.toLowerCase());
   });
 
   const updateSearch = (text: string) => {
     setSearch(text);
-  }
+  };
 
-  console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
-  const handleMovepage = (item:any) => {
+  const handleMovepage = (item: any) => {
     navigation.navigate('ChatPage');
-  }
+  };
+  console.log('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww');
   return (
     <View style={styles.container}>
-       <CommonBackbutton title="Chat" />
-       <View style={styles.containerSearch}>
-      <Ionicons name="search-outline" size={20} style={styles.icon} />
-      <TextInput
-        placeholder="Search ..."
-        onChangeText={updateSearch}
-        value={search}
-        style={styles.input}
-      />
-    </View>
-        <Text style={styles.msgs}>Messages</Text>
+      <CommonBackbutton title="Chat" />
+      <View style={styles.containerSearch}>
+        <Ionicons name="search-outline" size={20} style={styles.icon} />
+        <TextInput
+          placeholder="Search ..."
+          onChangeText={updateSearch}
+          value={search}
+          style={styles.input}
+        />
+      </View>
+      <Text style={styles.msgs}>Messages</Text>
       <FlatList
         data={filteredData}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <ListItem onPress={() =>handleMovepage(item.name)} containerStyle={{ borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
-            <Avatar source={{ uri: item.avatar }} rounded />
+        keyExtractor={item => item.id}
+        renderItem={({item}) => (
+          <ListItem
+            onPress={() => handleMovepage(item?.name)}
+            containerStyle={{borderBottomWidth: 1, borderBottomColor: '#ccc'}}>
+            <Avatar source={{uri: item.avatar}} rounded />
             <ListItem.Content>
               <ListItem.Title>{item.name}</ListItem.Title>
               <ListItem.Subtitle>{item.lastMessage}</ListItem.Subtitle>
             </ListItem.Content>
-            <View style={{ flex: 1, alignItems: 'flex-end' }}>
-            <ListItem.Title>{item.time}</ListItem.Title>
-            <Ionicons name="checkmark-done" size={20} color="#BB2CBB" />
+            <View style={{flex: 1, alignItems: 'flex-end'}}>
+              <ListItem.Title>{item.time}</ListItem.Title>
+              <Ionicons name="checkmark-done" size={20} color="#BB2CBB" />
             </View>
             <View style={styles.line} />
           </ListItem>
         )}
       />
-
     </View>
   );
 };
@@ -66,24 +92,24 @@ const ChatScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
-  msgs:{
+  msgs: {
     fontSize: 20,
     fontWeight: 'bold',
     marginLeft: 20,
     color: 'grey',
   },
-  line:{
+  line: {
     borderBottomWidth: 2,
-    borderBottomColor: 'black'
+    borderBottomColor: 'black',
   },
-  search:{
+  search: {
     borderWidth: 1,
     borderRadius: 20,
     marginHorizontal: 20,
     height: 40,
-    fontSize: 20
+    fontSize: 20,
   },
 
   containerSearch: {
@@ -97,15 +123,15 @@ const styles = StyleSheet.create({
 
     marginHorizontal: 20,
     height: 40,
-    fontSize: 20
+    fontSize: 20,
   },
   icon: {
     marginRight: 2,
   },
   input: {
     flex: 1,
-    fontSize:17
+    fontSize: 17,
   },
 });
 
-export default ChatScreen;
+export default ChatSection;

@@ -42,7 +42,7 @@ const ExploredScreen = () => {
         keyExtractor={(item) => item.id}
         numColumns={2}
       />
-      {/* <FooterComponent /> */}
+      <FooterComponent />
     </View>
   );
 };

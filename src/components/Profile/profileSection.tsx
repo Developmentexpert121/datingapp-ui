@@ -8,6 +8,8 @@ import Svg, {Circle, Text as SvgText} from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 import { ListItem } from 'react-native-elements';
 import CommonBackbutton from "../commonBackbutton/backButton"
+import FooterComponent from '../Dashboard/footer/footer';
+
 const data = [
   { title: 'Premium', description: 'Maximize your dating with all the benefits of premium with extra features included', price: '999INR' },
   { title: 'Premium Plus', description: 'Maximize your dating with all the benefits of premium with extra features included', price: '1,999INR' },
@@ -146,13 +148,14 @@ const ProfileSection = () => {
       </View>
     </View>
 
-    <View style={{ flex: 0 }}>
+    <View style={{ flex: 0, paddingBottom: 115, backgroundColor:'white' }}>
       <FlatList
         data={data2}
         renderItem={({ item }) => <TickListItem item={item} />}
         keyExtractor={(item, index) => index.toString()}
       />
     </View>
+    <FooterComponent />
     </SafeAreaView>
   );
 };

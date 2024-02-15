@@ -32,9 +32,9 @@ const SecondStepScreen = ({partnerType, control, errors}:any) => {
                 style={[
                   errors && styles.errorBorder, 
                   styles.avatarItem,
-                  value === item.id && styles.selectedAvatar // Add selected style if the avatar is selected
+                  value === item.name && styles.selectedAvatar // Add selected style if the avatar is selected
                 ]}
-                onPress={() => onChange(item.id)}
+                onPress={() => onChange(item.name)}
               >
                 <View style={styles.avatarImageContainer}>
                   <Image source={item.image} style={styles.avatarImage} />

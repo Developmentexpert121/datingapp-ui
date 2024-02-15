@@ -20,7 +20,9 @@ const AppTextInput = (Props:any) => {
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
             {...textInputProps}
-            style={[styles.textInput1, styles.textInput11, hasError && styles.errorBorder, {borderWidth:borderWidth, borderColor:borderColor, marginLeft: marginLeft}]}
+            style={[styles.textInput1, styles.textInput11, hasError && styles.errorBorder, 
+              // {borderWidth:borderWidth?borderWidth:0, borderColor:borderColor?borderColor:0, marginLeft: marginLeft}
+            ]}
             placeholderTextColor={Colors.darkText}
             onFocus={() => setFocused(true)}
             onBlur={()=>(onBlur(), setFocused(false))}

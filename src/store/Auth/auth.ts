@@ -25,10 +25,10 @@ export const ProfileData = createAsyncThunk('auth/ProfileData', async (id:any, {
     } 
   });
 
-export const LoginSignIn = createAsyncThunk('auth/LoginSignIn',async (data: authData, {dispatch}: any) => {
+export const LoginSignIn = createAsyncThunk('auth/LoginSignIn',async (data: any, {dispatch}: any) => {
     try {
       dispatch(activityLoaderStarted());
-      const response: any = await http.post('/user/login', data);
+      const response: any = await http.post('/user/signin', data);
       console.log("reponse ", response.config);
       console.log('data ', response.data);
       if (response.status === 200) {
@@ -53,7 +53,7 @@ export const LoginSignIn = createAsyncThunk('auth/LoginSignIn',async (data: auth
 export const RegisterSignUp = createAsyncThunk('auth/RegisterSignUp', async (data: authData, {dispatch}: any) => {
     try {
       dispatch(activityLoaderStarted());
-      const response = await http.post('/user/register', data);
+      const response = await http.post('/user/signup', data);
       if (response.status === 200) {
         console.log("response ", response.data);
         return response.data;

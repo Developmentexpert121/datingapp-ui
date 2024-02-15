@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, Pressable, SafeAreaView, Image, Text} from 'react-native';
 
 import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -11,17 +11,24 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome2 from 'react-native-vector-icons/FontAwesome'
+import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { footerStatus } from '../../../store/Activity/activity';
 const FooterComponent = () => {
-  const [activeScreen, setActiveScreen] = useState('HOME');
+  //const [activeScreen, setActiveScreen] = useState('HOME');
+  const dispatch:any = useAppDispatch();
+  const activeScreen = useAppSelector((state:any)=> state.ActivityLoader.footerStatus);
+  console.log('activeScreennactiveScreennactiveScreenn ', activeScreen)
   const navigation = useNavigation();
   const color = '#b5b5b5';
  // const color = "#BB2CBB"
 //   const activeColor = '#F76C6B';
 const activeColor = '#BB2CBB';
 const handleView = (route:any, icon:any) => {
-  setActiveScreen(icon);
+  //setActiveScreen(icon);
+  dispatch(footerStatus({footerStatus:icon}));
   navigation.navigate(route);
 }
+
   return (
     <SafeAreaView style={styles.root}>
       <View style={styles.horizontalLine}></View>
@@ -59,7 +66,7 @@ const handleView = (route:any, icon:any) => {
             color={activeScreen === 'LIKED' ? activeColor : color}
           />
           </Pressable>
-           <Pressable onPress={() => handleView('Chat', 'CHAT')}>
+           <Pressable onPress={() => handleView('ChatScreen', 'CHAT')}>
             <FontAwesome2
               name="wechat"
               size={30}
@@ -82,7 +89,14 @@ const handleView = (route:any, icon:any) => {
 
 const styles = StyleSheet.create({
   root: {
-    //flex: 1,
+    // backgroundColor: '#f0f0f0',
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    // height: 50, // Adjust the height as needed
+    // position: 'absolute',
+    // left: 0,
+    // right: 0,
+    // bottom: 0,
   },
   pageContainer: {
   //  justifyContent: 'center',
