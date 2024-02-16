@@ -14,6 +14,15 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		7699B88040F8A987B510C191 /* libPods-DatingApp-DatingAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-DatingApp-DatingAppTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		3A6B29A05C4E4DC69D86DB8F /* Sansation_Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8D33297994C84A51B63C22D9 /* Sansation_Bold.ttf */; };
+		79AFB8C947954E3CB894BAE4 /* Sansation_Bold_Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F22BE7361C7E4DD1BE67FD4B /* Sansation_Bold_Italic.ttf */; };
+		97D4A4F9E8BF4598BDD638A4 /* Sansation_Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C5C3EF206BE844888929B35C /* Sansation_Italic.ttf */; };
+		B120B982E3FB4B5989544680 /* Sansation_Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 04777F621D234E95B293353E /* Sansation_Light.ttf */; };
+		9058C4E97E4A4609B6023EAA /* Sansation_Light_Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BFEB66954AF74B718ADBC95F /* Sansation_Light_Italic.ttf */; };
+		E677579C47F94F109E1116E7 /* Sansation_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AAFE94D99BD842399C7A03BC /* Sansation_Regular.ttf */; };
+		3A04FE25AEC1490EAF39DA49 /* PassionOne-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FB51463032AE48548C8355C8 /* PassionOne-Black.ttf */; };
+		AB083B8479C14490B24A14A9 /* PassionOne-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 514C8E5735FA4C0DB9D774A7 /* PassionOne-Bold.ttf */; };
+		A4502E740C3D48C5B4DFB619 /* PassionOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 429238E6A24647B59BDE49ED /* PassionOne-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +53,15 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = DatingApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-DatingApp-DatingAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DatingApp-DatingAppTests.release.xcconfig"; path = "Target Support Files/Pods-DatingApp-DatingAppTests/Pods-DatingApp-DatingAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		8D33297994C84A51B63C22D9 /* Sansation_Bold.ttf */ = {isa = PBXFileReference; name = "Sansation_Bold.ttf"; path = "../src/assets/fonts/Sansation_Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F22BE7361C7E4DD1BE67FD4B /* Sansation_Bold_Italic.ttf */ = {isa = PBXFileReference; name = "Sansation_Bold_Italic.ttf"; path = "../src/assets/fonts/Sansation_Bold_Italic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		C5C3EF206BE844888929B35C /* Sansation_Italic.ttf */ = {isa = PBXFileReference; name = "Sansation_Italic.ttf"; path = "../src/assets/fonts/Sansation_Italic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		04777F621D234E95B293353E /* Sansation_Light.ttf */ = {isa = PBXFileReference; name = "Sansation_Light.ttf"; path = "../src/assets/fonts/Sansation_Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		BFEB66954AF74B718ADBC95F /* Sansation_Light_Italic.ttf */ = {isa = PBXFileReference; name = "Sansation_Light_Italic.ttf"; path = "../src/assets/fonts/Sansation_Light_Italic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		AAFE94D99BD842399C7A03BC /* Sansation_Regular.ttf */ = {isa = PBXFileReference; name = "Sansation_Regular.ttf"; path = "../src/assets/fonts/Sansation_Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		FB51463032AE48548C8355C8 /* PassionOne-Black.ttf */ = {isa = PBXFileReference; name = "PassionOne-Black.ttf"; path = "../src/assets/fonts/PassionOne-Black.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		514C8E5735FA4C0DB9D774A7 /* PassionOne-Bold.ttf */ = {isa = PBXFileReference; name = "PassionOne-Bold.ttf"; path = "../src/assets/fonts/PassionOne-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		429238E6A24647B59BDE49ED /* PassionOne-Regular.ttf */ = {isa = PBXFileReference; name = "PassionOne-Regular.ttf"; path = "../src/assets/fonts/PassionOne-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +140,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				D4E444ED13FE42B3BB1F271C /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -147,6 +166,23 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
+		};
+		D4E444ED13FE42B3BB1F271C /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				8D33297994C84A51B63C22D9 /* Sansation_Bold.ttf */,
+				F22BE7361C7E4DD1BE67FD4B /* Sansation_Bold_Italic.ttf */,
+				C5C3EF206BE844888929B35C /* Sansation_Italic.ttf */,
+				04777F621D234E95B293353E /* Sansation_Light.ttf */,
+				BFEB66954AF74B718ADBC95F /* Sansation_Light_Italic.ttf */,
+				AAFE94D99BD842399C7A03BC /* Sansation_Regular.ttf */,
+				FB51463032AE48548C8355C8 /* PassionOne-Black.ttf */,
+				514C8E5735FA4C0DB9D774A7 /* PassionOne-Bold.ttf */,
+				429238E6A24647B59BDE49ED /* PassionOne-Regular.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -243,6 +279,15 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				3A6B29A05C4E4DC69D86DB8F /* Sansation_Bold.ttf in Resources */,
+				79AFB8C947954E3CB894BAE4 /* Sansation_Bold_Italic.ttf in Resources */,
+				97D4A4F9E8BF4598BDD638A4 /* Sansation_Italic.ttf in Resources */,
+				B120B982E3FB4B5989544680 /* Sansation_Light.ttf in Resources */,
+				9058C4E97E4A4609B6023EAA /* Sansation_Light_Italic.ttf in Resources */,
+				E677579C47F94F109E1116E7 /* Sansation_Regular.ttf in Resources */,
+				3A04FE25AEC1490EAF39DA49 /* PassionOne-Black.ttf in Resources */,
+				AB083B8479C14490B24A14A9 /* PassionOne-Bold.ttf in Resources */,
+				A4502E740C3D48C5B4DFB619 /* PassionOne-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

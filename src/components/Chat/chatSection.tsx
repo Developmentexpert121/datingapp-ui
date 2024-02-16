@@ -5,6 +5,7 @@ import {ListItem, Avatar, SearchBar} from 'react-native-elements';
 import CommonBackbutton from '../commonBackbutton/backButton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
+import FooterComponent from '../Dashboard/footer/footer';
 const ChatScreen = () => {
   const [search, setSearch] = useState<any>('');
   const navigation = useNavigation();
@@ -54,36 +55,57 @@ const ChatScreen = () => {
   return (
     <View style={styles.container}>
       <CommonBackbutton title="Chat" />
-      <View style={styles.containerSearch}>
-        <Ionicons name="search-outline" size={20} style={styles.icon} />
-        <TextInput
-          placeholder="Search ..."
-          onChangeText={updateSearch}
-          value={search}
-          style={styles.input}
+      <View style={{marginHorizontal: 20, flex: 1}}>
+        <View style={styles.containerSearch}>
+          <Ionicons name="search-outline" size={20} style={styles.icon} />
+          <TextInput
+            placeholder="Search"
+            onChangeText={updateSearch}
+            value={search}
+            style={styles.input}
+          />
+        </View>
+        <Text style={styles.msgs}>Messages</Text>
+        <FlatList
+          data={filteredData}
+          keyExtractor={item => item.id}
+          renderItem={({item}) => (
+            <ListItem
+              containerStyle={styles.listItemContainer}
+              onPress={() => handleMovepage(item.name)}>
+              <Avatar size={60} source={{uri: item.avatar}} rounded />
+              <View style={styles.line}>
+                <View style={{marginBottom: 10}}>
+                  <Text
+                    style={{
+                      fontFamily: 'Sansation_Bold',
+                      fontSize: 18,
+                      color: 'black',
+                      marginBottom: 8,
+                    }}>
+                    {item.name}
+                  </Text>
+                  <Text style={{fontFamily: 'Sansation_Regular'}}>
+                    {item.lastMessage}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: 'flex-end',
+                    rowGap: 4,
+                  }}>
+                  <Text style={{fontFamily: 'Sansation_Regular', fontSize: 10}}>
+                    {item.time}
+                  </Text>
+                  <Ionicons name="checkmark-done" size={20} color="#AC25AC" />
+                </View>
+              </View>
+            </ListItem>
+          )}
         />
       </View>
-      <Text style={styles.msgs}>Messages</Text>
-      <FlatList
-        data={filteredData}
-        keyExtractor={item => item.id}
-        renderItem={({item}) => (
-          <ListItem
-            onPress={() => handleMovepage(item.name)}
-            containerStyle={{borderBottomWidth: 1, borderBottomColor: '#ccc'}}>
-            <Avatar source={{uri: item.avatar}} rounded />
-            <ListItem.Content>
-              <ListItem.Title>{item.name}</ListItem.Title>
-              <ListItem.Subtitle>{item.lastMessage}</ListItem.Subtitle>
-            </ListItem.Content>
-            <View style={{flex: 1, alignItems: 'flex-end'}}>
-              <ListItem.Title>{item.time}</ListItem.Title>
-              <Ionicons name="checkmark-done" size={20} color="#BB2CBB" />
-            </View>
-            <View style={styles.line} />
-          </ListItem>
-        )}
-      />
+      <FooterComponent icon="CHAT" />
     </View>
   );
 };
@@ -94,14 +116,21 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   msgs: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginLeft: 20,
-    color: 'grey',
+    marginTop: 16,
+    fontSize: 24,
+    fontFamily: 'Sansation_Bold',
+    color: 'black',
+  },
+  listItemContainer: {
+    padding: 0,
+    paddingVertical: 10,
   },
   line: {
-    borderBottomWidth: 2,
-    borderBottomColor: 'black',
+    flex: 1,
+    flexDirection: 'row',
+    paddingVertical: 6,
+    borderBottomWidth: 1,
+    borderBottomColor: '#D0D0D0',
   },
   search: {
     borderWidth: 1,
@@ -116,20 +145,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 10,
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 20,
-    backgroundColor: '#BDBDBD',
+    borderColor: '#EBEBEB',
+    borderRadius: 42,
+    backgroundColor: '#EBEBEB',
 
-    marginHorizontal: 20,
     height: 40,
     fontSize: 20,
   },
-  icon: {
-    marginRight: 2,
-  },
+  icon: {},
   input: {
     flex: 1,
-    fontSize: 17,
+    fontSize: 16,
+    fontFamily: 'Sansation_Regular',
   },
 });
 

@@ -219,7 +219,7 @@ import {
   View,
   Image,
   KeyboardAvoidingView,
-  Platform
+  Platform,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import * as yup from 'yup';
@@ -295,49 +295,74 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   }, []);
 
   return (
-    <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={Platform.OS==="ios"?100:0} style={styles.container}>
-      <Image
-        source={require('../../assets/images/screenImage2.png')}
-        style={styles.image2}
-      />
-      <View>
-        <Text style={styles.label}>What's your email?</Text>
-        <Text style={styles.subText}>Don't lose access to your account,</Text>
-        <Text style={styles.subText2}>verify your email.</Text>
-        <View>
-          <AppTextInput
-            placeholder="Enter Your Email"
-            name="email"
-            control={control}
-            errors={Boolean(errors?.email)}
-          />
-          <AppTextInput
-            placeholder="Enter Your Password"
-            name="password"
-            control={control}
-            errors={Boolean(errors?.password)}
-          />
-        </View>
-
-        <TouchableOpacity
-          style={styles.button}
-          onPress={handleSubmit(onSubmit)}>
-          <Text style={styles.buttonText}>Log In</Text>
-        </TouchableOpacity>
-
-        <Text style={styles.termsText}>Terms of use and privacy</Text>
+    <KeyboardAvoidingView
+      behavior="padding"
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
+      style={styles.container}>
+      <View style={styles.circle}>
+        <Image
+          source={require('../../assets/images/logIcon.png')}
+          style={{width: 119, height: 122}}
+        />
       </View>
+      <Image
+        source={require('../../assets/images/Group.png')}
+        style={{width: '100%', height: '34%', marginTop: 20}}
+      />
+
+      <Text style={styles.label}>What's your email?</Text>
+      <Text style={styles.subText}>
+        Don't lose access to your account,{'\n'}verify your email.
+      </Text>
+      <View>
+        <AppTextInput
+          placeholder="Enter Your Email"
+          name="email"
+          control={control}
+          errors={Boolean(errors?.email)}
+        />
+        <AppTextInput
+          placeholder="Enter Your Password"
+          name="password"
+          control={control}
+          errors={Boolean(errors?.password)}
+        />
+      </View>
+
+      <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
+        <Text style={styles.buttonText}>Log In</Text>
+      </TouchableOpacity>
+
+      <Text style={styles.termsText}>Terms of use and privacy</Text>
+      {/* <View style={styles.signupContainer}>
+          <Text>Do not have an account?</Text>
+          <TouchableOpacity onPress={() => navigate('Register')}>
+            <Text style={styles.touchableText}> Sign-Up</Text>
+          </TouchableOpacity>
+        </View> */}
     </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 0,
     justifyContent: 'center',
     alignItems: 'center',
     //paddingHorizontal: 20,
     backgroundColor: '#FFC7FF',
+    width: '100%',
+    height: '100%',
+  },
+  circle: {
+    width: 180,
+    height: 180,
+    borderRadius: 90,
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    padding: 20,
+    marginTop: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   image1: {
     width: '100%',
@@ -348,14 +373,19 @@ const styles = StyleSheet.create({
     height: '50%',
   },
   label: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginVertical: 10,
+    fontSize: 22,
+    marginTop: 16,
     textAlign: 'center',
+    fontFamily: 'Sansation_Bold',
+    color: 'black',
   },
   subText: {
+    marginTop: 6,
+    fontFamily: 'Sansation_Regular',
+
     textAlign: 'center',
-    color: 'gray',
+    color: 'black',
+    marginBottom: 8,
   },
   subText2: {
     textAlign: 'center',
@@ -363,15 +393,17 @@ const styles = StyleSheet.create({
     color: 'gray',
   },
   button: {
-    backgroundColor: '#BB2CBB',
+    backgroundColor: '#AC25AC',
     padding: 10,
     borderRadius: 20,
-    marginBottom: 20,
+    marginVertical: 12,
+    width: '60%',
   },
   buttonText: {
     color: 'white',
     fontSize: 16,
     textAlign: 'center',
+    fontFamily: 'Sansation_Regular',
   },
   loginText: {
     color: 'blue',
@@ -381,15 +413,21 @@ const styles = StyleSheet.create({
   termsText: {
     color: 'gray',
     textAlign: 'center',
+    fontFamily: 'Sansation_Regular',
   },
   touchableText: {
     color: 'blue',
     textDecorationLine: 'underline',
-    marginTop: 5,
   },
   viewMargin: {
     marginVertical: Spacing * 3,
   },
+  signupContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10,
+    marginBottom: 100,
+  },
 });
 export default LoginScreen;
-

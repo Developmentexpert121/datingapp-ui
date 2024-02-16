@@ -1,23 +1,27 @@
-import React, { memo } from "react";
-import { StyleSheet, View } from "react-native";
+import React, {memo} from 'react';
+import {StyleSheet, View} from 'react-native';
 
-const THUMB_RADIUS = 15;
+const THUMB_RADIUS = 9;
 
 const Thumb = () => <View style={styles.root} />;
 
 const styles = StyleSheet.create({
   root: {
-    width: THUMB_RADIUS * 1,
-    height: THUMB_RADIUS * 1,
+    width: THUMB_RADIUS * 2,
+    height: THUMB_RADIUS * 2,
     borderRadius: THUMB_RADIUS,
-    borderWidth: 1,
-    borderColor: "#ffffff",
-    backgroundColor: "#BB2CBB",
-    shadowColor: "#000000",
-    shadowOffset: { width: 0, height: -1 },
-    shadowOpacity: 0.16,
-    shadowRadius: 6
-  }
+
+    backgroundColor: '#AC25AC',
+    shadowColor: '#AC25AC',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
+
+    elevation: 10,
+  },
 });
 
 export default memo(Thumb);

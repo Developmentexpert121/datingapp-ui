@@ -9,8 +9,8 @@ import {
 import React, {useState} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
-import { Slider } from 'react-native-elements';
-import CommonBackbutton from "../../commonBackbutton/backButton";
+import {Slider} from 'react-native-elements';
+import CommonBackbutton from '../../commonBackbutton/backButton';
 
 const FilterSection = () => {
   const navigation = useNavigation();
@@ -30,98 +30,95 @@ const FilterSection = () => {
   const [checked, setChecked] = useState(null);
   const [distance, setDistance] = useState(20);
 
-  const handleSliderChange = (value:any) => {
+  const handleSliderChange = (value: any) => {
     setDistance(value);
   };
-  const renderItem = ({ item }:any) => (
+  const renderItem = ({item}: any) => (
     <TouchableOpacity
       style={styles.optionContainer}
-      onPress={() => setChecked(item.value)}
-    >
+      onPress={() => setChecked(item.value)}>
       <Ionicons
         name={checked === item.value ? 'radio-button-on' : 'radio-button-off'}
         size={24}
-        color="#BB2CBB"
+        color="#AC25AC"
       />
       <Text style={styles.optionText}>{item.label}</Text>
     </TouchableOpacity>
   );
   return (
     <View>
-     <CommonBackbutton title="Filter" />
+      <CommonBackbutton title="Filter" />
       <View style={styles.boxContainer}>
-    <View style={styles.labelContainer}>
-        <Text style={styles.label}>Maximum Distance</Text>
-        <Text style={styles.value}>{distance} Mi</Text>
-    </View>
-    <Slider
-        style={styles.slider}
-        minimumValue={1}
-        maximumValue={50}
-        value={distance}
-        onValueChange={handleSliderChange}
-        step={1}
-        thumbTintColor="#BB2CBB"
-        minimumTrackTintColor="#BB2CBB"
-        maximumTrackTintColor="gray"
-        thumbStyle={styles.thumbStyle}
-      />
-      <View style={styles.labelContainer}>
-        <Text style={styles.label1}>Only show people in range</Text>
-        <Ionicons
-        name={checked === true ? 'radio-button-on' : 'radio-button-off'}
-        size={24}
-        color="#BB2CBB"
-      />
-    </View>
-    </View>
+        <View style={styles.labelContainer}>
+          <Text style={styles.label}>Maximum Distance</Text>
+          <Text style={styles.value}>{distance} Mi</Text>
+        </View>
+        <Slider
+          style={styles.slider}
+          minimumValue={1}
+          maximumValue={50}
+          value={distance}
+          onValueChange={handleSliderChange}
+          step={1}
+          thumbTintColor="#AC25AC"
+          minimumTrackTintColor="#AC25AC"
+          maximumTrackTintColor="gray"
+          thumbStyle={styles.thumbStyle}
+        />
+        <View style={styles.labelContainer}>
+          <Text style={styles.label1}>Only show people in range</Text>
+          <Ionicons
+            name={checked === true ? 'radio-button-on' : 'radio-button-off'}
+            size={24}
+            color="#AC25AC"
+          />
+        </View>
+      </View>
 
-    <View style={styles.boxContainer}>
-    <Text style={styles.label}>Show me</Text>
-      <FlatList
-        data={options2}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.value}
-      />
-    </View>
+      <View style={styles.boxContainer}>
+        <Text style={styles.label}>Show me</Text>
+        <FlatList
+          data={options2}
+          renderItem={renderItem}
+          keyExtractor={item => item.value}
+        />
+      </View>
 
-    <View style={styles.boxContainer}>
-    <View style={styles.labelContainer}>
-        <Text style={styles.label}>Age Range</Text>
-        <Text style={styles.value}>{distance}</Text>
-    </View>
-    <Slider
-        style={styles.slider}
-        minimumValue={1}
-        maximumValue={50}
-        value={distance}
-        onValueChange={handleSliderChange}
-        step={1}
-        thumbTintColor="#BB2CBB"
-        minimumTrackTintColor="#BB2CBB"
-        maximumTrackTintColor="gray"
-        thumbStyle={styles.thumbStyle}
-      />
-      <View style={styles.labelContainer}>
-        <Text style={styles.label1}>Only show people in range</Text>
-        <Ionicons
-        name={checked === true ? 'radio-button-on' : 'radio-button-off'}
-        size={24}
-        color="#BB2CBB"
-      />
-    </View>
-    </View>
+      <View style={styles.boxContainer}>
+        <View style={styles.labelContainer}>
+          <Text style={styles.label}>Age Range</Text>
+          <Text style={styles.value}>{distance}</Text>
+        </View>
+        <Slider
+          style={styles.slider}
+          minimumValue={1}
+          maximumValue={50}
+          value={distance}
+          onValueChange={handleSliderChange}
+          step={1}
+          thumbTintColor="#AC25AC"
+          minimumTrackTintColor="#AC25AC"
+          maximumTrackTintColor="gray"
+          thumbStyle={styles.thumbStyle}
+        />
+        <View style={styles.labelContainer}>
+          <Text style={styles.label1}>Only show people in range</Text>
+          <Ionicons
+            name={checked === true ? 'radio-button-on' : 'radio-button-off'}
+            size={24}
+            color="#AC25AC"
+          />
+        </View>
+      </View>
 
       <View style={styles.boxContainer}>
         <Text style={styles.label}>Gender</Text>
-      <FlatList
-        data={options}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.value}
-      />
-    </View>
-
-   
+        <FlatList
+          data={options}
+          renderItem={renderItem}
+          keyExtractor={item => item.value}
+        />
+      </View>
     </View>
   );
 };
@@ -137,67 +134,80 @@ const styles = StyleSheet.create({
   },
   backPressIcon: {
     marginRight: 8,
-    color: '#BB2CBB',
+    color: '#AC25AC',
   },
   stepsText: {
     color: 'grey',
     fontSize: 20,
-    //backgroundColor: '#BB2CBB',
+    //backgroundColor: '#AC25AC',
     paddingHorizontal: 20,
     borderRadius: 15,
     marginLeft: 80,
   },
 
   boxContainer: {
-    backgroundColor: '#fff',
-    borderRadius: 10,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 8,
     padding: 20,
-    marginHorizontal: 15,
-    marginBottom: 5,
-    shadowColor: '#000',
+    marginHorizontal: 30,
+    marginBottom: 20,
+    shadowColor: '#000000',
     shadowOffset: {
-      width: 0,
+      width: 1,
       height: 2,
     },
     shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    shadowRadius: 4,
     elevation: 5,
   },
   optionContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    //marginBottom: 10,
+    marginTop: 10,
+    columnGap: 8,
   },
   optionText: {
-    fontSize: 16,
-    marginRight: 10,
+    fontSize: 14,
+    fontFamily: 'Sansation_Regular',
+    color: 'black',
   },
   slider: {
     width: '100%',
   },
   thumbStyle: {
-    width: 16,
-    height: 16,
-    borderRadius: 8,
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    shadowColor: '#AC25AC',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
+
+    elevation: 10,
   },
   labelContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    //marginBottom: 8,
+    alignItems: 'center',
+    marginBottom: 8,
   },
   label: {
     fontSize: 18,
-    //marginBottom: 8,
-    fontWeight: 'bold',
+    color: 'black',
+    fontFamily: 'Sansation_Bold',
   },
   label1: {
     fontSize: 14,
-   // marginBottom: 8,
+    fontFamily: 'Sansation_Regular',
   },
   value: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 18,
+    color: 'black',
+    fontFamily: 'Sansation_Regular',
     textAlign: 'center',
-   // marginBottom: 16,
+    // marginBottom: 16,
   },
 });

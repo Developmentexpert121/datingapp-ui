@@ -1,7 +1,7 @@
-import React, { memo } from "react";
-import { StyleSheet, View } from "react-native";
+import React, {memo} from 'react';
+import {StyleSheet, View} from 'react-native';
 
-const Notch = (props:any) => <View style={styles.root} {...props} />;
+const Notch = (props: any) => <View style={styles.root} {...props} />;
 
 export default memo(Notch);
 
@@ -9,11 +9,11 @@ const styles = StyleSheet.create({
   root: {
     width: 8,
     height: 8,
-    borderLeftColor: "transparent",
-    borderRightColor: "transparent",
-    borderTopColor: "#BB2CBB",
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    borderTopColor: '#AC25AC',
     borderLeftWidth: 4,
     borderRightWidth: 4,
-    borderTopWidth: 8
-  }
+    borderTopWidth: 8,
+  },
 });

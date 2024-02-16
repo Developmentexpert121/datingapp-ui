@@ -111,7 +111,7 @@ const ForthStepScreen = ({habits1, control, errors}: any) => {
           <View style={styles.textsContainer}>
             {item.texts.map((text, index) => (
               <TouchableOpacity key={index} onPress={() => handleTextTouch(item.id, text)}>
-                <Text style={[styles.textItem, isTextTouched(item.id, text) && { color: '#BB2CBB', borderColor:'#BB2CBB' }]}>
+                <Text style={[styles.textItem, isTextTouched(item.id, text) && { color: '#AC25AC', borderColor:'#AC25AC' }]}>
                   {text}
                 </Text>
               </TouchableOpacity>
@@ -119,47 +119,51 @@ const ForthStepScreen = ({habits1, control, errors}: any) => {
           </View>
         </View>
       ))} */}
-          <Controller
-            name={habits1}
-            control={control}
-            defaultValue={[]}
-            render={({field: {onChange, value}}) => (
-              <>
-                {dataArray.map(item => (
-                  <View key={item.id} style={styles.boxContainer}>
-                    <Text style={styles.title}>{item.title}</Text>
-                    <View style={styles.textsContainer}>
-                      {item.texts.map((text, index) => (
-                        <TouchableOpacity
-                          key={index}
-                          onPress={() =>
-                            onChange([
-                              ...value.filter(
-                                (habit: any) => habit.id !== item.id,
-                              ),
-                              {id: item.id, selectedText: text},
-                            ])
-                          }>
-                          <Text
-                            style={[
-                              styles.textItem,
-                              value.find(
-                                (habit: any) =>
-                                  habit.id === item.id &&
-                                  habit.selectedText === text,
-                              ) && {color: '#BB2CBB', borderColor: '#BB2CBB'},
-                            ]}>
-                            {text}
-                          </Text>
-                        </TouchableOpacity>
-                      ))}
-                    </View>
+        <Controller
+          name={habits1}
+          control={control}
+          defaultValue={[]}
+          render={({field: {onChange, value}}) => (
+            <>
+              {dataArray.map(item => (
+                <View key={item.id} style={styles.boxContainer}>
+                  <Text style={styles.title}>{item.title}</Text>
+                  <View style={styles.textsContainer}>
+                    {item.texts.map((text, index) => (
+                      <TouchableOpacity
+                        key={index}
+                        onPress={() =>
+                          onChange([
+                            ...value.filter(
+                              (habit: any) => habit.id !== item.id,
+                            ),
+                            {id: item.id, selectedText: text},
+                          ])
+                        }>
+                        <Text
+                          style={[
+                            styles.textItem,
+                            value.find(
+                              (habit: any) =>
+                                habit.id === item.id &&
+                                habit.selectedText === text,
+                            ) && {color: '#AC25AC', borderColor: '#AC25AC'},
+                          ]}>
+                          {text}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
                   </View>
-                ))}
-              </>
-            )}
-          />
-        {errors.habits1 && <Text style={{color:'red', alignSelf:'center'}}>{errors.habits1.message}</Text>}
+                </View>
+              ))}
+            </>
+          )}
+        />
+        {errors.habits1 && (
+          <Text style={{color: 'red', alignSelf: 'center'}}>
+            {errors.habits1.message}
+          </Text>
+        )}
       </View>
     </SafeAreaView>
   );

@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
-import { useForm, Controller } from 'react-hook-form';
+import React, {useState} from 'react';
+import {View, Text, TextInput, StyleSheet} from 'react-native';
+import {useForm, Controller} from 'react-hook-form';
 
-const SixthStepScreen = ({hobbies, control, errors}:any) => {
+const SixthStepScreen = ({hobbies, control, errors}: any) => {
   // const [hobbies, setHobbies] = useState('');
-console.log('errrrrrrrrrrrrrrrrrrrrrrr ', errors)
+  console.log('errrrrrrrrrrrrrrrrrrrrrrr ', errors);
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Your hobbies?</Text>
@@ -14,9 +14,9 @@ console.log('errrrrrrrrrrrrrrrrrrrrrrr ', errors)
       <Controller
         name={hobbies}
         control={control}
-        rules={{ required: true }}
+        rules={{required: true}}
         defaultValue=""
-        render={({ field: { onChange, onBlur, value } }) => (
+        render={({field: {onChange, onBlur, value}}) => (
           <View style={[styles.boxContainer, errors && styles.errorBorder]}>
             <TextInput
               style={[styles.textArea]}
@@ -31,7 +31,6 @@ console.log('errrrrrrrrrrrrrrrrrrrrrrr ', errors)
           </View>
         )}
       />
-   
     </View>
   );
 };
@@ -44,34 +43,34 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 8,
-    marginLeft: 10
+    marginLeft: 10,
   },
   paragraph: {
     fontSize: 16,
     marginBottom: 16,
-    marginLeft: 10
+    marginLeft: 10,
   },
   textAreaContainer: {
     //borderWidth: 1,
     borderRadius: 10,
-    borderColor: '#BB2CBB',
+    borderColor: '#AC25AC',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.3,
     shadowRadius: 2,
   },
   textArea: {
     fontSize: 16,
-    textAlignVertical:'top',
+    textAlignVertical: 'top',
     //minHeight:100
     //paddingLeft: 10,
     //elevation:2,
     //borderRadius: 10
   },
 
-  errorBorder:{
-    borderColor:'red',
-    borderWidth:2
+  errorBorder: {
+    borderColor: 'red',
+    borderWidth: 2,
   },
   boxContainer: {
     backgroundColor: '#fff',

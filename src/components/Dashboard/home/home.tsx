@@ -40,59 +40,60 @@ const HomeScreen = () => {
         onSwipeLeft={onSwipeLeft}
         onSwipeRight={onSwipeRight}
       />
-
-      <View style={styles.icons}>
-        {/* <TouchableOpacity>
+      <View style={{width: '100%', alignItems: 'center'}}>
+        <View style={styles.icons}>
+          {/* <TouchableOpacity>
           <View style={styles.button}>
             <FontAwesome name="undo" size={30} color="#FBD88B" />
           </View>
         </TouchableOpacity> */}
 
-        <TouchableOpacity onPress={onSwipeLeft}>
-          <View style={styles.button}>
-            <Entypo name="cross" size={30} color="#BB2CBB" />
-          </View>
-        </TouchableOpacity>
+          <TouchableOpacity onPress={onSwipeLeft}>
+            <View style={styles.button}>
+              <Entypo name="cross" size={40} color="#AC25AC" />
+            </View>
+          </TouchableOpacity>
 
-        <TouchableOpacity>
-          <View style={styles.button}>
-            <FontAwesome name="star" size={30} color="#3AB4CC" />
-          </View>
-        </TouchableOpacity>
+          <TouchableOpacity>
+            <View style={styles.button}>
+              <FontAwesome name="heart" size={40} color="#4FCC94" />
+            </View>
+          </TouchableOpacity>
 
-        <TouchableOpacity>
-          <View style={styles.button}>
-            <FontAwesome name="heart" size={30} color="#4FCC94" />
-          </View>
-        </TouchableOpacity>
+          <TouchableOpacity>
+            <View style={styles.button}>
+              <FontAwesome name="star" size={40} color="#3AB4CC" />
+            </View>
+          </TouchableOpacity>
 
-        {/* <TouchableOpacity>
+          {/* <TouchableOpacity>
           <View style={styles.button}>
             <Ionicons name="flash" size={30} color="#A65CD2" />
           </View>
         </TouchableOpacity> */}
+        </View>
       </View>
       <View style={styles.locText}>
-        <Ionicons name="location-sharp" size={20} color="#BB2CBB" />
-        <Text>30 miles away</Text>
+        <Ionicons name="location-sharp" size={20} color="#AC25AC" />
+        <Text style={{fontFamily: 'Sansation_Regular', color: 'black'}}>
+          30 miles away
+        </Text>
       </View>
       <View style={styles.container}>
-      {dataArr.map((item:any, index:any) => (
-        <Text key={index} style={styles.item}>
-          {item}
-        </Text>
-      ))}
-    </View>
+        {dataArr.map((item: any, index: any) => (
+          <Text key={index} style={styles.item}>
+            {item}
+          </Text>
+        ))}
+      </View>
 
-      <FooterComponent />
+      <FooterComponent icon="HOME" />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   pageContainer: {
-    // justifyContent: 'center',
-    // alignItems: 'center',
     flex: 1,
     width: '100%',
     backgroundColor: '#ededed',
@@ -100,36 +101,43 @@ const styles = StyleSheet.create({
   icons: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    width: '100%',
-    padding: 10,
+    alignItems: 'center',
+    width: '70%',
+    marginVertical: 12,
   },
   button: {
-    width: 50,
-    height: 50,
+    width: 60,
+    height: 60,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
-    padding: 10,
-    borderRadius: 50,
+
+    borderRadius: 60,
+    borderWidth: 2,
+    borderColor: '#AC25AC',
   },
 
   locText: {
-    flexDirection: 'row', 
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    marginLeft: 17
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 20,
+    marginBottom: 16,
   },
   container: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between', // Adjust as needed
-    padding: 10,
+    columnGap: 10, // Adjust as needed
+    marginHorizontal: 20,
+    marginBottom: 20,
   },
   item: {
-    borderWidth: 1,
-    borderRadius: 20,
-    padding: 10,
-    margin: 5,
+    borderWidth: 1.4,
+    borderRadius: 52,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    fontFamily: 'Sansation_Regular',
+    color: 'black',
+    marginBottom: 10,
   },
 });
 

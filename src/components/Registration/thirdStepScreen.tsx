@@ -1,40 +1,40 @@
 import React, {useState} from 'react';
-import { Slider } from 'react-native-elements';
-import { View, Text, Image, StyleSheet, SafeAreaView } from 'react-native';
+import {Slider} from 'react-native-elements';
+import {View, Text, Image, StyleSheet, SafeAreaView} from 'react-native';
 
-const ThirdStepScreen = ({distance, setDistance}:any) => {
-
-    const handleSliderChange = (value:any) => {
-      setDistance(value);
-    };
+const ThirdStepScreen = ({distance, setDistance}: any) => {
+  const handleSliderChange = (value: any) => {
+    setDistance(value);
+  };
 
   return (
     <SafeAreaView>
-    <View style={styles.container}>
-      <Text style={styles.headerText}>Your distance preference?</Text>
-      <Text style={styles.paragraphText}>Use the slider to set the maximum distance that you want to potential matches to be located</Text>
+      <View style={styles.container}>
+        <Text style={styles.headerText}>Your distance preference?</Text>
+        <Text style={styles.paragraphText}>
+          Use the slider to set the maximum distance that you want to potential
+          matches to be located
+        </Text>
 
-      <View style={styles.sliderContainer}>
- 
-      <View style={styles.labelContainer}>
-        <Text style={styles.label}>Distance Preference</Text>
-        <Text style={styles.value}>{distance} Mi</Text>
+        <View style={styles.sliderContainer}>
+          <View style={styles.labelContainer}>
+            <Text style={styles.label}>Distance Preference</Text>
+            <Text style={styles.value}>{distance} Mi</Text>
+          </View>
+          <Slider
+            style={styles.slider}
+            minimumValue={1}
+            maximumValue={50}
+            value={distance}
+            onValueChange={handleSliderChange}
+            step={1}
+            thumbTintColor="#AC25AC"
+            minimumTrackTintColor="#AC25AC"
+            maximumTrackTintColor="gray"
+            thumbStyle={styles.thumbStyle}
+          />
+        </View>
       </View>
-      <Slider
-        style={styles.slider}
-        minimumValue={1}
-        maximumValue={50}
-        value={distance}
-        onValueChange={handleSliderChange}
-        step={1}
-        thumbTintColor="#BB2CBB"
-        minimumTrackTintColor="#BB2CBB"
-        maximumTrackTintColor="gray"
-        thumbStyle={styles.thumbStyle}
-      />
-
-      </View>
-    </View>
     </SafeAreaView>
   );
 };
@@ -48,13 +48,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 8,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   paragraphText: {
     fontSize: 16,
     marginBottom: 16,
-    textAlign: 'center'
-
+    textAlign: 'center',
   },
   sliderContainer: {
     padding: 16,

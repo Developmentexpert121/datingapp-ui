@@ -1,45 +1,96 @@
-import { SafeAreaView, StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native'
-import React, {useState} from 'react'
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
+import React, {useState} from 'react';
 import {useForm, Controller} from 'react-hook-form';
 const FifthStepScreen = ({habits2, control, errors}: any) => {
- const [touchedItems, setTouchedItems] = useState<{ itemId: string; touchedText: string }[]>([]);
+  const [touchedItems, setTouchedItems] = useState<
+    {itemId: string; touchedText: string}[]
+  >([]);
   const dataArray = [
-    { id: '1', title:'What is your communication style?',  texts: ['I stay on whatsAap allday', 'big time texter', 'Phone caller', 'Video chatter', 'Bad Texter', 'Better in person'] },
-    { id: '2', title:'How do you receive love?', texts: ['Thoughtful Gestures', 'Touch', 'Compliments', 'Time together'] },
-    { id: '3', title:'What is your education level?', texts: ['Bachelors', 'In college', 'High school', 'PHD', 'Masters'] },
-    { id: '4', title:'What is your zodiac sign?', texts: ['Capricorn', 'Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Virgo', 'Leo', 'Libra', 'Scorpio', 'Cancer', 'Sagittarius'] },
+    {
+      id: '1',
+      title: 'What is your communication style?',
+      texts: [
+        'I stay on whatsAap allday',
+        'big time texter',
+        'Phone caller',
+        'Video chatter',
+        'Bad Texter',
+        'Better in person',
+      ],
+    },
+    {
+      id: '2',
+      title: 'How do you receive love?',
+      texts: ['Thoughtful Gestures', 'Touch', 'Compliments', 'Time together'],
+    },
+    {
+      id: '3',
+      title: 'What is your education level?',
+      texts: ['Bachelors', 'In college', 'High school', 'PHD', 'Masters'],
+    },
+    {
+      id: '4',
+      title: 'What is your zodiac sign?',
+      texts: [
+        'Capricorn',
+        'Aquarius',
+        'Pisces',
+        'Aries',
+        'Taurus',
+        'Gemini',
+        'Virgo',
+        'Leo',
+        'Libra',
+        'Scorpio',
+        'Cancer',
+        'Sagittarius',
+      ],
+    },
 
     // Add more items as needed
   ];
 
   const handleTextTouch = (itemId: string, touchedText: string) => {
-    setTouchedItems((prevItems) => {
-      const existingItem = prevItems.find((item) => item.itemId === itemId);
+    setTouchedItems(prevItems => {
+      const existingItem = prevItems.find(item => item.itemId === itemId);
 
       if (existingItem) {
-        return prevItems.map((item) => (item.itemId === itemId ? { itemId, touchedText } : item));
+        return prevItems.map(item =>
+          item.itemId === itemId ? {itemId, touchedText} : item,
+        );
       } else {
-        return [...prevItems, { itemId, touchedText }];
+        return [...prevItems, {itemId, touchedText}];
       }
     });
   };
 
   const isTextTouched = (itemId: string, text: string) => {
-    return touchedItems.some((item) => item.itemId === itemId && item.touchedText === text);
+    return touchedItems.some(
+      item => item.itemId === itemId && item.touchedText === text,
+    );
   };
 
   return (
     <SafeAreaView>
-    <View style={styles.container}>
-      <Text style={styles.headerText}>What else makes you, you?</Text>
-      <Text style={styles.paragraphText}>Don't hold back Authenticity attracts authenticity.</Text>
-      {/* {dataArray.map((item) => (
+      <View style={styles.container}>
+        <Text style={styles.headerText}>What else makes you, you?</Text>
+        <Text style={styles.paragraphText}>
+          Don't hold back Authenticity attracts authenticity.
+        </Text>
+        {/* {dataArray.map((item) => (
         <View style={styles.itemContainer} key={item.id}>
           <Text style={styles.title}>{item.title}</Text>
           <View style={styles.textsContainer}>
             {item.texts.map((text, index) => (
               <TouchableOpacity key={index} onPress={() => handleTextTouch(item.id, text)}>
-                <Text style={[styles.textItem, isTextTouched(item.id, text) && { color: '#BB2CBB', borderColor:'#BB2CBB' }]}>
+                <Text style={[styles.textItem, isTextTouched(item.id, text) && { color: '#AC25AC', borderColor:'#AC25AC' }]}>
                   {text}
                 </Text>
               </TouchableOpacity>
@@ -48,53 +99,57 @@ const FifthStepScreen = ({habits2, control, errors}: any) => {
         </View>
       ))} */}
 
-           <Controller
-            name={habits2}
-            control={control}
-            defaultValue={[]}
-            render={({field: {onChange, value}}) => (
-              <>
-                {dataArray.map(item => (
-                  <View key={item.id} style={styles.boxContainer}>
-                    <Text style={styles.title}>{item.title}</Text>
-                    <View style={styles.textsContainer}>
-                      {item.texts.map((text, index) => (
-                        <TouchableOpacity
-                          key={index}
-                          onPress={() =>
-                            onChange([
-                              ...value.filter(
-                                (habit: any) => habit.id !== item.id,
-                              ),
-                              {id: item.id, selectedText: text},
-                            ])
-                          }>
-                          <Text
-                            style={[
-                              styles.textItem,
-                              value.find(
-                                (habit: any) =>
-                                  habit.id === item.id &&
-                                  habit.selectedText === text,
-                              ) && {color: '#BB2CBB', borderColor: '#BB2CBB'},
-                            ]}>
-                            {text}
-                          </Text>
-                        </TouchableOpacity>
-                      ))}
-                    </View>
+        <Controller
+          name={habits2}
+          control={control}
+          defaultValue={[]}
+          render={({field: {onChange, value}}) => (
+            <>
+              {dataArray.map(item => (
+                <View key={item.id} style={styles.boxContainer}>
+                  <Text style={styles.title}>{item.title}</Text>
+                  <View style={styles.textsContainer}>
+                    {item.texts.map((text, index) => (
+                      <TouchableOpacity
+                        key={index}
+                        onPress={() =>
+                          onChange([
+                            ...value.filter(
+                              (habit: any) => habit.id !== item.id,
+                            ),
+                            {id: item.id, selectedText: text},
+                          ])
+                        }>
+                        <Text
+                          style={[
+                            styles.textItem,
+                            value.find(
+                              (habit: any) =>
+                                habit.id === item.id &&
+                                habit.selectedText === text,
+                            ) && {color: '#AC25AC', borderColor: '#AC25AC'},
+                          ]}>
+                          {text}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
                   </View>
-                ))}
-              </>
-            )}
-          />
-        {errors.habits2 && <Text style={{color:'red', alignSelf:'center'}}>{errors.habits2.message}</Text>}
-    </View>
-  </SafeAreaView>
-  )
-}
+                </View>
+              ))}
+            </>
+          )}
+        />
+        {errors.habits2 && (
+          <Text style={{color: 'red', alignSelf: 'center'}}>
+            {errors.habits2.message}
+          </Text>
+        )}
+      </View>
+    </SafeAreaView>
+  );
+};
 
-export default FifthStepScreen
+export default FifthStepScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -112,7 +167,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     textAlign: 'center',
   },
-  title:{
+  title: {
     fontSize: 15,
     fontWeight: 'bold',
   },
@@ -123,9 +178,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 10,
     elevation: 1,
-     // Add shadow for iOS
+    // Add shadow for iOS
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.3,
     shadowRadius: 2,
   },
@@ -156,4 +211,4 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
-})
+});

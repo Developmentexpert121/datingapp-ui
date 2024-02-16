@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, ImageBackground, View, StyleSheet} from 'react-native';
 
-const Card = (props:any) => {
+const Card = (props: any) => {
   const {name, image, bio} = props.user;
   return (
     <View style={styles.card}>
@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.36,
     shadowRadius: 6.68,
-
   },
   image: {
     width: '100%',
@@ -44,17 +43,20 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   cardInner: {
-    padding: 10,
+    paddingHorizontal: 24,
+    paddingBottom: 20,
   },
   name: {
-    fontSize: 30,
+    fontSize: 26,
     color: 'white',
-    fontWeight: 'bold',
+
+    fontFamily: 'Sansation_Bold',
   },
   bio: {
     fontSize: 18,
     color: 'white',
     lineHeight: 25,
+    fontFamily: 'Sansation_Regular',
   },
 });
 

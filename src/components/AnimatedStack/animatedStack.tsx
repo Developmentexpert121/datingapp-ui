@@ -15,7 +15,7 @@ import {PanGestureHandler} from 'react-native-gesture-handler';
 const ROTATION = 60;
 const SWIPE_VELOCITY = 800;
 
-const AnimatedStack = (props:any) => {
+const AnimatedStack = (props: any) => {
   const {data, renderItem, onSwipeRight, onSwipeLeft} = props;
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -75,7 +75,7 @@ const AnimatedStack = (props:any) => {
     onStart: (_, context) => {
       context.startX = translateX.value;
     },
-    onActive: (event:any, context:any) => {
+    onActive: (event: any, context: any) => {
       translateX.value = context.startX + event.translationX;
     },
     onEnd: event => {
@@ -114,12 +114,12 @@ const AnimatedStack = (props:any) => {
         <PanGestureHandler onGestureEvent={gestureHandler}>
           <Animated.View style={[styles.animatedCard, cardStyle]}>
             <Animated.Image
-              source={require("../../assets/images/LIKE.png")}
+              source={require('../../assets/images/LIKE.png')}
               style={[styles.like, {left: 10}, likeStyle]}
               resizeMode="contain"
             />
             <Animated.Image
-              source={require("../../assets/images/nope.png")}
+              source={require('../../assets/images/nope.png')}
               style={[styles.like, {right: 10}, nopeStyle]}
               resizeMode="contain"
             />
@@ -140,9 +140,10 @@ const styles = StyleSheet.create({
   },
   animatedCard: {
     width: '90%',
-    height: '70%',
+    height: '80%',
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 60,
   },
   nextCardContainer: {
     ...StyleSheet.absoluteFillObject,

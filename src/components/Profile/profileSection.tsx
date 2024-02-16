@@ -17,6 +17,7 @@ import Svg, {Circle, Text as SvgText} from 'react-native-svg';
 import {useNavigation} from '@react-navigation/native';
 import {ListItem} from 'react-native-elements';
 import CommonBackbutton from '../commonBackbutton/backButton';
+import LinearGradient from 'react-native-linear-gradient';
 const data = [
   {
     title: 'Premium',
@@ -33,33 +34,51 @@ const data = [
   // Add more data as needed
 ];
 const data2 = [
-  'unlimited likes',
+  'Unlimited likes',
   'See who likes you',
   'Priority likes',
-  'unlimited Rewards',
+  'Unlimited Rewards',
 ];
 const Box = ({item, isActive}: any) => (
-  <View
-    style={[
-      styles.boxContainer,
-      isActive && styles.activeBox,
-      {backgroundColor: item.title === 'Premium' ? '#BB2CBB' : 'grey'},
-    ]}>
+  <LinearGradient
+    colors={[
+      item.title === 'Premium' ? '#AC25AC' : '#101010',
+      item.title === 'Premium' ? '#FF4FFF' : '#494949',
+    ]}
+    start={{x: 0, y: 0.5}}
+    end={{x: 1, y: 0.5}}
+    style={[styles.boxContainer]}>
     <Text style={styles.text}>{item.title}</Text>
     <Text style={styles.text2}>{item.description}</Text>
     <TouchableOpacity>
       <Text style={styles.upbtn}>Upgrade from {item.price}</Text>
     </TouchableOpacity>
-  </View>
+  </LinearGradient>
 );
 
 const TickListItem = ({item}: any) => (
-  <ListItem>
-    <Icon name="checkmark-done" size={20} color="#BB2CBB" />
-    <ListItem.Content>
-      <ListItem.Title>{item}</ListItem.Title>
-    </ListItem.Content>
-  </ListItem>
+  <TouchableOpacity>
+    <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 20,
+        columnGap: 10,
+        paddingVertical: 5,
+      }}>
+      <Icon name="checkmark-done" size={24} color="#AC25AC" />
+      <View>
+        <Text
+          style={{
+            fontFamily: 'Sansation_Regular',
+            color: 'black',
+            fontSize: 16,
+          }}>
+          {item}
+        </Text>
+      </View>
+    </View>
+  </TouchableOpacity>
 );
 
 const ProfileSection = () => {
@@ -73,7 +92,7 @@ const ProfileSection = () => {
   const profileCompletion = 20; // Set the completion percentage
 
   const calculateStrokeDasharray = (percentage: any) => {
-    const circumference = 440; // 2 * π * radius (140 * 2 * π)
+    const circumference = 465; // 2 * π * radius (140 * 2 * π)
     const completedLength = (percentage / 100) * circumference;
     return [completedLength, circumference];
   };
@@ -93,36 +112,38 @@ const ProfileSection = () => {
   return (
     <SafeAreaView>
       <CommonBackbutton title="Profile" />
-      <View style={styles.container}>
-        <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
-          <Feather
-            name="settings"
-            size={24}
-            color="#BB2CBB"
-            style={styles.settingIcon}
-          />
-        </TouchableOpacity>
-        <View style={styles.profileImageContainer}>
-          <Svg height="150" width="150" style={styles.progressCircle}>
-            <Circle
-              cx="75"
-              cy="75"
-              r="70"
-              stroke="#e0e0e0" // Set a background color for the circle
-              strokeWidth="5"
-              fill="transparent"
+      <View style={styles.containerTop}>
+        <View style={styles.container}>
+          <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
+            <Feather
+              name="settings"
+              size={24}
+              color="#AC25AC"
+              style={styles.settingIcon}
             />
-            <Circle
-              cx="75"
-              cy="75"
-              r="70"
-              stroke="#BB2CBB"
-              strokeWidth="5"
-              fill="transparent"
-              strokeDasharray={calculateStrokeDasharray(profileCompletion)}
-              transform="rotate(-90, 75, 75)"
-            />
-            {/* <SvgText
+          </TouchableOpacity>
+          <View style={styles.profileImageContainer}>
+            <View>
+              <Svg height="154" width="154" style={styles.progressCircle}>
+                <Circle
+                  cx="76"
+                  cy="76"
+                  r="74"
+                  stroke="#D6D6D6" // Set a background color for the circle
+                  strokeWidth="4"
+                  fill="transparent"
+                />
+                <Circle
+                  cx="74"
+                  cy="76"
+                  r="74"
+                  stroke="#AC25AC"
+                  strokeWidth="4"
+                  fill="transparent"
+                  strokeDasharray={calculateStrokeDasharray(profileCompletion)}
+                  transform="rotate(-90, 75, 75)"
+                />
+                {/* <SvgText
             x="50%"
             y="50%"
             dy=".3em"
@@ -131,36 +152,54 @@ const ProfileSection = () => {
             fill="#3498db">
             {`${profileCompletion}%`}
           </SvgText> */}
-          </Svg>
-          <Image source={{uri: profileImage}} style={styles.profileImage} />
-          <View style={styles.completionContainer}>
-            <Text style={styles.completionText}>
-              {profileCompletion}% Complete
+              </Svg>
+              <Image source={{uri: profileImage}} style={styles.profileImage} />
+              <View style={styles.completionContainer}>
+                <Text style={styles.completionText}>
+                  {profileCompletion}% Complete
+                </Text>
+              </View>
+            </View>
+          </View>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('UpdateProfile')}>
+            <Icons
+              name="mode-edit"
+              size={24}
+              color="#AC25AC"
+              style={styles.editIcon}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={{alignItems: 'center'}}>
+          <Text
+            style={{
+              fontFamily: 'Sansation_Bold',
+              fontSize: 20,
+              color: 'black',
+              marginTop: 10,
+            }}>
+            John Doe
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: 4,
+              columnGap: 2,
+            }}>
+            <Ionicons name="location" size={20} color="#AC25AC" />
+            <Text
+              style={{
+                fontFamily: 'Sansation_Regular',
+                fontSize: 18,
+              }}>
+              California, California
             </Text>
           </View>
         </View>
-        {/* <View style={styles.detailsContainer}>
-        <Text style={styles.userName}>{userName}</Text>
-        <Text style={styles.userAddress}>{userAddress}</Text>
-        <View style={styles.locationContainer}>
-          <Text style={styles.userLocation}>{userLocation}</Text>
-          <Ionicons
-            name="location"
-            size={20}
-            color="#3498db"
-            style={styles.locationIcon}
-          />
-        </View>
-      </View> */}
-        <TouchableOpacity onPress={() => navigation.navigate('UpdateProfile')}>
-          <Icons
-            name="mode-edit"
-            size={24}
-            color="#BB2CBB"
-            style={styles.editIcon}
-          />
-        </TouchableOpacity>
       </View>
+
       <View style={{flex: 0}}>
         <FlatList
           ref={flatListRef}
@@ -187,7 +226,7 @@ const ProfileSection = () => {
         </View>
       </View>
 
-      <View style={{flex: 0}}>
+      <View style={{flex: 0, paddingTop: 16}}>
         <FlatList
           data={data2}
           renderItem={({item}) => <TickListItem item={item} />}
@@ -199,28 +238,48 @@ const ProfileSection = () => {
 };
 
 const styles = StyleSheet.create({
+  containerTop: {
+    backgroundColor: '#FFFFFF',
+    marginBottom: 26,
+    paddingTop: 26,
+    paddingBottom: 20,
+    shadowColor: '#AC25AC',
+    shadowOffset: {
+      width: 0,
+      height: 9,
+    },
+    shadowOpacity: 0.48,
+    shadowRadius: 11.95,
+
+    elevation: 18,
+  },
   container: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ecf0f1',
+    paddingHorizontal: 16,
   },
   profileImageContainer: {
     position: 'relative',
+    alignItems: 'center',
   },
   completionContainer: {
     position: 'absolute',
     bottom: 0,
-    right: 0,
-    backgroundColor: '#BB2CBB',
-    padding: 4,
-    borderRadius: 12,
+    right: 18,
+    backgroundColor: '#AC25AC',
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderWidth: 2,
+    borderColor: '#FFFFFF',
+    borderRadius: 22,
+    shadowColor: '#000',
+    elevation: 6,
   },
   completionText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    color: '#FFFFFF',
+
+    fontFamily: 'Sansation_Regular',
   },
   detailsContainer: {
     flex: 1,
@@ -241,14 +300,16 @@ const styles = StyleSheet.create({
   },
   editIcon: {
     marginRight: 30,
-    backgroundColor: '#edb9ed',
+    backgroundColor: '#FFE1FF',
+    color: '#AC25AC',
     borderRadius: 20,
     padding: 8,
   },
   settingIcon: {
     marginLeft: 30,
-    backgroundColor: '#edb9ed',
     borderRadius: 20,
+    backgroundColor: '#FFE1FF',
+    color: '#AC25AC',
     padding: 8,
   },
   progressCircle: {
@@ -256,9 +317,9 @@ const styles = StyleSheet.create({
   },
   profileImage: {
     margin: 10,
-    width: 130,
-    height: 130,
-    borderRadius: 75,
+    width: 132,
+    height: 132,
+    borderRadius: 66,
   },
   profileText: {
     marginTop: 10,
@@ -271,7 +332,7 @@ const styles = StyleSheet.create({
   },
 
   locationIcon: {
-    marginLeft: 5,
+    marginRight: 5,
   },
 
   backPress: {
@@ -282,12 +343,12 @@ const styles = StyleSheet.create({
   },
   backPressIcon: {
     marginRight: 8,
-    color: '#BB2CBB',
+    color: '#AC25AC',
   },
   stepsText: {
     color: 'grey',
     fontSize: 20,
-    //backgroundColor: '#BB2CBB',
+    //backgroundColor: '#AC25AC',
     paddingHorizontal: 20,
     borderRadius: 15,
     marginLeft: 80,
@@ -295,40 +356,48 @@ const styles = StyleSheet.create({
   },
 
   boxContainer: {
-    borderRadius: 10,
-    padding: 20,
-    marginHorizontal: 15,
+    borderRadius: 6,
+    padding: 16,
+    alignItems: 'center',
+    paddingHorizontal: 28,
+    marginHorizontal: 30,
     marginBottom: 5,
+    width: 350,
     shadowColor: '#000',
-    width: 380,
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 4,
   },
   text: {
-    alignSelf: 'center',
+    alignItems: 'center',
     color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 24,
+    fontFamily: 'Sansation_Bold',
   },
   text2: {
-    alignSelf: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    marginTop: 4,
     color: 'white',
     fontSize: 16,
-    //fontWeight: 'bold',
+    fontFamily: 'Sansation_Regular',
   },
   upbtn: {
     alignSelf: 'center',
     color: 'black',
-    backgroundColor: 'yellow',
-    fontSize: 16,
-    borderRadius: 20,
-    paddingHorizontal: 15,
-    paddingVertical: 6,
+    backgroundColor: '#F99A21',
+    fontFamily: 'Sansation_Regular',
+    marginTop: 16,
+    marginBottom: 6,
+    fontSize: 14,
+    borderRadius: 30,
+    paddingHorizontal: 20,
+    paddingVertical: 4,
   },
 
   dotsContainer: {
@@ -345,7 +414,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   activeDot: {
-    backgroundColor: '#BB2CBB',
+    backgroundColor: '#AC25AC',
   },
   activeBox: {
     // borderWidth: 2,

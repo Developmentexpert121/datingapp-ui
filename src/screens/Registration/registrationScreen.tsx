@@ -224,7 +224,7 @@ import {
   Pressable,
   KeyboardAvoidingView,
   Platform,
-  Alert
+  Alert,
 } from 'react-native';
 import * as yup from 'yup';
 import React, {useState} from 'react';
@@ -265,25 +265,25 @@ interface RegisterForm {
   city: string;
   gender: string;
   partnerType: string;
-  habits1: Array<{ id: string; selectedText: string }>;
-  habits2: Array<{ id: string; selectedText: string }>;
+  habits1: Array<{id: string; selectedText: string}>;
+  habits2: Array<{id: string; selectedText: string}>;
   hobbies: string;
   password: string;
   confirmPassword: string;
 }
 
 const defaultValues = {
-  name:'',
-  phone:'',
+  name: '',
+  phone: '',
   email: '',
-  option:'',
-  country:'',
-  city:'',
-  gender:'',
-  partnerType:'',
-  habits1:[],
-  habits2:[],
-  hobbies:'',
+  option: '',
+  country: '',
+  city: '',
+  gender: '',
+  partnerType: '',
+  habits1: [],
+  habits2: [],
+  hobbies: '',
   password: '',
   confirmPassword: '',
 };
@@ -296,7 +296,10 @@ const schema = yup.object().shape({
   country: yup.string().trim().required('Country is required'),
   city: yup.string().trim().required('City is required'),
 
-  password: yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
+  password: yup
+    .string()
+    .min(6, 'Password must be at least 6 characters')
+    .required('Password is required'),
   // confirmPassword: yup
   //   .string()
   //   .oneOf([yup.ref('password')], 'Passwords must match')
@@ -311,23 +314,27 @@ const schema2 = yup.object().shape({
 });
 
 const schema4 = yup.object().shape({
-  habits1: yup.array().of(
-    yup.object().shape({
-      id: yup.string().required(),
-      selectedText: yup.string().required(),
-    })
-  )
-  .min(1, "At least one item of any box must be selected")
+  habits1: yup
+    .array()
+    .of(
+      yup.object().shape({
+        id: yup.string().required(),
+        selectedText: yup.string().required(),
+      }),
+    )
+    .min(1, 'At least one item of any box must be selected'),
 });
 
 const schema5 = yup.object().shape({
-  habits2: yup.array().of(
-    yup.object().shape({
-      id: yup.string().required(),
-      selectedText: yup.string().required(),
-    })
-  )
-  .min(1, "At least one item of any box must be selected")
+  habits2: yup
+    .array()
+    .of(
+      yup.object().shape({
+        id: yup.string().required(),
+        selectedText: yup.string().required(),
+      }),
+    )
+    .min(1, 'At least one item of any box must be selected'),
 });
 const schema6 = yup.object().shape({
   hobbies: yup.string().trim().required('Hobbies are required'),
@@ -344,22 +351,21 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const [permissionStatus, setPermissionStatus] = useState<any>(null);
 
   const dispatch: any = useAppDispatch();
-  const Schemas = (steps:any) => {
-   if(steps===0){
-    return yupResolver<any>(schema);
-   }else if(steps===1){
-    return yupResolver<any>(schema1);
-   }else if(steps===2){
-    return yupResolver<any>(schema2);
-   }else if(steps===4){
-    return yupResolver<any>(schema4);
-   }else if(steps===5){
-    return yupResolver<any>(schema5);
-   }else if(steps===6){
-    return yupResolver<any>(schema6);
-   }
-
-  }
+  const Schemas = (steps: any) => {
+    if (steps === 0) {
+      return yupResolver<any>(schema);
+    } else if (steps === 1) {
+      return yupResolver<any>(schema1);
+    } else if (steps === 2) {
+      return yupResolver<any>(schema2);
+    } else if (steps === 4) {
+      return yupResolver<any>(schema4);
+    } else if (steps === 5) {
+      return yupResolver<any>(schema5);
+    } else if (steps === 6) {
+      return yupResolver<any>(schema6);
+    }
+  };
   const {
     control,
     handleSubmit,
@@ -369,21 +375,23 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     defaultValues,
     resolver: Schemas(steps),
   });
-console.log("errors register =========== ", errors);
-const getLocation = () => {
-  Geolocation.getCurrentPosition(
-    position => {
-      const { latitude, longitude } = position.coords;
-      setLocation({ latitude, longitude });
-      setPermissionStatus('granted');
-    },
-    err => (setError(err.message),
-    setPermissionStatus('denied'),
-    { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 })
-  );
-};
+  console.log('errors register =========== ', errors);
+  const getLocation = () => {
+    Geolocation.getCurrentPosition(
+      position => {
+        const {latitude, longitude} = position.coords;
+        setLocation({latitude, longitude});
+        setPermissionStatus('granted');
+      },
+      err => (
+        setError(err.message),
+        setPermissionStatus('denied'),
+        {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000}
+      ),
+    );
+  };
 
-//
+  //
 
   const requestLocationPermission = () => {
     Geolocation.requestAuthorization();
@@ -410,141 +418,141 @@ const getLocation = () => {
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
-        { text: 'Allow', onPress: () => requestLocationPermission() },
-      ]
+        {text: 'Allow', onPress: () => requestLocationPermission()},
+      ],
     );
   };
-//
+  //
   const onSubmit: any = (data: RegisterForm) => {
     // Handle form submission here
-    console.log("dataaaaaaaaaaaaaaaaa register ", data);
-    if(steps===7){
-       if(selectedImage===null){
+    console.log('dataaaaaaaaaaaaaaaaa register ', data);
+    if (steps === 7) {
+      if (selectedImage === null) {
         setUploadError(true);
-       }else{
-      setSteps(prev => prev + 1);
-       }
-    }else{
-      if(steps===8){
+      } else {
+        setSteps(prev => prev + 1);
+      }
+    } else {
+      if (steps === 8) {
         showPermissionPopup();
-       // Geolocation.requestAuthorization();
-       // getLocation();
-       }
-     //setSteps(prev => prev + 1);
+        // Geolocation.requestAuthorization();
+        // getLocation();
+      }
+      //setSteps(prev => prev + 1);
     }
-   // dispatch(RegisterSignUp(data));
-   // reset();
-   // navigate('Login');
+    // dispatch(RegisterSignUp(data));
+    // reset();
+    // navigate('Login');
   };
   console.log('location ', location);
   console.log('errors ', errors);
   console.log('errrrrrrrrrrrrrrrrrrrrrrrrr ', error);
   console.log('permissionStatus ', permissionStatus);
 
- 
-
-  const forwardStep = (step:number) =>{
-    if(step===8){
+  const forwardStep = (step: number) => {
+    if (step === 8) {
       Geolocation.requestAuthorization();
       getLocation();
-      navigate("Home");
-    }else{
-      setSteps(prev => prev + 1)
+      navigate('Home');
+    } else {
+      setSteps(prev => prev + 1);
     }
-  }
+  };
   return (
-    <KeyboardAvoidingView behavior='padding'keyboardVerticalOffset={Platform.OS==="ios"?100:0}>
-    <ScrollView nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
-      {steps > 0 && (
-        <Pressable style={styles.backPress}>
-          <Ionicons
-            onPress={() => setSteps(prev => prev - 1)}
-            style={styles.backPressIcon}
-            name="chevron-back-outline"
-            size={30}
-          />
-          <Text style={styles.stepsText}>{steps + '/8'}</Text>
-        </Pressable>
-      )}
-      <View>
-        {steps === 0 ? (
-          <ZeroStepScreen 
-          option="option"
-          phone="phone"
-          name="name"
-          email="email"
-          password="password"
-          country="country"
-          city="city"
-          gender="gender"
-          dateStr={dateStr}
-          setDateStr={setDateStr}
-          control={control}
-          errors={errors} 
-          />
-        ) : steps === 1 ? (
-          <FirstStepScreen 
-          gender="gender"
-          control={control}
-          errors={Boolean(errors?.gender)} 
-          />
-        ) : steps === 2 ? (
-          <SecondStepScreen 
-          partnerType="partnerType"
-          control={control}
-          errors={Boolean(errors?.partnerType)}
-          />
-        ) : steps === 3 ? (
-          <ThirdStepScreen 
-          distance={distance}
-          setDistance={setDistance} 
-          />
-        ) : steps === 4 ? (
-          <ForthStepScreen 
-          habits1="habits1"
-          control={control}
-          errors={errors}
-          />
-        ) : steps === 5 ? (
-          <FifthStepScreen 
-          habits2="habits2"
-          control={control}
-          errors={errors}
-          />
-        ) : steps === 6 ? (
-          <SixthStepScreen
-          hobbies="hobbies"
-          control={control}
-          errors={Boolean(errors?.hobbies)} 
-           />
-        ) : steps === 7 ? (
-          <SeventhStepScreen 
-          uploadError={uploadError}
-          setUploadError={setUploadError}
-          selectedImage={selectedImage}
-          setSelectedImage={setSelectedImage} />
-        ) : steps === 8 ? (
-          <EighthStepScreen />
-        ) : (
-          ''
+    <KeyboardAvoidingView
+      behavior="padding"
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
+      <ScrollView
+        nestedScrollEnabled={true}
+        showsVerticalScrollIndicator={false}>
+        {steps > 0 && (
+          <Pressable style={styles.backPress}>
+            <Ionicons
+              onPress={() => setSteps(prev => prev - 1)}
+              style={styles.backPressIcon}
+              name="chevron-back-outline"
+              size={30}
+            />
+            <Text style={styles.stepsText}>{steps + '/8'}</Text>
+          </Pressable>
         )}
-      </View>
-      <View style={styles.containerBtn}>
-        <TouchableOpacity
-          onPress={
-            //() => {
-            //forwardStep(steps);
-             handleSubmit(onSubmit)
-            //}
+        <View>
+          {steps === 0 ? (
+            <ZeroStepScreen
+              option="option"
+              phone="phone"
+              name="name"
+              email="email"
+              password="password"
+              country="country"
+              city="city"
+              gender="gender"
+              dateStr={dateStr}
+              setDateStr={setDateStr}
+              control={control}
+              errors={errors}
+            />
+          ) : steps === 1 ? (
+            <FirstStepScreen
+              gender="gender"
+              control={control}
+              errors={Boolean(errors?.gender)}
+            />
+          ) : steps === 2 ? (
+            <SecondStepScreen
+              partnerType="partnerType"
+              control={control}
+              errors={Boolean(errors?.partnerType)}
+            />
+          ) : steps === 3 ? (
+            <ThirdStepScreen distance={distance} setDistance={setDistance} />
+          ) : steps === 4 ? (
+            <ForthStepScreen
+              habits1="habits1"
+              control={control}
+              errors={errors}
+            />
+          ) : steps === 5 ? (
+            <FifthStepScreen
+              habits2="habits2"
+              control={control}
+              errors={errors}
+            />
+          ) : steps === 6 ? (
+            <SixthStepScreen
+              hobbies="hobbies"
+              control={control}
+              errors={Boolean(errors?.hobbies)}
+            />
+          ) : steps === 7 ? (
+            <SeventhStepScreen
+              uploadError={uploadError}
+              setUploadError={setUploadError}
+              selectedImage={selectedImage}
+              setSelectedImage={setSelectedImage}
+            />
+          ) : steps === 8 ? (
+            <EighthStepScreen />
+          ) : (
+            ''
+          )}
+        </View>
+        <View style={styles.containerBtn}>
+          <TouchableOpacity
+            onPress={
+              //() => {
+              //forwardStep(steps);
+              handleSubmit(onSubmit)
+              //}
             }
-          style={styles.button}>
-          <Text style={styles.buttonText}>
-            {steps === 0 ? 'Continue' : steps<8 ?'Next' : 'Done'}
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
-      </KeyboardAvoidingView>
+            style={styles.button}>
+            <Text style={styles.buttonText}>
+              {steps === 0 ? 'Continue' : steps < 8 ? 'Next' : 'Done'}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -564,7 +572,7 @@ const styles = StyleSheet.create({
 
   button: {
     width: 200,
-    backgroundColor: '#BB2CBB',
+    backgroundColor: '#AC25AC',
     padding: 10,
     borderRadius: 20,
     marginBottom: 20,
@@ -574,6 +582,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     textAlign: 'center',
+    fontFamily: 'Sansation_Bold',
   },
   backPress: {
     flexDirection: 'row',
@@ -583,15 +592,16 @@ const styles = StyleSheet.create({
   },
   backPressIcon: {
     marginRight: 8,
-    color: '#BB2CBB',
+    color: '#AC25AC',
   },
   stepsText: {
     color: 'white',
     fontSize: 18,
-    backgroundColor: '#BB2CBB',
+    backgroundColor: '#AC25AC',
     paddingHorizontal: 20,
     borderRadius: 15,
     marginLeft: 100,
+    fontFamily: 'Sansation_Regular',
   },
 });
 

@@ -1,22 +1,37 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
-import { Platform, PermissionsAndroid, View, Text, TouchableOpacity, Image, FlatList, StyleSheet } from 'react-native';
-import  {launchImageLibrary} from 'react-native-image-picker';
-import { request, PERMISSIONS } from 'react-native-permissions';
+import {useEffect, useState} from 'react';
+import {
+  Platform,
+  PermissionsAndroid,
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  FlatList,
+  StyleSheet,
+} from 'react-native';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {request, PERMISSIONS} from 'react-native-permissions';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 const DummyProfileImages = [
-    require('../../assets/images/screenImage1.png'),
-    require('../../assets/images/screenImage2.png'),
-    require('../../assets/images/screenImage1.png'),
-    require('../../assets/images/screenImage2.png'),
-    require('../../assets/images/screenImage1.png'),
-    require('../../assets/images/screenImage2.png'),
-    // require('../../assets/images/screenImage1.png'),
-    // require('../../assets/images/screenImage2.png'),
-    // require('../../assets/images/screenImage1.png'),
-  ];
-const SeventhStepScreen = ({uploadError, setUploadError, selectedImage, setSelectedImage, title}:any) => {
+  require('../../assets/images/screenImage1.png'),
+  require('../../assets/images/screenImage2.png'),
+  require('../../assets/images/screenImage1.png'),
+  require('../../assets/images/screenImage2.png'),
+  '',
+  '',
+  // require('../../assets/images/screenImage1.png'),
+  // require('../../assets/images/screenImage2.png'),
+  // require('../../assets/images/screenImage1.png'),
+];
+const SeventhStepScreen = ({
+  uploadError,
+  setUploadError,
+  selectedImage,
+  setSelectedImage,
+  title,
+}: any) => {
   const [uploadferImage, setUploadedImage] = useState<any>();
-
 
   console.log('selectedImageselectedImage          ', selectedImage);
   const requestPermissions = async () => {
@@ -26,7 +41,7 @@ const SeventhStepScreen = ({uploadError, setUploadError, selectedImage, setSelec
       await requestIOSPermissions();
     }
   };
-  
+
   useEffect(() => {
     requestPermissions();
   }, []);
@@ -68,9 +83,8 @@ const SeventhStepScreen = ({uploadError, setUploadError, selectedImage, setSelec
     }
   };
 
-
   const openImagePicker = () => {
-    const options:any = {
+    const options: any = {
       mediaType: 'photo',
       includeBase64: false,
       maxHeight: 2000,
@@ -81,7 +95,7 @@ const SeventhStepScreen = ({uploadError, setUploadError, selectedImage, setSelec
       },
     };
 
-    launchImageLibrary(options, (response:any) => {
+    launchImageLibrary(options, (response: any) => {
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.error) {
@@ -89,8 +103,11 @@ const SeventhStepScreen = ({uploadError, setUploadError, selectedImage, setSelec
       } else {
         let imageUri = response.uri || response.assets?.[0]?.uri;
         console.log('response===================== ', response);
-        console.log('=============--------------======================', imageUri)
-        setSelectedImage({ uri: imageUri });
+        console.log(
+          '=============--------------======================',
+          imageUri,
+        );
+        setSelectedImage({uri: imageUri});
         setUploadError(false);
       }
     });
@@ -123,17 +140,17 @@ const SeventhStepScreen = ({uploadError, setUploadError, selectedImage, setSelec
       // Handle the case where an image is selected
       // You can upload the selected image here
       const formData = new FormData();
-    // formData.append('image', {
-    //   uri: imageUri,
-    //   type: 'image/jpeg', // Change the type if necessary
-    //   name: 'image.jpg', // Change the name if necessary
-    // });
+      // formData.append('image', {
+      //   uri: imageUri,
+      //   type: 'image/jpeg', // Change the type if necessary
+      //   name: 'image.jpg', // Change the name if necessary
+      // });
 
-    // const response = await axios.post('http://your-server-url/upload', formData, {
-    //   headers: {
-    //     'Content-Type': 'multipart/form-data',
-    //   },
-    // });
+      // const response = await axios.post('http://your-server-url/upload', formData, {
+      //   headers: {
+      //     'Content-Type': 'multipart/form-data',
+      //   },
+      // });
       console.log('Image selected:', selectedImage);
     } else {
       // Handle the case where no image is selected
@@ -141,31 +158,60 @@ const SeventhStepScreen = ({uploadError, setUploadError, selectedImage, setSelec
     }
   };
 
-  return (<View style={styles.container}>
-    <Text style={{marginBottom:5}}>Choose {title ?? ''} profile or upload from gallary</Text>
-    {selectedImage ? (
-      <Image source={selectedImage} style={styles.selectedImage} />
-    ) :
-    (
-     
-      <View style={styles.containerdm}>
-      {DummyProfileImages.map((item, index) => (
-        <TouchableOpacity onPress={() => (setSelectedImage(item), setUploadError(false))} style={styles.imageContainerdm} key={index}>
-          <Image source={item} style={styles.dummyImagedm} />
+  return (
+    <View style={styles.container}>
+      {selectedImage ? (
+        <Image source={selectedImage} style={styles.selectedImage} />
+      ) : (
+        <View style={styles.containerdm}>
+          {DummyProfileImages.map((item, index) => (
+            <TouchableOpacity
+              onPress={() => (setSelectedImage(item), setUploadError(false))}
+              style={styles.imageContainerdm}
+              key={index}>
+              <Image source={item} style={styles.dummyImagedm} />
+              <View style={styles.addRemoveButton}>
+                <FontAwesome6
+                  name="plus"
+                  size={20}
+                  style={{
+                    color: 'white',
+                  }}
+                />
+              </View>
+            </TouchableOpacity>
+          ))}
+        </View>
+      )}
+      <View
+        style={{
+          flexDirection: 'row',
+          columnGap: 10,
+          marginBottom: 16,
+          marginTop: 20,
+        }}>
+        <TouchableOpacity onPress={openImagePicker} style={styles.uploadButton}>
+          <Text style={styles.buttonText}>
+            {selectedImage ? 'Change Image' : 'Select from gallary'}
+          </Text>
         </TouchableOpacity>
-      ))}
+        <TouchableOpacity
+          onPress={handleSelectImage}
+          style={styles.selectButton}>
+          <Text style={styles.buttonText}>Upload</Text>
+        </TouchableOpacity>
+      </View>
+      {uploadError && (
+        <Text
+          style={{
+            color: 'red',
+            textAlign: 'center',
+            fontFamily: 'Sansation_Regular',
+          }}>
+          Please select any picture or select from gallery
+        </Text>
+      )}
     </View>
-        
-    )
-    }
-    <TouchableOpacity onPress={openImagePicker} style={styles.uploadButton}>
-      <Text style={styles.buttonText}>{selectedImage ? 'Change Image' : 'Select from gallary'}</Text>
-    </TouchableOpacity>
-    <TouchableOpacity onPress={handleSelectImage} style={styles.selectButton}>
-      <Text style={styles.buttonText}>Upload</Text>
-    </TouchableOpacity>
-    {uploadError && <Text style={{color:'red'}}>plz select any profile or select from gallery</Text>}
-  </View>
   );
 };
 
@@ -174,55 +220,81 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    paddingHorizontal: 24,
   },
   selectedImage: {
-    width: 200,
-    height: 200,
+    width: 98,
+    height: 150,
     borderRadius: 10,
     marginBottom: 20,
   },
   dummyImage: {
-    width: 100,
-    height: 100,
+    width: 98,
+    height: 150,
     borderRadius: 5,
   },
   imageContainer: {
     margin: 5,
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   uploadButton: {
-    backgroundColor: '#BB2CBB',
+    backgroundColor: '#AC25AC',
     padding: 10,
-    borderRadius: 10,
-    marginTop: 10,
+    paddingHorizontal: 16,
+    borderRadius: 20,
   },
   selectButton: {
     backgroundColor: '#4CAF50',
     padding: 10,
-    borderRadius: 10,
-    marginTop: 10,
+    paddingHorizontal: 16,
+    borderRadius: 20,
   },
   buttonText: {
     color: 'white',
     textAlign: 'center',
+    fontFamily: 'Sansation_Regular',
   },
 
   containerdm: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between', // Adjust as needed
+    rowGap: 20,
+    position: 'relative',
   },
   imageContainerdm: {
-    marginBottom: 10, // Adjust spacing between rows
+    borderWidth: 2,
+    borderRadius: 14,
+    borderColor: 'rgba(0, 0, 0, 0.4)',
+    borderStyle: 'dashed',
+    backgroundColor: '#E0E0E0',
   },
   dummyImagedm: {
-    width: 100, // Adjust image width as needed
-    height: 100, // Adjust image height as needed
+    width: 98,
+    height: 150,
     resizeMode: 'cover',
-    borderRadius: 15, //
+    borderRadius: 14,
+  },
+  addRemoveButton: {
+    position: 'absolute',
+    bottom: -8,
+    right: -8,
+    backgroundColor: '#AC25AC',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    shadowColor: '#AC25AC',
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.51,
+    shadowRadius: 13.16,
+
+    elevation: 20,
   },
 });
-
 
 export default SeventhStepScreen;

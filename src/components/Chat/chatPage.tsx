@@ -63,7 +63,7 @@ const ChatPage = () => {
             <Icon1
               name="phone"
               size={24}
-              color="#BB2CBB"
+              color="#AC25AC"
               style={styles.editIcon}
             />
           </TouchableOpacity>
@@ -71,7 +71,7 @@ const ChatPage = () => {
             <Icon2
               name="video"
               size={24}
-              color="#BB2CBB"
+              color="#AC25AC"
               style={styles.editIcon}
             />
           </TouchableOpacity>
@@ -152,12 +152,12 @@ const styles = StyleSheet.create({
   },
   backPressIcon: {
     //marginRight: 8,
-    color: '#BB2CBB',
+    color: '#AC25AC',
   },
   stepsText: {
     color: 'grey',
     fontSize: 20,
-    //backgroundColor: '#BB2CBB',
+    //backgroundColor: '#AC25AC',
     marginHorizontal: 15,
     borderRadius: 15,
     //marginLeft: 80,

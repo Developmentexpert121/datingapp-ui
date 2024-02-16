@@ -100,7 +100,6 @@ const ZeroStepScreen = ({
 
   return (
     <SafeAreaView>
-     
       <Text style={styles.headerLabel}>Personal</Text>
       <View style={styles.container}>
         <Text style={styles.label}>My name is</Text>
@@ -127,7 +126,7 @@ const ZeroStepScreen = ({
                 dateStr.getFullYear()}
           </Text>
         </TouchableOpacity>
-        <Text style={styles.label2}>Your age will be in public</Text>
+        <Text style={styles.label2}>Your age will be public</Text>
         {show && (
           <DateTimePicker
             testID="dateTimePicker"
@@ -160,20 +159,27 @@ const ZeroStepScreen = ({
               control={control}
               defaultValue=""
               render={({field: {onChange, value}}) => (
-                <>
+                <View
+                  style={{
+                    marginTop: 4,
+                    marginHorizontal: 24,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}>
+                  <Text
+                    style={[
+                      styles.radioLabel,
+                      {color: errors?.[option] ? 'red' : 'black'},
+                    ]}>
+                    {item.label}
+                  </Text>
                   <RadioButton
                     value={item.value}
                     status={value === item.value ? 'checked' : 'unchecked'}
                     onPress={() => onChange(item.value)}
                   />
-                  <Text
-                    style={[
-                      styles.radioLabel,
-                      {color: errors?.[option] ? 'red' : 'grey'},
-                    ]}>
-                    {item.label}
-                  </Text>
-                </>
+                </View>
               )}
             />
           </View>
@@ -217,7 +223,6 @@ const ZeroStepScreen = ({
           errors={Boolean(errors?.password)}
         />
       </View>
-    
     </SafeAreaView>
   );
 };
@@ -242,48 +247,57 @@ const styles = StyleSheet.create({
   container: {
     width: '90%',
     //padding: 5,
-    borderRadius: 10,
+    borderRadius: 5,
     borderWidth: 1,
-    // borderColor: '#BB2CBB',
+    borderColor: '#AA22AA',
     marginTop: 20,
+    marginBottom: 10,
     backgroundColor: '#E1D1E1',
     marginHorizontal: 20,
     flex: 1,
     justifyContent: 'center', // Center items vertically
     alignItems: 'center',
+    paddingVertical: 12,
   },
   container1: {
     width: '90%',
-    padding: 5,
-    borderRadius: 10,
+
+    borderRadius: 5,
     borderWidth: 1,
-    // borderColor: '#BB2CBB',
+    borderColor: '#AA22AA',
     marginTop: 20,
+    marginBottom: 10,
     backgroundColor: '#E1D1E1',
     marginHorizontal: 20,
+    paddingVertical: 12,
   },
 
   headerLabel: {
-    fontSize: 20,
+    fontSize: 22,
+    fontFamily: 'Sansation_Bold',
     textAlign: 'center',
-    marginTop: 10,
+    marginTop: 20,
+    color: 'black',
   },
   label1: {
     fontSize: 20,
     //marginBottom: 0,
     textAlign: 'center',
+    fontFamily: 'Sansation_Bold',
+    color: 'black',
   },
 
   label: {
     fontSize: 20,
-   // marginBottom: 0,
-    // textAlign: 'center',
+    fontFamily: 'Sansation_Bold',
+    color: 'black',
   },
 
   label2: {
     fontSize: 16,
     textAlign: 'center',
-      marginBottom: 2,
+    marginBottom: 2,
+    fontFamily: 'Sansation_Regular',
   },
 
   input: {
@@ -294,18 +308,19 @@ const styles = StyleSheet.create({
   },
 
   buttonPressed: {
-    backgroundColor: '#BB2CBB',
+    backgroundColor: '#AC25AC',
   },
   radio: {
-    flexDirection: 'row',
-    marginLeft: 100,
-    alignItems: 'center',
+    flexGrow: 1,
+    alignContent: 'flex-start',
   },
   radioLabel: {
-    marginLeft: 10,
+    fontSize: 16,
+
+    fontFamily: 'Sansation_Regular',
   },
   radioContainer: {
-   flexDirection: 'column',
+    flexDirection: 'column',
     alignItems: 'flex-start',
     marginTop: 2,
   },
