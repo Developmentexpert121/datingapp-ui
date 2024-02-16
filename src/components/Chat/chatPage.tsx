@@ -42,7 +42,7 @@ const ChatPage = () => {
           }}>
           <Pressable style={styles.backPress}>
             <Ionicons
-              onPress={() => navigation.navigate('Chat')}
+              onPress={() => navigation.navigate('ChatScreen')}
               style={styles.backPressIcon}
               name="chevron-back-outline"
               size={30}

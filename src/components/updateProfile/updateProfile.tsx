@@ -196,7 +196,7 @@ const UpdateProfile = () => {
   const [title, setTitle] = useState<string>('');
   const [value, setValue] = useState<string>('');
   const [uploadError, setUploadError] = useState<boolean>(false);
-  const [selectedImage, setSelectedImage] = useState<any>(null);
+  const [selectedImage, setSelectedImage] = useState<any>('');
   const handleSliderChange = (value: any) => {
     setHeight(value);
   };

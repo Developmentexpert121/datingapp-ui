@@ -17,7 +17,12 @@ import ChatPage from '../components/Chat/chatPage';
 const Stack = createStackNavigator<RootStackParamList>();
 enableScreens();
 const MainNavigator = () => (
-  <Stack.Navigator initialRouteName="Home" screenOptions={{headerShown: false}}>
+  <Stack.Navigator
+    initialRouteName="Home"
+    screenOptions={{
+      headerShown: false,
+      cardStyle: {backgroundColor: '#FFFFFF'},
+    }}>
     <Stack.Screen name="Home" component={HomeScreen} />
     <Stack.Screen name="Liked" component={LikedScreen} />
     <Stack.Screen name="Notification" component={NotificationScreen} />

@@ -8,11 +8,11 @@ const ThirdStepScreen = ({distance, setDistance}: any) => {
   };
 
   return (
-    <SafeAreaView>
-      <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.contentContainer}>
         <Text style={styles.headerText}>Your distance preference?</Text>
         <Text style={styles.paragraphText}>
-          Use the slider to set the maximum distance that you want to potential
+          Use the slider to set the maximum distance you want to potential
           matches to be located
         </Text>
 
@@ -34,6 +34,12 @@ const ThirdStepScreen = ({distance, setDistance}: any) => {
             thumbStyle={styles.thumbStyle}
           />
         </View>
+        <View style={{flexGrow: 1}}></View>
+        <View style={styles.containerBtn}>
+          <Text style={styles.containerBtnText}>
+            You can change preferences later in settings
+          </Text>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -41,45 +47,66 @@ const ThirdStepScreen = ({distance, setDistance}: any) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 16,
+    flexGrow: 1,
+  },
+  contentContainer: {
+    flexGrow: 1,
+    paddingHorizontal: 40,
   },
   headerText: {
+    color: 'black',
     fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: 'Sansation_Bold',
     marginBottom: 8,
-    textAlign: 'center',
   },
   paragraphText: {
-    fontSize: 16,
-    marginBottom: 16,
-    textAlign: 'center',
+    fontFamily: 'Sansation_Regular',
+    fontSize: 14,
+    marginBottom: 20,
+    color: '#575757',
   },
-  sliderContainer: {
-    padding: 16,
-  },
+  sliderContainer: {},
   labelContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 8,
   },
   label: {
-    fontSize: 18,
-    marginBottom: 8,
+    fontSize: 16,
+    fontFamily: 'Sansation_Bold',
+    color: 'black',
   },
   value: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 16,
+    fontSize: 16,
+    fontFamily: 'Sansation_Regular',
+    color: 'black',
   },
   slider: {
     width: '100%',
   },
   thumbStyle: {
-    width: 16,
-    height: 16,
-    borderRadius: 8,
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    shadowColor: '#AC25AC',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
+
+    elevation: 10,
+  },
+  containerBtn: {
+    alignItems: 'center',
+  },
+  containerBtnText: {
+    fontFamily: 'Sansation_Regular',
+    fontSize: 16,
+    marginBottom: 20,
+    color: '#575757',
   },
 });
 

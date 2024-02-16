@@ -5,6 +5,7 @@ import {
   View,
   FlatList,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import React, {useState} from 'react';
 import {useForm, Controller} from 'react-hook-form';
@@ -24,6 +25,7 @@ const ForthStepScreen = ({habits1, control, errors}: any) => {
         'Socially on weekends',
         'Most Nights',
       ],
+      image: require('../../assets/images/bottleofchampagne.png'),
     },
     {
       id: '2',
@@ -35,11 +37,13 @@ const ForthStepScreen = ({habits1, control, errors}: any) => {
         'Smoker',
         'Trying to quit',
       ],
+      image: require('../../assets/images/smoking.png'),
     },
     {
       id: '3',
       title: 'Do you workout?',
       texts: ['Everyday', 'Often', 'Sometimes', 'Never'],
+      image: require('../../assets/images/Mandumbbells.png'),
     },
     {
       id: '4',
@@ -57,6 +61,7 @@ const ForthStepScreen = ({habits1, control, errors}: any) => {
         'All the pets',
         'Want a pet',
       ],
+      image: require('../../assets/images/dogheart.png'),
     },
     {
       id: '5',
@@ -69,6 +74,7 @@ const ForthStepScreen = ({habits1, control, errors}: any) => {
         'Being Watcher',
         'Music Lover',
       ],
+      image: require('../../assets/images/datestep.png'),
     },
   ];
 
@@ -97,13 +103,13 @@ const ForthStepScreen = ({habits1, control, errors}: any) => {
     errors,
   );
   return (
-    <SafeAreaView>
-      <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.contentContainer}>
         <Text style={styles.headerText}>
           Let's talk lifestyle habits, your name
         </Text>
         <Text style={styles.paragraphText}>
-          Do their habits match yours? you go first.
+          Do their habits match yours? You go first.
         </Text>
         {/* {dataArray.map((item) => (
         <View style={styles.itemContainer} key={item.id}>
@@ -127,7 +133,19 @@ const ForthStepScreen = ({habits1, control, errors}: any) => {
             <>
               {dataArray.map(item => (
                 <View key={item.id} style={styles.boxContainer}>
-                  <Text style={styles.title}>{item.title}</Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      marginBottom: 10,
+                      columnGap: 4,
+                    }}>
+                    <Image
+                      source={item.image}
+                      style={{height: 20, width: 20}}
+                    />
+                    <Text style={styles.title}>{item.title}</Text>
+                  </View>
                   <View style={styles.textsContainer}>
                     {item.texts.map((text, index) => (
                       <TouchableOpacity
@@ -173,63 +191,59 @@ export default ForthStepScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 16,
+    flexGrow: 1,
+  },
+  contentContainer: {
+    flexGrow: 1,
+    paddingHorizontal: 40,
   },
   headerText: {
+    color: 'black',
     fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 8,
-    textAlign: 'center',
+    fontFamily: 'Sansation_Bold',
+    marginBottom: 10,
   },
   paragraphText: {
-    fontSize: 16,
+    fontFamily: 'Sansation_Regular',
+    fontSize: 14,
     marginBottom: 16,
-    textAlign: 'center',
+    color: '#575757',
   },
-  title: {
-    fontSize: 15,
-    fontWeight: 'bold',
-  },
-  itemContainer: {
-    padding: 16,
-    borderBottomColor: '#ccc',
-    //borderWidth: 1,
-    marginBottom: 10,
-    borderRadius: 10,
-    elevation: 1,
-    // Add shadow for iOS
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-  },
-  textsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginTop: 8,
-  },
-  textItem: {
-    fontSize: 16,
-    borderWidth: 1,
-    borderRadius: 20,
-    margin: 5,
-    padding: 8,
-  },
-
   boxContainer: {
-    backgroundColor: '#fff',
-    borderRadius: 20,
-    padding: 20,
-    marginHorizontal: 15,
-    marginBottom: 5,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 4,
+    padding: 8,
+    marginBottom: 20,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 4,
+  },
+  title: {
+    color: 'black',
+    fontSize: 14,
+    fontFamily: 'Sansation_Bold',
+  },
+  textsContainer: {
+    marginLeft: 4,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  textItem: {
+    fontFamily: 'Sansation_Regular',
+    color: '#545454',
+    fontSize: 12,
+    borderColor: '#ABABAB',
+    borderWidth: 1,
+    borderRadius: 14,
+    marginRight: 10,
+    marginBottom: 10,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
   },
 });

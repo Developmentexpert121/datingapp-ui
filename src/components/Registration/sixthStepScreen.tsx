@@ -22,7 +22,7 @@ const SixthStepScreen = ({hobbies, control, errors}: any) => {
               style={[styles.textArea]}
               multiline
               numberOfLines={4}
-              placeholder="Write at least 5 hobbies..."
+              placeholder="Write at least 5 hobbies"
               placeholderTextColor="#A9A9A9"
               value={value}
               onBlur={onBlur}
@@ -37,35 +37,26 @@ const SixthStepScreen = ({hobbies, control, errors}: any) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
+    flexGrow: 1,
+    paddingHorizontal: 40,
   },
   title: {
+    color: 'black',
     fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 8,
-    marginLeft: 10,
+    fontFamily: 'Sansation_Bold',
+    marginBottom: 10,
   },
   paragraph: {
-    fontSize: 16,
+    fontFamily: 'Sansation_Regular',
+    fontSize: 14,
     marginBottom: 16,
-    marginLeft: 10,
+    color: '#575757',
   },
-  textAreaContainer: {
-    //borderWidth: 1,
-    borderRadius: 10,
-    borderColor: '#AC25AC',
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-  },
+
   textArea: {
     fontSize: 16,
     textAlignVertical: 'top',
-    //minHeight:100
-    //paddingLeft: 10,
-    //elevation:2,
-    //borderRadius: 10
+    fontFamily: 'Sansation_Regular',
   },
 
   errorBorder: {
@@ -73,19 +64,19 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   boxContainer: {
-    backgroundColor: '#fff',
-    borderRadius: 20,
-    //padding: 20,
-    marginHorizontal: 15,
-    marginBottom: 5,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    paddingLeft: 4,
+    marginBottom: 20,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 4,
   },
 });
 

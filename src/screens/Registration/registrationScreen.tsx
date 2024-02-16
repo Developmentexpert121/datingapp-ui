@@ -470,22 +470,25 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   return (
     <KeyboardAvoidingView
       behavior="padding"
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
+      style={styles.container}>
       <ScrollView
         nestedScrollEnabled={true}
-        showsVerticalScrollIndicator={false}>
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollViewContent}>
         {steps > 0 && (
           <Pressable style={styles.backPress}>
             <Ionicons
               onPress={() => setSteps(prev => prev - 1)}
               style={styles.backPressIcon}
               name="chevron-back-outline"
-              size={30}
+              size={26}
             />
             <Text style={styles.stepsText}>{steps + '/8'}</Text>
+            <View style={{width: 26}}></View>
           </Pressable>
         )}
-        <View>
+        <View style={{flexGrow: 1}}>
           {steps === 0 ? (
             <ZeroStepScreen
               phone="phone"
@@ -565,22 +568,29 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   maindiv: {
+    width: '100%',
+    height: '100%',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
     backgroundColor: '#F5F5F5',
   },
+  scrollViewContent: {
+    flexGrow: 1,
+  },
   containerBtn: {
-    marginVertical: 10,
-    justifyContent: 'center',
     alignItems: 'center',
+    marginVertical: 10,
   },
 
   button: {
-    width: 200,
-    backgroundColor: '#AC25AC',
+    width: '80%',
+    backgroundColor: '#AA22AA',
     padding: 10,
     borderRadius: 20,
     marginBottom: 20,
@@ -588,27 +598,27 @@ const styles = StyleSheet.create({
 
   buttonText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: 18,
     textAlign: 'center',
     fontFamily: 'Sansation_Bold',
   },
   backPress: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     padding: 16,
     marginTop: 15,
   },
   backPressIcon: {
-    marginRight: 8,
     color: '#AC25AC',
   },
   stepsText: {
     color: 'white',
-    fontSize: 18,
+    fontSize: 16,
     backgroundColor: '#AC25AC',
-    paddingHorizontal: 20,
-    borderRadius: 15,
-    marginLeft: 100,
+    paddingVertical: 2,
+    paddingHorizontal: 16,
+    borderRadius: 28,
     fontFamily: 'Sansation_Regular',
   },
 });

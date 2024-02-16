@@ -20,12 +20,9 @@ const DummyProfileImages = [
   require('../../assets/images/screenImage1.png'),
   require('../../assets/images/screenImage2.png'),
   require('../../assets/images/screenImage1.png'),
+  require('../../assets/images/screenImage1.png'),
   require('../../assets/images/screenImage2.png'),
-  '',
-  '',
-  // require('../../assets/images/screenImage1.png'),
-  // require('../../assets/images/screenImage2.png'),
-  // require('../../assets/images/screenImage1.png'),
+  require('../../assets/images/screenImage1.png'),
 ];
 const SeventhStepScreen = ({
   uploadError,

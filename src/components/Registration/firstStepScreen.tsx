@@ -14,7 +14,13 @@ const FirstStepScreen = ({interests, control, errors}: any) => {
   console.log('errors22222222222222222222 ', errors);
   return (
     <SafeAreaView>
-      <View>
+      <View
+        style={{
+          paddingHorizontal: 40,
+          justifyContent: 'center',
+          alignItems: 'center',
+          flex: 1,
+        }}>
         <Text style={styles.textLabel}>Who are you interested in seeing? </Text>
         {options.map((item: any, index) => (
           <View key={index} style={styles.containerBtn}>
@@ -27,7 +33,7 @@ const FirstStepScreen = ({interests, control, errors}: any) => {
                   style={[
                     value === item.value && styles.checkedBtn,
                     styles.button,
-                    {borderColor: errors ? 'red' : '#AC25AC'},
+                    {borderColor: errors ? 'red' : '#747474'},
                   ]}
                   onPress={() => onChange(item.value)}>
                   <Text style={styles.buttonText}>{item.value}</Text>
@@ -43,31 +49,31 @@ const FirstStepScreen = ({interests, control, errors}: any) => {
 
 const styles = StyleSheet.create({
   textLabel: {
-    marginVertical: 20,
-    textAlign: 'center',
-    fontSize: 20,
+    color: 'black',
+    fontSize: 24,
+    fontFamily: 'Sansation_Bold',
+    marginBottom: 28,
   },
   containerBtn: {
-    flexDirection: 'row',
-    flex: 1,
-    justifyContent: 'center',
+    width: '90%',
     alignItems: 'center',
   },
   button: {
-    width: 250,
+    width: '100%',
     padding: 10,
-    borderRadius: 20,
+    borderRadius: 37,
     marginBottom: 20,
     borderWidth: 1,
-    borderColor: '#AC25AC',
+    borderColor: '#747474',
   },
   checkedBtn: {
     backgroundColor: '#AC25AC',
   },
   buttonText: {
-    color: 'grey',
-    fontSize: 16,
+    color: 'black',
+    fontSize: 18,
     textAlign: 'center',
+    fontFamily: 'Sansation_Bold',
   },
 });
 

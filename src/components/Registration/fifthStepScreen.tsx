@@ -5,6 +5,7 @@ import {
   View,
   FlatList,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import React, {useState} from 'react';
 import {useForm, Controller} from 'react-hook-form';
@@ -24,16 +25,20 @@ const FifthStepScreen = ({habits2, control, errors}: any) => {
         'Bad Texter',
         'Better in person',
       ],
+      image: require('../../assets/images/chat-balloon.png'),
     },
     {
       id: '2',
       title: 'How do you receive love?',
       texts: ['Thoughtful Gestures', 'Touch', 'Compliments', 'Time together'],
+      image: require('../../assets/images/love.png'),
     },
+
     {
       id: '3',
       title: 'What is your education level?',
       texts: ['Bachelors', 'In college', 'High school', 'PHD', 'Masters'],
+      image: require('../../assets/images/abroad.png'),
     },
     {
       id: '4',
@@ -52,6 +57,7 @@ const FifthStepScreen = ({habits2, control, errors}: any) => {
         'Cancer',
         'Sagittarius',
       ],
+      image: require('../../assets/images/moon.png'),
     },
 
     // Add more items as needed
@@ -78,8 +84,8 @@ const FifthStepScreen = ({habits2, control, errors}: any) => {
   };
 
   return (
-    <SafeAreaView>
-      <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.contentContainer}>
         <Text style={styles.headerText}>What else makes you, you?</Text>
         <Text style={styles.paragraphText}>
           Don't hold back Authenticity attracts authenticity.
@@ -107,7 +113,19 @@ const FifthStepScreen = ({habits2, control, errors}: any) => {
             <>
               {dataArray.map(item => (
                 <View key={item.id} style={styles.boxContainer}>
-                  <Text style={styles.title}>{item.title}</Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      marginBottom: 10,
+                      columnGap: 4,
+                    }}>
+                    <Image
+                      source={item.image}
+                      style={{height: 20, width: 20}}
+                    />
+                    <Text style={styles.title}>{item.title}</Text>
+                  </View>
                   <View style={styles.textsContainer}>
                     {item.texts.map((text, index) => (
                       <TouchableOpacity
@@ -153,23 +171,43 @@ export default FifthStepScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 16,
+    flexGrow: 1,
+  },
+  contentContainer: {
+    flexGrow: 1,
+    paddingHorizontal: 40,
   },
   headerText: {
+    color: 'black',
     fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 8,
-    textAlign: 'center',
+    fontFamily: 'Sansation_Bold',
+    marginBottom: 10,
   },
   paragraphText: {
-    fontSize: 16,
+    fontFamily: 'Sansation_Regular',
+    fontSize: 14,
     marginBottom: 16,
-    textAlign: 'center',
+    color: '#575757',
+  },
+  boxContainer: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 4,
+    padding: 8,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 4,
   },
   title: {
-    fontSize: 15,
-    fontWeight: 'bold',
+    color: 'black',
+    fontSize: 14,
+    fontFamily: 'Sansation_Bold',
   },
   itemContainer: {
     padding: 16,
@@ -185,30 +223,20 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
   },
   textsContainer: {
+    marginLeft: 4,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginTop: 8,
   },
   textItem: {
-    fontSize: 16,
+    fontFamily: 'Sansation_Regular',
+    color: '#545454',
+    fontSize: 12,
+    borderColor: '#ABABAB',
     borderWidth: 1,
-    borderRadius: 20,
-    margin: 5,
-    padding: 8,
-  },
-  boxContainer: {
-    backgroundColor: '#fff',
-    borderRadius: 20,
-    padding: 20,
-    marginHorizontal: 15,
-    marginBottom: 5,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    borderRadius: 14,
+    marginRight: 10,
+    marginBottom: 10,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
   },
 });
