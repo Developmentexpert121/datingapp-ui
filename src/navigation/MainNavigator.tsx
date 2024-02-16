@@ -3,7 +3,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {enableScreens} from 'react-native-screens';
 import HomeScreen from '../screens/Home/homeScreen';
-import ChatScreen from '../components/Chat/chatSection';
+import ChatSection from '../components/Chat/chatSection';
 import {RootStackParamList} from '../types';
 import LikedScreen from '../components/Dashboard/liked/liked';
 import NotificationScreen from '../components/Dashboard/Notification/notification';
@@ -26,7 +26,7 @@ const MainNavigator = () => (
     <Stack.Screen name="Profile" component={ProfileScreen} />
     <Stack.Screen name="Settings" component={SettingsScreen} />
     <Stack.Screen name="UpdateProfile" component={UpdateProfileScreen} />
-    <Stack.Screen name="Chat" component={ChatScreen} />
+    <Stack.Screen name="ChatScreen" component={ChatSection} />
     <Stack.Screen name="ChatPage" component={ChatPage} />
   </Stack.Navigator>
 );

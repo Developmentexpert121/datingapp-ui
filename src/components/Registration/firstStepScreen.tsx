@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 
-const FirstStepScreen = ({gender, control, errors}: any) => {
+const FirstStepScreen = ({interests, control, errors}: any) => {
   const options = [{value: 'Women'}, {value: 'Men'}, {value: 'Everyone'}];
   const [checked, setChecked] = useState('');
   console.log('errors22222222222222222222 ', errors);
@@ -19,7 +19,7 @@ const FirstStepScreen = ({gender, control, errors}: any) => {
         {options.map((item: any, index) => (
           <View key={index} style={styles.containerBtn}>
             <Controller
-              name={gender}
+              name={interests}
               control={control}
               defaultValue=""
               render={({field: {onChange, value}}) => (

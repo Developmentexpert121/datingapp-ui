@@ -6,7 +6,7 @@ import CommonBackbutton from '../commonBackbutton/backButton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import FooterComponent from '../Dashboard/footer/footer';
-const ChatScreen = () => {
+const ChatSection = () => {
   const [search, setSearch] = useState<any>('');
   const navigation = useNavigation();
   const data = [
@@ -105,7 +105,7 @@ const ChatScreen = () => {
           )}
         />
       </View>
-      <FooterComponent icon="CHAT" />
+      <FooterComponent />
     </View>
   );
 };
@@ -160,4 +160,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChatScreen;
+export default ChatSection;

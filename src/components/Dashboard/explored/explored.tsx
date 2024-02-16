@@ -93,7 +93,7 @@ const ExploredScreen = () => {
           numColumns={2}
         />
       </View>
-      <FooterComponent icon="EXPLORED" />
+      <FooterComponent />
     </View>
   );
 };

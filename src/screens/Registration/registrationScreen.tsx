@@ -260,42 +260,48 @@ interface RegisterForm {
   name: string;
   phone: string;
   email: string;
-  option: string;
   country: string;
   city: string;
   gender: string;
+  interests: string;
   partnerType: string;
   habits1: Array<{id: string; selectedText: string}>;
   habits2: Array<{id: string; selectedText: string}>;
   hobbies: string;
   password: string;
   confirmPassword: string;
+  distance: string;
+  location: string;
+  profilePic: string;
+  dob: string;
 }
 
 const defaultValues = {
   name: '',
   phone: '',
   email: '',
-  option: '',
   country: '',
   city: '',
   gender: '',
+  interests: '',
   partnerType: '',
   habits1: [],
   habits2: [],
   hobbies: '',
   password: '',
-  confirmPassword: '',
+  distance: '',
+  location: '',
+  profilePic: '',
+  dob: '',
 };
 
 const schema = yup.object().shape({
   name: yup.string().trim().required('Name is required'),
   phone: yup.string().trim().required('Name is required'),
   email: yup.string().email('Invalid email').required('Email is required'),
-  option: yup.string().required('Please select an option'),
   country: yup.string().trim().required('Country is required'),
   city: yup.string().trim().required('City is required'),
-
+  gender: yup.string().trim().required('Gender is required'),
   password: yup
     .string()
     .min(6, 'Password must be at least 6 characters')
@@ -307,7 +313,7 @@ const schema = yup.object().shape({
 });
 
 const schema1 = yup.object().shape({
-  gender: yup.string().trim().required('Gender is required'),
+  interests: yup.string().trim().required('interests is required'),
 });
 const schema2 = yup.object().shape({
   partnerType: yup.string().required('Choose one term'),
@@ -341,10 +347,10 @@ const schema6 = yup.object().shape({
 });
 
 const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
-  const [steps, setSteps] = React.useState(0);
+  const [steps, setSteps] = React.useState(7);
   const [dateStr, setDateStr] = useState<any>(null);
   const [location, setLocation] = useState<any>(null);
-  const [distance, setDistance] = useState(20);
+  const [distance, setDistance] = useState<any>(20);
   const [error, setError] = useState<any>(null);
   const [uploadError, setUploadError] = useState<boolean>(false);
   const [selectedImage, setSelectedImage] = useState<any>(null);
@@ -425,6 +431,10 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   //
   const onSubmit: any = (data: RegisterForm) => {
     // Handle form submission here
+    data.location = location;
+    data.distance = distance;
+    data.profilePic = selectedImage;
+    data.dob = `${dateStr}`;
     console.log('dataaaaaaaaaaaaaaaaa register ', data);
     if (steps === 7) {
       if (selectedImage === null) {
@@ -432,13 +442,12 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
       } else {
         setSteps(prev => prev + 1);
       }
-    } else {
-      if (steps === 8) {
-        showPermissionPopup();
-        // Geolocation.requestAuthorization();
-        // getLocation();
-      }
-      //setSteps(prev => prev + 1);
+    } else if (steps === 8) {
+      showPermissionPopup();
+      // Geolocation.requestAuthorization();
+      // getLocation();
+    } else if (steps < 8) {
+      setSteps(prev => prev + 1);
     }
     // dispatch(RegisterSignUp(data));
     // reset();

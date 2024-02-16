@@ -69,9 +69,9 @@ const App = () => {
       ) : (
         <NavigationContainer>
           {isAuthenticated && authToken() ? (
-            <AuthNavigator />
-          ) : (
             <MainNavigator />
+          ) : (
+            <AuthNavigator />
           )}
         </NavigationContainer>
       )}

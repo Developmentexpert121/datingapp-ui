@@ -47,7 +47,7 @@ const ZeroStepScreen = ({
   errors,
   email,
   password,
-  option,
+  gender,
   country,
   city,
   dateStr,
@@ -155,7 +155,7 @@ const ZeroStepScreen = ({
         {options.map(item => (
           <View key={item.value} style={styles.radio}>
             <Controller
-              name={option}
+              name={gender}
               control={control}
               defaultValue=""
               render={({field: {onChange, value}}) => (
@@ -170,14 +170,14 @@ const ZeroStepScreen = ({
                   <Text
                     style={[
                       styles.radioLabel,
-                      {color: errors?.[option] ? 'red' : 'black'},
+                      {color: errors?.[gender] ? 'red' : 'black'},
                     ]}>
                     {item.label}
                   </Text>
                   <RadioButton
-                    value={item.value}
-                    status={value === item.value ? 'checked' : 'unchecked'}
-                    onPress={() => onChange(item.value)}
+                    value={item.label}
+                    status={value === item.label ? 'checked' : 'unchecked'}
+                    onPress={() => onChange(item.label)}
                   />
                 </View>
               )}

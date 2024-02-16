@@ -18,26 +18,33 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome2 from 'react-native-vector-icons/FontAwesome';
+import {useAppDispatch, useAppSelector} from '../../../store/store';
+import {footerStatus} from '../../../store/Activity/activity';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-
-const FooterComponent = ({icon}: {icon: string}) => {
-  const [activeScreen, setActiveScreen] = useState('');
+const FooterComponent = () => {
+  //const [activeScreen, setActiveScreen] = useState('HOME');
+  const dispatch: any = useAppDispatch();
+  const activeScreen = useAppSelector(
+    (state: any) => state.ActivityLoader.footerStatus,
+  );
+  console.log('activeScreennactiveScreennactiveScreenn ', activeScreen);
   const navigation = useNavigation();
-  const color = 'grey';
-  useEffect(() => {
-    setActiveScreen(icon);
-  }, [icon]);
-  const activeColor = '#AC25AC';
-  const handleView = (route: any) => {
+  const color = '#b5b5b5';
+  // const color = "#BB2CBB"
+  //   const activeColor = '#F76C6B';
+  const activeColor = '#BB2CBB';
+  const handleView = (route: any, icon: any) => {
+    //setActiveScreen(icon);
+    dispatch(footerStatus({footerStatus: icon}));
     navigation.navigate(route);
   };
-  console.log(activeScreen);
+
   return (
     <SafeAreaView style={styles.root}>
       <View style={styles.horizontalLine}></View>
       <View style={styles.pageContainer}>
         <View style={styles.topNavigation}>
-          <Pressable onPress={() => handleView('Home')}>
+          <Pressable onPress={() => handleView('Home', 'HOME')}>
             <FontAwesome6
               name="fire"
               size={34}
@@ -53,7 +60,7 @@ const FooterComponent = ({icon}: {icon: string}) => {
           />
           </Pressable> */}
 
-          <Pressable onPress={() => handleView('Explore')}>
+          <Pressable onPress={() => handleView('Explore', 'EXPLORED')}>
             <Feather
               name="refresh-ccw"
               size={34}
@@ -61,14 +68,14 @@ const FooterComponent = ({icon}: {icon: string}) => {
             />
           </Pressable>
 
-          <Pressable onPress={() => handleView('Liked')}>
+          <Pressable onPress={() => handleView('Liked', 'LIKED')}>
             <AntDesign
               name="heart"
               size={34}
               color={activeScreen === 'LIKED' ? activeColor : color}
             />
           </Pressable>
-          <Pressable onPress={() => handleView('Chat')}>
+          <Pressable onPress={() => handleView('ChatScreen', 'CHAT')}>
             <Ionicons
               name="chatbubbles"
               size={34}
@@ -76,7 +83,7 @@ const FooterComponent = ({icon}: {icon: string}) => {
             />
           </Pressable>
 
-          <Pressable onPress={() => handleView('Profile')}>
+          <Pressable onPress={() => handleView('Profile', 'PROFILE')}>
             <FontAwesome
               name="user"
               size={34}
@@ -91,7 +98,14 @@ const FooterComponent = ({icon}: {icon: string}) => {
 
 const styles = StyleSheet.create({
   root: {
-    //flex: 1,
+    // backgroundColor: '#f0f0f0',
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    // height: 50, // Adjust the height as needed
+    // position: 'absolute',
+    // left: 0,
+    // right: 0,
+    // bottom: 0,
   },
   pageContainer: {
     //  justifyContent: 'center',

@@ -104,7 +104,7 @@ const LikedScreen = () => {
           numColumns={2}
         />
       </View>
-      <FooterComponent icon="LIKED" />
+      <FooterComponent />
     </View>
   );
 };

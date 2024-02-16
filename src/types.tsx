@@ -12,7 +12,7 @@ export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
   Profile: undefined;
-  Chat: undefined;
+  ChatScreen: undefined;
   Liked: undefined;
   Notification: undefined,
   Filter: undefined,
