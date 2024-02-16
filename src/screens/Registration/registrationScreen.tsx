@@ -488,7 +488,6 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
         <View>
           {steps === 0 ? (
             <ZeroStepScreen
-              option="option"
               phone="phone"
               name="name"
               email="email"
@@ -503,9 +502,9 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
             />
           ) : steps === 1 ? (
             <FirstStepScreen
-              gender="gender"
+              interests="interests"
               control={control}
-              errors={Boolean(errors?.gender)}
+              errors={Boolean(errors?.interests)}
             />
           ) : steps === 2 ? (
             <SecondStepScreen
