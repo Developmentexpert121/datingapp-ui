@@ -536,12 +536,20 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
               errors={Boolean(errors?.hobbies)}
             />
           ) : steps === 7 ? (
-            <SeventhStepScreen
-              uploadError={uploadError}
-              setUploadError={setUploadError}
-              selectedImage={selectedImage}
-              setSelectedImage={setSelectedImage}
-            />
+            <SafeAreaView style={styles.container}>
+              <View style={styles.contentContainer}>
+                <Text style={styles.headerText}>Add photos</Text>
+                <Text style={styles.paragraphText}>
+                  Pick Some photos for your profile
+                </Text>
+                <SeventhStepScreen
+                  uploadError={uploadError}
+                  setUploadError={setUploadError}
+                  selectedImage={selectedImage}
+                  setSelectedImage={setSelectedImage}
+                />
+              </View>
+            </SafeAreaView>
           ) : steps === 8 ? (
             <EighthStepScreen />
           ) : (
@@ -570,6 +578,23 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  contentContainer: {
+    paddingHorizontal: 20,
+  },
+  headerText: {
+    color: 'black',
+    fontSize: 24,
+    fontFamily: 'Sansation_Bold',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  paragraphText: {
+    fontFamily: 'Sansation_Regular',
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 20,
+    color: 'black',
   },
   maindiv: {
     width: '100%',
