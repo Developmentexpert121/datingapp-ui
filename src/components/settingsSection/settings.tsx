@@ -16,6 +16,10 @@ import Rail from "./Rail";
 import RailSelected from "./RailSelected";
 import Thumb from "./Thumb";
 import AppTextInput from '../AppTextInput/AppTextInput';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+import { useAppDispatch, useAppSelector } from '../../store/store';
+import { updateAuthentication } from '../../store/Auth/auth';
 interface UpdateForm {
     name: string;
     email: string;
@@ -160,9 +164,10 @@ interface UpdateForm {
       );
     };
 const SettingsSection = () => {
-const[distance, setDistance] = useState(10);
-const [title, setTitle] = useState<string>('');
-const [value, setValue] = useState<string>('');
+  const profileData:any = useAppSelector((state:any)=>state?.Auth?.data?.profileData);
+  const[distance, setDistance] = useState(parseInt(profileData?.distance) || 0);
+  const [title, setTitle] = useState<string>('');
+ const [values, setValues] = useState<string>('');
 
     const handleSliderChange = (value:any) => {
         setDistance(value);
@@ -186,7 +191,7 @@ const options = [
       });
 
 
-      const [minValue, setMinValue] = useState(1);
+  const [minValue, setMinValue] = useState(1);
   const [maxValue, setMaxValue] = useState(50);
 
 //   const handleSliderChange = (value:any) => {
@@ -223,9 +228,12 @@ const options = [
     [setLow, setHigh]
   );
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const dataArr = [{title:'Phone Number', name:'+918765432109'}, {title:'Email Address', name:'example@gmail.com'},
-  {title:'Location', name:'450000, bcbvnds, 87099'},{title:'Show Me', name:'women'},
-                 {title:'Language I Know', name:'English'}];
+
+  const dataArr = [{title:'Phone Number', name:profileData?.phone}, 
+  {title:'Email Address', name:profileData?.email},
+  {title:'Location', name:profileData?.location?.longitude + ' ' + profileData?.location?.latitude},
+  {title:'Show Me', name:profileData?.interests},
+  {title:'Language I Know', name:'English'}];
 const openDrawer = () => {
   setIsDrawerOpen(true);
 };
@@ -236,9 +244,22 @@ const closeDrawer = () => {
 
   const handleModal = (item:any) => {
     setTitle(item?.title);
-    setValue(item?.name);
+    setValues(item?.name);
     setIsDrawerOpen(true);
 }
+const navigation:any = useNavigation();
+const dispatch:any = useAppDispatch();
+const logoutUser = async() => {
+  await AsyncStorage.removeItem('authToken');
+  dispatch(updateAuthentication());
+ // navigation.navigate("Login");
+}
+
+// useEffect(() => {
+//   if (profileData) {
+//     setValue('gender', profileData?.gender); // Assuming 'gender' is the field name
+//   }
+// }, [profileData]);
 
   return (
     <ScrollView>
@@ -314,7 +335,7 @@ const closeDrawer = () => {
             <Controller
               name={'gender'}
               control={control}
-              defaultValue=""
+              defaultValue={profileData?.gender}
               render={({field: {onChange, value}}) => (
                 <View style={{flex:1,flexDirection: 'row', justifyContent:'space-between'}}>
                   <Text
@@ -338,12 +359,12 @@ const closeDrawer = () => {
       </View>
 
       <View style={styles.boxContainer}>
-       <Text style={[styles.textName, {color:'#BB2CBB'}]}>Log Out</Text>
+       <Text style={[styles.textName, {color:'#BB2CBB'}]} onPress={logoutUser}>Log Out</Text>
       </View>
       <View style={styles.boxContainer}>
        <Text style={[styles.textName, {color:'#BB2CBB'}]}>Delete Account</Text>
       </View>
-      <BottomDrawer isOpen={isDrawerOpen} onClose={closeDrawer} title={title} value={value} />
+      <BottomDrawer isOpen={isDrawerOpen} onClose={closeDrawer} title={title} value={values} />
     </ScrollView>
   )
 }

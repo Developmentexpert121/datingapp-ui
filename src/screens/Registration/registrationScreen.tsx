@@ -239,7 +239,7 @@ import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import AppTextInput from '../../components/AppTextInput/AppTextInput';
 import {useAppDispatch} from '../../store/store';
-import {RegisterSignUp} from '../../store/Auth/auth';
+import {RegisterSignUp, UploadImage} from '../../store/Auth/auth';
 import {RadioButton} from 'react-native-paper';
 // import ZeroStepScreen from '../Registration/zeroStepScreen';
 import ZeroStepScreen from '../../components/Registration/zeroStepScreen';
@@ -340,13 +340,14 @@ const schema6 = yup.object().shape({
 });
 
 const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
-  const [steps, setSteps] = React.useState(7);
+  const [steps, setSteps] = React.useState(0);
   const [dateStr, setDateStr] = useState<any>(null);
   const [location, setLocation] = useState<any>(null);
   const [distance, setDistance] = useState<any>(20);
   const [error, setError] = useState<any>(null);
   const [uploadError, setUploadError] = useState<boolean>(false);
   const [selectedImage, setSelectedImage] = useState<any>(null);
+  const [profileImage, setProfileImage] = useState<any>(null);
   const [permissionStatus, setPermissionStatus] = useState<any>(null);
 
   const dispatch: any = useAppDispatch();
@@ -375,92 +376,78 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     defaultValues,
     resolver: Schemas(steps),
   });
-console.log("errors register =========== ", errors);
-const getLocation = () => {
-  Geolocation.getCurrentPosition(
-    position => {
-      const { latitude, longitude } = position.coords;
-      setLocation({ latitude, longitude });
-      setPermissionStatus('granted');
-    },
-    err => (setError(err.message),
-    setPermissionStatus('denied'),
-    { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 })
-  );
-};
+  console.log("errors register =========== ", errors);
 
-//
-
-  const requestLocationPermission = () => {
+  const getLocationAndRegister = (data: RegisterForm) => {
+    Geolocation.getCurrentPosition(
+      position => {
+        const { latitude, longitude } = position.coords;
+        setLocation({ latitude, longitude });
+        setPermissionStatus('granted');
+  
+        // Call registration API here
+        dispatch(RegisterSignUp({
+          ...data,
+          location: { latitude, longitude },
+          distance: `${distance}mi`,
+          profilePic: profileImage,
+          dob: `${dateStr}`
+        }));
+        reset();
+        navigate('Login');
+      },
+      err => {
+        setError(err.message);
+        setPermissionStatus('denied');
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+    );
+  };
+  
+  const requestLocationPermission = (data:RegisterForm) => {
     Geolocation.requestAuthorization();
-    getLocation();
-    // setTimeout(()=>(Geolocation.getCurrentPosition(
-    //   position => {
-    //     console.log('position===================', position.coords);
-    //     setPermissionStatus('granted');
-    //   },
-    //   error => {
-    //     console.log('denied error ==========', error);
-    //     setPermissionStatus('denied');
-    //   }
-    // )), 4000);
+    getLocationAndRegister(data);
   };
 
-  const showPermissionPopup = () => {
+  const showPermissionPopup = (data:RegisterForm) => {
     Alert.alert(
       'Location Permission',
       'This app needs access to your location to provide the service.',
       [
         {
           text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
+          onPress: () => {
+            setPermissionStatus('denied');
+            dispatch(RegisterSignUp({
+              ...data,
+              distance: `${distance}mi`,
+              profilePic: profileImage,
+              dob: `${dateStr}`
+            }));
+            reset();
+            navigate('Login');
+          },
           style: 'cancel',
         },
-        { text: 'Allow', onPress: () => requestLocationPermission() },
+        { text: 'Allow', onPress: () => requestLocationPermission(data) },
       ]
     );
   };
-//
+  
   const onSubmit: any = (data: RegisterForm) => {
-    // Handle form submission here
-    data.location=location;
-    data.distance=distance;
-    data.profilePic=selectedImage; 
-    data.dob = `${dateStr}`;
-    console.log("dataaaaaaaaaaaaaaaaa register ", data);
     if(steps===7){
-       if(selectedImage===null){
+       if(selectedImage===null || profileImage==null){
         setUploadError(true);
        }else{
        setSteps(prev => prev + 1);
        }
     }else if(steps===8){
-        showPermissionPopup();
-       // Geolocation.requestAuthorization();
-       // getLocation();
+        showPermissionPopup(data);
       }else if(steps<8){
       setSteps(prev => prev + 1);
       }
-   // dispatch(RegisterSignUp(data));
-   // reset();
-   // navigate('Login');
   };
-  console.log('location ', location);
-  console.log('errors ', errors);
-  console.log('errrrrrrrrrrrrrrrrrrrrrrrrr ', error);
-  console.log('permissionStatus ', permissionStatus);
 
- 
-
-  const forwardStep = (step:number) =>{
-    if(step===8){
-      Geolocation.requestAuthorization();
-      getLocation();
-      navigate("Home");
-    }else{
-      setSteps(prev => prev + 1)
-    }
-  }
   return (
     <KeyboardAvoidingView behavior='padding'keyboardVerticalOffset={Platform.OS==="ios"?100:0}>
     <ScrollView nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
@@ -530,7 +517,10 @@ const getLocation = () => {
           uploadError={uploadError}
           setUploadError={setUploadError}
           selectedImage={selectedImage}
-          setSelectedImage={setSelectedImage} />
+          setSelectedImage={setSelectedImage}
+          profileImage={profileImage}
+          setProfileImage={setProfileImage}
+           />
         ) : steps === 8 ? (
           <EighthStepScreen />
         ) : (

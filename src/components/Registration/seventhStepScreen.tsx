@@ -5,22 +5,20 @@ import  {launchImageLibrary} from 'react-native-image-picker';
 import { request, PERMISSIONS } from 'react-native-permissions';
 import axios from 'axios';
 import http from '../../services/http/http-common';
-// import screenImage1 from '../../assets/images/screenImage1.png';
+import { useAppDispatch } from '../../store/store';
+import { UploadImage } from '../../store/Auth/auth';
 const DummyProfileImages = [
-    require('../../assets/images/screenImage1.png'),
-    require('../../assets/images/screenImage2.png'),
-    require('../../assets/images/screenImage1.png'),
-    require('../../assets/images/screenImage2.png'),
-    require('../../assets/images/screenImage1.png'),
-    require('../../assets/images/screenImage2.png'),
-    // require('../../assets/images/screenImage1.png'),
-    // require('../../assets/images/screenImage2.png'),
-    // require('../../assets/images/screenImage1.png'),
+  { uri: require('../../assets/images/screenImage1.png'), id: 'image1' },
+  { uri: require('../../assets/images/screenImage2.png'), id: 'image2' },
+  { uri: require('../../assets/images/screenImage1.png'), id: 'image3' },
+  { uri: require('../../assets/images/screenImage2.png'), id: 'image4' },
+  { uri: require('../../assets/images/screenImage1.png'), id: 'image5' },
+  { uri: require('../../assets/images/screenImage2.png'), id: 'image6' },
   ];
-const SeventhStepScreen = ({uploadError, setUploadError, selectedImage, setSelectedImage, title}:any) => {
-  const [uploadferImage, setUploadedImage] = useState<any>();
+const SeventhStepScreen = ({uploadError, setUploadError, selectedImage, setSelectedImage, title, profileImage, setProfileImage}:any) => {
+  const [uploadedImage, setUploadedImage] = useState<any>(null);
   const [doc, setDoc] = useState<any>(null);
-
+  const dispatch:any = useAppDispatch();
   console.log('selectedImageselectedImage          ', selectedImage);
   const requestPermissions = async () => {
     if (Platform.OS === 'android') {
@@ -33,7 +31,6 @@ const SeventhStepScreen = ({uploadError, setUploadError, selectedImage, setSelec
   useEffect(() => {
     requestPermissions();
   }, []);
-
   const requestAndroidPermissions = async () => {
     try {
       const granted = await PermissionsAndroid.requestMultiple([
@@ -100,101 +97,38 @@ const SeventhStepScreen = ({uploadError, setUploadError, selectedImage, setSelec
     });
   };
 
-  // const openImagePicker = () => {
-  //   const options = {
-  //     title: 'Select Image',
-  //     storageOptions: {
-  //       skipBackup: true,
-  //       path: 'images',
-  //     },
-  //   };
-
-  //   ImagePicker?.showImagePicker(options, (response:any) => {
-  //     if (response.didCancel) {
-  //       console.log('User cancelled image picker');
-  //     } else if (response.error) {
-  //       console.log('ImagePicker Error: ', response.error);
-  //     } else {
-  //       const source:any = { uri: response.uri };
-  //       setSelectedImage(source);
-  //     }
-  //   });
-  // };
-
-  const handleSelectImage2 = async() => {
-    // Handle the selection logic based on the selectedImage state
-    if (selectedImage) {
-      console.log('Image selected:', selectedImage);
-      // Handle the case where an image is selected
-      // You can upload the selected image here
-      //const file = selectedImage?.uri ?? selectedImage;
-      const formData = new FormData();
-      //formData.append('file', screenImage1);
-    // formData.append('file', {
-    //   uri: selectedImage,
-    //   type: 'image/jpeg', // Change the type if necessary
-    //   name: 'image.jpg', // Change the name if necessary
-    // });
-console.log('ddddddddddddddddddddddddd');
-    const response = await axios.post('http://localhost:8000/api/user/upload-pic', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-      console.log('response        ', response);
-    } else {
-      // Handle the case where no image is selected
-      console.log('No image selected');
-    }
-  };
-
-  const handleSelectImage3 = async () => {
-    const formData:any = new FormData();
-    console.log('selectImage ============ ', doc);
-    console.log('doc.uri ', doc?.[0]?.uri);
-    console.log('doc.fileName ', doc?.[0]?.fileName);
-    console.log('doc.type ', doc?.[0]?.type);
-    const decodedFileUri = decodeURIComponent(doc.uri);
-    const decodedFileName = decodeURIComponent(doc.fileName);
-    //formData.append('file', selectedImage?.uri);
-    //Platform.OS === 'ios' ? doc.uri.replace('file://', '') :
-    formData.append('file', {
-      name: doc?.[0]?.fileName,
-      type: doc?.[0]?.type,
-      uri:  doc?.[0]?.uri,
-    });
-    console.log('formDataformDataformData', formData);
-    try {
-      const response = await http.post('/user/upload-pic',formData);
-      console.log('Upload response:', response);
-    } catch (error) {
-      console.error('Error uploading file:', error);
-    }
-  };
-
   const handleSelectImage = async () => {
+    setUploadError(false);
     try {
       const formData:any = new FormData();
-      formData.append('file', {
-        name: doc?.[0]?.fileName,
-        type: doc?.[0]?.type,
-        uri: doc?.[0]?.uri,
-      });
+      if(doc===null){
+        console.log("docccccccccccc ", doc);
+        formData.append('file', {
+          name: 'screenImage2.png',
+          fileName: 'screenImage2.png',
+          type: 'image/png',
+          uri: Image.resolveAssetSource(selectedImage).uri
+        });
+        console.log("formdata", formData._parts);
+        dispatch(UploadImage(formData)).unwrap().then((res:any)=>{
+          console.log("res+++++++++", res);
+          setProfileImage(res.imageUrl);
+        })
+      }else{
+        formData.append('file', {
+          name: doc?.[0]?.fileName,
+          fileName: doc?.[0]?.fileName,
+          type: doc?.[0]?.type,
+          uri: doc?.[0]?.uri,
+        });
   
-      console.log('formData:', formData);
-  
-      const response = await http.post('/user/upload-pic', formData,{
-        headers: {
-        Accept: 'application/json',
-        'Content-Type': 'multipart/form-data',
-      }}
-      );
-      console.log('Upload response:', response.data);
-      
-      // Handle success (if needed)
+        dispatch(UploadImage(formData)).unwrap().then((res:any)=>{
+          console.log("res+++++++++", res);
+          setProfileImage(res.imageUrl);
+        })
+      }
     } catch (error) {
       console.error('Error uploading file:', error);
-      // Handle error (if needed)
     }
   };
   return (<View style={styles.container}>
@@ -203,11 +137,10 @@ console.log('ddddddddddddddddddddddddd');
       <Image source={selectedImage} style={styles.selectedImage} />
     ) :
     (
-     
       <View style={styles.containerdm}>
       {DummyProfileImages.map((item, index) => (
-        <TouchableOpacity onPress={() => (setSelectedImage(item), setUploadError(false))} style={styles.imageContainerdm} key={index}>
-          <Image source={item} style={styles.dummyImagedm} />
+        <TouchableOpacity onPress={() => (setSelectedImage(item.uri), setUploadError(false), console.log('item ', item))} style={styles.imageContainerdm} key={index}>
+          <Image source={item.uri} style={styles.dummyImagedm} />
         </TouchableOpacity>
       ))}
     </View>
