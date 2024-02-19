@@ -24,7 +24,12 @@ import Rail from './Rail';
 import RailSelected from './RailSelected';
 import Thumb from './Thumb';
 import AppTextInput from '../AppTextInput/AppTextInput';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
+import {useAppDispatch, useAppSelector} from '../../store/store';
+import {updateAuthentication} from '../../store/Auth/auth';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
 interface UpdateForm {
   name: string;
   email: string;
@@ -172,9 +177,14 @@ const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
   );
 };
 const SettingsSection = () => {
-  const [distance, setDistance] = useState(10);
+  const profileData: any = useAppSelector(
+    (state: any) => state?.Auth?.data?.profileData,
+  );
+  const [distance, setDistance] = useState(
+    parseInt(profileData?.distance) || 0,
+  );
   const [title, setTitle] = useState<string>('');
-  const [value, setValue] = useState<string>('');
+  const [values, setValues] = useState<string>('');
 
   const handleSliderChange = (value: any) => {
     setDistance(value);
@@ -235,11 +245,18 @@ const SettingsSection = () => {
     [setLow, setHigh],
   );
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
   const dataArr = [
-    {title: 'Phone Number', name: '+918765432109'},
-    {title: 'Email Address', name: 'example@gmail.com'},
-    {title: 'Location', name: '450000, bcbvnds, 87099'},
-    {title: 'Show Me', name: 'Women'},
+    {title: 'Phone Number', name: profileData?.phone},
+    {title: 'Email Address', name: profileData?.email},
+    {
+      title: 'Location',
+      name:
+        profileData?.location?.longitude +
+        ' ' +
+        profileData?.location?.latitude,
+    },
+    {title: 'Show Me', name: profileData?.interests},
     {title: 'Language I Know', name: 'English'},
   ];
   const openDrawer = () => {
@@ -252,9 +269,22 @@ const SettingsSection = () => {
 
   const handleModal = (item: any) => {
     setTitle(item?.title);
-    setValue(item?.name);
+    setValues(item?.name);
     setIsDrawerOpen(true);
   };
+  const navigation: any = useNavigation();
+  const dispatch: any = useAppDispatch();
+  const logoutUser = async () => {
+    await AsyncStorage.removeItem('authToken');
+    dispatch(updateAuthentication());
+    // navigation.navigate("Login");
+  };
+
+  // useEffect(() => {
+  //   if (profileData) {
+  //     setValue('gender', profileData?.gender); // Assuming 'gender' is the field name
+  //   }
+  // }, [profileData]);
 
   return (
     <ScrollView>
@@ -379,7 +409,11 @@ const SettingsSection = () => {
       </View>
 
       <View style={styles.boxContainer}>
-        <Text style={[styles.textName, {color: '#AC25AC'}]}>Log Out</Text>
+        <Text
+          style={[styles.textName, {color: '#AC25AC'}]}
+          onPress={logoutUser}>
+          Log Out
+        </Text>
       </View>
       <View style={styles.boxContainer}>
         <Text style={[styles.textName, {color: '#AC25AC'}]}>
@@ -390,7 +424,7 @@ const SettingsSection = () => {
         isOpen={isDrawerOpen}
         onClose={closeDrawer}
         title={title}
-        value={value}
+        value={values}
       />
     </ScrollView>
   );

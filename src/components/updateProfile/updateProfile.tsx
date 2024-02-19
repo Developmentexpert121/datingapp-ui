@@ -16,6 +16,7 @@ import AppTextInput from '../AppTextInput/AppTextInput';
 import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import {useAppSelector} from '../../store/store';
 interface UpdateForm {
   work: string;
   education: string;
@@ -42,6 +43,10 @@ const schema = yup.object().shape({
 const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
   console.log('titletitletitletitletitle ', title);
   console.log('value value value value ', value);
+  const profileData = useAppSelector(
+    (state: any) => state?.Auth?.data?.profileData,
+  );
+  console.log('value value value1111111 ', profileData);
   const Data = [
     {id: 1, text: 'Lodo'},
     {id: 2, text: 'Cricket'},
@@ -196,15 +201,18 @@ const UpdateProfile = () => {
   const [title, setTitle] = useState<string>('');
   const [value, setValue] = useState<string>('');
   const [uploadError, setUploadError] = useState<boolean>(false);
-  const [selectedImage, setSelectedImage] = useState<any>('');
+  const [selectedImage, setSelectedImage] = useState<any>(null);
+  const profileData = useAppSelector(
+    (state: any) => state?.Auth?.data?.profileData,
+  );
   const handleSliderChange = (value: any) => {
     setHeight(value);
   };
   const dataArr = [
     {title: 'Work', name: 'Graphic designer'},
     {title: 'Education', name: 'Lorem University'},
-    {title: 'Interests', name: 'Photography, Swimming, Travel,d,d,d'},
-    {title: 'Relationship Goals', name: 'Long-term open to short'},
+    {title: 'Interests', name: profileData?.interests},
+    {title: 'Relationship Goals', name: profileData?.partnerType},
     {title: 'Language I Know', name: 'English'},
   ];
 

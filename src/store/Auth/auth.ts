@@ -14,6 +14,7 @@ interface authData {
 export const ProfileData = createAsyncThunk('auth/ProfileData', async (id:any, {dispatch}: any) => {
   try {
       const response:any = await http.get(`/user/profile?id=${id}`);
+      console.log("response received profile ", response.data);
       if (response.status === 200) {
         return response.data;
       }
@@ -29,11 +30,12 @@ export const LoginSignIn = createAsyncThunk('auth/LoginSignIn',async (data: any,
     try {
       dispatch(activityLoaderStarted());
       const response: any = await http.post('/user/signin', data);
-      console.log("reponse ", response.config);
+      console.log("reponse ============", response.config);
       console.log('data ', response.data);
       if (response.status === 200) {
         console.log('dataaaaaaaaa response login ', response.data?._id);
         await AsyncStorage.setItem('authToken', JSON.stringify(response?.data?.token));
+        await AsyncStorage.setItem('userId', JSON.stringify(response?.data?._id));
         await dispatch(ProfileData(response?.data?._id));
         return response.data;
       }
@@ -50,12 +52,12 @@ export const LoginSignIn = createAsyncThunk('auth/LoginSignIn',async (data: any,
   },
 );
 
-export const RegisterSignUp = createAsyncThunk('auth/RegisterSignUp', async (data: authData, {dispatch}: any) => {
+export const RegisterSignUp = createAsyncThunk('auth/RegisterSignUp', async (data: any, {dispatch}: any) => {
     try {
-      dispatch(activityLoaderStarted());
+     // dispatch(activityLoaderStarted());
       const response = await http.post('/user/signup', data);
       if (response.status === 200) {
-        console.log("response ", response.data);
+        console.log("response register", response.data);
         return response.data;
       }
     } catch (error: any) {
@@ -65,9 +67,32 @@ export const RegisterSignUp = createAsyncThunk('auth/RegisterSignUp', async (dat
         throw error;
       }
     } finally {
-      dispatch(activityLoaderFinished());
+     // dispatch(activityLoaderFinished());
     }
   },
+);
+
+export const UploadImage = createAsyncThunk('auth/UploadImage', async (formData:any, {dispatch}: any) => {
+  try {
+  //  dispatch(activityLoaderStarted());
+    const response = await http.post('/user/upload-pic', formData,{
+      headers: {
+      Accept: 'application/json',
+      'Content-Type': 'multipart/form-data',
+    }});
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error: any) {
+    if (error.response && error.response.status === 400) {
+      return {error: 'Bad Request'};
+    } else {
+      throw error;
+    }
+  } finally {
+  //  dispatch(activityLoaderFinished());
+  }
+},
 );
 
 export const updateAuthentication = createAsyncThunk('auth/updateAuthentication', async()=>{
