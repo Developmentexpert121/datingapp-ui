@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
   Text,
@@ -18,6 +18,26 @@ import {useNavigation} from '@react-navigation/native';
 import {ListItem} from 'react-native-elements';
 import CommonBackbutton from '../commonBackbutton/backButton';
 import LinearGradient from 'react-native-linear-gradient';
+import {useAppDispatch, useAppSelector} from '../../store/store';
+import {updateProfileData} from '../../store/Auth/auth';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const getUserId = async () => {
+  try {
+    const userId: any = await AsyncStorage.getItem('userId');
+
+    if (userId !== null) {
+      console.log(JSON.parse(userId));
+      return JSON.parse(userId);
+    } else {
+      return null;
+    }
+  } catch (error) {
+    return null;
+  }
+};
+
 const data = [
   {
     title: 'Premium',
@@ -82,14 +102,69 @@ const TickListItem = ({item}: any) => (
 );
 
 const ProfileSection = () => {
+  const profileData = useAppSelector(
+    (state: any) => state?.Auth?.data?.profileData,
+  );
+
+  const dispatch: any = useAppDispatch();
+
+  const [profileCompletion, setProfileComplition] = useState(0);
+
+  useEffect(() => {
+    let filledFieldsCount = 0;
+    const fields = [
+      profileData?.phone,
+      profileData?.email,
+      String(profileData?.location?.longitude),
+      String(profileData?.location?.latitude),
+      profileData?.interests,
+      profileData?.language,
+      profileData?.gender,
+      profileData?.profilePic,
+      profileData?.work,
+      profileData?.education,
+      profileData?.allInterests,
+      profileData?.partnerType,
+    ];
+
+    fields?.forEach(field => {
+      if (field?.trim() !== '') {
+        filledFieldsCount++;
+      }
+    });
+
+    const totalFields = fields?.length;
+    const percentageValue = Math.round((filledFieldsCount / totalFields) * 100);
+    setProfileComplition(percentageValue);
+
+    dispatch(
+      updateProfileData({
+        field: 'profilePercentage',
+        value: percentageValue,
+        id: getUserId(),
+      }),
+    );
+  }, [
+    profileData?.phone,
+    profileData?.email,
+    profileData?.location?.longitude,
+    profileData?.location?.longitude,
+    profileData?.interests,
+    profileData?.language,
+    profileData?.gender,
+    profileData?.profilePic,
+    profileData?.work,
+    profileData?.education,
+    profileData?.allInterests,
+    profileData?.partnerType,
+  ]);
+
   const navigation = useNavigation();
-  const profileImage = 'https://source.unsplash.com/random/?profile&3';
+  const profileImage = profileData?.profilePic;
   const profileCompletionPercentage = 71;
   const userName = 'John Doe';
   const userAddress = '123 Street, City';
   const userLocation = 'New York, USA';
-
-  const profileCompletion = 20; // Set the completion percentage
 
   const calculateStrokeDasharray = (percentage: any) => {
     const circumference = 465; // 2 * π * radius (140 * 2 * π)

@@ -111,7 +111,7 @@ export const updateProfileData = createAsyncThunk(
   async (data: any, {dispatch}: any) => {
     try {
       //  dispatch(activityLoaderStarted());
-
+      console.log('dataaaaaaAuth', data);
       const response = await http.patch('/user/update-profile', data);
       if (response.status === 200) {
         dispatch(ProfileData(data.id._j));

@@ -27,7 +27,7 @@ import AppTextInput from '../AppTextInput/AppTextInput';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../store/store';
-import {updateAuthentication} from '../../store/Auth/auth';
+import {updateAuthentication, updateProfileData} from '../../store/Auth/auth';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 interface UpdateForm {
@@ -44,10 +44,26 @@ const defaultValues = {
 };
 
 const schema = yup.object().shape({
-  gender: yup.string().required('gender is required'),
+  // gender: yup.string().required('gender is required'),
 });
 
+const getUserId = async () => {
+  try {
+    const userId: any = await AsyncStorage.getItem('userId');
+
+    if (userId !== null) {
+      console.log(JSON.parse(userId));
+      return JSON.parse(userId);
+    } else {
+      return null;
+    }
+  } catch (error) {
+    return null;
+  }
+};
+
 const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
+  const dispatch: any = useAppDispatch();
   const Data = [
     {id: 1, text: 'Lodo'},
     {id: 2, text: 'Cricket'},
@@ -86,7 +102,28 @@ const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
     setValue(title, value);
   }, [title]);
 
-  const onSubmit = (data: any) => {};
+  const onSubmit = (data: any) => {
+    console.log('Profiledataaaaaa', data);
+    const fieldValue = data[title];
+
+    let field;
+    if (title.toLowerCase() === 'show me') {
+      field = 'interests';
+    } else {
+      // Extract "email" from the title string
+      field = title?.toLowerCase().split(' ')[0];
+    }
+
+    dispatch(
+      updateProfileData({
+        field: field,
+        value: fieldValue,
+        id: getUserId(),
+      }),
+    ).then(() => onClose());
+  };
+
+  console.log(errors);
 
   const ListItem = ({item}: any) => (
     <View style={styles.listItem}>
@@ -114,7 +151,7 @@ const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
         onPress={onClose}>
         <View style={styles.drawer}>
           <Text style={styles.drawerText}>{title}</Text>
-          {title === 'Interests' ? (
+          {title === 'interests' ? (
             <View>
               {/* {value.split(",").map((list:any, index:any)=>(
                    <Text key={index} style={{backgroundColor:'#AC25AC', borderRadius:20, color:'#ffff'}}>{list}</Text>
@@ -178,6 +215,7 @@ const SettingsSection = () => {
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
+  const dispatch: any = useAppDispatch();
   const [distance, setDistance] = useState(
     parseInt(profileData?.distance) || 0,
   );
@@ -187,13 +225,24 @@ const SettingsSection = () => {
   const handleSliderChange = (value: any) => {
     setDistance(value);
   };
+
+  useEffect(() => {
+    dispatch(
+      updateProfileData({
+        field: 'distance',
+        value: distance,
+        id: getUserId(),
+      }),
+    );
+  }, [distance]);
+
   const options = [
     {label: 'Male', value: 'first'},
     {label: 'Female', value: 'second'},
     {label: 'Non-Binary', value: 'third'},
     {label: 'Transgender', value: 'fourth'},
   ];
-  const [checked, setChecked] = React.useState('Male');
+  const [checked, setChecked] = React.useState(profileData?.gender);
 
   const {
     control,
@@ -205,8 +254,8 @@ const SettingsSection = () => {
     resolver: yupResolver<any>(schema),
   });
 
-  const [minValue, setMinValue] = useState(1);
-  const [maxValue, setMaxValue] = useState(50);
+  const [minValue, setMinValue] = useState(18);
+  const [maxValue, setMaxValue] = useState(56);
 
   //   const handleSliderChange = (value:any) => {
   //     setDistance(value);
@@ -226,14 +275,34 @@ const SettingsSection = () => {
     }
   };
 
-  const [low, setLow] = useState<any>(10);
-  const [high, setHigh] = useState<any>(50);
+  const [low, setLow] = useState<number>(18);
+  const [high, setHigh] = useState<number>(56);
 
   const renderThumb = useCallback(() => <Thumb />, []);
   const renderRail = useCallback(() => <Rail />, []);
   const renderRailSelected = useCallback(() => <RailSelected />, []);
   const renderLabel = useCallback((value: any) => <Label text={value} />, []);
   const renderNotch = useCallback(() => <Notch />, []);
+
+  useEffect(() => {
+    if (profileData?.ageRange) {
+      const [lowStr, highStr] = profileData.ageRange.split(' ');
+      const lowValue = parseInt(lowStr);
+      const highValue = parseInt(highStr);
+      setLow(lowValue);
+      setHigh(highValue);
+    }
+  }, []);
+
+  useEffect(() => {
+    dispatch(
+      updateProfileData({
+        field: 'ageRange',
+        value: `${low} ${high}`,
+        id: getUserId(),
+      }),
+    );
+  }, [low, high]);
 
   const handleValueChange = useCallback(
     (newLow: any, newHigh: any) => {
@@ -255,7 +324,7 @@ const SettingsSection = () => {
         profileData?.location?.latitude,
     },
     {title: 'Show Me', name: profileData?.interests},
-    {title: 'Language I Know', name: 'English'},
+    {title: 'Language I Know', name: profileData?.language},
   ];
   const openDrawer = () => {
     setIsDrawerOpen(true);
@@ -271,18 +340,12 @@ const SettingsSection = () => {
     setIsDrawerOpen(true);
   };
   const navigation: any = useNavigation();
-  const dispatch: any = useAppDispatch();
+
   const logoutUser = async () => {
     await AsyncStorage.removeItem('authToken');
     dispatch(updateAuthentication());
     // navigation.navigate("Login");
   };
-
-  // useEffect(() => {
-  //   if (profileData) {
-  //     setValue('gender', profileData?.gender); // Assuming 'gender' is the field name
-  //   }
-  // }, [profileData]);
 
   return (
     <ScrollView>
@@ -327,7 +390,7 @@ const SettingsSection = () => {
           minimumValue={4}
           maximumValue={50}
           value={distance}
-          onValueChange={handleSliderChange}
+          onSlidingComplete={handleSliderChange}
           step={1}
           thumbTintColor="#AC25AC"
           minimumTrackTintColor="#AC25AC"
@@ -346,8 +409,10 @@ const SettingsSection = () => {
         <View style={styles.line} />
         <RangeSlider
           style={[styles.slider, {marginVertical: 14}]}
-          min={18}
-          max={56}
+          min={minValue}
+          max={maxValue}
+          low={low}
+          high={high}
           step={1}
           floatingLabel
           renderThumb={renderThumb}
@@ -355,7 +420,7 @@ const SettingsSection = () => {
           renderRailSelected={renderRailSelected}
           renderLabel={renderLabel}
           renderNotch={renderNotch}
-          onValueChanged={handleValueChange}
+          onSliderTouchEnd={handleValueChange}
         />
       </View>
 
@@ -368,8 +433,8 @@ const SettingsSection = () => {
               <Controller
                 name={'gender'}
                 control={control}
-                defaultValue=""
-                render={({field: {onChange, value}}) => (
+                defaultValue="Male"
+                render={() => (
                   <View
                     style={{
                       flex: 1,
@@ -387,10 +452,20 @@ const SettingsSection = () => {
                       ]}>
                       {item.label}
                     </Text>
-                    <TouchableOpacity onPress={() => onChange(item.value)}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setChecked(item.label);
+                        dispatch(
+                          updateProfileData({
+                            field: 'gender',
+                            value: item.label,
+                            id: getUserId(),
+                          }),
+                        );
+                      }}>
                       <Ionicons
                         name={
-                          value === item.value
+                          checked === item.label
                             ? 'radio-button-on'
                             : 'radio-button-off'
                         }

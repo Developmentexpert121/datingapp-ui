@@ -38,6 +38,21 @@ const defaultValues = {
   password: '',
 };
 
+const getUserId = async () => {
+  try {
+    const userId: any = await AsyncStorage.getItem('userId');
+
+    if (userId !== null) {
+      console.log(JSON.parse(userId));
+      return JSON.parse(userId);
+    } else {
+      return null;
+    }
+  } catch (error) {
+    return null;
+  }
+};
+
 const schema = yup.object().shape({
   //name: yup.string().required('Name is required'),
 });
@@ -49,22 +64,24 @@ const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
   );
 
   const Data = [
-    {id: 1, text: 'Lodo'},
-    {id: 2, text: 'Cricket'},
-    {id: 3, text: 'Football'},
-    {id: 4, text: 'Shopping'},
-
-    {id: 5, text: 'Coffee'},
-    {id: 6, text: 'Movies'},
-    {id: 7, text: 'Dancing'},
-    {id: 8, text: 'Bikes'},
-    {id: 9, text: 'games'},
+    {text: 'Lodo'},
+    {text: 'Cricket'},
+    {text: 'Football'},
+    {text: 'Shopping'},
+    {text: 'Coffee'},
+    {text: 'Movies'},
+    {text: 'Dancing'},
+    {text: 'Bikes'},
+    {text: 'Games'},
+    {text: 'Photography'},
+    {text: 'Swimming'},
+    {text: 'Travel'},
   ];
 
   const avatars = [
     {id: '1', text: 'Long term partner'},
     {id: '2', text: 'Long term open to short'},
-    {id: '3', text: 'Shirt term open to long'},
+    {id: '3', text: 'Short term open to long'},
     {id: '4', text: 'Short term fun'},
     {id: '5', text: 'New friends'},
     {id: '6', text: 'Still figuring it out'},
@@ -102,33 +119,50 @@ const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
   };
 
   const onSubmit = (data: any) => {
-    const fieldValue = data[title];
+    let field;
+    let fieldValue;
+    if (title.toLowerCase() === 'interests') {
+      field = 'allInterests';
+      fieldValue = interests.join(',');
+    } else if (title.toLowerCase() === 'relationship goals') {
+      field = 'partnerType';
+      fieldValue = selectedAvatar;
+    } else {
+      // Extract "email" from the title string
+      field = title?.toLowerCase().split(' ')[0];
+      fieldValue = data[title];
+    }
+
+    console.log('Settingsdataaaaaa', fieldValue);
+
     dispatch(
       updateProfileData({
-        field: title?.toLowerCase(),
+        field: field,
         value: fieldValue,
         id: getUserId(),
       }),
     ).then(() => onClose());
   };
 
-  const ListItem = ({item}: any) => (
-    <View style={styles.listItem}>
-      <Text
-        style={{
-          color: 'white',
-          paddingVertical: 6,
-          paddingHorizontal: 12,
-          fontFamily: 'Sansation_Regular',
-        }}>
-        {item}
-      </Text>
-    </View>
+  const ListItem = ({item, index}: any) => (
+    <TouchableOpacity onPress={() => toggleChip(item)}>
+      <View style={styles.listItem}>
+        <Text
+          style={{
+            color: 'white',
+            paddingVertical: 6,
+            paddingHorizontal: 12,
+            fontFamily: 'Sansation_Regular',
+          }}>
+          {item}
+        </Text>
+      </View>
+    </TouchableOpacity>
   );
 
   const ListItem2 = ({item}: any) => (
-    <View style={styles.listItem2}>
-      <TouchableOpacity>
+    <TouchableOpacity onPress={() => toggleChip(item)}>
+      <View style={styles.listItem2}>
         <Text
           style={{
             color: 'grey',
@@ -138,9 +172,33 @@ const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
           }}>
           {item}
         </Text>
-      </TouchableOpacity>
-    </View>
+      </View>
+    </TouchableOpacity>
   );
+
+  const [interests, setInterests] = useState(
+    profileData?.allInterests?.split(',') || [],
+  );
+
+  const toggleChip = (interest: string) => {
+    if (selectedAvatar === interest) {
+      setSelectedAvatar('');
+    } else {
+      setSelectedAvatar(interest);
+    }
+    if (interests.includes(interest)) {
+      // If interest is already selected, remove it
+      const updatedInterests = interests.filter(
+        (item: string) => item !== interest,
+      );
+      setInterests(updatedInterests);
+    } else {
+      // If interest is not selected, add it
+      const updatedInterests = [...interests, interest];
+      setInterests(updatedInterests);
+    }
+  };
+  const [selectedAvatar, setSelectedAvatar] = useState<string>('');
 
   return (
     <Modal
@@ -162,17 +220,19 @@ const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
               }}>
               <View>
                 <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-                  {value.split(',').map((item: string, index: number) => (
+                  {interests?.map((item: string, index: number) => (
                     <ListItem key={index} item={item} />
                   ))}
                 </View>
               </View>
-              <View>
-                <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-                  {Data.map((item, index) => (
-                    <ListItem2 key={index} item={item.text} />
-                  ))}
-                </View>
+
+              <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+                {Data.map((item, index) => {
+                  if (!interests.includes(item.text)) {
+                    return <ListItem2 key={index} item={item.text} />;
+                  }
+                  return null; // Don't render the chip if it's already selected
+                })}
               </View>
             </View>
           ) : title === 'Relationship Goals' ? (
@@ -187,13 +247,16 @@ const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
                     paddingHorizontal: 12,
                     fontFamily: 'Sansation_Regular',
                   }}>
-                  {value}
+                  {selectedAvatar}
                 </Text>
               </View>
               <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-                {avatars.map((item, index) => (
-                  <ListItem2 key={index} item={item.text} />
-                ))}
+                {avatars.map((item, index) => {
+                  if (!selectedAvatar.includes(item.text)) {
+                    return <ListItem2 key={index} item={item.text} />;
+                  }
+                  return null; // Don't render the chip if it's already selected
+                })}
               </View>
             </View>
           ) : (
@@ -221,24 +284,35 @@ const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
 };
 
 const UpdateProfile = () => {
-  const [height, setHeight] = useState(10);
+  const profileData: any = useAppSelector(
+    (state: any) => state?.Auth?.data?.profileData,
+  );
+  const dispatch: any = useAppDispatch();
+  const [height, setHeight] = useState(parseInt(profileData?.height) || 0);
   const [title, setTitle] = useState<string>('');
   const [value, setValue] = useState<string>('');
   const [uploadError, setUploadError] = useState<boolean>(false);
   const [selectedImage, setSelectedImage] = useState<any>(null);
-  const profileData = useAppSelector(
-    (state: any) => state?.Auth?.data?.profileData,
-  );
+
   const handleSliderChange = (value: any) => {
     setHeight(value);
   };
 
+  useEffect(() => {
+    dispatch(
+      updateProfileData({
+        field: 'height',
+        value: height,
+        id: getUserId(),
+      }),
+    );
+  }, [height]);
+
   const dataArr = [
     {title: 'Work', name: profileData?.work},
     {title: 'Education', name: profileData?.education},
-    {title: 'Interests', name: profileData?.interests},
+    {title: 'Interests', name: profileData?.allInterests},
     {title: 'Relationship Goals', name: profileData?.partnerType},
-    {title: 'Language I Know', name: profileData?.language},
   ];
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -276,7 +350,7 @@ const UpdateProfile = () => {
           minimumValue={2}
           maximumValue={12}
           value={height}
-          onValueChange={handleSliderChange}
+          onSlidingComplete={handleSliderChange}
           step={1}
           thumbTintColor="#AC25AC"
           minimumTrackTintColor="#AC25AC"
