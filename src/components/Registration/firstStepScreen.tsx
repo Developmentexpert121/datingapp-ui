@@ -11,7 +11,7 @@ import {useForm, Controller} from 'react-hook-form';
 const FirstStepScreen = ({interests, control, errors}: any) => {
   const options = [{value: 'Women'}, {value: 'Men'}, {value: 'Everyone'}];
   const [checked, setChecked] = useState('');
-  console.log('errors22222222222222222222 ', errors);
+
   return (
     <SafeAreaView>
       <View

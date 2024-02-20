@@ -64,7 +64,6 @@
 //     reset();
 //     navigate('Login');
 //   };
-//   console.log("errors ", errors)
 //   return (
 //     <SafeAreaView>
 //       <View style={styles.top}>
@@ -274,6 +273,7 @@ interface RegisterForm {
   location: string;
   profilePic: string;
   dob: string;
+  profilePercentage: string;
 }
 
 const defaultValues = {
@@ -293,6 +293,7 @@ const defaultValues = {
   location: '',
   profilePic: '',
   dob: '',
+  profilePercentage: '60',
 };
 
 const schema = yup.object().shape({
@@ -382,7 +383,6 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     defaultValues,
     resolver: Schemas(steps),
   });
-  console.log('errors register =========== ', errors);
 
   const getLocationAndRegister = (data: RegisterForm) => {
     Geolocation.getCurrentPosition(
@@ -538,6 +538,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
                   setUploadError={setUploadError}
                   selectedImage={selectedImage}
                   setSelectedImage={setSelectedImage}
+                  setProfileImage={setProfileImage}
                 />
               </View>
             </SafeAreaView>

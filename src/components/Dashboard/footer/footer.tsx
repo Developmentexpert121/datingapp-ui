@@ -27,7 +27,7 @@ const FooterComponent = () => {
   const activeScreen = useAppSelector(
     (state: any) => state.ActivityLoader.footerStatus,
   );
-  console.log('activeScreennactiveScreennactiveScreenn ', activeScreen);
+
   const navigation = useNavigation();
   const color = '#b5b5b5';
   // const color = "#BB2CBB"

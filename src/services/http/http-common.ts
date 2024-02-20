@@ -1,11 +1,10 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 const getToken = async () => {
   try {
     const token = await AsyncStorage.getItem('authToken');
     if (token !== null) {
-      console.log('authToken ', token);
       return JSON.parse(token);
     } else {
       return null;
@@ -18,28 +17,27 @@ const getToken = async () => {
 const http = axios.create({
   baseURL: 'http://10.0.2.2:8000/api',
   headers: {
-    "Accept": "application/json",
-    "Content-Type": "application/json",
-  }
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  },
 });
 
 http.interceptors.request.use(
-  async (config) => {
+  async config => {
     try {
-    const token = await getToken();
-    if (token) {
-      config.headers.authorization = `Bearer ${token}`;
-    }
-    return config;
+      const token = await getToken();
+      if (token) {
+        config.headers.authorization = `Bearer ${token}`;
+      }
+      return config;
     } catch (error) {
       console.error('Error retrieving token:', error);
       return config;
     }
   },
-  (error) => {
+  error => {
     return Promise.reject(error);
-  }
+  },
 );
-
 
 export default http;

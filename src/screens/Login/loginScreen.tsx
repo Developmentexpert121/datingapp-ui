@@ -269,22 +269,17 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   });
 
   const onSubmit: any = (data: LoginForm) => {
-    console.log(data);
     dispatch(LoginSignIn(data));
     reset();
   };
-
-  console.log('login errors ', errors);
 
   useEffect(() => {
     const fetchToken = async () => {
       try {
         const value = await AsyncStorage.getItem('authToken');
         if (value !== null) {
-          console.log(`Item  retrieved: ${value}`);
           return value;
         } else {
-          console.log(`No item found with key`);
           return null;
         }
       } catch (error) {
@@ -314,7 +309,8 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
       <Text style={styles.subText}>
         Don't lose access to your account,{'\n'}verify your email.
       </Text>
-      <View>
+      <View
+        style={{width: '80%', justifyContent: 'center', alignItems: 'center'}}>
         <AppTextInput
           placeholder="Enter Your Email"
           name="email"

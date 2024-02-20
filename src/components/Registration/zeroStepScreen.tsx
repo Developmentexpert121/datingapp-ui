@@ -86,17 +86,6 @@ const ZeroStepScreen = ({
   const showTimepicker = () => {
     showMode('time');
   };
-  console.log('dateee ===== ', date);
-  // const {
-  //   control,
-  //   handleSubmit,
-  //   watch,
-  //   reset,
-  //   formState: {errors},
-  // } = useForm<RegForm0>({
-  //   defaultValues,
-  //   resolver: yupResolver(schema),
-  // });
 
   return (
     <SafeAreaView>
@@ -116,7 +105,12 @@ const ZeroStepScreen = ({
       <View style={styles.container}>
         <Text style={styles.label}>Date Of Birth </Text>
         <TouchableOpacity onPress={showDatepicker} style={[styles.dateBtn]}>
-          <Text style={{color: 'grey', textAlign: 'center'}}>
+          <Text
+            style={{
+              color: 'grey',
+              textAlign: 'center',
+              fontFamily: 'Sansation_Regular',
+            }}>
             {dateStr === null
               ? 'Select DOB'
               : dateStr.getDate() +
@@ -325,13 +319,13 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   dateBtn: {
-    fontFamily: Font['poppins-regular'],
-    fontSize: FontSize.small,
-    padding: Spacing * 1,
+    padding: 12,
     backgroundColor: Colors.onPrimary,
-    borderRadius: Spacing * 2,
     marginVertical: Spacing,
-    width: 300,
+    width: '80%',
+    borderColor: 'rgba(0, 0, 0, 0.2)',
+    borderWidth: 1,
+    borderRadius: 10,
   },
 });
 

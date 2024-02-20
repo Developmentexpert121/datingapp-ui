@@ -41,7 +41,6 @@ const App = () => {
   const isAuthenticated = useSelector(
     (state: any) => state?.Auth?.isAuthenticated,
   );
-  console.log('isAuthenticated======================', isAuthenticated);
 
   useEffect(() => {
     if (Platform.OS === 'android') {
@@ -52,7 +51,6 @@ const App = () => {
     try {
       const token = await AsyncStorage.getItem('authToken');
       if (token !== null) {
-        console.log('authToken ', token);
         return JSON.parse(token);
       } else {
         return null;

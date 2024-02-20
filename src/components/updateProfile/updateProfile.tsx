@@ -16,7 +16,9 @@ import AppTextInput from '../AppTextInput/AppTextInput';
 import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import {useAppSelector} from '../../store/store';
+import {useAppDispatch, useAppSelector} from '../../store/store';
+import {updateProfileData} from '../../store/Auth/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 interface UpdateForm {
   work: string;
   education: string;
@@ -37,16 +39,15 @@ const defaultValues = {
 };
 
 const schema = yup.object().shape({
-  name: yup.string().required('Name is required'),
+  //name: yup.string().required('Name is required'),
 });
 
 const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
-  console.log('titletitletitletitletitle ', title);
-  console.log('value value value value ', value);
+  const dispatch: any = useAppDispatch();
   const profileData = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-  console.log('value value value1111111 ', profileData);
+
   const Data = [
     {id: 1, text: 'Lodo'},
     {id: 2, text: 'Cricket'},
@@ -86,7 +87,30 @@ const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
     setValue(title, value);
   }, [title]);
 
-  const onSubmit = (data: any) => {};
+  const getUserId = async () => {
+    try {
+      const userId: any = await AsyncStorage.getItem('userId');
+
+      if (userId !== null) {
+        return JSON.parse(userId);
+      } else {
+        return null;
+      }
+    } catch (error) {
+      return null;
+    }
+  };
+
+  const onSubmit = (data: any) => {
+    const fieldValue = data[title];
+    dispatch(
+      updateProfileData({
+        field: title?.toLowerCase(),
+        value: fieldValue,
+        id: getUserId(),
+      }),
+    ).then(() => onClose());
+  };
 
   const ListItem = ({item}: any) => (
     <View style={styles.listItem}>
@@ -208,12 +232,13 @@ const UpdateProfile = () => {
   const handleSliderChange = (value: any) => {
     setHeight(value);
   };
+
   const dataArr = [
-    {title: 'Work', name: 'Graphic designer'},
-    {title: 'Education', name: 'Lorem University'},
+    {title: 'Work', name: profileData?.work},
+    {title: 'Education', name: profileData?.education},
     {title: 'Interests', name: profileData?.interests},
     {title: 'Relationship Goals', name: profileData?.partnerType},
-    {title: 'Language I Know', name: 'English'},
+    {title: 'Language I Know', name: profileData?.language},
   ];
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);

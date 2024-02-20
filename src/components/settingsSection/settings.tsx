@@ -48,8 +48,6 @@ const schema = yup.object().shape({
 });
 
 const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
-  console.log('titletitletitletitletitle ', title);
-  console.log('value value value value ', value);
   const Data = [
     {id: 1, text: 'Lodo'},
     {id: 2, text: 'Cricket'},

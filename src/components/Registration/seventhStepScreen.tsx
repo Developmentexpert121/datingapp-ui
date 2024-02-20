@@ -37,7 +37,7 @@ const SeventhStepScreen = ({
   const [uploadedImage, setUploadedImage] = useState<any>(null);
   const [doc, setDoc] = useState<any>(null);
   const dispatch: any = useAppDispatch();
-  console.log('selectedImageselectedImage          ', selectedImage);
+
   const requestPermissions = async () => {
     if (Platform.OS === 'android') {
       await requestAndroidPermissions();
@@ -105,12 +105,9 @@ const SeventhStepScreen = ({
         console.log('Image picker error: ', response.error);
       } else {
         let imageUri = response.uri || response.assets?.[0]?.uri;
-        console.log('response===================== ', response);
+
         setDoc(response?.assets);
-        console.log(
-          '=============--------------======================',
-          imageUri,
-        );
+
         setSelectedImage({uri: imageUri});
         setUploadError(false);
       }
@@ -122,18 +119,16 @@ const SeventhStepScreen = ({
     try {
       const formData: any = new FormData();
       if (doc === null) {
-        console.log('docccccccccccc ', doc);
         formData.append('file', {
           name: 'screenImage2.png',
           fileName: 'screenImage2.png',
           type: 'image/png',
           uri: Image.resolveAssetSource(selectedImage).uri,
         });
-        console.log('formdata', formData._parts);
+
         dispatch(UploadImage(formData))
           .unwrap()
           .then((res: any) => {
-            console.log('res+++++++++', res);
             setProfileImage(res.imageUrl);
           });
       } else {
@@ -147,7 +142,6 @@ const SeventhStepScreen = ({
         dispatch(UploadImage(formData))
           .unwrap()
           .then((res: any) => {
-            console.log('res+++++++++', res);
             setProfileImage(res.imageUrl);
           });
       }
@@ -165,9 +159,7 @@ const SeventhStepScreen = ({
           {DummyProfileImages.map((item, index) => (
             <TouchableOpacity
               onPress={() => (
-                setSelectedImage(item.uri),
-                setUploadError(false),
-                console.log('item ', item)
+                setSelectedImage(item.uri), setUploadError(false)
               )}
               style={styles.imageContainerdm}
               key={index}>

@@ -48,7 +48,6 @@ const ChatSection = () => {
     setSearch(text);
   };
 
-  console.log('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww');
   const handleMovepage = (item: any) => {
     navigation.navigate('ChatPage');
   };

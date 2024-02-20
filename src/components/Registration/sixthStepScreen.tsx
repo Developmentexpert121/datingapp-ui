@@ -3,8 +3,6 @@ import {View, Text, TextInput, StyleSheet} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 
 const SixthStepScreen = ({hobbies, control, errors}: any) => {
-  // const [hobbies, setHobbies] = useState('');
-  console.log('errrrrrrrrrrrrrrrrrrrrrrr ', errors);
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Your hobbies?</Text>

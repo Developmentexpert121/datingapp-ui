@@ -98,10 +98,6 @@ const ForthStepScreen = ({habits1, control, errors}: any) => {
     );
   };
 
-  console.log(
-    'errors 4th step-------------================================ ',
-    errors,
-  );
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.contentContainer}>

@@ -42,12 +42,10 @@ const NotificationScreen = () => {
 
   const handleMarkAsRead = (id: any) => {
     // Implement logic to mark the notification as read
-    console.log(`Mark as Read clicked for notification with id ${id}`);
   };
 
   const handleView = (id: any) => {
     // Implement logic to navigate to the detailed view of the notification
-    console.log(`View clicked for notification with id ${id}`);
   };
 
   const renderNotificationItem = ({item}: any) => (
