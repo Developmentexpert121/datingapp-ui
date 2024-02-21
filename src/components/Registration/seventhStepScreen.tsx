@@ -13,29 +13,36 @@ import {
 import {launchImageLibrary} from 'react-native-image-picker';
 import {request, PERMISSIONS} from 'react-native-permissions';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import axios from 'axios';
-import http from '../../services/http/http-common';
-import {useAppDispatch} from '../../store/store';
-import {UploadImage} from '../../store/Auth/auth';
-const DummyProfileImages = [
-  {uri: require('../../assets/images/screenImage1.png'), id: 'image1'},
-  {uri: require('../../assets/images/screenImage2.png'), id: 'image2'},
-  {uri: require('../../assets/images/screenImage1.png'), id: 'image3'},
-  {uri: require('../../assets/images/screenImage2.png'), id: 'image4'},
-  {uri: require('../../assets/images/screenImage1.png'), id: 'image5'},
-  {uri: require('../../assets/images/screenImage2.png'), id: 'image6'},
-];
+import {useAppDispatch, useAppSelector} from '../../store/store';
+import {UploadImage, updateProfileData} from '../../store/Auth/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const getUserId = async () => {
+  try {
+    const userId: any = await AsyncStorage.getItem('userId');
+
+    if (userId !== null) {
+      console.log(JSON.parse(userId));
+      return JSON.parse(userId);
+    } else {
+      return null;
+    }
+  } catch (error) {
+    return null;
+  }
+};
+
 const SeventhStepScreen = ({
-  uploadError,
-  setUploadError,
-  selectedImage,
-  setSelectedImage,
+  profileImages,
+  setProfileImages,
   title,
-  profileImage,
-  setProfileImage,
-}: any) => {
-  const [uploadedImage, setUploadedImage] = useState<any>(null);
-  const [doc, setDoc] = useState<any>(null);
+}: {
+  profileImages: any;
+  setProfileImages: any;
+  title?: any;
+}) => {
+  const [uploadError, setUploadError] = useState<boolean>(false);
+
   const dispatch: any = useAppDispatch();
 
   const requestPermissions = async () => {
@@ -86,115 +93,102 @@ const SeventhStepScreen = ({
     }
   };
 
-  const openImagePicker = () => {
-    const options: any = {
-      mediaType: 'photo',
-      includeBase64: false,
-      maxHeight: 2000,
-      maxWidth: 2000,
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
-    };
+  useEffect(() => {
+    if (title !== 'Registeration') {
+      let fieldValue = profileImages?.join(',');
+      dispatch(
+        updateProfileData({
+          field: 'profilePic',
+          value: fieldValue,
+          id: getUserId(),
+        }),
+      );
+    }
+  }, [profileImages]);
 
-    launchImageLibrary(options, (response: any) => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('Image picker error: ', response.error);
-      } else {
-        let imageUri = response.uri || response.assets?.[0]?.uri;
-
-        setDoc(response?.assets);
-
-        setSelectedImage({uri: imageUri});
-        setUploadError(false);
+  const handleImageSelection = async () => {
+    // Launch image library to select multiple images
+    launchImageLibrary({mediaType: 'photo'}, response => {
+      if (!response?.didCancel && !response?.errorMessage) {
+        if (response?.assets) {
+          const selectedImages = response?.assets?.map(asset => asset?.uri);
+          setProfileImages((prevImages: any) => [
+            ...prevImages,
+            ...selectedImages,
+          ]); // Append new images to existing state
+        } else {
+          setUploadError(true); // Set error if no images are selected
+        }
       }
     });
   };
 
-  const handleSelectImage = async () => {
-    setUploadError(false);
-    try {
-      const formData: any = new FormData();
-      if (doc === null) {
-        formData.append('file', {
-          name: 'screenImage2.png',
-          fileName: 'screenImage2.png',
-          type: 'image/png',
-          uri: Image.resolveAssetSource(selectedImage).uri,
-        });
-
-        dispatch(UploadImage(formData))
-          .unwrap()
-          .then((res: any) => {
-            setProfileImage(res.imageUrl);
+  const handleRemoveImage = async (index: number) => {
+    // If there's only one image left, open the image picker for replacement
+    if (profileImages.length === 1) {
+      try {
+        const response: any = await new Promise((resolve, reject) => {
+          launchImageLibrary({mediaType: 'photo'}, response => {
+            if (response) {
+              resolve(response);
+            } else {
+              reject();
+            }
           });
-      } else {
-        formData.append('file', {
-          name: doc?.[0]?.fileName,
-          fileName: doc?.[0]?.fileName,
-          type: doc?.[0]?.type,
-          uri: doc?.[0]?.uri,
         });
-
-        dispatch(UploadImage(formData))
-          .unwrap()
-          .then((res: any) => {
-            setProfileImage(res.imageUrl);
-          });
+        if (response.assets && response.assets.length > 0) {
+          const selectedImages = response.assets.map((asset: any) => asset.uri);
+          setProfileImages(selectedImages);
+        } else {
+          setUploadError(true); // Set error if no images are selected
+        }
+      } catch (error) {
+        // User cancelled image selection, do nothing
       }
-    } catch (error) {
-      console.error('Error uploading file:', error);
+    } else {
+      // If there are multiple images, remove the selected image
+      const updatedImages = [...profileImages];
+      updatedImages?.splice(index, 1);
+      setProfileImages(updatedImages);
     }
   };
 
   return (
     <View style={styles.container}>
-      {selectedImage ? (
-        <Image source={selectedImage} style={styles.selectedImage} />
-      ) : (
-        <View style={styles.containerdm}>
-          {DummyProfileImages.map((item, index) => (
-            <TouchableOpacity
-              onPress={() => (
-                setSelectedImage(item.uri), setUploadError(false)
-              )}
-              style={styles.imageContainerdm}
-              key={index}>
-              <Image source={item.uri} style={styles.dummyImagedm} />
-              <View style={styles.addRemoveButton}>
-                <FontAwesome6
-                  name="plus"
-                  size={20}
-                  style={{
-                    color: 'white',
-                  }}
-                />
-              </View>
-            </TouchableOpacity>
-          ))}
-        </View>
-      )}
-      <View
-        style={{
-          flexDirection: 'row',
-          columnGap: 10,
-          marginBottom: 16,
-          marginTop: 20,
-        }}>
-        <TouchableOpacity onPress={openImagePicker} style={styles.uploadButton}>
-          <Text style={styles.buttonText}>
-            {selectedImage ? 'Change Image' : 'Select from gallary'}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={handleSelectImage}
-          style={styles.selectButton}>
-          <Text style={styles.buttonText}>Upload</Text>
-        </TouchableOpacity>
+      <View style={styles.containerdm}>
+        {[
+          ...profileImages,
+          ...Array(Math.max(6 - (profileImages?.length || 0), 0)),
+        ]?.map((item, index) => (
+          <TouchableOpacity
+            onPress={() => {
+              if (item) {
+                handleRemoveImage(index);
+              } else {
+                handleImageSelection();
+              }
+            }}
+            style={[styles.imageContainerdm, !item && {borderWidth: 2}]}
+            key={index}>
+            {item && <Image source={{uri: item}} style={styles.dummyImagedm} />}
+
+            <View
+              style={[
+                styles.addRemoveButton,
+                item && {transform: [{rotate: '45deg'}]},
+              ]}>
+              <FontAwesome6
+                name="plus"
+                size={20}
+                style={{
+                  color: 'white',
+                }}
+              />
+            </View>
+          </TouchableOpacity>
+        ))}
       </View>
+
       {uploadError && (
         <Text
           style={{
@@ -216,58 +210,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 24,
   },
-  selectedImage: {
-    width: 98,
-    height: 150,
-    borderRadius: 10,
-    marginBottom: 20,
-  },
-  dummyImage: {
-    width: 98,
-    height: 150,
-    borderRadius: 5,
-  },
-  imageContainer: {
-    margin: 5,
-    flexDirection: 'row',
-  },
-  uploadButton: {
-    backgroundColor: '#AC25AC',
-    padding: 10,
-    paddingHorizontal: 16,
-    borderRadius: 20,
-  },
-  selectButton: {
-    backgroundColor: '#4CAF50',
-    padding: 10,
-    paddingHorizontal: 16,
-    borderRadius: 20,
-  },
-  buttonText: {
-    color: 'white',
-    textAlign: 'center',
-    fontFamily: 'Sansation_Regular',
-  },
-
   containerdm: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between', // Adjust as needed
     rowGap: 20,
-    position: 'relative',
   },
   imageContainerdm: {
-    borderWidth: 2,
     borderRadius: 14,
     borderColor: 'rgba(0, 0, 0, 0.4)',
     borderStyle: 'dashed',
     backgroundColor: '#E0E0E0',
+    position: 'relative',
+    width: 100,
+    height: 160,
   },
   dummyImagedm: {
-    width: 98,
-    height: 150,
-    resizeMode: 'cover',
-    borderRadius: 14,
+    width: 100,
+    height: 160,
+    borderRadius: 12,
   },
   addRemoveButton: {
     position: 'absolute',

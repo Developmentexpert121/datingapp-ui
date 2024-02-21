@@ -172,6 +172,8 @@ const ZeroStepScreen = ({
                     value={item.label}
                     status={value === item.label ? 'checked' : 'unchecked'}
                     onPress={() => onChange(item.label)}
+                    color="#AC25AC"
+                    uncheckedColor="#AC25AC"
                   />
                 </View>
               )}

@@ -237,7 +237,7 @@ import {RootStackParamList} from '../../types';
 import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import AppTextInput from '../../components/AppTextInput/AppTextInput';
-import {useAppDispatch} from '../../store/store';
+import {useAppDispatch, useAppSelector} from '../../store/store';
 import {RegisterSignUp, UploadImage} from '../../store/Auth/auth';
 import {RadioButton} from 'react-native-paper';
 // import ZeroStepScreen from '../Registration/zeroStepScreen';
@@ -348,14 +348,18 @@ const schema6 = yup.object().shape({
 });
 
 const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
+  const profileData = useAppSelector(
+    (state: any) => state?.Auth?.data?.profileData,
+  );
+
   const [steps, setSteps] = React.useState(0);
   const [dateStr, setDateStr] = useState<any>(null);
   const [location, setLocation] = useState<any>(null);
   const [distance, setDistance] = useState<any>(20);
   const [error, setError] = useState<any>(null);
-  const [uploadError, setUploadError] = useState<boolean>(false);
-  const [selectedImage, setSelectedImage] = useState<any>(null);
-  const [profileImage, setProfileImage] = useState<any>(null);
+  const [profileImages, setProfileImages] = useState<any>(
+    profileData?.profilePic?.split(',') || [],
+  );
   const [permissionStatus, setPermissionStatus] = useState<any>(null);
 
   const dispatch: any = useAppDispatch();
@@ -397,7 +401,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
             ...data,
             location: {latitude, longitude},
             distance: `${distance}mi`,
-            profilePic: profileImage,
+            profilePic: profileImages?.join(','),
             dob: `${dateStr}`,
           }),
         );
@@ -430,7 +434,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
               RegisterSignUp({
                 ...data,
                 distance: `${distance}mi`,
-                profilePic: profileImage,
+                profilePic: profileImages?.join(','),
                 dob: `${dateStr}`,
               }),
             );
@@ -446,11 +450,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
 
   const onSubmit: any = (data: RegisterForm) => {
     if (steps === 7) {
-      if (selectedImage === null || profileImage == null) {
-        setUploadError(true);
-      } else {
-        setSteps(prev => prev + 1);
-      }
+      setSteps(prev => prev + 1);
     } else if (steps === 8) {
       showPermissionPopup(data);
     } else if (steps < 8) {
@@ -534,11 +534,9 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
                   Pick Some photos for your profile
                 </Text>
                 <SeventhStepScreen
-                  uploadError={uploadError}
-                  setUploadError={setUploadError}
-                  selectedImage={selectedImage}
-                  setSelectedImage={setSelectedImage}
-                  setProfileImage={setProfileImage}
+                  profileImages={profileImages}
+                  setProfileImages={setProfileImages}
+                  title="Registeration"
                 />
               </View>
             </SafeAreaView>

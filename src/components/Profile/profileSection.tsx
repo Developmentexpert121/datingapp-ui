@@ -113,18 +113,18 @@ const ProfileSection = () => {
   useEffect(() => {
     let filledFieldsCount = 0;
     const fields = [
-      profileData?.phone,
-      profileData?.email,
-      String(profileData?.location?.longitude),
-      String(profileData?.location?.latitude),
-      profileData?.interests,
-      profileData?.language,
-      profileData?.gender,
-      profileData?.profilePic,
-      profileData?.work,
-      profileData?.education,
-      profileData?.allInterests,
-      profileData?.partnerType,
+      profileData?.phone || '',
+      profileData?.email || '',
+      String(profileData?.location?.longitude) || '',
+      String(profileData?.location?.latitude) || '',
+      profileData?.interests || '',
+      profileData?.language || '',
+      profileData?.gender || '',
+      profileData?.profilePic || '',
+      profileData?.work || '',
+      profileData?.education || '',
+      profileData?.allInterests || '',
+      profileData?.partnerType || '',
     ];
 
     fields?.forEach(field => {
@@ -161,7 +161,7 @@ const ProfileSection = () => {
 
   const navigation = useNavigation();
 
-  const profileImage = profileData?.profilePic;
+  const profileImage = profileData?.profilePic?.split(',')[0];
 
   const calculateStrokeDasharray = (percentage: any) => {
     const circumference = 465; // 2 * π * radius (140 * 2 * π)
@@ -251,7 +251,7 @@ const ProfileSection = () => {
               color: 'black',
               marginTop: 10,
             }}>
-            John Doe
+            {profileData.name}
           </Text>
           <View
             style={{
@@ -266,7 +266,7 @@ const ProfileSection = () => {
                 fontFamily: 'Sansation_Regular',
                 fontSize: 18,
               }}>
-              California, California
+              {profileData.city}, {profileData.country}
             </Text>
           </View>
         </View>

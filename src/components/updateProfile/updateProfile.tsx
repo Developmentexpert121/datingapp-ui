@@ -291,8 +291,9 @@ const UpdateProfile = () => {
   const [height, setHeight] = useState(parseInt(profileData?.height) || 0);
   const [title, setTitle] = useState<string>('');
   const [value, setValue] = useState<string>('');
-  const [uploadError, setUploadError] = useState<boolean>(false);
-  const [selectedImage, setSelectedImage] = useState<any>(null);
+  const [profileImages, setProfileImages] = useState<any>(
+    profileData?.profilePic?.split(',') || [],
+  );
 
   const handleSliderChange = (value: any) => {
     setHeight(value);
@@ -333,13 +334,10 @@ const UpdateProfile = () => {
     <ScrollView style={{marginBottom: 20}}>
       <CommonBackbutton title="Edit Profile" />
       <SeventhStepScreen
-        uploadError={uploadError}
-        setUploadError={setUploadError}
-        selectedImage={selectedImage}
-        setSelectedImage={setSelectedImage}
-        title="new"
+        profileImages={profileImages}
+        setProfileImages={setProfileImages}
       />
-      <View style={styles.boxContainer}>
+      <View style={[styles.boxContainer, {marginTop: 28}]}>
         <View style={styles.distance}>
           <Text style={styles.textName}>Height</Text>
           <Text style={{fontFamily: 'Sansation_Regular'}}>{height} mt</Text>
@@ -392,6 +390,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     paddingVertical: 10,
     marginHorizontal: 24,
+
     marginBottom: 16,
     shadowColor: '#000',
     shadowOffset: {

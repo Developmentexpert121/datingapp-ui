@@ -312,16 +312,35 @@ const SettingsSection = () => {
     [setLow, setHigh],
   );
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [address, setAddress] = useState('');
+
+  useEffect(() => {
+    const getAddressFromCoordinates = async (latitude, longitude) => {
+      try {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`,
+        );
+        const data = await response.json();
+        return data.display_name;
+      } catch (error) {
+        console.error('Error fetching address:', error);
+        return null;
+      }
+    };
+
+    // Usage
+    getAddressFromCoordinates(
+      profileData?.location?.latitude,
+      profileData?.location?.longitude,
+    ).then(address => setAddress(address));
+  }, []);
 
   const dataArr = [
     {title: 'Phone Number', name: profileData?.phone},
     {title: 'Email Address', name: profileData?.email},
     {
       title: 'Location',
-      name:
-        profileData?.location?.longitude +
-        ' ' +
-        profileData?.location?.latitude,
+      name: address,
     },
     {title: 'Show Me', name: profileData?.interests},
     {title: 'Language I Know', name: profileData?.language},
@@ -369,7 +388,10 @@ const SettingsSection = () => {
                 ) : (
                   ''
                 )}
-                <Text style={{fontFamily: 'Sansation_Regular'}}>
+                <Text
+                  style={{
+                    fontFamily: 'Sansation_Regular',
+                  }}>
                   {item.name}
                 </Text>
               </TouchableOpacity>
@@ -545,7 +567,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    columnGap: 4,
+    columnGap: 6,
+    paddingHorizontal: 20,
   },
   slider: {
     marginHorizontal: 20,
