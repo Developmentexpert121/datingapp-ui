@@ -9,8 +9,13 @@ const BackButton = ({title}: any) => {
   const navigation = useNavigation();
   const dispatch: any = useAppDispatch();
   const handleBack = () => {
-    navigation.navigate('Home');
-    dispatch(footerStatus({footerStatus: 'HOME'}));
+    if (title === 'Edit Profile' || title === 'Settings') {
+      navigation.navigate('Profile');
+      dispatch(footerStatus({footerStatus: 'PROFILE'}));
+    } else {
+      navigation.navigate('Home');
+      dispatch(footerStatus({footerStatus: 'HOME'}));
+    }
   };
   return (
     <View>

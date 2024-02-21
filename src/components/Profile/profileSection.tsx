@@ -160,11 +160,8 @@ const ProfileSection = () => {
   ]);
 
   const navigation = useNavigation();
+
   const profileImage = profileData?.profilePic;
-  const profileCompletionPercentage = 71;
-  const userName = 'John Doe';
-  const userAddress = '123 Street, City';
-  const userLocation = 'New York, USA';
 
   const calculateStrokeDasharray = (percentage: any) => {
     const circumference = 465; // 2 * π * radius (140 * 2 * π)
