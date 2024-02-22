@@ -6,6 +6,7 @@ import {
   ScrollView,
   Modal,
   FlatList,
+  Alert,
 } from 'react-native';
 import React, {useState, useCallback, useEffect} from 'react';
 import CommonBackbutton from '../commonBackbutton/backButton';
@@ -29,6 +30,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {updateAuthentication, updateProfileData} from '../../store/Auth/auth';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Geolocation from '@react-native-community/geolocation';
 
 interface UpdateForm {
   name: string;
@@ -304,18 +306,18 @@ const SettingsSection = () => {
     );
   }, [low, high]);
 
-  const handleValueChange = useCallback(
-    (newLow: any, newHigh: any) => {
-      setLow(newLow);
-      setHigh(newHigh);
-    },
-    [setLow, setHigh],
-  );
+  const handleValueChange = (newLow: any, newHigh: any) => {
+    setLow(newLow);
+    setHigh(newHigh);
+  };
+
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [address, setAddress] = useState('');
 
+  const [location, setLocation] = useState<any>(null);
+
   useEffect(() => {
-    const getAddressFromCoordinates = async (latitude, longitude) => {
+    const getAddressFromCoordinates = async (latitude: any, longitude: any) => {
       try {
         const response = await fetch(
           `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`,
@@ -333,7 +335,7 @@ const SettingsSection = () => {
       profileData?.location?.latitude,
       profileData?.location?.longitude,
     ).then(address => setAddress(address));
-  }, []);
+  }, [profileData?.location?.latitude, profileData?.location?.longitude]);
 
   const dataArr = [
     {title: 'Phone Number', name: profileData?.phone},
@@ -366,6 +368,60 @@ const SettingsSection = () => {
     // navigation.navigate("Login");
   };
 
+  const [permissionStatus, setPermissionStatus] = useState<any>(null);
+
+  const [error, setError] = useState<any>(null);
+
+  const getLocationAndRegister = () => {
+    Geolocation.getCurrentPosition(
+      position => {
+        const {latitude, longitude} = position.coords;
+
+        setPermissionStatus('granted');
+
+        // Call registration API here
+        dispatch(
+          updateProfileData({
+            field: 'location',
+            value: {latitude, longitude},
+            id: getUserId(),
+          }),
+        ).then(() => setLocation({latitude, longitude}));
+
+        reset();
+      },
+      err => {
+        setError(err.message);
+        setPermissionStatus('denied');
+      },
+      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+    );
+  };
+
+  const requestLocationPermission = () => {
+    Geolocation.requestAuthorization();
+    getLocationAndRegister();
+  };
+
+  const showPermissionPopup = () => {
+    Alert.alert(
+      'Location Permission',
+      'This app needs access to your location to provide the service.',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => {
+            setPermissionStatus('denied');
+
+            reset();
+          },
+          style: 'cancel',
+        },
+        {text: 'Allow', onPress: () => requestLocationPermission()},
+      ],
+    );
+  };
+
   return (
     <ScrollView>
       <CommonBackbutton title="Settings" />
@@ -378,7 +434,13 @@ const SettingsSection = () => {
             <View>
               <TouchableOpacity
                 style={styles.textField}
-                onPress={() => handleModal(item)}>
+                onPress={() => {
+                  if (item.title === 'Location') {
+                    showPermissionPopup();
+                  } else {
+                    handleModal(item);
+                  }
+                }}>
                 {index === 0 ? (
                   <Icon1 name="phone" size={20} color="grey" />
                 ) : index === 1 ? (
@@ -391,6 +453,7 @@ const SettingsSection = () => {
                 <Text
                   style={{
                     fontFamily: 'Sansation_Regular',
+                    textAlign: 'center',
                   }}>
                   {item.name}
                 </Text>
