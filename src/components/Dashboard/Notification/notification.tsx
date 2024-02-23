@@ -35,8 +35,6 @@ const NotificationScreen = () => {
   const allNotifications: any = useAppSelector(
     (state: any) => state?.Auth?.data?.allNotifications,
   );
-  console.log(allNotifications);
-  console.log(allUsers);
 
   useEffect(() => {
     const getId = async () => {
