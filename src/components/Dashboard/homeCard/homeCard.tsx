@@ -1,5 +1,6 @@
 import React from 'react';
 import {Text, ImageBackground, View, StyleSheet} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
 const Card = (props: any) => {
   const {name, profilePic, hobbies} = props.user;
@@ -10,6 +11,9 @@ const Card = (props: any) => {
           uri: profilePic,
         }}
         style={styles.image}>
+        <LinearGradient
+          colors={['rgba(0,0,0,0)', 'rgba(0,0,0,0.8)']}
+          style={styles.gradient}></LinearGradient>
         <View style={styles.cardInner}>
           <Text style={styles.name}>{name}</Text>
           <Text style={styles.bio}>{hobbies}</Text>
@@ -25,7 +29,6 @@ const styles = StyleSheet.create({
     height: '100%',
     borderRadius: 10,
     backgroundColor: '#fefefe',
-
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -39,8 +42,14 @@ const styles = StyleSheet.create({
     height: '120%',
     borderRadius: 10,
     overflow: 'hidden',
-
     justifyContent: 'flex-end',
+  },
+  gradient: {
+    ...StyleSheet.absoluteFillObject,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    top: '50%', // Adjust the position of the gradient
+    height: '50%',
   },
   cardInner: {
     paddingHorizontal: 24,
@@ -49,7 +58,6 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 26,
     color: 'white',
-
     fontFamily: 'Sansation_Bold',
   },
   bio: {

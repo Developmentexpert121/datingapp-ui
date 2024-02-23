@@ -13,6 +13,7 @@ const ForthStepScreen = ({habits1, control, errors}: any) => {
   const [touchedItems, setTouchedItems] = useState<
     {itemId: string; touchedText: string}[]
   >([]);
+
   const dataArray = [
     {
       id: '1',
@@ -26,6 +27,7 @@ const ForthStepScreen = ({habits1, control, errors}: any) => {
         'Most Nights',
       ],
       image: require('../../assets/images/bottleofchampagne.png'),
+      imagePath: 'src/assets/images/bottleofchampagne.png',
     },
     {
       id: '2',
@@ -38,12 +40,14 @@ const ForthStepScreen = ({habits1, control, errors}: any) => {
         'Trying to quit',
       ],
       image: require('../../assets/images/smoking.png'),
+      imagePath: 'src/assets/images/smoking.png',
     },
     {
       id: '3',
       title: 'Do you workout?',
       texts: ['Everyday', 'Often', 'Sometimes', 'Never'],
       image: require('../../assets/images/Mandumbbells.png'),
+      imagePath: 'src/assets/images/Mandumbbells.png',
     },
     {
       id: '4',
@@ -62,6 +66,7 @@ const ForthStepScreen = ({habits1, control, errors}: any) => {
         'Want a pet',
       ],
       image: require('../../assets/images/dogheart.png'),
+      imagePath: 'src/assets/images/dogheart.png',
     },
     {
       id: '5',
@@ -75,6 +80,7 @@ const ForthStepScreen = ({habits1, control, errors}: any) => {
         'Music Lover',
       ],
       image: require('../../assets/images/datestep.png'),
+      imagePath: 'src/assets/images/datestep.png',
     },
   ];
 
@@ -151,7 +157,11 @@ const ForthStepScreen = ({habits1, control, errors}: any) => {
                             ...value.filter(
                               (habit: any) => habit.id !== item.id,
                             ),
-                            {id: item.id, selectedText: text},
+                            {
+                              id: item.id,
+                              selectedText: text,
+                              imagePath: item.imagePath,
+                            },
                           ])
                         }>
                         <Text

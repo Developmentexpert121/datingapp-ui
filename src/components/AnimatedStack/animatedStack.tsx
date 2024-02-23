@@ -26,9 +26,8 @@ const ROTATION = 60;
 const SWIPE_VELOCITY = 800;
 
 const AnimatedStack = (props: any) => {
-  const {data, renderItem} = props;
+  const {data, renderItem, currentIndex, setCurrentIndex} = props;
 
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [nextIndex, setNextIndex] = useState(currentIndex + 1);
 
   const currentProfile = data[currentIndex];
@@ -198,7 +197,7 @@ const AnimatedStack = (props: any) => {
 
           <TouchableOpacity onPress={onSwipeLeft}>
             <View style={styles.button}>
-              <Entypo name="cross" size={40} color="#AC25AC" />
+              <Entypo name="cross" size={40} color="#FF2222" />
             </View>
           </TouchableOpacity>
 

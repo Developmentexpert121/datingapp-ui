@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Pressable,
   Text,
+  Image,
 } from 'react-native';
 import Card from '../homeCard/homeCard';
 import users from '../../../assets/data/users';
@@ -39,6 +40,9 @@ const HomeScreen = () => {
   const allUsers: any = useAppSelector(
     (state: any) => state?.Auth?.data?.allUsers,
   );
+  const profileData: any = useAppSelector(
+    (state: any) => state?.Auth?.data?.profileData,
+  );
 
   useEffect(() => {
     const getId = async () => {
@@ -63,28 +67,92 @@ const HomeScreen = () => {
     'Street food',
     'Foodie tour',
   ];
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  console.log(currentIndex);
+
+  const calculateDistance = (lat1: any, lon1: any, lat2: any, lon2: any) => {
+    const R = 3958.8; // Earth radius in miles
+    const dLat = toRadians(lat2 - lat1);
+    const dLon = toRadians(lon2 - lon1);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(toRadians(lat1)) *
+        Math.cos(toRadians(lat2)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c;
+    return distance;
+  };
+
+  // Function to convert degrees to radians
+  const toRadians = (degrees: any) => {
+    return (degrees * Math.PI) / 180;
+  };
+
   return (
     <View style={styles.pageContainer}>
       <HeaderComponent />
       <AnimatedStack
         data={allUsers}
         renderItem={({item}: any) => <Card user={item} />}
-        onSwipeLeft={onSwipeLeft}
-        onSwipeRight={onSwipeRight}
+        currentIndex={currentIndex}
+        setCurrentIndex={setCurrentIndex}
       />
 
       <View style={styles.locText}>
         <Ionicons name="location-sharp" size={20} color="#AC25AC" />
         <Text style={{fontFamily: 'Sansation_Regular', color: 'black'}}>
-          30 miles away
+          {
+            profileData.location && allUsers[currentIndex]?.location // Check if both locations are available
+              ? `${Math.round(
+                  calculateDistance(
+                    profileData.location.latitude,
+                    profileData.location.longitude,
+                    allUsers[currentIndex].location.latitude,
+                    allUsers[currentIndex].location.longitude,
+                  ),
+                ).toFixed(0)} miles away` // Calculate distance and round off to the nearest whole number
+              : 'Distance information unavailable' // Display a message if distance information is missing
+          }
         </Text>
       </View>
       <View style={styles.container}>
-        {dataArr.map((item: any, index: any) => (
-          <Text key={index} style={styles.item}>
-            {item}
-          </Text>
-        ))}
+        {allUsers[currentIndex]?.habits1?.map((item: any, index: any) => {
+          let imagePath;
+          switch (item.imagePath) {
+            case 'src/assets/images/bottleofchampagne.png':
+              imagePath = require('../../../assets/images/bottleofchampagne.png');
+              break;
+            case 'src/assets/images/smoking.png':
+              imagePath = require('../../../assets/images/smoking.png');
+              break;
+            case 'src/assets/images/Mandumbbells.png':
+              imagePath = require('../../../assets/images/Mandumbbells.png');
+              break;
+            case 'src/assets/images/dogheart.png':
+              imagePath = require('../../../assets/images/dogheart.png');
+              break;
+            case 'src/assets/images/datestep.png':
+              imagePath = require('../../../assets/images/datestep.png');
+              break;
+            // Add more cases for other image paths as needed
+          }
+          return (
+            <View style={styles.item}>
+              {imagePath && (
+                <Image source={imagePath} style={{height: 20, width: 20}} />
+              )}
+
+              <Text
+                key={index.id}
+                style={{fontFamily: 'Sansation_Regular', color: 'black'}}>
+                {item.selectedText}
+              </Text>
+            </View>
+          );
+        })}
       </View>
 
       <FooterComponent />
@@ -122,6 +190,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: 20,
     marginBottom: 16,
+    columnGap: 2,
   },
   container: {
     flexDirection: 'row',
@@ -135,9 +204,11 @@ const styles = StyleSheet.create({
     borderRadius: 52,
     paddingVertical: 8,
     paddingHorizontal: 12,
-    fontFamily: 'Sansation_Regular',
-    color: 'black',
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 10,
+    columnGap: 4,
+    backgroundColor: '#FFFFFF',
   },
 });
 
