@@ -21,12 +21,18 @@ import Animated, {
 import {PanGestureHandler} from 'react-native-gesture-handler';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {useAppDispatch} from '../../store/store';
+import {likedAUser} from '../../store/Auth/auth';
+import {current} from '@reduxjs/toolkit';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ROTATION = 60;
 const SWIPE_VELOCITY = 800;
 
 const AnimatedStack = (props: any) => {
-  const {data, renderItem, currentIndex, setCurrentIndex} = props;
+  const {data, renderItem, currentIndex, setCurrentIndex, profileData} = props;
+
+  const dispatch: any = useAppDispatch();
 
   const [nextIndex, setNextIndex] = useState(currentIndex + 1);
 
@@ -98,6 +104,12 @@ const AnimatedStack = (props: any) => {
   };
 
   const onSwipeRight = () => {
+    dispatch(
+      likedAUser({
+        likerId: profileData._id,
+        userIdBeingLiked: data[currentIndex]._id,
+      }),
+    );
     const targetX = hiddenTranslateX;
     translateX.value = withSpring(targetX, {
       duration: 5000,

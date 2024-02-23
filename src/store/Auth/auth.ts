@@ -133,8 +133,28 @@ export const getAllUsers = createAsyncThunk(
   'auth/getAllUsers',
   async (userId: any, {dispatch}: any) => {
     try {
-      console.log('Look', userId);
       const response = await http.get('/user/getUsers', {params: {id: userId}});
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        return {error: 'Bad Request'};
+      } else {
+        throw error;
+      }
+    } finally {
+      //  dispatch(activityLoaderFinished());
+    }
+  },
+);
+
+export const likedAUser = createAsyncThunk(
+  'auth/likedAUser',
+  async (data: any, {dispatch}: any) => {
+    try {
+      console.log('Look', data);
+      const response = await http.post('/user/likeUser', data);
       if (response.status === 200) {
         return response.data;
       }

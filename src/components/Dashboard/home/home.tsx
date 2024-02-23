@@ -53,21 +53,6 @@ const HomeScreen = () => {
     getId();
   }, []);
 
-  const onSwipeLeft = (user: any) => {
-    //  console.warn('swipe left', user.name);
-  };
-
-  const onSwipeRight = (user: any) => {
-    // console.warn('swipe right: ', user.name);
-  };
-  const dataArr: any = [
-    'Non-Smoker',
-    'Photography',
-    'Virgo',
-    'Street food',
-    'Foodie tour',
-  ];
-
   const [currentIndex, setCurrentIndex] = useState(0);
   console.log(currentIndex);
 
@@ -99,6 +84,7 @@ const HomeScreen = () => {
         renderItem={({item}: any) => <Card user={item} />}
         currentIndex={currentIndex}
         setCurrentIndex={setCurrentIndex}
+        profileData={profileData}
       />
 
       <View style={styles.locText}>
