@@ -1,5 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, useWindowDimensions} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  useWindowDimensions,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 
 import Animated, {
   useSharedValue,
@@ -8,15 +14,19 @@ import Animated, {
   useAnimatedGestureHandler,
   interpolate,
   withSpring,
+  withTiming,
   runOnJS,
+  ReduceMotion,
 } from 'react-native-reanimated';
 import {PanGestureHandler} from 'react-native-gesture-handler';
+import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const ROTATION = 60;
 const SWIPE_VELOCITY = 800;
 
 const AnimatedStack = (props: any) => {
-  const {data, renderItem, onSwipeRight, onSwipeLeft} = props;
+  const {data, renderItem} = props;
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [nextIndex, setNextIndex] = useState(currentIndex + 1);
@@ -71,6 +81,40 @@ const AnimatedStack = (props: any) => {
     opacity: interpolate(translateX.value, [0, -hiddenTranslateX / 5], [0, 1]),
   }));
 
+  const onSwipeLeft = () => {
+    const targetX = -hiddenTranslateX;
+    translateX.value = withSpring(targetX, {
+      duration: 5000,
+      dampingRatio: 0.6,
+      stiffness: 6,
+      overshootClamping: false,
+      restDisplacementThreshold: 1,
+      restSpeedThreshold: 8,
+      reduceMotion: ReduceMotion.Never,
+    });
+    setTimeout(() => {
+      setCurrentIndex(currentIndex + 1);
+      setNextIndex(nextIndex + 1);
+    }, 10);
+  };
+
+  const onSwipeRight = () => {
+    const targetX = hiddenTranslateX;
+    translateX.value = withSpring(targetX, {
+      duration: 5000,
+      dampingRatio: 0.6,
+      stiffness: 6,
+      overshootClamping: false,
+      restDisplacementThreshold: 1,
+      restSpeedThreshold: 8,
+      reduceMotion: ReduceMotion.Never,
+    });
+    setTimeout(() => {
+      setCurrentIndex(currentIndex + 1);
+      setNextIndex(nextIndex + 1);
+    }, 10);
+  };
+
   const gestureHandler = useAnimatedGestureHandler({
     onStart: (_, context) => {
       context.startX = translateX.value;
@@ -84,21 +128,34 @@ const AnimatedStack = (props: any) => {
         return;
       }
 
+      const direction = Math.sign(event.velocityX);
+      const targetX = direction > 0 ? hiddenTranslateX : -hiddenTranslateX;
+
       translateX.value = withSpring(
-        hiddenTranslateX * Math.sign(event.velocityX),
-        {},
-        () => runOnJS(setCurrentIndex)(currentIndex + 1),
+        targetX,
+        {damping: 10, stiffness: 100},
+        () => {
+          if (direction === 1) {
+            runOnJS(onSwipeRight);
+          } else {
+            runOnJS(onSwipeLeft);
+          }
+        },
       );
 
-      const onSwipe = event.velocityX > 0 ? onSwipeRight : onSwipeLeft;
-      onSwipe && runOnJS(onSwipe)(currentProfile);
+      runOnJS(setCurrentIndex)(currentIndex + 1);
+      runOnJS(setNextIndex)(nextIndex + 1);
     },
   });
 
   useEffect(() => {
+    if (currentIndex === data.length) {
+      setCurrentIndex(0);
+    }
+
     translateX.value = 0;
     setNextIndex(currentIndex + 1);
-  }, [currentIndex, translateX]);
+  }, [currentIndex, translateX, data.length]);
 
   return (
     <View style={styles.root}>
@@ -110,7 +167,7 @@ const AnimatedStack = (props: any) => {
         </View>
       )}
 
-      {currentProfile && (
+      {currentProfile ? (
         <PanGestureHandler onGestureEvent={gestureHandler}>
           <Animated.View style={[styles.animatedCard, cardStyle]}>
             <Animated.Image
@@ -126,7 +183,44 @@ const AnimatedStack = (props: any) => {
             {renderItem({item: currentProfile})}
           </Animated.View>
         </PanGestureHandler>
+      ) : (
+        <Text style={{fontFamily: 'Sansation_Bold', fontSize: 26}}>
+          You have viewed all profiles!
+        </Text>
       )}
+      <View style={{width: '100%', alignItems: 'center'}}>
+        <View style={styles.icons}>
+          {/* <TouchableOpacity>
+          <View style={styles.button}>
+            <FontAwesome name="undo" size={30} color="#FBD88B" />
+          </View>
+        </TouchableOpacity> */}
+
+          <TouchableOpacity onPress={onSwipeLeft}>
+            <View style={styles.button}>
+              <Entypo name="cross" size={40} color="#AC25AC" />
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={onSwipeRight}>
+            <View style={styles.button}>
+              <FontAwesome name="heart" size={40} color="#4FCC94" />
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity>
+            <View style={styles.button}>
+              <FontAwesome name="star" size={40} color="#3AB4CC" />
+            </View>
+          </TouchableOpacity>
+
+          {/* <TouchableOpacity>
+          <View style={styles.button}>
+            <Ionicons name="flash" size={30} color="#A65CD2" />
+          </View>
+        </TouchableOpacity> */}
+        </View>
+      </View>
     </View>
   );
 };
@@ -136,18 +230,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
+
     width: '100%',
   },
   animatedCard: {
-    width: '90%',
-    height: '80%',
+    width: '80%',
+    height: '62%',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 60,
+    marginTop: 24,
+    marginBottom: 68,
   },
   nextCardContainer: {
     ...StyleSheet.absoluteFillObject,
-
+    marginBottom: 68,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -157,6 +253,24 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 10,
     zIndex: 1,
+  },
+  icons: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    width: '70%',
+    marginVertical: 12,
+  },
+  button: {
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+
+    borderRadius: 60,
+    borderWidth: 2,
+    borderColor: '#AC25AC',
   },
 });
 

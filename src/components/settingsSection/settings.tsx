@@ -226,17 +226,14 @@ const SettingsSection = () => {
 
   const handleSliderChange = (value: any) => {
     setDistance(value);
-  };
-
-  useEffect(() => {
     dispatch(
       updateProfileData({
         field: 'distance',
-        value: distance,
+        value: value,
         id: getUserId(),
       }),
     );
-  }, [distance]);
+  };
 
   const options = [
     {label: 'Male', value: 'first'},
@@ -296,19 +293,16 @@ const SettingsSection = () => {
     }
   }, []);
 
-  useEffect(() => {
-    dispatch(
-      updateProfileData({
-        field: 'ageRange',
-        value: `${low} ${high}`,
-        id: getUserId(),
-      }),
-    );
-  }, [low, high]);
-
   const handleValueChange = (newLow: any, newHigh: any) => {
     setLow(newLow);
     setHigh(newHigh);
+    dispatch(
+      updateProfileData({
+        field: 'ageRange',
+        value: `${newLow} ${newHigh}`,
+        id: getUserId(),
+      }),
+    );
   };
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);

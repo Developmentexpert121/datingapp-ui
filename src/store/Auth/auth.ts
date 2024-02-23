@@ -129,6 +129,27 @@ export const updateProfileData = createAsyncThunk(
   },
 );
 
+export const getAllUsers = createAsyncThunk(
+  'auth/getAllUsers',
+  async (userId: any, {dispatch}: any) => {
+    try {
+      console.log('Look', userId);
+      const response = await http.get('/user/getUsers', {params: {id: userId}});
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        return {error: 'Bad Request'};
+      } else {
+        throw error;
+      }
+    } finally {
+      //  dispatch(activityLoaderFinished());
+    }
+  },
+);
+
 export const updateAuthentication = createAsyncThunk(
   'auth/updateAuthentication',
   async () => {},
@@ -143,6 +164,7 @@ const Auth: any = createSlice({
       signup: {},
       data: {},
       profileData: {},
+      allUsers: [],
     },
     isAuthenticated: false,
     loading: false,
@@ -181,6 +203,17 @@ const Auth: any = createSlice({
         state.loading = true;
       })
       .addCase(ProfileData.rejected, (state, action) => {
+        state.loading = false;
+      })
+
+      .addCase(getAllUsers.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(getAllUsers.fulfilled, (state, action) => {
+        state.data.allUsers = action.payload.users;
+        state.loading = false;
+      })
+      .addCase(getAllUsers.rejected, (state, action) => {
         state.loading = false;
       })
 
