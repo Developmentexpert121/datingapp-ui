@@ -42,22 +42,32 @@ const LikedScreen = () => {
       </ImageBackground>
     </View>
   );
+  console.log(likedUsers);
 
   return (
     <View style={styles.container}>
       <CommonBackbutton title="Liked You" />
-      <View
-        style={{
-          flex: 1,
-          marginHorizontal: 26,
-        }}>
-        <FlatList
-          data={likedUsers}
-          renderItem={renderGridItem}
-          keyExtractor={item => item._id}
-          numColumns={2}
-        />
-      </View>
+      {likedUsers.length === 0 ? (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <Text style={{fontFamily: 'Sansation_Bold', fontSize: 20}}>
+            No one has liked your profile!
+          </Text>
+        </View>
+      ) : (
+        <View
+          style={{
+            flex: 1,
+            marginHorizontal: 26,
+          }}>
+          <FlatList
+            data={likedUsers}
+            renderItem={renderGridItem}
+            keyExtractor={item => item._id}
+            numColumns={2}
+          />
+        </View>
+      )}
+
       <FooterComponent />
     </View>
   );

@@ -129,6 +129,27 @@ export const updateProfileData = createAsyncThunk(
   },
 );
 
+export const likedAUser = createAsyncThunk(
+  'auth/likedAUser',
+  async (data: any, {dispatch}: any) => {
+    try {
+      console.log('Look', data);
+      const response = await http.post('/user/likeUser', data);
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        return {error: 'Bad Request'};
+      } else {
+        throw error;
+      }
+    } finally {
+      //  dispatch(activityLoaderFinished());
+    }
+  },
+);
+
 export const getAllUsers = createAsyncThunk(
   'auth/getAllUsers',
   async (userId: any, {dispatch}: any) => {
@@ -149,12 +170,13 @@ export const getAllUsers = createAsyncThunk(
   },
 );
 
-export const likedAUser = createAsyncThunk(
-  'auth/likedAUser',
-  async (data: any, {dispatch}: any) => {
+export const getNotifications = createAsyncThunk(
+  'auth/getNotifications',
+  async (userId: any, {dispatch}: any) => {
     try {
-      console.log('Look', data);
-      const response = await http.post('/user/likeUser', data);
+      const response = await http.get('/user/getNotification', {
+        params: {id: userId},
+      });
       if (response.status === 200) {
         return response.data;
       }
@@ -185,6 +207,7 @@ const Auth: any = createSlice({
       data: {},
       profileData: {},
       allUsers: [],
+      allNotifications: [],
     },
     isAuthenticated: false,
     loading: false,
@@ -234,6 +257,17 @@ const Auth: any = createSlice({
         state.loading = false;
       })
       .addCase(getAllUsers.rejected, (state, action) => {
+        state.loading = false;
+      })
+
+      .addCase(getNotifications.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(getNotifications.fulfilled, (state, action) => {
+        state.data.allNotifications = action.payload.notifications;
+        state.loading = false;
+      })
+      .addCase(getNotifications.rejected, (state, action) => {
         state.loading = false;
       })
 
