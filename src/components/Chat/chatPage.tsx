@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {ListItem, Avatar, SearchBar} from 'react-native-elements';
@@ -18,8 +18,10 @@ import {reciveMessages, sendAMessage} from '../../store/Auth/auth';
 import {ScrollView} from 'react-native-gesture-handler';
 
 const ChatPage = () => {
+  const scrollViewRef: any = useRef(null);
+
   const navigation = useNavigation();
-  const dispatch = useAppDispatch();
+  const dispatch: any = useAppDispatch();
   const allUsers: any = useAppSelector(
     (state: any) => state?.Auth?.data?.allUsers,
   );
@@ -29,15 +31,14 @@ const ChatPage = () => {
 
   const [inputMessage, setInputMessage] = useState('');
 
-  const [chatMessages, setChatMessages] = useState([]);
+  const [chatMessages, setChatMessages] = useState<any>([]);
   console.log(chatMessages);
 
   useEffect(() => {
     const fetchMessages = async () => {
       // Fetch messages sent by user 1 to user 2
-      // @ts-ignore
+
       const response1 = await dispatch(
-        // @ts-ignore
         reciveMessages({
           senderId: profileData._id,
           receiverId: allUsers[2]._id,
@@ -45,9 +46,8 @@ const ChatPage = () => {
       ).unwrap();
 
       // Fetch messages sent by user 2 to user 1
-      // @ts-ignore
+
       const response2 = await dispatch(
-        // @ts-ignore
         reciveMessages({
           senderId: allUsers[2]._id,
           receiverId: profileData._id,
@@ -55,11 +55,10 @@ const ChatPage = () => {
       ).unwrap();
 
       // Update chatMessages state with the latest messages
-      // @ts-ignore
+
       // Inside the useEffect hook after setting chatMessages state
 
       setChatMessages(
-        // @ts-ignore
         [...response1.messages, ...response2.messages].sort((a, b) => {
           return (
             new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
@@ -73,7 +72,6 @@ const ChatPage = () => {
 
   const handleSendMessage = useCallback(() => {
     dispatch(
-      // @ts-ignore
       sendAMessage({
         senderId: profileData?._id,
         receiverId: allUsers[2]?._id,
@@ -132,8 +130,14 @@ const ChatPage = () => {
         </View>
       </View>
       <View style={{marginTop: 10, flex: 1}}>
-        <ScrollView>
-          {chatMessages.map((messageItem: any, index) => {
+        <ScrollView
+          ref={scrollViewRef}
+          onContentSizeChange={() => {
+            if (scrollViewRef?.current) {
+              scrollViewRef?.current?.scrollToEnd({animated: true});
+            }
+          }}>
+          {chatMessages.map((messageItem: any, index: any) => {
             return (
               <View
                 key={index}
