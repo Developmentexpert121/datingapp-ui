@@ -35,7 +35,9 @@ const ChatPage = () => {
   useEffect(() => {
     const fetchMessages = async () => {
       // Fetch messages sent by user 1 to user 2
+      // @ts-ignore
       const response1 = await dispatch(
+        // @ts-ignore
         reciveMessages({
           senderId: profileData._id,
           receiverId: allUsers[2]._id,
@@ -43,7 +45,9 @@ const ChatPage = () => {
       ).unwrap();
 
       // Fetch messages sent by user 2 to user 1
+      // @ts-ignore
       const response2 = await dispatch(
+        // @ts-ignore
         reciveMessages({
           senderId: allUsers[2]._id,
           receiverId: profileData._id,
@@ -51,6 +55,7 @@ const ChatPage = () => {
       ).unwrap();
 
       // Update chatMessages state with the latest messages
+      // @ts-ignore
       setChatMessages([...response1.messages, ...response2.messages]);
     };
 
@@ -59,6 +64,7 @@ const ChatPage = () => {
 
   const handleSendMessage = useCallback(() => {
     dispatch(
+      // @ts-ignore
       sendAMessage({
         senderId: profileData?._id,
         receiverId: allUsers[2]?._id,
@@ -119,9 +125,6 @@ const ChatPage = () => {
       <View style={{marginTop: 10, flex: 1}}>
         <ScrollView>
           {chatMessages.map((messageItem: any, index) => {
-            const user = allUsers.find(
-              (u: any) => u._id === messageItem.receiver,
-            );
             return (
               <View
                 key={index}
@@ -135,11 +138,11 @@ const ChatPage = () => {
                   marginBottom: 12,
                   alignItems: 'baseline',
                 }}>
-                {!messageItem?.sender === profileData._id && (
+                {messageItem?.sender !== profileData._id && (
                   <View style={{alignSelf: 'flex-end', marginBottom: 'auto'}}>
                     <Image
                       source={{
-                        uri: user._id,
+                        uri: allUsers[2]?.profilePic,
                       }}
                       style={styles.circularImage}
                     />
