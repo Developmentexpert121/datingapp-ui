@@ -54,7 +54,7 @@ const ChatSection = () => {
   return (
     <View style={styles.container}>
       <CommonBackbutton title="Chat" />
-      <View style={{marginHorizontal: 20, flex: 1}}>
+      <View style={{flex: 1}}>
         <View style={styles.containerSearch}>
           <Ionicons name="search-outline" size={20} style={styles.icon} />
           <TextInput
@@ -74,7 +74,7 @@ const ChatSection = () => {
               onPress={() => handleMovepage(item.name)}>
               <Avatar size={60} source={{uri: item.avatar}} rounded />
               <View style={styles.line}>
-                <View style={{marginBottom: 10}}>
+                <View style={{paddingBottom: 10}}>
                   <Text
                     style={{
                       fontFamily: 'Sansation_Bold',
@@ -84,7 +84,10 @@ const ChatSection = () => {
                     }}>
                     {item.name}
                   </Text>
-                  <Text style={{fontFamily: 'Sansation_Regular'}}>
+                  <Text
+                    style={{
+                      fontFamily: 'Sansation_Regular',
+                    }}>
                     {item.lastMessage}
                   </Text>
                 </View>
@@ -119,15 +122,17 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: 'Sansation_Bold',
     color: 'black',
+    marginLeft: 20,
+    marginBottom: 4,
   },
   listItemContainer: {
-    padding: 0,
     paddingVertical: 10,
+    paddingHorizontal: 20,
   },
   line: {
     flex: 1,
     flexDirection: 'row',
-    paddingVertical: 6,
+    paddingTop: 8,
     borderBottomWidth: 1,
     borderBottomColor: '#D0D0D0',
   },
@@ -147,7 +152,7 @@ const styles = StyleSheet.create({
     borderColor: '#EBEBEB',
     borderRadius: 42,
     backgroundColor: '#EBEBEB',
-
+    marginHorizontal: 20,
     height: 40,
     fontSize: 20,
   },

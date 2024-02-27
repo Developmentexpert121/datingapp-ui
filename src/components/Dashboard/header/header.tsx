@@ -61,18 +61,20 @@ const HeaderComponent = (props: any) => {
             {props.title ? props.title : 'Discover'}
           </Text>
           <View style={{flexDirection: 'row', gap: 20, marginRight: 10}}>
-            <Pressable onPress={() => handleNotification()}>
-              <MaterialIcons
-                name="notifications-on"
-                size={30}
-                style={{color: 'black'}}
-              />
-              {/* <MaterialCommunityIcons
+            {props.showNotifications && (
+              <Pressable onPress={() => handleNotification()}>
+                <MaterialIcons
+                  name="notifications-on"
+                  size={30}
+                  style={{color: 'black'}}
+                />
+                {/* <MaterialCommunityIcons
             name="star-four-points"
             size={30}
             color={activeScreen === 'STAR' ? activeColor : color}
           /> */}
-            </Pressable>
+              </Pressable>
+            )}
             <Pressable onPress={() => handleFilter()}>
               <Image
                 source={require('../../../assets/images/filter.png')}

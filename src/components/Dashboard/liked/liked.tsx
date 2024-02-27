@@ -48,7 +48,13 @@ const LikedScreen = () => {
     <View style={styles.container}>
       <CommonBackbutton title="Liked You" />
       {likedUsers.length === 0 ? (
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: 40,
+          }}>
           <Text style={{fontFamily: 'Sansation_Bold', fontSize: 20}}>
             No one has liked your profile!
           </Text>

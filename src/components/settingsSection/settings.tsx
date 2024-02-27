@@ -11,19 +11,11 @@ import {
 import React, {useState, useCallback, useEffect} from 'react';
 import CommonBackbutton from '../commonBackbutton/backButton';
 import {yupResolver} from '@hookform/resolvers/yup';
-import {Slider} from 'react-native-elements';
-import {RadioButton} from 'react-native-paper';
 import {useForm, Controller} from 'react-hook-form';
 import Icon1 from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon3 from 'react-native-vector-icons/Entypo';
 import * as yup from 'yup';
-import RangeSlider from 'rn-range-slider';
-import Label from './Label';
-import Notch from './Notch';
-import Rail from './Rail';
-import RailSelected from './RailSelected';
-import Thumb from './Thumb';
 import AppTextInput from '../AppTextInput/AppTextInput';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
@@ -218,30 +210,9 @@ const SettingsSection = () => {
     (state: any) => state?.Auth?.data?.profileData,
   );
   const dispatch: any = useAppDispatch();
-  const [distance, setDistance] = useState(
-    parseInt(profileData?.distance) || 0,
-  );
+
   const [title, setTitle] = useState<string>('');
   const [values, setValues] = useState<string>('');
-
-  const handleSliderChange = (value: any) => {
-    setDistance(value);
-    dispatch(
-      updateProfileData({
-        field: 'distance',
-        value: value,
-        id: getUserId(),
-      }),
-    );
-  };
-
-  const options = [
-    {label: 'Male', value: 'first'},
-    {label: 'Female', value: 'second'},
-    {label: 'Non-Binary', value: 'third'},
-    {label: 'Transgender', value: 'fourth'},
-  ];
-  const [checked, setChecked] = React.useState(profileData?.gender);
 
   const {
     control,
@@ -253,57 +224,9 @@ const SettingsSection = () => {
     resolver: yupResolver<any>(schema),
   });
 
-  const [minValue, setMinValue] = useState(18);
-  const [maxValue, setMaxValue] = useState(56);
-
   //   const handleSliderChange = (value:any) => {
   //     setDistance(value);
   //   };
-
-  const handleMinValueChange = (value: any) => {
-    setMinValue(value);
-    if (distance < value) {
-      setDistance(value);
-    }
-  };
-
-  const handleMaxValueChange = (value: any) => {
-    setMaxValue(value);
-    if (distance > value) {
-      setDistance(value);
-    }
-  };
-
-  const [low, setLow] = useState<number>(18);
-  const [high, setHigh] = useState<number>(56);
-
-  const renderThumb = useCallback(() => <Thumb />, []);
-  const renderRail = useCallback(() => <Rail />, []);
-  const renderRailSelected = useCallback(() => <RailSelected />, []);
-  const renderLabel = useCallback((value: any) => <Label text={value} />, []);
-  const renderNotch = useCallback(() => <Notch />, []);
-
-  useEffect(() => {
-    if (profileData?.ageRange) {
-      const [lowStr, highStr] = profileData.ageRange.split(' ');
-      const lowValue = parseInt(lowStr);
-      const highValue = parseInt(highStr);
-      setLow(lowValue);
-      setHigh(highValue);
-    }
-  }, []);
-
-  const handleValueChange = (newLow: any, newHigh: any) => {
-    setLow(newLow);
-    setHigh(newHigh);
-    dispatch(
-      updateProfileData({
-        field: 'ageRange',
-        value: `${newLow} ${newHigh}`,
-        id: getUserId(),
-      }),
-    );
-  };
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [address, setAddress] = useState('');
@@ -338,7 +261,6 @@ const SettingsSection = () => {
       title: 'Location',
       name: address,
     },
-    {title: 'Show Me', name: profileData?.interests},
     {title: 'Language I Know', name: profileData?.language},
   ];
   const openDrawer = () => {
@@ -354,7 +276,6 @@ const SettingsSection = () => {
     setValues(item?.name);
     setIsDrawerOpen(true);
   };
-  const navigation: any = useNavigation();
 
   const logoutUser = async () => {
     await AsyncStorage.removeItem('authToken');
@@ -455,110 +376,6 @@ const SettingsSection = () => {
             </View>
           </View>
         ))}
-
-      <View style={styles.boxContainer}>
-        <View style={styles.distance}>
-          <Text style={styles.textName}>Distance Preference</Text>
-          <Text style={{fontFamily: 'Sansation_Regular', color: 'black'}}>
-            {distance} Mi
-          </Text>
-        </View>
-        <View style={styles.line} />
-        <Slider
-          style={styles.slider}
-          minimumValue={4}
-          maximumValue={50}
-          value={distance}
-          onSlidingComplete={handleSliderChange}
-          step={1}
-          thumbTintColor="#AC25AC"
-          minimumTrackTintColor="#AC25AC"
-          maximumTrackTintColor="gray"
-          thumbStyle={styles.thumbStyle}
-        />
-      </View>
-
-      <View style={styles.boxContainer}>
-        <View style={styles.distance}>
-          <Text style={styles.textName}>Age Range</Text>
-          <Text style={{fontFamily: 'Sansation_Regular', color: 'black'}}>
-            {low + '-' + high}
-          </Text>
-        </View>
-        <View style={styles.line} />
-        <RangeSlider
-          style={[styles.slider, {marginVertical: 14}]}
-          min={minValue}
-          max={maxValue}
-          low={low}
-          high={high}
-          step={1}
-          floatingLabel
-          renderThumb={renderThumb}
-          renderRail={renderRail}
-          renderRailSelected={renderRailSelected}
-          renderLabel={renderLabel}
-          renderNotch={renderNotch}
-          onSliderTouchEnd={handleValueChange}
-        />
-      </View>
-
-      <View style={styles.boxContainer}>
-        <Text style={styles.textName}>Gender</Text>
-        <View style={styles.line} />
-        <View>
-          {options.map(item => (
-            <View key={item.value} style={styles.radio}>
-              <Controller
-                name={'gender'}
-                control={control}
-                defaultValue="Male"
-                render={() => (
-                  <View
-                    style={{
-                      flex: 1,
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                    }}>
-                    <Text
-                      style={[
-                        {
-                          color: errors?.gender ? 'red' : 'black',
-                          fontFamily: 'Sansation_Regular',
-                          paddingBottom: 8,
-                        },
-                      ]}>
-                      {item.label}
-                    </Text>
-                    <TouchableOpacity
-                      onPress={() => {
-                        setChecked(item.label);
-                        dispatch(
-                          updateProfileData({
-                            field: 'gender',
-                            value: item.label,
-                            id: getUserId(),
-                          }),
-                        );
-                      }}>
-                      <Ionicons
-                        name={
-                          checked === item.label
-                            ? 'radio-button-on'
-                            : 'radio-button-off'
-                        }
-                        size={16}
-                        color="#AC25AC"
-                      />
-                    </TouchableOpacity>
-                  </View>
-                )}
-              />
-            </View>
-          ))}
-        </View>
-      </View>
 
       <View style={styles.boxContainer}>
         <Text

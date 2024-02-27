@@ -134,28 +134,25 @@ const AnimatedStack = (props: any) => {
       translateX.value = context.startX + event.translationX;
     },
     onEnd: event => {
-      if (Math.abs(event.velocityX) < SWIPE_VELOCITY) {
+      if (
+        Math.abs(event.translationX) < screenWidth / 4 ||
+        Math.abs(event.velocityX) < SWIPE_VELOCITY
+      ) {
+        // If the swipe wasn't significant or fast enough, reset the card position
         translateX.value = withSpring(0);
         return;
       }
 
-      const direction = Math.sign(event.velocityX);
-      const targetX = direction > 0 ? hiddenTranslateX : -hiddenTranslateX;
-
-      translateX.value = withSpring(
-        targetX,
-        {damping: 10, stiffness: 100},
-        () => {
-          if (direction === 1) {
-            runOnJS(onSwipeRight);
-          } else {
-            runOnJS(onSwipeLeft);
-          }
-        },
-      );
-
-      runOnJS(setCurrentIndex)(currentIndex + 1);
-      runOnJS(setNextIndex)(nextIndex + 1);
+      const direction = Math.sign(event.translationX);
+      if (direction === 1) {
+        // Swipe to the right
+        runOnJS(onSwipeRight)();
+      } else {
+        // Swipe to the left
+        runOnJS(onSwipeLeft)();
+      }
+      // Reset the card position
+      translateX.value = withSpring(0);
     },
   });
 

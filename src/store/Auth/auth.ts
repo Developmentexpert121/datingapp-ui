@@ -192,6 +192,65 @@ export const getNotifications = createAsyncThunk(
   },
 );
 
+export const handleNotificationRead = createAsyncThunk(
+  'auth/handleNotificationRead',
+  async (id: any, {dispatch}: any) => {
+    try {
+      const response = await http.delete(`/user/deleteNotification/${id}`);
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        return {error: 'Bad Request'};
+      } else {
+        throw error;
+      }
+    }
+  },
+);
+
+export const sendAMessage = createAsyncThunk(
+  'auth/sendAMessage',
+  async (data: any) => {
+    try {
+      console.log(data);
+      const response: any = await http.post(`/user/send-message`, data);
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        return {error: 'Bad Request'};
+      } else {
+        throw error;
+      }
+    }
+  },
+);
+
+export const reciveMessages = createAsyncThunk(
+  'auth/reciveMessages',
+  async (data: any, {dispatch}: any) => {
+    try {
+      console.log(data);
+      const response = await http.get(
+        `/user/messages?senderId=${data.senderId}&receiverId=${data.receiverId}`,
+      );
+
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        return {error: 'Bad Request'};
+      } else {
+        throw error;
+      }
+    }
+  },
+);
+
 export const updateAuthentication = createAsyncThunk(
   'auth/updateAuthentication',
   async () => {},

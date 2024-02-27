@@ -5,34 +5,71 @@ import {
   Pressable,
   Image,
   TouchableOpacity,
+  TextInput,
 } from 'react-native';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {ListItem, Avatar, SearchBar} from 'react-native-elements';
 import Icon1 from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/FontAwesome6';
+import {useAppDispatch, useAppSelector} from '../../store/store';
+import {reciveMessages, sendAMessage} from '../../store/Auth/auth';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const ChatPage = () => {
   const navigation = useNavigation();
+  const dispatch = useAppDispatch();
+  const allUsers: any = useAppSelector(
+    (state: any) => state?.Auth?.data?.allUsers,
+  );
+  const profileData: any = useAppSelector(
+    (state: any) => state?.Auth?.data?.profileData,
+  );
 
-  const messagesList = [
-    {
-      isMyMessage: true,
-      message: 'Hlo',
-    },
-    {
-      isMyMessage: false,
-      message: 'No',
-    },
-    {isMyMessage: true, message: 'Hi'},
-    {isMyMessage: false, message: 'Bye'},
-    {isMyMessage: true, message: 'Ok'},
-    {isMyMessage: true, message: 'byee'},
-  ];
+  const [inputMessage, setInputMessage] = useState('');
+
+  const [chatMessages, setChatMessages] = useState([]);
+  console.log(chatMessages);
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      // Fetch messages sent by user 1 to user 2
+      const response1 = await dispatch(
+        reciveMessages({
+          senderId: profileData._id,
+          receiverId: allUsers[2]._id,
+        }),
+      ).unwrap();
+
+      // Fetch messages sent by user 2 to user 1
+      const response2 = await dispatch(
+        reciveMessages({
+          senderId: allUsers[2]._id,
+          receiverId: profileData._id,
+        }),
+      ).unwrap();
+
+      // Update chatMessages state with the latest messages
+      setChatMessages([...response1.messages, ...response2.messages]);
+    };
+
+    fetchMessages();
+  }, []);
+
+  const handleSendMessage = useCallback(() => {
+    dispatch(
+      sendAMessage({
+        senderId: profileData?._id,
+        receiverId: allUsers[2]?._id,
+        message: inputMessage,
+      }),
+    );
+    setInputMessage('');
+  }, [inputMessage, profileData, allUsers]);
 
   return (
-    <View>
+    <View style={{flexGrow: 1}}>
       <View style={styles.container}>
         <View
           style={{
@@ -55,75 +92,118 @@ const ChatPage = () => {
           />
           <View style={{flexDirection: 'column'}}>
             <Text style={styles.stepsText}>Watt</Text>
-            <Text style={{fontSize: 15, marginStart: 15}}>online 30m ago</Text>
+            <Text
+              style={{
+                fontSize: 16,
+                fontFamily: 'Sansation_Regular',
+                marginStart: 12,
+                color: '#6D6D6D',
+              }}>
+              online 30m ago
+            </Text>
           </View>
         </View>
         <View style={{flexDirection: 'row', marginEnd: 10}}>
           <TouchableOpacity onPress={() => navigation.navigate('ChatPage')}>
-            <Icon1
-              name="phone"
-              size={24}
-              color="#AC25AC"
-              style={styles.editIcon}
-            />
+            <View style={styles.editIcon}>
+              <Icon1 name="phone" size={26} color="#AC25AC" />
+            </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('ChatPage')}>
-            <Icon2
-              name="video"
-              size={24}
-              color="#AC25AC"
-              style={styles.editIcon}
-            />
+            <View style={styles.editIcon}>
+              <Icon2 name="video" size={24} color="#AC25AC" />
+            </View>
           </TouchableOpacity>
         </View>
       </View>
-      <View>
-        {messagesList.map((messageItem, index) => (
-          <View
-            key={index}
-            style={{
-              flexDirection: 'row',
-              alignSelf: messageItem.isMyMessage ? 'flex-end' : 'flex-start',
-              margin: 10,
-              alignItems: 'baseline',
-            }}>
-            {!messageItem.isMyMessage && (
-              <View style={{alignSelf: 'flex-end', marginBottom: 'auto'}}>
-                <Image
-                  source={{
-                    uri: 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/zuck.jpeg',
-                  }}
-                  style={styles.circularImage}
-                />
-              </View>
-            )}
+      <View style={{marginTop: 10, flex: 1}}>
+        <ScrollView>
+          {chatMessages.map((messageItem: any, index) => {
+            const user = allUsers.find(
+              (u: any) => u._id === messageItem.receiver,
+            );
+            return (
+              <View
+                key={index}
+                style={{
+                  flexDirection: 'row',
+                  alignSelf:
+                    messageItem?.sender === profileData._id
+                      ? 'flex-end'
+                      : 'flex-start',
+                  margin: 10,
+                  marginBottom: 12,
+                  alignItems: 'baseline',
+                }}>
+                {!messageItem?.sender === profileData._id && (
+                  <View style={{alignSelf: 'flex-end', marginBottom: 'auto'}}>
+                    <Image
+                      source={{
+                        uri: user._id,
+                      }}
+                      style={styles.circularImage}
+                    />
+                  </View>
+                )}
 
-            <View
-              style={{
-                backgroundColor: messageItem.isMyMessage
-                  ? '#BA55D3'
-                  : '#c1c1c1',
-                padding: 10,
-                marginHorizontal: 10,
-                borderRadius: 10,
-                maxWidth: 260,
-                borderBottomRightRadius: messageItem.isMyMessage ? 0 : 10,
-                borderBottomLeftRadius: messageItem.isMyMessage ? 10 : 0,
-              }}>
-              <Text>{messageItem.message}</Text>
-            </View>
-            {messageItem.isMyMessage && (
-              <View style={{alignSelf: 'flex-end', marginBottom: 'auto'}}>
-                <Image
-                  source={{
-                    uri: 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/vadim1.JPG',
-                  }}
-                  style={styles.circularImage}
-                />
+                <View
+                  style={{
+                    backgroundColor:
+                      messageItem?.sender === profileData._id
+                        ? '#AC25AC'
+                        : '#D9D9D9',
+                    padding: 10,
+                    marginHorizontal: 10,
+                    borderRadius: 8,
+                    maxWidth: 260,
+
+                    borderBottomRightRadius:
+                      messageItem?.sender === profileData._id ? 0 : 8,
+                    borderBottomLeftRadius:
+                      messageItem?.sender === profileData._id ? 8 : 0,
+                  }}>
+                  <Text
+                    style={{
+                      color:
+                        messageItem?.sender === profileData._id
+                          ? 'white'
+                          : 'black',
+                    }}>
+                    {messageItem?.message}
+                  </Text>
+                </View>
+                {messageItem?.sender === profileData._id && (
+                  <View style={{alignSelf: 'flex-end', marginBottom: 'auto'}}>
+                    <Image
+                      source={{uri: profileData?.profilePic}}
+                      style={styles.circularImage}
+                    />
+                  </View>
+                )}
               </View>
-            )}
-          </View>
-        ))}
+            );
+          })}
+        </ScrollView>
+      </View>
+
+      <View
+        style={{
+          padding: 20,
+          borderTopWidth: 1,
+          borderTopColor: '#ADADAD',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}>
+        <TextInput
+          value={inputMessage}
+          onChangeText={setInputMessage}
+          placeholder="Type your message..."
+          style={styles.input}
+        />
+        <TouchableOpacity onPress={handleSendMessage} style={styles.sendButton}>
+          <Text style={styles.sendButtonText}>Send</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -132,6 +212,24 @@ const ChatPage = () => {
 export default ChatPage;
 
 const styles = StyleSheet.create({
+  sendButton: {
+    padding: 10,
+    backgroundColor: '#AC25AC',
+    borderRadius: 8,
+  },
+  sendButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontFamily: 'Sansation_Bold',
+  },
+  input: {
+    flex: 1,
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginRight: 10,
+    paddingHorizontal: 10,
+  },
   container: {
     backgroundColor: 'white',
     flexDirection: 'row',
@@ -142,32 +240,28 @@ const styles = StyleSheet.create({
   circularImage: {
     width: 20,
     height: 20,
-    borderRadius: 50, // half of width and height to make it circular
+    borderRadius: 10,
   },
   backPress: {
-    // flexDirection: 'row',
-    // alignItems: 'center',
-    // padding: 10,
     marginEnd: 10,
   },
   backPressIcon: {
-    //marginRight: 8,
     color: '#AC25AC',
   },
   stepsText: {
-    color: 'grey',
+    color: 'black',
     fontSize: 20,
-    //backgroundColor: '#AC25AC',
-    marginHorizontal: 15,
-    borderRadius: 15,
-    //marginLeft: 80,
-    fontWeight: 'bold',
+    marginHorizontal: 12,
+    fontFamily: 'Sansation_Bold',
   },
 
   editIcon: {
-    marginRight: 10,
-    backgroundColor: '#edb9ed',
+    marginRight: 12,
+    height: 40,
+    width: 40,
     borderRadius: 20,
-    padding: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FFA7FF',
   },
 });

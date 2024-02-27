@@ -78,7 +78,7 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.pageContainer}>
-      <HeaderComponent />
+      <HeaderComponent showNotifications={true} />
       <AnimatedStack
         data={allUsers}
         renderItem={({item}: any) => <Card user={item} />}

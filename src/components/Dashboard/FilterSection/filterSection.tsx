@@ -6,19 +6,79 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Slider} from 'react-native-elements';
+import {RadioButton} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
-import {Slider} from 'react-native-elements';
 import CommonBackbutton from '../../commonBackbutton/backButton';
+import RangeSlider from 'rn-range-slider';
+import {Controller, useForm} from 'react-hook-form';
+import {useAppDispatch, useAppSelector} from '../../../store/store';
+import {updateProfileData} from '../../../store/Auth/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Thumb from '../../settingsSection/Thumb';
+import Rail from '../../settingsSection/Rail';
+import RailSelected from '../../settingsSection/RailSelected';
+import Label from '../../settingsSection/Label';
+import Notch from '../../settingsSection/Notch';
+import {yupResolver} from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
+const getUserId = async () => {
+  try {
+    const userId: any = await AsyncStorage.getItem('userId');
+
+    if (userId !== null) {
+      console.log(JSON.parse(userId));
+      return JSON.parse(userId);
+    } else {
+      return null;
+    }
+  } catch (error) {
+    return null;
+  }
+};
+
+const defaultValues = {
+  name: '',
+  email: '',
+  interests: '',
+  gender: '',
+};
+
+interface UpdateForm {
+  name: string;
+  email: string;
+  interests: string;
+  gender: string;
+}
+
+const schema = yup.object().shape({
+  // gender: yup.string().required('gender is required'),
+});
 
 const FilterSection = () => {
-  const navigation = useNavigation();
+  const dispatch: any = useAppDispatch();
+  const profileData: any = useAppSelector(
+    (state: any) => state?.Auth?.data?.profileData,
+  );
+
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: {errors},
+  } = useForm<UpdateForm>({
+    defaultValues,
+    resolver: yupResolver<any>(schema),
+  });
+
   const options = [
-    {value: 'male', label: 'Male'},
-    {value: 'female', label: 'Female'},
-    {value: 'Non-Binary', label: 'Non-Binary'},
-    {value: 'Transgender', label: 'Transgender'},
+    {label: 'Male', value: 'first'},
+    {label: 'Female', value: 'second'},
+    {label: 'Non-Binary', value: 'third'},
+    {label: 'Transgender', value: 'fourth'},
   ];
 
   const options2 = [
@@ -27,97 +87,235 @@ const FilterSection = () => {
     {value: 'everyone', label: 'Everyone'},
   ];
 
-  const [checked, setChecked] = useState(null);
-  const [distance, setDistance] = useState(20);
+  const [checked, setChecked] = React.useState(profileData?.gender);
+  const [checkedInterests, setCheckedInterests] = React.useState(
+    profileData?.interests,
+  );
+  const [distance, setDistance] = useState(
+    parseInt(profileData?.distance) || 0,
+  );
 
   const handleSliderChange = (value: any) => {
     setDistance(value);
+    dispatch(
+      updateProfileData({
+        field: 'distance',
+        value: value,
+        id: getUserId(),
+      }),
+    );
   };
-  const renderItem = ({item}: any) => (
-    <TouchableOpacity
-      style={styles.optionContainer}
-      onPress={() => setChecked(item.value)}>
-      <Ionicons
-        name={checked === item.value ? 'radio-button-on' : 'radio-button-off'}
-        size={24}
-        color="#AC25AC"
-      />
-      <Text style={styles.optionText}>{item.label}</Text>
-    </TouchableOpacity>
-  );
+
+  const [low, setLow] = useState<number>(18);
+  const [high, setHigh] = useState<number>(56);
+
+  const [minValue, setMinValue] = useState(18);
+  const [maxValue, setMaxValue] = useState(56);
+
+  const handleMinValueChange = (value: any) => {
+    setMinValue(value);
+    if (distance < value) {
+      setDistance(value);
+    }
+  };
+
+  const handleMaxValueChange = (value: any) => {
+    setMaxValue(value);
+    if (distance > value) {
+      setDistance(value);
+    }
+  };
+
+  const renderThumb = useCallback(() => <Thumb />, []);
+  const renderRail = useCallback(() => <Rail />, []);
+  const renderRailSelected = useCallback(() => <RailSelected />, []);
+  const renderLabel = useCallback((value: any) => <Label text={value} />, []);
+  const renderNotch = useCallback(() => <Notch />, []);
+
+  useEffect(() => {
+    if (profileData?.ageRange) {
+      const [lowStr, highStr] = profileData.ageRange.split(' ');
+      const lowValue = parseInt(lowStr);
+      const highValue = parseInt(highStr);
+      setLow(lowValue);
+      setHigh(highValue);
+    }
+  }, []);
+
+  const handleValueChange = (newLow: any, newHigh: any) => {
+    setLow(newLow);
+    setHigh(newHigh);
+    dispatch(
+      updateProfileData({
+        field: 'ageRange',
+        value: `${newLow} ${newHigh}`,
+        id: getUserId(),
+      }),
+    );
+  };
+
   return (
     <View>
       <CommonBackbutton title="Filter" />
       <View style={styles.boxContainer}>
-        <View style={styles.labelContainer}>
-          <Text style={styles.label}>Maximum Distance</Text>
-          <Text style={styles.value}>{distance} Mi</Text>
+        <View style={styles.distance}>
+          <Text style={styles.textName}>Distance Preference</Text>
+          <Text style={{fontFamily: 'Sansation_Regular', color: 'black'}}>
+            {distance} Mi
+          </Text>
         </View>
+        <View style={styles.line} />
         <Slider
           style={styles.slider}
-          minimumValue={1}
+          minimumValue={4}
           maximumValue={50}
           value={distance}
-          onValueChange={handleSliderChange}
+          onSlidingComplete={handleSliderChange}
           step={1}
           thumbTintColor="#AC25AC"
           minimumTrackTintColor="#AC25AC"
           maximumTrackTintColor="gray"
           thumbStyle={styles.thumbStyle}
         />
-        <View style={styles.labelContainer}>
-          <Text style={styles.label1}>Only show people in range</Text>
-          <Ionicons
-            name={checked === true ? 'radio-button-on' : 'radio-button-off'}
-            size={24}
-            color="#AC25AC"
-          />
+      </View>
+
+      <View style={styles.boxContainer}>
+        <Text style={styles.textName}>Show Me</Text>
+        <View style={styles.line} />
+        <View>
+          {options2.map(item => (
+            <View key={item.value} style={styles.radio}>
+              <Controller
+                name={'interests'}
+                control={control}
+                defaultValue="Women"
+                render={() => (
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}>
+                    <Text
+                      style={[
+                        {
+                          color: errors?.interests ? 'red' : 'black',
+                          fontFamily: 'Sansation_Regular',
+                          paddingBottom: 8,
+                        },
+                      ]}>
+                      {item.label}
+                    </Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setCheckedInterests(item.label);
+                        dispatch(
+                          updateProfileData({
+                            field: 'interests',
+                            value: item.label,
+                            id: getUserId(),
+                          }),
+                        );
+                      }}>
+                      <Ionicons
+                        name={
+                          checkedInterests === item.label
+                            ? 'radio-button-on'
+                            : 'radio-button-off'
+                        }
+                        size={16}
+                        color="#AC25AC"
+                      />
+                    </TouchableOpacity>
+                  </View>
+                )}
+              />
+            </View>
+          ))}
         </View>
       </View>
 
       <View style={styles.boxContainer}>
-        <Text style={styles.label}>Show me</Text>
-        <FlatList
-          data={options2}
-          renderItem={renderItem}
-          keyExtractor={item => item.value}
-        />
-      </View>
-
-      <View style={styles.boxContainer}>
-        <View style={styles.labelContainer}>
-          <Text style={styles.label}>Age Range</Text>
-          <Text style={styles.value}>{distance}</Text>
+        <View style={styles.distance}>
+          <Text style={styles.textName}>Age Range</Text>
+          <Text style={{fontFamily: 'Sansation_Regular', color: 'black'}}>
+            {low + '-' + high}
+          </Text>
         </View>
-        <Slider
-          style={styles.slider}
-          minimumValue={1}
-          maximumValue={50}
-          value={distance}
-          onValueChange={handleSliderChange}
+        <View style={styles.line} />
+        <RangeSlider
+          style={[styles.slider, {marginVertical: 14}]}
+          min={minValue}
+          max={maxValue}
+          low={low}
+          high={high}
           step={1}
-          thumbTintColor="#AC25AC"
-          minimumTrackTintColor="#AC25AC"
-          maximumTrackTintColor="gray"
-          thumbStyle={styles.thumbStyle}
+          floatingLabel
+          renderThumb={renderThumb}
+          renderRail={renderRail}
+          renderRailSelected={renderRailSelected}
+          renderLabel={renderLabel}
+          renderNotch={renderNotch}
+          onSliderTouchEnd={handleValueChange}
         />
-        <View style={styles.labelContainer}>
-          <Text style={styles.label1}>Only show people in range</Text>
-          <Ionicons
-            name={checked === true ? 'radio-button-on' : 'radio-button-off'}
-            size={24}
-            color="#AC25AC"
-          />
-        </View>
       </View>
 
       <View style={styles.boxContainer}>
-        <Text style={styles.label}>Gender</Text>
-        <FlatList
-          data={options}
-          renderItem={renderItem}
-          keyExtractor={item => item.value}
-        />
+        <Text style={styles.textName}>Gender</Text>
+        <View style={styles.line} />
+        <View>
+          {options.map(item => (
+            <View key={item.value} style={styles.radio}>
+              <Controller
+                name={'gender'}
+                control={control}
+                defaultValue="Male"
+                render={() => (
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}>
+                    <Text
+                      style={[
+                        {
+                          color: errors?.gender ? 'red' : 'black',
+                          fontFamily: 'Sansation_Regular',
+                          paddingBottom: 8,
+                        },
+                      ]}>
+                      {item.label}
+                    </Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setChecked(item.label);
+                        dispatch(
+                          updateProfileData({
+                            field: 'gender',
+                            value: item.label,
+                            id: getUserId(),
+                          }),
+                        );
+                      }}>
+                      <Ionicons
+                        name={
+                          checked === item.label
+                            ? 'radio-button-on'
+                            : 'radio-button-off'
+                        }
+                        size={16}
+                        color="#AC25AC"
+                      />
+                    </TouchableOpacity>
+                  </View>
+                )}
+              />
+            </View>
+          ))}
+        </View>
       </View>
     </View>
   );
@@ -147,32 +345,22 @@ const styles = StyleSheet.create({
 
   boxContainer: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 8,
-    padding: 20,
-    marginHorizontal: 30,
-    marginBottom: 20,
-    shadowColor: '#000000',
+    borderRadius: 4,
+    paddingVertical: 10,
+    marginHorizontal: 24,
+    marginBottom: 16,
+    shadowColor: '#000',
     shadowOffset: {
-      width: 1,
-      height: 2,
+      width: 0,
+      height: 1,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  optionContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 10,
-    columnGap: 8,
-  },
-  optionText: {
-    fontSize: 14,
-    fontFamily: 'Sansation_Regular',
-    color: 'black',
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+
+    elevation: 2,
   },
   slider: {
-    width: '100%',
+    marginHorizontal: 20,
   },
   thumbStyle: {
     width: 18,
@@ -188,26 +376,26 @@ const styles = StyleSheet.create({
 
     elevation: 10,
   },
-  labelContainer: {
+  line: {
+    borderBottomColor: 'rgba(0, 0, 0, 0.2)',
+    borderBottomWidth: 1,
+    marginVertical: 10,
+  },
+  textName: {
+    alignSelf: 'center',
+    fontSize: 16,
+    fontFamily: 'Sansation_Bold',
+    color: 'black',
+  },
+
+  distance: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginHorizontal: 20,
+  },
+  radio: {
+    flexDirection: 'row',
+    marginHorizontal: 18,
     alignItems: 'center',
-    marginBottom: 8,
-  },
-  label: {
-    fontSize: 18,
-    color: 'black',
-    fontFamily: 'Sansation_Bold',
-  },
-  label1: {
-    fontSize: 14,
-    fontFamily: 'Sansation_Regular',
-  },
-  value: {
-    fontSize: 18,
-    color: 'black',
-    fontFamily: 'Sansation_Regular',
-    textAlign: 'center',
-    // marginBottom: 16,
   },
 });

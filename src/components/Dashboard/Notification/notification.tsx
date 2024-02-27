@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,10 @@ import {
 } from 'react-native';
 import HeaderComponent from '../header/header';
 import {useAppDispatch, useAppSelector} from '../../../store/store';
-import {getNotifications} from '../../../store/Auth/auth';
+import {
+  getNotifications,
+  handleNotificationRead,
+} from '../../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const getUserId = async () => {
@@ -36,17 +39,29 @@ const NotificationScreen = () => {
     (state: any) => state?.Auth?.data?.allNotifications,
   );
 
+  const [allNotificationsPresent, setAllNotifications] = useState([]);
+
   useEffect(() => {
     const getId = async () => {
       const userId = await getUserId();
-      dispatch(getNotifications(userId));
+      dispatch(getNotifications(userId))
+        .unwrap()
+        .then((response: any) => {
+          setAllNotifications(response.notifications);
+        });
     };
 
     getId();
   }, []);
 
   const handleMarkAsRead = (id: any) => {
-    // Implement logic to mark the notification as read
+    dispatch(handleNotificationRead(id)).then(() => {
+      setAllNotifications((prevNotifications: any) =>
+        prevNotifications.filter(
+          (notification: any) => notification._id !== id,
+        ),
+      );
+    });
   };
 
   const handleView = (id: any) => {
@@ -106,7 +121,7 @@ const NotificationScreen = () => {
             </View>
             <View style={{flexDirection: 'row'}}>
               {!user?.isRead && (
-                <TouchableOpacity onPress={() => handleMarkAsRead(user._id)}>
+                <TouchableOpacity onPress={() => handleMarkAsRead(item._id)}>
                   <Text style={styles.actionButton}>Mark as Read</Text>
                 </TouchableOpacity>
               )}
@@ -127,12 +142,30 @@ const NotificationScreen = () => {
 
   return (
     <View style={styles.container}>
-      <HeaderComponent title="Notifications" icon={true} />
-      <FlatList
-        data={allNotifications}
-        renderItem={renderNotificationItem}
-        keyExtractor={item => item.id}
+      <HeaderComponent
+        title="Notifications"
+        icon={true}
+        showNotifications={false}
       />
+      {allNotificationsPresent.length === 0 ? (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: 40,
+          }}>
+          <Text style={{fontFamily: 'Sansation_Bold', fontSize: 20}}>
+            You have no Notifications!
+          </Text>
+        </View>
+      ) : (
+        <FlatList
+          data={allNotificationsPresent}
+          renderItem={renderNotificationItem}
+          keyExtractor={(item: any) => item._id}
+        />
+      )}
     </View>
   );
 };
