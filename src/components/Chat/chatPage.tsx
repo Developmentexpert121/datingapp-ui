@@ -56,7 +56,16 @@ const ChatPage = () => {
 
       // Update chatMessages state with the latest messages
       // @ts-ignore
-      setChatMessages([...response1.messages, ...response2.messages]);
+      // Inside the useEffect hook after setting chatMessages state
+
+      setChatMessages(
+        // @ts-ignore
+        [...response1.messages, ...response2.messages].sort((a, b) => {
+          return (
+            new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+          );
+        }),
+      );
     };
 
     fetchMessages();
