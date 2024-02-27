@@ -98,11 +98,7 @@ const ChatPage = () => {
               size={30}
             />
           </Pressable>
-          <Avatar
-            source={{uri: 'https://placekitten.com/50/50'}}
-            rounded
-            size={60}
-          />
+          <Avatar source={{uri: allUsers[2]?.profilePic}} rounded size={60} />
           <View style={{flexDirection: 'column'}}>
             <Text style={styles.stepsText}>Watt</Text>
             <Text
