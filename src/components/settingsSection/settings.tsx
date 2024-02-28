@@ -20,9 +20,14 @@ import AppTextInput from '../AppTextInput/AppTextInput';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../store/store';
-import {updateAuthentication, updateProfileData} from '../../store/Auth/auth';
+import {
+  deleteUser,
+  updateAuthentication,
+  updateProfileData,
+} from '../../store/Auth/auth';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Geolocation from '@react-native-community/geolocation';
+import {activityLoaderStarted} from '../../store/Activity/activity';
 
 interface UpdateForm {
   name: string;
@@ -210,6 +215,7 @@ const SettingsSection = () => {
     (state: any) => state?.Auth?.data?.profileData,
   );
   const dispatch: any = useAppDispatch();
+  const navigation: any = useNavigation();
 
   const [title, setTitle] = useState<string>('');
   const [values, setValues] = useState<string>('');
@@ -337,6 +343,10 @@ const SettingsSection = () => {
     );
   };
 
+  const deleteUserButton = async () => {
+    dispatch(deleteUser({senderId: profileData._id}));
+  };
+
   return (
     <ScrollView>
       <CommonBackbutton title="Settings" />
@@ -377,18 +387,20 @@ const SettingsSection = () => {
           </View>
         ))}
 
-      <View style={styles.boxContainer}>
+      <TouchableOpacity style={styles.boxContainer}>
         <Text
           style={[styles.textName, {color: '#AC25AC'}]}
           onPress={logoutUser}>
           Log Out
         </Text>
-      </View>
-      <View style={styles.boxContainer}>
-        <Text style={[styles.textName, {color: '#AC25AC'}]}>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.boxContainer}>
+        <Text
+          style={[styles.textName, {color: '#AC25AC'}]}
+          onPress={deleteUserButton}>
           Delete Account
         </Text>
-      </View>
+      </TouchableOpacity>
       <BottomDrawer
         isOpen={isDrawerOpen}
         onClose={closeDrawer}

@@ -124,6 +124,36 @@ const ChatSection = () => {
     navigation.navigate('ChatPage', {user: user});
   };
 
+  const getTimeAgo = (timestamp: string) => {
+    const timeNow = new Date();
+    const timeSent = new Date(timestamp);
+    const differenceInSeconds = Math.floor(
+      (timeNow.getTime() - timeSent.getTime()) / 1000,
+    );
+
+    if (differenceInSeconds < 60) {
+      return `${differenceInSeconds} sec ago`;
+    } else if (differenceInSeconds < 3600) {
+      const minutes = Math.floor(differenceInSeconds / 60);
+      return `${minutes} mins ago`;
+    } else if (differenceInSeconds < 86400) {
+      const hours = Math.floor(differenceInSeconds / 3600);
+      return `${hours} hrs ago`;
+    } else if (differenceInSeconds < 604800) {
+      const days = Math.floor(differenceInSeconds / 86400);
+      return `${days} days ago`;
+    } else if (differenceInSeconds < 2592000) {
+      const weeks = Math.floor(differenceInSeconds / 604800);
+      return `${weeks} weeks ago`;
+    } else if (differenceInSeconds < 31536000) {
+      const months = Math.floor(differenceInSeconds / 2592000);
+      return `${months} months ago`;
+    } else {
+      const years = Math.floor(differenceInSeconds / 31536000);
+      return `${years} years ago`;
+    }
+  };
+
   return (
     <View style={styles.container}>
       <CommonBackbutton
@@ -184,8 +214,12 @@ const ChatSection = () => {
                       rowGap: 4,
                     }}>
                     <Text
-                      style={{fontFamily: 'Sansation_Regular', fontSize: 10}}>
-                      {item.latestMessageTimestamp}
+                      style={{
+                        fontFamily: 'Sansation_Regular',
+                        fontSize: 10,
+                        color: 'black',
+                      }}>
+                      {getTimeAgo(item.latestMessageTimestamp)}
                     </Text>
                     <Ionicons name="checkmark-done" size={20} color="#AC25AC" />
                   </View>

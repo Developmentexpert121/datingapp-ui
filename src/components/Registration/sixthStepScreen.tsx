@@ -5,7 +5,7 @@ import {useForm, Controller} from 'react-hook-form';
 const SixthStepScreen = ({hobbies, control, errors}: any) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Your hobbies?</Text>
+      <Text style={styles.title}>Tell use about yourself!</Text>
       <Text style={styles.paragraph}>
         You like what you like. Now, let everyone know.
       </Text>
@@ -20,7 +20,7 @@ const SixthStepScreen = ({hobbies, control, errors}: any) => {
               style={[styles.textArea]}
               multiline
               numberOfLines={4}
-              placeholder="Write at least 5 hobbies"
+              placeholder="This is your bio..."
               placeholderTextColor="#A9A9A9"
               value={value}
               onBlur={onBlur}

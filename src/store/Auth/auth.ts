@@ -272,6 +272,32 @@ export const getReceivers = createAsyncThunk(
   },
 );
 
+export const deleteUser = createAsyncThunk(
+  'auth/deleteUser',
+  async (data: any, {dispatch}: any) => {
+    try {
+      dispatch(activityLoaderStarted());
+      const response = await http.delete(
+        `/user/delete-account?userId=${data.senderId}`,
+      );
+
+      if (response.status === 200) {
+        console.log(response.data);
+        dispatch(updateAuthentication());
+        return response.data;
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        return {error: 'Bad Request'};
+      } else {
+        throw error;
+      }
+    } finally {
+      dispatch(activityLoaderFinished());
+    }
+  },
+);
+
 export const updateAuthentication = createAsyncThunk(
   'auth/updateAuthentication',
   async () => {},
