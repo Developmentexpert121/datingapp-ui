@@ -1,59 +1,136 @@
 // ChatScreen.js
-import React, {useState} from 'react';
-import {View, Text, FlatList, StyleSheet, TextInput} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  TextInput,
+  Modal,
+  Pressable,
+  TouchableOpacity,
+} from 'react-native';
 import {ListItem, Avatar, SearchBar} from 'react-native-elements';
 import CommonBackbutton from '../commonBackbutton/backButton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import FooterComponent from '../Dashboard/footer/footer';
-const ChatSection = () => {
-  const [search, setSearch] = useState<any>('');
-  const navigation = useNavigation();
-  const data = [
-    {
-      id: '1',
-      name: 'User 1',
-      time: '10 min ago',
-      lastMessage: 'Hello!',
-      avatar: 'https://placekitten.com/50/50',
-    },
-    {
-      id: '2',
-      name: 'User 2',
-      time: '30 min ago',
-      lastMessage: 'Hi there!',
-      avatar: 'https://placekitten.com/50/50',
-    },
-    {
-      id: '3',
-      name: 'User 3',
-      time: '20 min ago',
-      lastMessage: 'Hello!',
-      avatar: 'https://placekitten.com/50/50',
-    },
-    {
-      id: '4',
-      name: 'User 4',
-      time: '40 min ago',
-      lastMessage: 'Hi there!',
-      avatar: 'https://placekitten.com/50/50',
-    },
-  ];
+import {useAppDispatch, useAppSelector} from '../../store/store';
+import {getReceivers} from '../../store/Auth/auth';
 
-  const filteredData: any = data.filter(item => {
-    return item.name.toLowerCase().includes(search.toLowerCase());
+const UsersDrawer = ({isOpen, onClose}: any) => {
+  const allUsers: any = useAppSelector(
+    (state: any) => state?.Auth?.data?.allUsers,
+  );
+
+  const navigation: any = useNavigation();
+
+  const goToChatWith = (user: any) => {
+    navigation.navigate('ChatPage', {user: user});
+    onClose();
+  };
+
+  return (
+    <Modal
+      animationType="none"
+      transparent={true}
+      visible={isOpen}
+      onRequestClose={onClose}>
+      <View style={styles.centeredView}>
+        <View style={styles.modalView}>
+          <Text style={styles.modalText}>
+            Select a user you want to chat with!
+          </Text>
+
+          {allUsers.map((users: any, index: any) => (
+            <TouchableOpacity
+              key={index}
+              onPress={() => goToChatWith(users)}
+              style={{
+                flexDirection: 'row',
+                alignSelf: 'flex-start',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                paddingVertical: 10,
+                columnGap: 16,
+              }}>
+              <Avatar source={{uri: users.profilePic}} rounded size={54} />
+              <Text
+                style={{
+                  fontFamily: 'Sansation_Bold',
+                  fontSize: 20,
+                  color: 'black',
+                }}>
+                {users.name}
+              </Text>
+            </TouchableOpacity>
+          ))}
+          <Text
+            onPress={onClose}
+            style={{
+              fontFamily: 'Sansation_Bold',
+              fontSize: 16,
+              color: 'white',
+              borderWidth: 1,
+              paddingHorizontal: 16,
+              paddingVertical: 8,
+              borderRadius: 30,
+              marginTop: 10,
+              backgroundColor: '#AC25AC',
+              borderColor: '#AC25AC',
+            }}>
+            Close
+          </Text>
+        </View>
+      </View>
+    </Modal>
+  );
+};
+
+const ChatSection = () => {
+  const navigation: any = useNavigation();
+  const dispatch: any = useAppDispatch();
+
+  const profileData: any = useAppSelector(
+    (state: any) => state?.Auth?.data?.profileData,
+  );
+  const allUsers: any = useAppSelector(
+    (state: any) => state?.Auth?.data?.allUsers,
+  );
+
+  const [receiverData, setReceiverData] = useState<any>([]);
+
+  console.log(receiverData);
+
+  useEffect(() => {
+    dispatch(getReceivers({senderId: profileData._id}))
+      .unwrap()
+      .then((response: any) => setReceiverData(response.receivers));
   });
+
+  const [search, setSearch] = useState<any>('');
+
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const updateSearch = (text: string) => {
     setSearch(text);
   };
 
-  const handleMovepage = (item: any) => {
-    navigation.navigate('ChatPage');
+  const closeDrawer = () => {
+    setIsDrawerOpen(false);
   };
+
+  const handleMovepage = (user: any) => {
+    navigation.navigate('ChatPage', {user: user});
+  };
+
   return (
     <View style={styles.container}>
-      <CommonBackbutton title="Chat" />
+      <CommonBackbutton
+        title="Chat"
+        iconName="person-add-sharp"
+        setIsDrawerOpen={setIsDrawerOpen}
+      />
       <View style={{flex: 1}}>
         <View style={styles.containerSearch}>
           <Ionicons name="search-outline" size={20} style={styles.icon} />
@@ -66,47 +143,59 @@ const ChatSection = () => {
         </View>
         <Text style={styles.msgs}>Messages</Text>
         <FlatList
-          data={filteredData}
+          data={receiverData}
           keyExtractor={item => item.id}
-          renderItem={({item}) => (
-            <ListItem
-              containerStyle={styles.listItemContainer}
-              onPress={() => handleMovepage(item.name)}>
-              <Avatar size={60} source={{uri: item.avatar}} rounded />
-              <View style={styles.line}>
-                <View style={{paddingBottom: 10}}>
-                  <Text
+          renderItem={({item}) => {
+            const recieverMainInfo = allUsers.filter((user: any) =>
+              item?.receiverId?.includes(user._id),
+            );
+            console.log(recieverMainInfo);
+            return (
+              <ListItem
+                containerStyle={styles.listItemContainer}
+                onPress={() => handleMovepage(recieverMainInfo[0])}>
+                <Avatar
+                  size={60}
+                  source={{uri: recieverMainInfo[0].profilePic}}
+                  rounded
+                />
+                <View style={styles.line}>
+                  <View style={{paddingBottom: 10}}>
+                    <Text
+                      style={{
+                        fontFamily: 'Sansation_Bold',
+                        fontSize: 18,
+                        color: 'black',
+                        marginBottom: 8,
+                      }}>
+                      {recieverMainInfo[0].name}
+                    </Text>
+                    <Text
+                      style={{
+                        fontFamily: 'Sansation_Regular',
+                      }}>
+                      {item.latestMessage}
+                    </Text>
+                  </View>
+                  <View
                     style={{
-                      fontFamily: 'Sansation_Bold',
-                      fontSize: 18,
-                      color: 'black',
-                      marginBottom: 8,
+                      flex: 1,
+                      alignItems: 'flex-end',
+                      rowGap: 4,
                     }}>
-                    {item.name}
-                  </Text>
-                  <Text
-                    style={{
-                      fontFamily: 'Sansation_Regular',
-                    }}>
-                    {item.lastMessage}
-                  </Text>
+                    <Text
+                      style={{fontFamily: 'Sansation_Regular', fontSize: 10}}>
+                      {item.latestMessageTimestamp}
+                    </Text>
+                    <Ionicons name="checkmark-done" size={20} color="#AC25AC" />
+                  </View>
                 </View>
-                <View
-                  style={{
-                    flex: 1,
-                    alignItems: 'flex-end',
-                    rowGap: 4,
-                  }}>
-                  <Text style={{fontFamily: 'Sansation_Regular', fontSize: 10}}>
-                    {item.time}
-                  </Text>
-                  <Ionicons name="checkmark-done" size={20} color="#AC25AC" />
-                </View>
-              </View>
-            </ListItem>
-          )}
+              </ListItem>
+            );
+          }}
         />
       </View>
+      <UsersDrawer isOpen={isDrawerOpen} onClose={closeDrawer} />
       <FooterComponent />
     </View>
   );
@@ -161,6 +250,36 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     fontFamily: 'Sansation_Regular',
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    width: '100%',
+  },
+  modalView: {
+    margin: 12,
+
+    backgroundColor: 'white',
+    borderRadius: 12,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalText: {
+    fontSize: 20,
+    marginBottom: 5,
+    textAlign: 'center',
+    color: 'black',
+    fontFamily: 'Sansation_Bold',
   },
 });
 

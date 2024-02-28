@@ -251,6 +251,27 @@ export const reciveMessages = createAsyncThunk(
   },
 );
 
+export const getReceivers = createAsyncThunk(
+  'auth/getReceivers',
+  async (data: any, {dispatch}: any) => {
+    try {
+      const response = await http.get(
+        `/user/messageReceivers?senderId=${data.senderId}`,
+      );
+
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        return {error: 'Bad Request'};
+      } else {
+        throw error;
+      }
+    }
+  },
+);
+
 export const updateAuthentication = createAsyncThunk(
   'auth/updateAuthentication',
   async () => {},

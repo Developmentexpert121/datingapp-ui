@@ -6,9 +6,11 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {ListItem, Avatar, SearchBar} from 'react-native-elements';
 import Icon1 from 'react-native-vector-icons/FontAwesome';
@@ -19,12 +21,11 @@ import {ScrollView} from 'react-native-gesture-handler';
 
 const ChatPage = () => {
   const scrollViewRef: any = useRef(null);
-
+  const route: any = useRoute();
+  const {user} = route.params;
   const navigation = useNavigation();
   const dispatch: any = useAppDispatch();
-  const allUsers: any = useAppSelector(
-    (state: any) => state?.Auth?.data?.allUsers,
-  );
+
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
@@ -41,7 +42,7 @@ const ChatPage = () => {
       const response1 = await dispatch(
         reciveMessages({
           senderId: profileData._id,
-          receiverId: allUsers[2]._id,
+          receiverId: user._id,
         }),
       ).unwrap();
 
@@ -49,7 +50,7 @@ const ChatPage = () => {
 
       const response2 = await dispatch(
         reciveMessages({
-          senderId: allUsers[2]._id,
+          senderId: user._id,
           receiverId: profileData._id,
         }),
       ).unwrap();
@@ -68,21 +69,24 @@ const ChatPage = () => {
     };
 
     fetchMessages();
-  }, []);
+  });
 
   const handleSendMessage = useCallback(() => {
     dispatch(
       sendAMessage({
         senderId: profileData?._id,
-        receiverId: allUsers[2]?._id,
+        receiverId: user._id,
         message: inputMessage,
       }),
     );
     setInputMessage('');
-  }, [inputMessage, profileData, allUsers]);
+  }, [inputMessage, profileData, user]);
 
   return (
-    <View style={{flexGrow: 1}}>
+    <KeyboardAvoidingView
+      behavior="padding"
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 40}
+      style={{flexGrow: 1}}>
       <View style={styles.container}>
         <View
           style={{
@@ -98,9 +102,9 @@ const ChatPage = () => {
               size={30}
             />
           </Pressable>
-          <Avatar source={{uri: allUsers[2]?.profilePic}} rounded size={60} />
+          <Avatar source={{uri: user?.profilePic}} rounded size={60} />
           <View style={{flexDirection: 'column'}}>
-            <Text style={styles.stepsText}>Watt</Text>
+            <Text style={styles.stepsText}>{user.name}</Text>
             <Text
               style={{
                 fontSize: 16,
@@ -151,7 +155,7 @@ const ChatPage = () => {
                   <View style={{alignSelf: 'flex-end', marginBottom: 'auto'}}>
                     <Image
                       source={{
-                        uri: allUsers[2]?.profilePic,
+                        uri: user?.profilePic,
                       }}
                       style={styles.circularImage}
                     />
@@ -217,7 +221,7 @@ const ChatPage = () => {
           <Text style={styles.sendButtonText}>Send</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

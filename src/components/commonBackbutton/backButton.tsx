@@ -5,7 +5,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useAppDispatch} from '../../store/store';
 import {footerStatus} from '../../store/Activity/activity';
 
-const BackButton = ({title}: any) => {
+const BackButton = ({title, iconName, setIsDrawerOpen}: any) => {
   const navigation = useNavigation();
   const dispatch: any = useAppDispatch();
   const handleBack = () => {
@@ -27,7 +27,16 @@ const BackButton = ({title}: any) => {
           size={30}
         />
         <Text style={styles.stepsText}>{title}</Text>
-        <View style={{width: 50}}></View>
+        {iconName ? (
+          <Ionicons
+            onPress={() => setIsDrawerOpen(true)}
+            style={[styles.backPressIcon, {marginRight: 20}]}
+            name={iconName}
+            size={30}
+          />
+        ) : (
+          <View style={{width: 50}}></View>
+        )}
       </Pressable>
     </View>
   );
