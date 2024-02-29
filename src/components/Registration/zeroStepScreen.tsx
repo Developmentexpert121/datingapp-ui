@@ -31,15 +31,6 @@ const defaultValues = {
   password: '',
 };
 
-const schema = yup.object().shape({
-  name: yup.string().required('Name is required'),
-  email: yup.string().email('Invalid email').required('Email is required'),
-  gender: yup.string().required('Please select your gender'),
-  password: yup
-    .string()
-    .min(6, 'Password must be at least 6 characters')
-    .required('Password is required'),
-});
 const ZeroStepScreen = ({
   name,
   phone,
@@ -87,6 +78,8 @@ const ZeroStepScreen = ({
     showMode('time');
   };
 
+  console.log(errors);
+
   return (
     <SafeAreaView>
       <Text style={styles.headerLabel}>Personal</Text>
@@ -104,7 +97,15 @@ const ZeroStepScreen = ({
 
       <View style={styles.container}>
         <Text style={styles.label}>Date Of Birth </Text>
-        <TouchableOpacity onPress={showDatepicker} style={[styles.dateBtn]}>
+        <TouchableOpacity
+          onPress={showDatepicker}
+          style={[
+            styles.dateBtn,
+            {
+              borderWidth: dateStr === null ? 2 : 1,
+              borderColor: dateStr === null ? 'red' : 'rgba(0, 0, 0, 0.2)',
+            },
+          ]}>
           <Text
             style={{
               color: 'grey',
@@ -140,6 +141,7 @@ const ZeroStepScreen = ({
           name={phone}
           control={control}
           errors={Boolean(errors?.phone)}
+          keyboardType="numeric"
         />
         <Text style={styles.label2}>Yor name will be public</Text>
       </View>
@@ -172,8 +174,8 @@ const ZeroStepScreen = ({
                     value={item.label}
                     status={value === item.label ? 'checked' : 'unchecked'}
                     onPress={() => onChange(item.label)}
-                    color="#AC25AC"
-                    uncheckedColor="#AC25AC"
+                    color={errors?.[gender] ? 'red' : '#AC25AC'}
+                    uncheckedColor={errors?.[gender] ? 'red' : '#AC25AC'}
                   />
                 </View>
               )}
@@ -208,12 +210,17 @@ const ZeroStepScreen = ({
           control={control}
           errors={Boolean(errors?.email)}
         />
+        {errors.email && (
+          <Text style={{color: 'red', fontFamily: 'Sansation_Regular'}}>
+            {errors.email.message}
+          </Text>
+        )}
       </View>
       <View style={styles.container}>
         <Text style={styles.label}>Password</Text>
         <AppTextInput
           placeholder="Enter Your Password"
-          type="password"
+          keyboardType="password"
           name={password}
           control={control}
           errors={Boolean(errors?.password)}
@@ -325,8 +332,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.onPrimary,
     marginVertical: Spacing,
     width: '80%',
-    borderColor: 'rgba(0, 0, 0, 0.2)',
-    borderWidth: 1,
     borderRadius: 10,
   },
 });

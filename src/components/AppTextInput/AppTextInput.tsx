@@ -39,13 +39,14 @@ const AppTextInput = (Props: any) => {
           style={[
             styles.textInput1,
 
-            hasError && styles.errorBorder,
+            hasError
+              ? styles.errorBorder
+              : {borderWidth: 1, borderColor: 'rgba(0, 0, 0, 0.2)'},
             {
-              borderWidth: 1,
-              borderColor: 'rgba(0, 0, 0, 0.2)',
               width: '80%',
             },
           ]}
+          keyboardType={Props.keyboardType}
           placeholderTextColor={Colors.darkText}
           onFocus={() => setFocused(true)}
           onBlur={() => (onBlur(), setFocused(false))}

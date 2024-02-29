@@ -298,7 +298,10 @@ const defaultValues = {
 
 const schema = yup.object().shape({
   name: yup.string().trim().required('Name is required'),
-  phone: yup.string().trim().required('Name is required'),
+  phone: yup
+    .string()
+    .matches(/^[0-9]+$/, 'Phone must contain only digits')
+    .required('Phone is required'),
   email: yup.string().email('Invalid email').required('Email is required'),
   country: yup.string().trim().required('Country is required'),
   city: yup.string().trim().required('City is required'),
@@ -352,14 +355,15 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     (state: any) => state?.Auth?.data?.profileData,
   );
 
+  console.log(profileData);
+
   const [steps, setSteps] = React.useState(0);
   const [dateStr, setDateStr] = useState<any>(null);
   const [location, setLocation] = useState<any>(null);
   const [distance, setDistance] = useState<any>(20);
   const [error, setError] = useState<any>(null);
-  const [profileImages, setProfileImages] = useState<any>(
-    profileData?.profilePic?.split(',') || [],
-  );
+  const [profileImages, setProfileImages] = useState<any>([]);
+
   const [permissionStatus, setPermissionStatus] = useState<any>(null);
 
   const dispatch: any = useAppDispatch();

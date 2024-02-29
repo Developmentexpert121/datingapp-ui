@@ -23,7 +23,7 @@ const SecondStepScreen = ({partnerType, control, errors}: any) => {
     },
     {
       id: '3',
-      name: 'Shirt term open to long',
+      name: 'Short term open to long',
       image: require('../../assets/images/love-you.png'),
     },
     {

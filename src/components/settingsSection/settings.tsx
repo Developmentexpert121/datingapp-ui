@@ -78,7 +78,7 @@ const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
   const avatars = [
     {id: '1', text: 'Long term partner'},
     {id: '2', text: 'Long term open to short'},
-    {id: '3', text: 'Shirt term open to long'},
+    {id: '3', text: 'Short term open to long'},
     {id: '4', text: 'Short term fun'},
     {id: '5', text: 'New friends'},
     {id: '6', text: 'Still figuring it out'},
@@ -283,9 +283,22 @@ const SettingsSection = () => {
     setIsDrawerOpen(true);
   };
 
+  const authTokenRemove: any = async () => {
+    try {
+      const token: any = await AsyncStorage.removeItem('authToken');
+      if (token !== null) {
+        return JSON.parse(token);
+      } else {
+        return null;
+      }
+    } catch (error) {
+      return null;
+    }
+  };
+
   const logoutUser = async () => {
-    await AsyncStorage.removeItem('authToken');
     dispatch(updateAuthentication());
+    await authTokenRemove();
     // navigation.navigate("Login");
   };
 
@@ -345,6 +358,7 @@ const SettingsSection = () => {
 
   const deleteUserButton = async () => {
     dispatch(deleteUser({senderId: profileData._id}));
+    await authTokenRemove();
   };
 
   return (

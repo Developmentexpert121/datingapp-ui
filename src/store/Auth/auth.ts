@@ -49,7 +49,7 @@ export const LoginSignIn = createAsyncThunk(
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        return {error: 'Bad Request'};
+        return {error: 'Invalid credentials'};
       } else {
         throw error;
       }
@@ -314,6 +314,7 @@ const Auth: any = createSlice({
       profileData: {},
       allUsers: [],
       allNotifications: [],
+      signInInfo: '',
     },
     isAuthenticated: false,
     loading: false,
@@ -325,9 +326,13 @@ const Auth: any = createSlice({
         state.loading = true;
       })
       .addCase(LoginSignIn.fulfilled, (state, action) => {
-        state.data.signin = action.payload.data;
-        state.isAuthenticated = true;
-        state.loading = false;
+        if (action.payload.data) {
+          // Check if data is present in the payload
+          state.data.signin = action.payload.data;
+          state.data.signInInfo = action.payload.message;
+        } else {
+          state.data.signInInfo = action.payload.error; // Assuming the error field is set properly on unsuccessful login
+        }
       })
       .addCase(LoginSignIn.rejected, (state, action) => {
         state.loading = false;
@@ -346,6 +351,7 @@ const Auth: any = createSlice({
 
       .addCase(ProfileData.fulfilled, (state, action) => {
         state.data.profileData = action.payload.data;
+        state.isAuthenticated = true;
         state.loading = false;
       })
       .addCase(ProfileData.pending, (state, action) => {
@@ -378,6 +384,13 @@ const Auth: any = createSlice({
       })
 
       .addCase(updateAuthentication.fulfilled, (state, action) => {
+        state.data.status = false;
+        state.data.signin = {};
+        state.data.signup = {};
+        state.data.data = {};
+        state.data.profileData = {};
+        state.data.allUsers = [];
+        state.data.allNotifications = [];
         state.isAuthenticated = false;
       });
   },

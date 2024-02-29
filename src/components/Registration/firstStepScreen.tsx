@@ -36,7 +36,13 @@ const FirstStepScreen = ({interests, control, errors}: any) => {
                     {borderColor: errors ? 'red' : '#747474'},
                   ]}
                   onPress={() => onChange(item.value)}>
-                  <Text style={styles.buttonText}>{item.value}</Text>
+                  <Text
+                    style={[
+                      styles.buttonText,
+                      {color: value === item.value ? 'white' : 'black'},
+                    ]}>
+                    {item.value}
+                  </Text>
                 </TouchableOpacity>
               )}
             />

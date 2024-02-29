@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../types';
+import {useAppSelector} from '../../store/store';
 const images = [
   require('../../assets/images/screenImage1.png'),
   require('../../assets/images/screenImage2.png'),
@@ -17,6 +18,11 @@ const images = [
 ];
 type Props = NativeStackScreenProps<RootStackParamList, 'Loginhome'>;
 const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
+  const signInInfo: any = useAppSelector(
+    (state: any) => state?.Auth?.data?.signInInfo,
+  );
+
+  console.log(signInInfo);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {

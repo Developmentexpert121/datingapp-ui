@@ -289,6 +289,8 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     fetchToken();
   }, []);
 
+  console.log(errors);
+
   return (
     <KeyboardAvoidingView
       behavior="padding"
@@ -317,12 +319,22 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
           control={control}
           errors={Boolean(errors?.email)}
         />
+        {errors.email && (
+          <Text style={{color: 'red', fontFamily: 'Sansation_Regular'}}>
+            {errors.email.message}
+          </Text>
+        )}
         <AppTextInput
           placeholder="Enter Your Password"
           name="password"
           control={control}
           errors={Boolean(errors?.password)}
         />
+        {errors.password && (
+          <Text style={{color: 'red', fontFamily: 'Sansation_Regular'}}>
+            {errors.password.message}
+          </Text>
+        )}
       </View>
 
       <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
