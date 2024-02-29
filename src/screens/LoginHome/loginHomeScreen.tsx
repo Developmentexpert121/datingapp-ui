@@ -22,7 +22,6 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     (state: any) => state?.Auth?.data?.signInInfo,
   );
 
-  console.log(signInInfo);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
@@ -85,6 +84,18 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
           <Text style={styles.touchableText}> Log In</Text>
         </TouchableOpacity>
       </View>
+      {signInInfo && (
+        <Text
+          style={{
+            fontFamily: 'Sansation_Regular',
+            color: 'red',
+            fontSize: 14,
+            textAlign: 'center',
+          }}>
+          {signInInfo}
+        </Text>
+      )}
+
       <Text style={styles.termsText}>Terms of use and privacy</Text>
       {/* </View>
         )}
@@ -149,7 +160,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Sansation_Regular',
   },
   termsText: {
-    marginTop: 40,
+    marginTop: 36,
     color: 'gray',
     textAlign: 'center',
     fontFamily: 'Sansation_Regular',

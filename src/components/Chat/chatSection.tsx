@@ -106,7 +106,7 @@ const ChatSection = () => {
     dispatch(getReceivers({senderId: profileData._id}))
       .unwrap()
       .then((response: any) => setReceiverData(response.receivers));
-  });
+  }, []);
 
   const [search, setSearch] = useState<any>('');
 
@@ -186,7 +186,7 @@ const ChatSection = () => {
                 onPress={() => handleMovepage(recieverMainInfo[0])}>
                 <Avatar
                   size={60}
-                  source={{uri: recieverMainInfo[0].profilePic}}
+                  source={{uri: recieverMainInfo[0]?.profilePic}}
                   rounded
                 />
                 <View style={styles.line}>
@@ -198,7 +198,7 @@ const ChatSection = () => {
                         color: 'black',
                         marginBottom: 8,
                       }}>
-                      {recieverMainInfo[0].name}
+                      {recieverMainInfo[0]?.name}
                     </Text>
                     <Text
                       style={{

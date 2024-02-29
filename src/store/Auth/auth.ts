@@ -49,7 +49,10 @@ export const LoginSignIn = createAsyncThunk(
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        return {error: 'Invalid credentials'};
+        return {
+          error:
+            'Invalid credentials, Enter valid credentials or create a new account',
+        };
       } else {
         throw error;
       }
@@ -329,7 +332,6 @@ const Auth: any = createSlice({
         if (action.payload.data) {
           // Check if data is present in the payload
           state.data.signin = action.payload.data;
-          state.data.signInInfo = action.payload.message;
         } else {
           state.data.signInInfo = action.payload.error; // Assuming the error field is set properly on unsuccessful login
         }
