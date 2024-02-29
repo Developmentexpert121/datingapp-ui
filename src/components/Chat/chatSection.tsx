@@ -106,7 +106,7 @@ const ChatSection = () => {
     dispatch(getReceivers({senderId: profileData._id}))
       .unwrap()
       .then((response: any) => setReceiverData(response.receivers));
-  });
+  }, []);
 
   const [search, setSearch] = useState<any>('');
 

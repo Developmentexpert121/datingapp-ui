@@ -18,6 +18,9 @@ import Icon2 from 'react-native-vector-icons/FontAwesome6';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {reciveMessages, sendAMessage} from '../../store/Auth/auth';
 import {ScrollView} from 'react-native-gesture-handler';
+import io from 'socket.io-client';
+
+const socket = io('http://10.0.2.2:3000');
 
 const ChatPage = () => {
   const scrollViewRef: any = useRef(null);
@@ -33,7 +36,32 @@ const ChatPage = () => {
   const [inputMessage, setInputMessage] = useState('');
 
   const [chatMessages, setChatMessages] = useState<any>([]);
-  console.log(chatMessages);
+
+  useEffect(() => {
+    console.log(socket);
+    socket.on('connection', () => {
+      console.log('Connected to server');
+    });
+
+    socket.on('disconnect', () => {
+      console.log('Disconnected from server');
+    });
+
+    socket.on('chat message', msg => {
+      // Handle incoming messages
+      console.log('Received message:', msg);
+      // Update chatMessages state accordingly
+
+      // Update chatMessages state with the received message
+      if (msg.receiver !== profileData._id) {
+        setChatMessages((prevMessages: any) => [...prevMessages, msg]);
+      }
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -69,9 +97,17 @@ const ChatPage = () => {
     };
 
     fetchMessages();
-  });
+  }, []);
 
   const handleSendMessage = useCallback(() => {
+    const newMessage = {
+      sender: profileData._id,
+      receiver: user._id,
+      message: inputMessage,
+      timestamp: new Date().toISOString(), // You may need to adjust the timestamp format
+    };
+    socket.emit('chat message', newMessage);
+    setChatMessages((prevMessages: any) => [...prevMessages, newMessage]);
     dispatch(
       sendAMessage({
         senderId: profileData?._id,
