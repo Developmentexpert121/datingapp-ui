@@ -83,18 +83,45 @@ export const RegisterSignUp = createAsyncThunk(
   },
 );
 
-export const UploadImage = createAsyncThunk(
-  'auth/UploadImage',
+// export const UploadImage = createAsyncThunk(
+//   'auth/UploadImage',
+//   async (formData: any, {dispatch}: any) => {
+//     try {
+//       //  dispatch(activityLoaderStarted());
+//       const response = await http.post('/user/upload-pic', formData, {
+//         headers: {
+//           Accept: 'application/json',
+//           'Content-Type': 'multipart/form-data',
+//         },
+//       });
+//       if (response.status === 200) {
+//         return response.data;
+//       }
+//     } catch (error: any) {
+//       if (error.response && error.response.status === 400) {
+//         return {error: 'Bad Request'};
+//       } else {
+//         throw error;
+//       }
+//     } finally {
+//       //  dispatch(activityLoaderFinished());
+//     }
+//   },
+// );
+
+export const uploadImages = createAsyncThunk(
+  'auth/uploadImages',
   async (formData: any, {dispatch}: any) => {
     try {
-      //  dispatch(activityLoaderStarted());
-      const response = await http.post('/user/upload-pic', formData, {
+      console.log('dataaaaaaAuth', formData);
+      const response = await http.post('/user/upload', formData, {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'multipart/form-data',
         },
       });
       if (response.status === 200) {
+        console.log('Comebackimage', response.data);
         return response.data;
       }
     } catch (error: any) {

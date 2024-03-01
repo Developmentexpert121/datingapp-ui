@@ -153,12 +153,12 @@ const ChatPage = () => {
           </View>
         </View>
         <View style={{flexDirection: 'row', marginEnd: 10}}>
-          <TouchableOpacity onPress={() => navigation.navigate('ChatPage')}>
+          <TouchableOpacity>
             <View style={styles.editIcon}>
               <Icon1 name="phone" size={26} color="#AC25AC" />
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('ChatPage')}>
+          <TouchableOpacity>
             <View style={styles.editIcon}>
               <Icon2 name="video" size={24} color="#AC25AC" />
             </View>

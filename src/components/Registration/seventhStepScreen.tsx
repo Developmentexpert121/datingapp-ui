@@ -14,7 +14,7 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import {request, PERMISSIONS} from 'react-native-permissions';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import {useAppDispatch, useAppSelector} from '../../store/store';
-import {UploadImage, updateProfileData} from '../../store/Auth/auth';
+import {updateProfileData, uploadImages} from '../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const getUserId = async () => {
@@ -107,15 +107,33 @@ const SeventhStepScreen = ({
   }, [profileImages]);
 
   const handleImageSelection = async () => {
-    // Launch image library to select multiple images
-    launchImageLibrary({mediaType: 'photo'}, response => {
+    launchImageLibrary({mediaType: 'photo'}, async response => {
       if (!response?.didCancel && !response?.errorMessage) {
-        if (response?.assets) {
-          const selectedImages = response?.assets?.map(asset => asset?.uri);
-          setProfileImages((prevImages: any) => [
-            ...prevImages,
-            ...selectedImages,
-          ]); // Append new images to existing state
+        if (response?.assets && response.assets.length > 0) {
+          try {
+            const asset = response.assets[0]; // Assuming you want to upload only the first selected image
+            console.log(asset);
+            const formData = new FormData();
+            formData.append('image', {
+              name: asset.fileName,
+              fileName: asset.fileName,
+              type: asset.type,
+              uri: asset.uri,
+            });
+
+            const uploadedImageUrl = await dispatch(uploadImages(formData))
+              .unwrap()
+              .then((response: any) => response.imageUrl);
+            console.log(uploadedImageUrl);
+
+            setProfileImages((prevImages: any) => [
+              ...prevImages,
+              uploadedImageUrl,
+            ]);
+          } catch (error) {
+            console.error('Error uploading image:', error);
+            setUploadError(true);
+          }
         } else {
           setUploadError(true); // Set error if no images are selected
         }

@@ -238,7 +238,7 @@ import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import AppTextInput from '../../components/AppTextInput/AppTextInput';
 import {useAppDispatch, useAppSelector} from '../../store/store';
-import {RegisterSignUp, UploadImage} from '../../store/Auth/auth';
+import {RegisterSignUp} from '../../store/Auth/auth';
 import {RadioButton} from 'react-native-paper';
 // import ZeroStepScreen from '../Registration/zeroStepScreen';
 import ZeroStepScreen from '../../components/Registration/zeroStepScreen';
@@ -357,7 +357,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
 
   console.log(profileData);
 
-  const [steps, setSteps] = React.useState(0);
+  const [steps, setSteps] = React.useState(7);
   const [dateStr, setDateStr] = useState<any>(null);
   const [location, setLocation] = useState<any>(null);
   const [distance, setDistance] = useState<any>(20);
