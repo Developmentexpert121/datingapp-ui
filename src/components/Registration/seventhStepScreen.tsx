@@ -130,6 +130,7 @@ const SeventhStepScreen = ({
               ...prevImages,
               uploadedImageUrl,
             ]);
+            setUploadError(false);
           } catch (error) {
             console.error('Error uploading image:', error);
             setUploadError(true);
@@ -140,26 +141,41 @@ const SeventhStepScreen = ({
       }
     });
   };
-
+  console.log('Lengthhh', profileImages.length);
   const handleRemoveImage = async (index: number) => {
     // If there's only one image left, open the image picker for replacement
     if (profileImages.length === 1) {
       try {
-        const response: any = await new Promise((resolve, reject) => {
-          launchImageLibrary({mediaType: 'photo'}, response => {
-            if (response) {
-              resolve(response);
+        launchImageLibrary({mediaType: 'photo'}, async response => {
+          if (!response?.didCancel && !response?.errorMessage) {
+            if (response?.assets && response.assets.length > 0) {
+              try {
+                const asset = response.assets[0]; // Assuming you want to upload only the first selected image
+                console.log(asset);
+                const formData = new FormData();
+                formData.append('image', {
+                  name: asset.fileName,
+                  fileName: asset.fileName,
+                  type: asset.type,
+                  uri: asset.uri,
+                });
+
+                const uploadedImageUrl = await dispatch(uploadImages(formData))
+                  .unwrap()
+                  .then((response: any) => response.imageUrl);
+                console.log(uploadedImageUrl);
+
+                setProfileImages([uploadedImageUrl]);
+                setUploadError(false);
+              } catch (error) {
+                console.error('Error uploading image:', error);
+                setUploadError(true);
+              }
             } else {
-              reject();
+              setUploadError(true); // Set error if no images are selected
             }
-          });
+          }
         });
-        if (response.assets && response.assets.length > 0) {
-          const selectedImages = response.assets.map((asset: any) => asset.uri);
-          setProfileImages(selectedImages);
-        } else {
-          setUploadError(true); // Set error if no images are selected
-        }
       } catch (error) {
         // User cancelled image selection, do nothing
       }
@@ -168,6 +184,7 @@ const SeventhStepScreen = ({
       const updatedImages = [...profileImages];
       updatedImages?.splice(index, 1);
       setProfileImages(updatedImages);
+      setUploadError(false);
     }
   };
 
