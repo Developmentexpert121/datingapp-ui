@@ -357,7 +357,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
 
   console.log(profileData);
 
-  const [steps, setSteps] = React.useState(7);
+  const [steps, setSteps] = React.useState(0);
   const [dateStr, setDateStr] = useState<any>(null);
   const [location, setLocation] = useState<any>(null);
   const [distance, setDistance] = useState<any>(20);
