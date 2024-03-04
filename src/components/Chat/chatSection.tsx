@@ -100,12 +100,21 @@ const ChatSection = () => {
 
   const [receiverData, setReceiverData] = useState<any>([]);
 
-  console.log(receiverData);
-
   useEffect(() => {
-    dispatch(getReceivers({senderId: profileData._id}))
-      .unwrap()
-      .then((response: any) => setReceiverData(response.receivers));
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(
+          getReceivers({senderId: profileData._id}),
+        ).unwrap();
+        setReceiverData(response.receivers);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    const intervalId = setInterval(fetchData, 5000); // Poll every 5 seconds
+    fetchData(); // Fetch data immediately on component mount
+    return () => clearInterval(intervalId);
   }, []);
 
   const [search, setSearch] = useState<any>('');
@@ -179,7 +188,7 @@ const ChatSection = () => {
             const recieverMainInfo = allUsers.filter((user: any) =>
               item?.receiverId?.includes(user._id),
             );
-            console.log(recieverMainInfo);
+
             return (
               <ListItem
                 containerStyle={styles.listItemContainer}

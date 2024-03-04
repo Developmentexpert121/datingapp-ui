@@ -53,7 +53,7 @@ const ChatPage = () => {
       // Update chatMessages state accordingly
 
       // Update chatMessages state with the received message
-      if (msg.receiver !== profileData._id) {
+      if (msg.sender !== profileData._id) {
         setChatMessages((prevMessages: any) => [...prevMessages, msg]);
       }
     });
