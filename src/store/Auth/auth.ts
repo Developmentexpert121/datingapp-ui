@@ -44,6 +44,7 @@ export const LoginSignIn = createAsyncThunk(
           'userId',
           JSON.stringify(response?.data?._id),
         );
+        console.log(response?.data?.token, response?.data?._id);
         await dispatch(ProfileData(response?.data?._id));
         return response.data;
       }
@@ -331,6 +332,26 @@ export const deleteUser = createAsyncThunk(
 export const updateAuthentication = createAsyncThunk(
   'auth/updateAuthentication',
   async () => {},
+);
+
+export const videoCallToken = createAsyncThunk(
+  'auth/videoCallToken',
+  async (data: any, {dispatch}: any) => {
+    try {
+      const response = await http.post(`/user/stream-chat/token`, data);
+
+      if (response.status === 200) {
+        console.log(response.data);
+        return response.data.token;
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        return {error: 'Bad Request'};
+      } else {
+        throw error;
+      }
+    }
+  },
 );
 
 const Auth: any = createSlice({

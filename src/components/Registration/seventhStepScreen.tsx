@@ -123,7 +123,7 @@ const SeventhStepScreen = ({
 
             const uploadedImageUrl = await dispatch(uploadImages(formData))
               .unwrap()
-              .then((response: any) => response.imageUrl);
+              .then((response: any) => response.secureUrl);
             console.log(uploadedImageUrl);
 
             setProfileImages((prevImages: any) => [
