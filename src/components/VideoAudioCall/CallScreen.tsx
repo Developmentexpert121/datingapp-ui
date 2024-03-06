@@ -9,16 +9,39 @@ import {
   CallContent,
 } from '@stream-io/video-react-native-sdk';
 
-type Props = {goToHomeScreen: () => void; callId: string};
+type Props = {
+  goToHomeScreen: () => void;
+  callId: string;
+  enableCamera: boolean;
+};
 
-export const CallScreen = ({goToHomeScreen, callId}: Props) => {
+export const CallScreen = ({goToHomeScreen, callId, enableCamera}: Props) => {
   const [call, setCall] = React.useState<Call | null>(null);
   const client = useStreamVideoClient();
 
   useEffect(() => {
-    const call = client?.call('default', callId);
-    call?.join({create: true}).then(() => setCall(call));
-  }, [client]);
+    console.log('Enableeeeeeee', enableCamera);
+    const initializeCall = async () => {
+      const call = client?.call('default', callId);
+      if (call) {
+        if (enableCamera === true) {
+          await call.camera.enable();
+        } else {
+          await call.camera.disable();
+        }
+        await call.microphone.enable();
+      }
+      call?.join({create: true}).then(() => setCall(call));
+    };
+
+    initializeCall();
+
+    return () => {
+      if (call) {
+        call.endCall();
+      }
+    };
+  }, [client, callId, enableCamera]);
 
   if (!call) {
     return (

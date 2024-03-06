@@ -50,19 +50,21 @@ const ChatPage = () => {
   // Define client state
   const [callId, setCallId] = useState<any>('');
 
+  const [enableCamera, setEnableCamera] = useState<boolean>(true);
+
   const [activeScreen, setActiveScreen] = useState('home');
 
   useEffect(() => {
     const initializeStreamClient = async () => {
       const apiKey = 'tgmn64zvvytf';
-      const token = await dispatch(videoCallToken({id: profileData._id}))
+      const token = await dispatch(videoCallToken({id: user?._id}))
         .unwrap()
         .then((response: any) => response.token);
       const callId: any = uuid.v4();
       const userMain = {
-        id: profileData?._id,
-        name: profileData?.name,
-        image: profileData?.profilePic,
+        id: user?._id,
+        name: user?.name,
+        image: user?.profilePic,
       };
 
       if (token) {
@@ -167,7 +169,7 @@ const ChatPage = () => {
     call?.join({
       create: true, // create the call if it doesn't exist
       data: {
-        members: [{user_id: profileData?._id}, {user_id: user?._id}],
+        members: [{user_id: user?._id}, {user_id: profileData?._id}],
       },
     });
     setActiveScreen('call-screen');
@@ -179,7 +181,11 @@ const ChatPage = () => {
       {client && (
         <StreamVideo client={client}>
           {activeScreen === 'call-screen' ? (
-            <CallScreen goToHomeScreen={goToHomeScreen} callId={callId} />
+            <CallScreen
+              goToHomeScreen={goToHomeScreen}
+              callId={callId}
+              enableCamera={enableCamera}
+            />
           ) : (
             <KeyboardAvoidingView
               behavior="padding"
@@ -215,12 +221,20 @@ const ChatPage = () => {
                   </View>
                 </View>
                 <View style={{flexDirection: 'row', marginEnd: 10}}>
-                  <TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setEnableCamera(false);
+                      goToCallScreen();
+                    }}>
                     <View style={styles.editIcon}>
                       <Icon1 name="phone" size={26} color="#AC25AC" />
                     </View>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={goToCallScreen}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setEnableCamera(true);
+                      goToCallScreen();
+                    }}>
                     <View style={styles.editIcon}>
                       <Icon2 name="video" size={24} color="#AC25AC" />
                     </View>
