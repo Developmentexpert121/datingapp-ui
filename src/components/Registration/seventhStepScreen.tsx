@@ -22,7 +22,6 @@ const getUserId = async () => {
     const userId: any = await AsyncStorage.getItem('userId');
 
     if (userId !== null) {
-      console.log(JSON.parse(userId));
       return JSON.parse(userId);
     } else {
       return null;
@@ -112,7 +111,7 @@ const SeventhStepScreen = ({
         if (response?.assets && response.assets.length > 0) {
           try {
             const asset = response.assets[0]; // Assuming you want to upload only the first selected image
-            console.log(asset);
+
             const formData = new FormData();
             formData.append('image', {
               name: asset.fileName,
@@ -124,7 +123,6 @@ const SeventhStepScreen = ({
             const uploadedImageUrl = await dispatch(uploadImages(formData))
               .unwrap()
               .then((response: any) => response.secureUrl);
-            console.log(uploadedImageUrl);
 
             setProfileImages((prevImages: any) => [
               ...prevImages,
@@ -141,7 +139,6 @@ const SeventhStepScreen = ({
       }
     });
   };
-  console.log('Lengthhh', profileImages.length);
   const handleRemoveImage = async (index: number) => {
     // If there's only one image left, open the image picker for replacement
     if (profileImages.length === 1) {
@@ -151,7 +148,7 @@ const SeventhStepScreen = ({
             if (response?.assets && response.assets.length > 0) {
               try {
                 const asset = response.assets[0]; // Assuming you want to upload only the first selected image
-                console.log(asset);
+
                 const formData = new FormData();
                 formData.append('image', {
                   name: asset.fileName,
@@ -162,8 +159,7 @@ const SeventhStepScreen = ({
 
                 const uploadedImageUrl = await dispatch(uploadImages(formData))
                   .unwrap()
-                  .then((response: any) => response.imageUrl);
-                console.log(uploadedImageUrl);
+                  .then((response: any) => response.secureUrl);
 
                 setProfileImages([uploadedImageUrl]);
                 setUploadError(false);

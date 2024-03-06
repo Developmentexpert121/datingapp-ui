@@ -25,7 +25,6 @@ const LikedScreen = () => {
   const likedUsers = allUsers.filter((user: any) =>
     profileData?.likedBy.includes(user._id),
   );
-  console.log(likedUsers);
 
   const navigation = useNavigation();
 
@@ -42,7 +41,6 @@ const LikedScreen = () => {
       </ImageBackground>
     </View>
   );
-  console.log(likedUsers);
 
   return (
     <View style={styles.container}>

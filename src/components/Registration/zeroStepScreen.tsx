@@ -78,8 +78,6 @@ const ZeroStepScreen = ({
     showMode('time');
   };
 
-  console.log(errors);
-
   return (
     <SafeAreaView>
       <Text style={styles.headerLabel}>Personal</Text>

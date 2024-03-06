@@ -25,7 +25,6 @@ const getUserId = async () => {
     const userId: any = await AsyncStorage.getItem('userId');
 
     if (userId !== null) {
-      console.log(JSON.parse(userId));
       return JSON.parse(userId);
     } else {
       return null;
@@ -54,7 +53,6 @@ const HomeScreen = () => {
   }, []);
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  console.log(currentIndex);
 
   const calculateDistance = (lat1: any, lon1: any, lat2: any, lon2: any) => {
     const R = 3958.8; // Earth radius in miles

@@ -20,7 +20,6 @@ const getUserId = async () => {
     const userId: any = await AsyncStorage.getItem('userId');
 
     if (userId !== null) {
-      console.log(JSON.parse(userId));
       return JSON.parse(userId);
     } else {
       return null;

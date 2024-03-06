@@ -33,7 +33,7 @@ import {CallScreen} from '../VideoAudioCall/CallScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import uuid from 'react-native-uuid';
 
-const socket = io('https://dating-app-api-five.vercel.app/api');
+const socket = io('http://10.0.2.2:8000');
 
 const ChatPage = () => {
   const scrollViewRef: any = useRef(null);
@@ -55,7 +55,9 @@ const ChatPage = () => {
   useEffect(() => {
     const initializeStreamClient = async () => {
       const apiKey = 'tgmn64zvvytf';
-      const token = await dispatch(videoCallToken({id: profileData._id}));
+      const token = await dispatch(videoCallToken({id: profileData._id}))
+        .unwrap()
+        .then((response: any) => response.token);
       const callId: any = uuid.v4();
       const userMain = {
         id: profileData?._id,
@@ -81,7 +83,6 @@ const ChatPage = () => {
   const [chatMessages, setChatMessages] = useState<any>([]);
 
   useEffect(() => {
-    console.log(socket);
     socket.on('connection', () => {
       console.log('Connected to server');
     });

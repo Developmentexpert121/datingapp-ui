@@ -43,7 +43,6 @@ const getUserId = async () => {
     const userId: any = await AsyncStorage.getItem('userId');
 
     if (userId !== null) {
-      console.log(JSON.parse(userId));
       return JSON.parse(userId);
     } else {
       return null;
@@ -132,8 +131,6 @@ const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
       field = title?.toLowerCase().split(' ')[0];
       fieldValue = data[title];
     }
-
-    console.log('Settingsdataaaaaa', fieldValue);
 
     dispatch(
       updateProfileData({

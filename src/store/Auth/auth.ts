@@ -114,7 +114,6 @@ export const uploadImages = createAsyncThunk(
   'auth/uploadImages',
   async (formData: any, {dispatch}: any) => {
     try {
-      console.log('dataaaaaaAuth', formData);
       const response = await http.post('/user/upload', formData, {
         headers: {
           Accept: 'application/json',
@@ -122,7 +121,6 @@ export const uploadImages = createAsyncThunk(
         },
       });
       if (response.status === 200) {
-        console.log('Comebackimage', response.data);
         return response.data;
       }
     } catch (error: any) {
@@ -142,7 +140,7 @@ export const updateProfileData = createAsyncThunk(
   async (data: any, {dispatch}: any) => {
     try {
       //  dispatch(activityLoaderStarted());
-      console.log('dataaaaaaAuth', data);
+      console.log('Updating Data', data);
       const response = await http.patch('/user/update-profile', data);
       if (response.status === 200) {
         dispatch(ProfileData(data.id._j));
@@ -164,7 +162,6 @@ export const likedAUser = createAsyncThunk(
   'auth/likedAUser',
   async (data: any, {dispatch}: any) => {
     try {
-      console.log('Look', data);
       const response = await http.post('/user/likeUser', data);
       if (response.status === 200) {
         return response.data;
@@ -245,7 +242,6 @@ export const sendAMessage = createAsyncThunk(
   'auth/sendAMessage',
   async (data: any) => {
     try {
-      console.log(data);
       const response: any = await http.post(`/user/send-message`, data);
       if (response.status === 200) {
         return response.data;
@@ -264,7 +260,6 @@ export const reciveMessages = createAsyncThunk(
   'auth/reciveMessages',
   async (data: any, {dispatch}: any) => {
     try {
-      console.log(data);
       const response = await http.get(
         `/user/messages?senderId=${data.senderId}&receiverId=${data.receiverId}`,
       );
@@ -313,7 +308,6 @@ export const deleteUser = createAsyncThunk(
       );
 
       if (response.status === 200) {
-        console.log(response.data);
         dispatch(updateAuthentication());
         return response.data;
       }
@@ -341,8 +335,7 @@ export const videoCallToken = createAsyncThunk(
       const response = await http.post(`/user/stream-chat/token`, data);
 
       if (response.status === 200) {
-        console.log(response.data);
-        return response.data.token;
+        return response.data;
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {

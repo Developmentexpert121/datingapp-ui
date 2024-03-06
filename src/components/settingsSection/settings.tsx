@@ -51,7 +51,6 @@ const getUserId = async () => {
     const userId: any = await AsyncStorage.getItem('userId');
 
     if (userId !== null) {
-      console.log(JSON.parse(userId));
       return JSON.parse(userId);
     } else {
       return null;
@@ -102,7 +101,6 @@ const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
   }, [title]);
 
   const onSubmit = (data: any) => {
-    console.log('Profiledataaaaaa', data);
     const fieldValue = data[title];
 
     let field;
@@ -121,8 +119,6 @@ const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
       }),
     ).then(() => onClose());
   };
-
-  console.log(errors);
 
   const ListItem = ({item}: any) => (
     <View style={styles.listItem}>
