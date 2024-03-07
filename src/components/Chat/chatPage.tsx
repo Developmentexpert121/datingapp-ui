@@ -33,7 +33,7 @@ import {CallScreen} from '../VideoAudioCall/CallScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import uuid from 'react-native-uuid';
 
-const socket = io('http://10.0.2.2:8000');
+const socket = io('https://dating-app-api-five.vercel.app');
 
 const ChatPage = () => {
   const scrollViewRef: any = useRef(null);
