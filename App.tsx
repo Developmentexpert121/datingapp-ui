@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import type {PropsWithChildren} from 'react';
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -27,17 +27,49 @@ import {useSelector} from 'react-redux';
 import {AuthNavigator, MainNavigator} from './src/navigation/index';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useAppSelector} from './src/store/store';
+import {useAppDispatch, useAppSelector} from './src/store/store';
 import LoadingSpinner from './src/services/spinner/spinner';
 import SplashScreen from 'react-native-splash-screen';
+import messaging from '@react-native-firebase/messaging';
+import {requestNotifications} from 'react-native-permissions';
+import {
+  StreamVideo,
+  StreamVideoClient,
+} from '@stream-io/video-react-native-sdk';
+import {videoCallToken} from './src/store/Auth/auth';
+
 const App = () => {
+  const dispatch: any = useAppDispatch();
+
+  const profileData: any = useAppSelector(
+    (state: any) => state?.Auth?.data?.profileData,
+  );
+
+  async function requestUserPermission() {
+    await requestNotifications(['alert', 'sound']);
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    if (enabled) {
+      console.log('Authorization status:', authStatus);
+    }
+  }
+  const getToken = async () => {
+    const token = await messaging().getToken();
+    console.log('Token:', token);
+  };
+
   const isLoading = useAppSelector(
     (state: any) => state.ActivityLoader.loading,
   );
   const isDarkMode = useColorScheme() === 'dark';
+
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
+
   const isAuthenticated = useSelector(
     (state: any) => state?.Auth?.isAuthenticated,
   );
@@ -46,7 +78,10 @@ const App = () => {
     if (Platform.OS === 'android') {
       SplashScreen.hide();
     }
+    requestUserPermission();
+    getToken();
   }, []);
+
   const authToken: any = async () => {
     try {
       const token = await AsyncStorage.getItem('authToken');
@@ -60,14 +95,42 @@ const App = () => {
     }
   };
 
+  const [client, setClient] = useState<StreamVideoClient | any>(null);
+
+  useEffect(() => {
+    const initializeStreamClient = async () => {
+      const apiKey = 'tgmn64zvvytf';
+      const token = await dispatch(videoCallToken({id: profileData?._id}))
+        .unwrap()
+        .then((response: any) => response.token);
+
+      const userMain = {
+        id: profileData?._id,
+        name: profileData?.name,
+        image: profileData?.profilePic,
+      };
+
+      if (token) {
+        const client = new StreamVideoClient({apiKey, user: userMain, token});
+        setClient(client); // Set client state
+      } else {
+        // Handle error
+      }
+    };
+
+    initializeStreamClient();
+  }, [profileData]);
+
   return (
     <SafeAreaProvider>
       {isLoading ? (
         <LoadingSpinner />
       ) : (
         <NavigationContainer>
-          {isAuthenticated && authToken() ? (
-            <MainNavigator />
+          {isAuthenticated && authToken() && client ? (
+            <StreamVideo client={client}>
+              <MainNavigator />
+            </StreamVideo>
           ) : (
             <AuthNavigator />
           )}

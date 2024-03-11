@@ -26,7 +26,7 @@ const UsersDrawer = ({isOpen, onClose}: any) => {
   const navigation: any = useNavigation();
 
   const goToChatWith = (user: any) => {
-    navigation.navigate('ChatPage', {user: user});
+    navigation.navigate('VideoCallRedirect', {user: user});
     onClose();
   };
 
@@ -130,7 +130,7 @@ const ChatSection = () => {
   };
 
   const handleMovepage = (user: any) => {
-    navigation.navigate('ChatPage', {user: user});
+    navigation.navigate('VideoCallRedirect', {user: user});
   };
 
   const getTimeAgo = (timestamp: string) => {

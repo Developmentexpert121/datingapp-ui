@@ -3,7 +3,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {enableScreens} from 'react-native-screens';
 import HomeScreen from '../screens/Home/homeScreen';
-import ChatSection from '../components/Chat/chatSection';
+import ChatSection from '../components/Chat/allChats';
 import {RootStackParamList} from '../types';
 import LikedScreen from '../components/Dashboard/liked/liked';
 import NotificationScreen from '../components/Dashboard/Notification/notification';
@@ -13,6 +13,7 @@ import ProfileScreen from '../components/Profile/profileSection';
 import SettingsScreen from '../components/settingsSection/settings';
 import UpdateProfileScreen from '../components/updateProfile/updateProfile';
 import ChatPage from '../components/Chat/chatPage';
+import VideoCallRedirect from '../components/Chat/chatVideoRedirect';
 
 const Stack = createStackNavigator<RootStackParamList>();
 enableScreens();
@@ -32,7 +33,7 @@ const MainNavigator = () => (
     <Stack.Screen name="Settings" component={SettingsScreen} />
     <Stack.Screen name="UpdateProfile" component={UpdateProfileScreen} />
     <Stack.Screen name="ChatScreen" component={ChatSection} />
-    <Stack.Screen name="ChatPage" component={ChatPage} />
+    <Stack.Screen name="VideoCallRedirect" component={VideoCallRedirect} />
   </Stack.Navigator>
 );
 

@@ -1,4 +1,4 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 declare global {
   namespace ReactNavigation {
@@ -14,12 +14,13 @@ export type RootStackParamList = {
   Profile: undefined;
   ChatScreen: undefined;
   Liked: undefined;
-  Notification: undefined,
-  Filter: undefined,
-  Explore: undefined,
-  Settings: undefined,
-  UpdateProfile: undefined,
-  ChatPage: undefined
+  Notification: undefined;
+  Filter: undefined;
+  Explore: undefined;
+  Settings: undefined;
+  UpdateProfile: undefined;
+  ChatPage: undefined;
+  VideoCallRedirect: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =

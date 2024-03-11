@@ -13,11 +13,16 @@ type Props = {
   goToHomeScreen: () => void;
   callId: string;
   enableCamera: boolean;
+  client: any;
 };
 
-export const CallScreen = ({goToHomeScreen, callId, enableCamera}: Props) => {
+export const CallScreen = ({
+  goToHomeScreen,
+  callId,
+  enableCamera,
+  client,
+}: Props) => {
   const [call, setCall] = React.useState<Call | null>(null);
-  const client = useStreamVideoClient();
 
   useEffect(() => {
     console.log('Enableeeeeeee', enableCamera);
