@@ -58,6 +58,7 @@ interface RegisterForm {
   confirmPassword: string;
   distance: string;
   location: string;
+  geoLocation: any;
   profilePic: string;
   dob: string;
   profilePercentage: string;
@@ -78,6 +79,7 @@ const defaultValues = {
   password: '',
   distance: '',
   location: '',
+  geoLocation: null,
   profilePic: '',
   dob: '',
   profilePercentage: '60',
@@ -177,17 +179,27 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     resolver: Schemas(steps),
   });
 
+  const [geoLocation, setGeoLocation] = useState<any>(null);
+
   const getLocationAndRegister = (data: RegisterForm) => {
     Geolocation.getCurrentPosition(
       position => {
         const {latitude, longitude} = position.coords;
         setLocation({latitude, longitude});
+
+        const userLocation = {
+          type: 'Point',
+          coordinates: [longitude, latitude],
+        };
+        setGeoLocation(userLocation);
+
         setPermissionStatus('granted');
 
         // Call registration API here
         dispatch(
           RegisterSignUp({
             ...data,
+            geoLocation: userLocation,
             location: {latitude, longitude},
             distance: `${distance}mi`,
             profilePic: profileImages?.join(','),

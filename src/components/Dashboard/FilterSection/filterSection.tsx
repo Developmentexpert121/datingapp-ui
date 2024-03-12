@@ -24,6 +24,7 @@ import Label from '../../settingsSection/Label';
 import Notch from '../../settingsSection/Notch';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import HeaderComponent from '../header/header';
 
 const getUserId = async () => {
   try {
@@ -44,6 +45,7 @@ const defaultValues = {
   email: '',
   interests: '',
   gender: '',
+  showInDistance: '',
 };
 
 interface UpdateForm {
@@ -51,13 +53,14 @@ interface UpdateForm {
   email: string;
   interests: string;
   gender: string;
+  showInDistance: string;
 }
 
 const schema = yup.object().shape({
   // gender: yup.string().required('gender is required'),
 });
 
-const FilterSection = () => {
+const FilterSection = ({showIn, setShowIn}: any) => {
   const dispatch: any = useAppDispatch();
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
@@ -111,20 +114,6 @@ const FilterSection = () => {
   const [minValue, setMinValue] = useState(18);
   const [maxValue, setMaxValue] = useState(56);
 
-  const handleMinValueChange = (value: any) => {
-    setMinValue(value);
-    if (distance < value) {
-      setDistance(value);
-    }
-  };
-
-  const handleMaxValueChange = (value: any) => {
-    setMaxValue(value);
-    if (distance > value) {
-      setDistance(value);
-    }
-  };
-
   const renderThumb = useCallback(() => <Thumb />, []);
   const renderRail = useCallback(() => <Rail />, []);
   const renderRailSelected = useCallback(() => <RailSelected />, []);
@@ -154,8 +143,7 @@ const FilterSection = () => {
   };
 
   return (
-    <View>
-      <CommonBackbutton title="Filter" />
+    <View style={{marginTop: 10}}>
       <View style={styles.boxContainer}>
         <View style={styles.distance}>
           <Text style={styles.textName}>Distance Preference</Text>
@@ -175,6 +163,46 @@ const FilterSection = () => {
           minimumTrackTintColor="#AC25AC"
           maximumTrackTintColor="gray"
           thumbStyle={styles.thumbStyle}
+        />
+        <Controller
+          name={'showInDistance'}
+          control={control}
+          render={() => (
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginHorizontal: 20,
+              }}>
+              <Text
+                style={{
+                  fontFamily: 'Sansation_Regular',
+                  marginTop: 2,
+                  marginBottom: 8,
+                  color: 'black',
+                }}>
+                Only show people in range
+              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  dispatch(
+                    updateProfileData({
+                      field: 'showInDistance',
+                      value: !showIn,
+                      id: getUserId(),
+                    }),
+                  ).then(() => setShowIn(!showIn));
+                }}>
+                <Ionicons
+                  name={
+                    showIn === true ? 'radio-button-on' : 'radio-button-off'
+                  }
+                  size={16}
+                  color="#AC25AC"
+                />
+              </TouchableOpacity>
+            </View>
+          )}
         />
       </View>
 

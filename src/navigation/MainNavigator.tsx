@@ -26,8 +26,6 @@ const MainNavigator = () => (
     }}>
     <Stack.Screen name="Home" component={HomeScreen} />
     <Stack.Screen name="Liked" component={LikedScreen} />
-    <Stack.Screen name="Notification" component={NotificationScreen} />
-    <Stack.Screen name="Filter" component={FilterScreen} />
     <Stack.Screen name="Explore" component={ExploredScreen} />
     <Stack.Screen name="Profile" component={ProfileScreen} />
     <Stack.Screen name="Settings" component={SettingsScreen} />

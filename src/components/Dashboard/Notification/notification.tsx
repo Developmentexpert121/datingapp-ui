@@ -141,11 +141,6 @@ const NotificationScreen = () => {
 
   return (
     <View style={styles.container}>
-      <HeaderComponent
-        title="Notifications"
-        icon={true}
-        showNotifications={false}
-      />
       {allNotificationsPresent.length === 0 ? (
         <View
           style={{
@@ -196,6 +191,7 @@ const styles = StyleSheet.create({
     rowGap: 6,
   },
   title: {
+    color: 'black',
     fontSize: 16,
     alignSelf: 'flex-start',
     fontFamily: 'Sansation_Bold',

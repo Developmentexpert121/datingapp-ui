@@ -19,6 +19,8 @@ import FooterComponent from '../footer/footer';
 import {useAppDispatch, useAppSelector} from '../../../store/store';
 import {getAllUsers} from '../../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import FilterSection from '../FilterSection/filterSection';
+import NotificationScreen from '../Notification/notification';
 
 const getUserId = async () => {
   try {
@@ -43,6 +45,10 @@ const HomeScreen = () => {
     (state: any) => state?.Auth?.data?.profileData,
   );
 
+  const [showIn, setShowIn] = useState(profileData?.showInDistance);
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
   useEffect(() => {
     const getId = async () => {
       const userId = await getUserId();
@@ -50,9 +56,8 @@ const HomeScreen = () => {
     };
 
     getId();
-  }, []);
-
-  const [currentIndex, setCurrentIndex] = useState(0);
+    setCurrentIndex(0);
+  }, [showIn]);
 
   const calculateDistance = (lat1: any, lon1: any, lat2: any, lon2: any) => {
     const R = 3958.8; // Earth radius in miles
@@ -74,72 +79,86 @@ const HomeScreen = () => {
     return (degrees * Math.PI) / 180;
   };
 
+  const [activeScreen, setActiveScreen] = useState('HOME');
+
   return (
     <View style={styles.pageContainer}>
-      <HeaderComponent showNotifications={true} />
-      <AnimatedStack
-        data={allUsers}
-        renderItem={({item}: any) => <Card user={item} />}
-        currentIndex={currentIndex}
-        setCurrentIndex={setCurrentIndex}
-        profileData={profileData}
+      <HeaderComponent
+        showNotifications={true}
+        setActiveScreen={setActiveScreen}
+        activeScreen={activeScreen}
       />
+      {activeScreen === 'HOME' ? (
+        <View style={styles.pageContainer}>
+          <AnimatedStack
+            data={allUsers}
+            renderItem={({item}: any) => <Card user={item} />}
+            currentIndex={currentIndex}
+            setCurrentIndex={setCurrentIndex}
+            profileData={profileData}
+          />
 
-      <View style={styles.locText}>
-        <Ionicons name="location-sharp" size={20} color="#AC25AC" />
-        <Text style={{fontFamily: 'Sansation_Regular', color: 'black'}}>
-          {
-            profileData.location && allUsers[currentIndex]?.location // Check if both locations are available
-              ? `${Math.round(
-                  calculateDistance(
-                    profileData.location.latitude,
-                    profileData.location.longitude,
-                    allUsers[currentIndex].location.latitude,
-                    allUsers[currentIndex].location.longitude,
-                  ),
-                ).toFixed(0)} miles away` // Calculate distance and round off to the nearest whole number
-              : 'Distance information unavailable' // Display a message if distance information is missing
-          }
-        </Text>
-      </View>
-      <View style={styles.container}>
-        {allUsers[currentIndex]?.habits1?.map((item: any, index: any) => {
-          let imagePath;
-          switch (item.imagePath) {
-            case 'src/assets/images/bottleofchampagne.png':
-              imagePath = require('../../../assets/images/bottleofchampagne.png');
-              break;
-            case 'src/assets/images/smoking.png':
-              imagePath = require('../../../assets/images/smoking.png');
-              break;
-            case 'src/assets/images/Mandumbbells.png':
-              imagePath = require('../../../assets/images/Mandumbbells.png');
-              break;
-            case 'src/assets/images/dogheart.png':
-              imagePath = require('../../../assets/images/dogheart.png');
-              break;
-            case 'src/assets/images/datestep.png':
-              imagePath = require('../../../assets/images/datestep.png');
-              break;
-            // Add more cases for other image paths as needed
-          }
-          return (
-            <View style={styles.item}>
-              {imagePath && (
-                <Image source={imagePath} style={{height: 20, width: 20}} />
-              )}
+          <View style={styles.locText}>
+            <Ionicons name="location-sharp" size={20} color="#AC25AC" />
+            <Text style={{fontFamily: 'Sansation_Regular', color: 'black'}}>
+              {
+                profileData.location && allUsers[currentIndex]?.location // Check if both locations are available
+                  ? `${Math.round(
+                      calculateDistance(
+                        profileData.location.latitude,
+                        profileData.location.longitude,
+                        allUsers[currentIndex].location.latitude,
+                        allUsers[currentIndex].location.longitude,
+                      ),
+                    ).toFixed(0)} miles away` // Calculate distance and round off to the nearest whole number
+                  : 'Distance information unavailable' // Display a message if distance information is missing
+              }
+            </Text>
+          </View>
+          <View style={styles.container}>
+            {allUsers[currentIndex]?.habits1?.map((item: any, index: any) => {
+              let imagePath;
+              switch (item.imagePath) {
+                case 'src/assets/images/bottleofchampagne.png':
+                  imagePath = require('../../../assets/images/bottleofchampagne.png');
+                  break;
+                case 'src/assets/images/smoking.png':
+                  imagePath = require('../../../assets/images/smoking.png');
+                  break;
+                case 'src/assets/images/Mandumbbells.png':
+                  imagePath = require('../../../assets/images/Mandumbbells.png');
+                  break;
+                case 'src/assets/images/dogheart.png':
+                  imagePath = require('../../../assets/images/dogheart.png');
+                  break;
+                case 'src/assets/images/datestep.png':
+                  imagePath = require('../../../assets/images/datestep.png');
+                  break;
+                // Add more cases for other image paths as needed
+              }
+              return (
+                <View style={styles.item}>
+                  {imagePath && (
+                    <Image source={imagePath} style={{height: 20, width: 20}} />
+                  )}
 
-              <Text
-                key={index.id}
-                style={{fontFamily: 'Sansation_Regular', color: 'black'}}>
-                {item.selectedText}
-              </Text>
-            </View>
-          );
-        })}
-      </View>
+                  <Text
+                    key={index.id}
+                    style={{fontFamily: 'Sansation_Regular', color: 'black'}}>
+                    {item.selectedText}
+                  </Text>
+                </View>
+              );
+            })}
+          </View>
 
-      <FooterComponent />
+          <FooterComponent />
+        </View>
+      ) : activeScreen === 'Filters' ? (
+        <FilterSection showIn={showIn} setShowIn={setShowIn} />
+      ) : (
+        <NotificationScreen />
+      )}
     </View>
   );
 };
