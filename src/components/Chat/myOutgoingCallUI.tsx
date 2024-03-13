@@ -4,7 +4,8 @@ import {Button, Text, View} from 'react-native';
 export default function MyOutgoingCallUI({call}: any) {
   return (
     <View>
-      <Text>Outgoing Call</Text>
+      <Text>Incoming Call</Text>
+      <Button title="Join!" onPress={() => call.join()} />
     </View>
   );
 }
