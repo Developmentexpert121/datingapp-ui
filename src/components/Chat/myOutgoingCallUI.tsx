@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View} from 'react-native';
+import {Button, Text, View} from 'react-native';
 
-export default function MyOutgoingCallUI({outgoingCall}: any) {
+export default function MyOutgoingCallUI({call}: any) {
   return (
     <View>
-      <Text>Outgoing Call</Text>
+      <Text>Incoming Call</Text>
+      <Button title="Join!" onPress={() => call.join()} />
     </View>
   );
 }

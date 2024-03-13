@@ -17,15 +17,18 @@ import {useNavigation} from '@react-navigation/native';
 import FooterComponent from '../Dashboard/footer/footer';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {getReceivers} from '../../store/Auth/auth';
+import {videoCallUser} from '../../store/Activity/activity';
 
 const UsersDrawer = ({isOpen, onClose}: any) => {
+  const dispatch: any = useAppDispatch();
   const allUsers: any = useAppSelector(
     (state: any) => state?.Auth?.data?.allUsers,
   );
 
   const navigation: any = useNavigation();
 
-  const goToChatWith = (user: any) => {
+  const goToChatWith = async (user: any) => {
+    await dispatch(videoCallUser({user: user}));
     navigation.navigate('VideoCallRedirect', {user: user});
     onClose();
   };
@@ -129,7 +132,8 @@ const ChatSection = () => {
     setIsDrawerOpen(false);
   };
 
-  const handleMovepage = (user: any) => {
+  const handleMovepage = async (user: any) => {
+    await dispatch(videoCallUser({user: user}));
     navigation.navigate('VideoCallRedirect', {user: user});
   };
 

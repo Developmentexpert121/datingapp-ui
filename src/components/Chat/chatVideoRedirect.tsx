@@ -47,7 +47,7 @@ const VideoCallRedirect = () => {
     client?.call('default', 'test-outgoing-call').getOrCreate({
       ring: true,
       data: {
-        members: [{user_id: profileData._id}, {user_id: user._id}],
+        members: [{user_id: user._id}, {user_id: profileData._id}],
       },
     });
   };

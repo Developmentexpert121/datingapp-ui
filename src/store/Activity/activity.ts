@@ -18,11 +18,19 @@ export const footerStatus = createAsyncThunk(
   },
 );
 
+export const videoCallUser = createAsyncThunk(
+  'activityLoader/videoCallUser',
+  async (data: any) => {
+    return data;
+  },
+);
+
 const ActivityLoader: any = createSlice({
   name: 'activityLoader',
   initialState: {
     loading: false,
     footerStatus: 'HOME',
+    user: null,
   },
   reducers: {},
   extraReducers: builder => {
@@ -48,6 +56,9 @@ const ActivityLoader: any = createSlice({
 
       .addCase(footerStatus.fulfilled, (state: any, action: any) => {
         state.footerStatus = action.payload.footerStatus;
+      })
+      .addCase(videoCallUser.fulfilled, (state: any, action: any) => {
+        state.user = action.payload.user;
       });
   },
 });
