@@ -59,7 +59,12 @@ export const CallScreen = ({
   return (
     <StreamCall call={call}>
       <View style={styles.container}>
-        <CallContent onHangupCallHandler={goToHomeScreen} />
+        <CallContent
+          onHangupCallHandler={() => {
+            call.endCall();
+            goToHomeScreen();
+          }}
+        />
       </View>
     </StreamCall>
   );
