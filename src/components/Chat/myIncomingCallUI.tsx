@@ -1,10 +1,46 @@
+import {
+  CallContent,
+  CallingState,
+  StreamCall,
+  useCallStateHooks,
+} from '@stream-io/video-react-native-sdk';
 import React, {useEffect, useState} from 'react';
-import {Button, Text, View} from 'react-native';
+import {Button, StyleSheet, Text, View} from 'react-native';
 
-export default function MyIncomingCallUI({call}: any) {
+export default function MyIncomingCallUI({call, goToHomeScreen}: any) {
+  const {useCallCallingState} = useCallStateHooks();
+  const callingState = useCallCallingState();
+  if (callingState === CallingState.RINGING) {
+    return (
+      <View>
+        <Text>Incoming Call</Text>
+        <Button title="Join!" onPress={() => call.join()} />
+      </View>
+    );
+  }
   return (
-    <View>
-      <Text>Outgoing Call</Text>
-    </View>
+    <StreamCall call={call} key={call.cid}>
+      <View style={styles.container}>
+        <CallContent
+          onHangupCallHandler={() => {
+            goToHomeScreen();
+          }}
+        />
+      </View>
+    </StreamCall>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  text: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
+    color: '#005fff',
+  },
+});

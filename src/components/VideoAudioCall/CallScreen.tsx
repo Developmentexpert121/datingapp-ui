@@ -1,97 +1,60 @@
-//import React from 'react';
-import React, {useEffect} from 'react';
-import {Button, StyleSheet, Text, View} from 'react-native';
+import React from 'react';
 
-import {
-  Call,
-  StreamCall,
-  useStreamVideoClient,
-  CallContent,
-} from '@stream-io/video-react-native-sdk';
+import {useCalls, CallingState} from '@stream-io/video-react-native-sdk';
+import MyIncomingCallUI from '../Chat/myIncomingCallUI';
+import MyOutgoingCallUI from '../Chat/myOutgoingCallUI';
 
-type Props = {
-  goToHomeScreen: () => void;
-  callId: string;
-  enableCamera: boolean;
-  client: any;
-};
+export const CallScreen = ({goToHomeScreen}: any) => {
+  const calls = useCalls();
 
-export const CallScreen = ({
-  goToHomeScreen,
-  callId,
-  enableCamera,
-  client,
-}: Props) => {
-  const [call, setCall] = React.useState<Call | null>(null);
+  const incomingCalls = calls.filter(
+    call =>
+      call.isCreatedByMe === false &&
+      call.state.callingState === CallingState.RINGING,
+  );
 
-  useEffect(() => {
-    console.log('Enableeeeeeee', enableCamera);
-    const initializeCall = async () => {
-      const call = client?.call('default', callId);
-      if (call) {
-        if (enableCamera === true) {
-          await call.camera.enable();
-        } else {
-          await call.camera.disable();
-        }
-        await call.microphone.enable();
-      }
-      call?.join({create: true}).then(() => setCall(call));
-    };
-
-    initializeCall();
-
-    return () => {
-      if (call) {
-        call.endCall();
-      }
-    };
-  }, [client, callId, enableCamera]);
-
-  if (!call) {
+  const [incomingCall] = incomingCalls;
+  if (incomingCall) {
     return (
-      <View style={joinStyles.container}>
-        <Text style={styles.text}>Joining call...</Text>
-      </View>
+      <MyIncomingCallUI call={incomingCall} goToHomeScreen={goToHomeScreen} />
     );
   }
 
-  return (
-    <StreamCall call={call}>
-      <View style={styles.container}>
-        <CallContent
-          onHangupCallHandler={() => {
-            call.endCall();
-            goToHomeScreen();
-          }}
-        />
-      </View>
-    </StreamCall>
+  // handle outgoing ring calls
+  const outgoingCalls = calls.filter(
+    call =>
+      call.isCreatedByMe === true &&
+      call.state.callingState === CallingState.RINGING,
   );
+
+  const [outgoingCall] = outgoingCalls;
+  if (outgoingCall) {
+    return (
+      <MyOutgoingCallUI call={outgoingCall} goToHomeScreen={goToHomeScreen} />
+    );
+  }
+
+  return null;
+
+  // if (!call) {
+  //   return (
+  //     <View style={joinStyles.container}>
+  //       <Text style={styles.text}>Joining call...</Text>
+  //     </View>
+  //   );
+  // }
+
+  // return (
+  //   <StreamCall call={call}>
+  //     <View style={styles.container}>
+  //       <CallContent
+  //         onHangupCallHandler={() => {
+  //           call.endCall();
+  //           goToHomeScreen();
+  //           client?.disconnectUser();
+  //         }}
+  //       />
+  //     </View>
+  //   </StreamCall>
+  // );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  text: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
-    color: '#005fff',
-  },
-});
-
-const joinStyles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  text: {
-    padding: 20,
-    // Additional styles for the text if needed
-  },
-});

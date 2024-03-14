@@ -47,8 +47,6 @@ const App = () => {
 
   const user: any = useAppSelector((state: any) => state?.ActivityLoader?.user);
 
-  console.log('user', user);
-
   async function requestUserPermission() {
     await requestNotifications(['alert', 'sound']);
     const authStatus = await messaging().requestPermission();
@@ -70,9 +68,9 @@ const App = () => {
   );
   const isDarkMode = useColorScheme() === 'dark';
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  // const backgroundStyle = {
+  //   backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  // };
 
   const isAuthenticated = useSelector(
     (state: any) => state?.Auth?.isAuthenticated,
@@ -99,34 +97,35 @@ const App = () => {
     }
   };
 
-  const [client, setClient] = useState<StreamVideoClient | any>(null);
+  const [client, setClient] = useState<StreamVideoClient>();
 
   useEffect(() => {
-    console.log('Video call');
-    const initializeStreamClient = async () => {
-      const apiKey = 'tgmn64zvvytf';
-      const token = await dispatch(
-        videoCallToken({id: user ? user?._id : profileData._id}),
-      )
+    const apiKey = 'tgmn64zvvytf';
+    const tokenProvider = async () => {
+      const token = await dispatch(videoCallToken({id: profileData?._id}))
         .unwrap()
         .then((response: any) => response.token);
-
-      const userMain = {
-        id: user?._id,
-        name: user?.name,
-        image: user?.profilePic,
-      };
-      console.log('TOOOKEKEKEKEK', token);
-      if (token) {
-        const client = new StreamVideoClient({apiKey, user: userMain, token});
-        setClient(client); // Set client state
-      } else {
-        // Handle error
-      }
+      return token;
     };
 
-    initializeStreamClient();
-  }, [profileData, user]);
+    const userMain = {
+      id: profileData?._id,
+      name: profileData?.name,
+      image: profileData?.profilePic,
+    };
+
+    const client = new StreamVideoClient({
+      apiKey,
+      user: userMain,
+      tokenProvider,
+    });
+    setClient(client);
+
+    return () => {
+      client?.disconnectUser();
+      setClient(undefined);
+    };
+  }, [profileData]);
 
   return (
     <SafeAreaProvider>

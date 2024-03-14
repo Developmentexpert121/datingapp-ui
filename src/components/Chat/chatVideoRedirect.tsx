@@ -1,26 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 
-// 1. Import the StreamVideo and StreamVideoClient components
-import {
-  CallingState,
-  StreamVideo,
-  StreamVideoClient,
-  useCalls,
-  useStreamVideoClient,
-} from '@stream-io/video-react-native-sdk';
-import {useAppDispatch, useAppSelector} from '../../store/store';
-import {videoCallToken} from '../../store/Auth/auth';
+import {useStreamVideoClient} from '@stream-io/video-react-native-sdk';
+import {useAppSelector} from '../../store/store';
 import {CallScreen} from '../VideoAudioCall/CallScreen';
 import ChatPage from './chatPage';
 import {useRoute} from '@react-navigation/native';
 import uuid from 'react-native-uuid';
-import MyIncomingCallUI from './myIncomingCallUI';
-import MyOutgoingCallUI from './myOutgoingCallUI';
 
 const VideoCallRedirect = () => {
-  const calls = useCalls();
-
   const route: any = useRoute();
   const {user} = route.params;
 
@@ -28,7 +16,6 @@ const VideoCallRedirect = () => {
     (state: any) => state?.Auth?.data?.profileData,
   );
 
-  // Define client state
   const [callId, setCallId] = useState<any>('');
 
   const [enableCamera, setEnableCamera] = useState<boolean>(true);
@@ -42,46 +29,36 @@ const VideoCallRedirect = () => {
     setCallId(callId);
   }, []);
 
-  const goToCallScreen = () => {
+  const goToCallScreen = useCallback(() => {
+    if (!client) return;
+    const myCall = client.call('default', callId);
+    myCall
+      .getOrCreate({
+        ring: true,
+        data: {
+          members: [
+            // include self
+            {user_id: profileData._id},
+            // include the userId of the callee
+            {user_id: user._id},
+          ],
+        },
+      })
+      .catch(err => {
+        console.error(`Failed to join the call`, err);
+      });
+
     setActiveScreen('call-screen');
-    client?.call('default', 'test-outgoing-call').getOrCreate({
-      ring: true,
-      data: {
-        members: [{user_id: user._id}, {user_id: profileData._id}],
-      },
-    });
-  };
+    return () => {
+      myCall.leave().catch(err => {
+        console.error(`Failed to leave the call`, err);
+      });
+    };
+  }, [client, user]);
+
   const goToHomeScreen = () => {
-    client?.disconnectUser();
     setActiveScreen('home');
-    const call = client?.call('default', callId);
-    call?.endCall();
   };
-
-  const incomingCalls = calls.filter(
-    call =>
-      call.isCreatedByMe === false &&
-      call.state.callingState === CallingState.RINGING,
-  );
-
-  const [incomingCall] = incomingCalls;
-  if (incomingCall) {
-    // render the incoming call UI
-    return <MyIncomingCallUI call={incomingCall} />;
-  }
-
-  // handle outgoing ring calls
-  const outgoingCalls = calls.filter(
-    call =>
-      call.isCreatedByMe === true &&
-      call.state.callingState === CallingState.RINGING,
-  );
-
-  const [outgoingCall] = outgoingCalls;
-  if (outgoingCall) {
-    // render the outgoing call UI
-    return <MyOutgoingCallUI call={outgoingCall} />;
-  }
 
   return (
     <SafeAreaView style={styles.containerMain}>
@@ -91,7 +68,6 @@ const VideoCallRedirect = () => {
             goToHomeScreen={goToHomeScreen}
             callId={callId}
             enableCamera={enableCamera}
-            client={client}
           />
         ) : (
           <ChatPage
