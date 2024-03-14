@@ -7,8 +7,6 @@ import {
   StreamVideoClient,
 } from '@stream-io/video-react-native-sdk';
 import {useAppDispatch, useAppSelector} from '../../store/store';
-import {CallScreen} from '../VideoAudioCall/CallScreen';
-import ChatPage from './chatPage';
 import {useRoute} from '@react-navigation/native';
 import uuid from 'react-native-uuid';
 import {videoCallToken} from '../../store/Auth/auth';
@@ -57,9 +55,14 @@ const VideoCallRedirect = () => {
       tokenProvider,
     });
     setClient(myClient);
+    return () => {
+      myClient.disconnectUser();
+      setClient(null);
+    };
   }, []);
 
   const goToCallScreen = useCallback(() => {
+    setActiveScreen('call-screen');
     if (!client) return;
     const myCall = client.call('default', callId);
     myCall
@@ -78,7 +81,13 @@ const VideoCallRedirect = () => {
         console.error(`Failed to join the call`, err);
       });
     setCall(myCall);
-    setActiveScreen('call-screen');
+
+    return () => {
+      setCall(undefined);
+      myCall.leave().catch(err => {
+        console.error(`Failed to leave the call`, err);
+      });
+    };
   }, [client, user]);
 
   const goToHomeScreen = () => {
@@ -90,12 +99,14 @@ const VideoCallRedirect = () => {
       {client && (
         <StreamVideo client={client}>
           <VideoCallInterface
+            call={call}
             client={client}
             goToHomeScreen={goToHomeScreen}
             user={user}
             goToCallScreen={goToCallScreen}
             setEnableCamera={setEnableCamera}
             activeScreen={activeScreen}
+            setActiveScreen={setActiveScreen}
           />
         </StreamVideo>
       )}

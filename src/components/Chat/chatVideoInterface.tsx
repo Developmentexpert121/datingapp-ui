@@ -11,6 +11,7 @@ import MyIncomingCallUI from './myIncomingCallUI';
 import MyOutgoingCallUI from './myOutgoingCallUI';
 
 const VideoCallInterface = ({
+  call,
   user,
   goToCallScreen,
   goToHomeScreen,
@@ -34,29 +35,17 @@ const VideoCallInterface = ({
     );
   }
 
-  // handle outgoing ring calls
-  const outgoingCalls = calls.filter(
-    call =>
-      call.isCreatedByMe === true &&
-      call.state.callingState === CallingState.RINGING,
-  );
-
-  const [outgoingCall] = outgoingCalls;
-  if (outgoingCall) {
-    return (
-      <StreamCall call={outgoingCall}>
-        <MyOutgoingCallUI call={outgoingCall} goToHomeScreen={goToHomeScreen} />
-      </StreamCall>
-    );
-  }
-
   return (
     <SafeAreaView style={styles.containerMain}>
-      <ChatPage
-        user={user}
-        goToCallScreen={goToCallScreen}
-        setEnableCamera={setEnableCamera}
-      />
+      {activeScreen === 'call-screen' ? (
+        <MyOutgoingCallUI call={call} goToHomeScreen={goToHomeScreen} />
+      ) : (
+        <ChatPage
+          user={user}
+          goToCallScreen={goToCallScreen}
+          setEnableCamera={setEnableCamera}
+        />
+      )}
     </SafeAreaView>
   );
 };

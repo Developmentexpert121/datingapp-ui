@@ -6,22 +6,24 @@ import {useAppSelector} from '../../store/store';
 export default function MyOutgoingCallUI({call, goToHomeScreen}: any) {
   const user: any = useAppSelector((state: any) => state?.ActivityLoader?.user);
   return (
-    <View>
+    <View style={styles.container}>
       {call && (
-        <View style={styles.container}>
-          <CallContent
-            onHangupCallHandler={() => {
-              goToHomeScreen();
-            }}
-          />
-        </View>
+        <StreamCall call={call}>
+          <View style={styles.container}>
+            <CallContent
+              onHangupCallHandler={() => {
+                goToHomeScreen();
+              }}
+            />
+          </View>
+        </StreamCall>
       )}
       {!call && (
-        <>
+        <View>
           <Text style={{fontFamily: 'Sansation_Regular'}}>
             Calling...{user.name}
           </Text>
-        </>
+        </View>
       )}
     </View>
   );

@@ -12,9 +12,9 @@ export default function MyIncomingCallUI({call, goToHomeScreen}: any) {
   const callingState = useCallCallingState();
   if (callingState === CallingState.RINGING) {
     return (
-      <View>
+      <View style={styles.container}>
         <Text>Incoming Call</Text>
-        <Button title="Join!" onPress={() => call.join()} />
+        <Button title="Join!" onPress={async () => await call.join()} />
       </View>
     );
   }
