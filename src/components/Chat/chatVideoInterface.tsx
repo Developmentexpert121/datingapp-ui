@@ -2,24 +2,15 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 
 import {
-  Call,
   CallingState,
   StreamCall,
-  StreamVideo,
-  StreamVideoClient,
   useCalls,
 } from '@stream-io/video-react-native-sdk';
-import {useAppDispatch, useAppSelector} from '../../store/store';
-import {CallScreen} from '../VideoAudioCall/CallScreen';
 import ChatPage from './chatPage';
-import {useRoute} from '@react-navigation/native';
-import uuid from 'react-native-uuid';
-import {videoCallToken} from '../../store/Auth/auth';
 import MyIncomingCallUI from './myIncomingCallUI';
 import MyOutgoingCallUI from './myOutgoingCallUI';
 
 const VideoCallInterface = ({
-  client,
   user,
   goToCallScreen,
   goToHomeScreen,
