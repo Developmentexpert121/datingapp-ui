@@ -19,15 +19,13 @@ export default function MyIncomingCallUI({call, goToHomeScreen}: any) {
     );
   }
   return (
-    <StreamCall call={call} key={call.cid}>
-      <View style={styles.container}>
-        <CallContent
-          onHangupCallHandler={() => {
-            goToHomeScreen();
-          }}
-        />
-      </View>
-    </StreamCall>
+    <View style={styles.container}>
+      <CallContent
+        onHangupCallHandler={() => {
+          goToHomeScreen();
+        }}
+      />
+    </View>
   );
 }
 

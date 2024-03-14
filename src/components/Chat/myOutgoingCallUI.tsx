@@ -8,15 +8,13 @@ export default function MyOutgoingCallUI({call, goToHomeScreen}: any) {
   return (
     <View>
       {call && (
-        <StreamCall call={call}>
-          <View style={styles.container}>
-            <CallContent
-              onHangupCallHandler={() => {
-                goToHomeScreen();
-              }}
-            />
-          </View>
-        </StreamCall>
+        <View style={styles.container}>
+          <CallContent
+            onHangupCallHandler={() => {
+              goToHomeScreen();
+            }}
+          />
+        </View>
       )}
       {!call && (
         <>

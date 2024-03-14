@@ -29,7 +29,7 @@ const UsersDrawer = ({isOpen, onClose}: any) => {
 
   const goToChatWith = async (user: any) => {
     await dispatch(videoCallUser({user: user}));
-    navigation.navigate('VideoCallRedirect', {user: user});
+    navigation.navigate('VideoCallRedirect');
     onClose();
   };
 

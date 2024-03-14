@@ -1,16 +1,24 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 
-import {useStreamVideoClient} from '@stream-io/video-react-native-sdk';
-import {useAppSelector} from '../../store/store';
+import {
+  Call,
+  StreamVideo,
+  StreamVideoClient,
+} from '@stream-io/video-react-native-sdk';
+import {useAppDispatch, useAppSelector} from '../../store/store';
 import {CallScreen} from '../VideoAudioCall/CallScreen';
 import ChatPage from './chatPage';
 import {useRoute} from '@react-navigation/native';
 import uuid from 'react-native-uuid';
+import {videoCallToken} from '../../store/Auth/auth';
+import VideoCallInterface from './chatVideoInterface';
 
 const VideoCallRedirect = () => {
   const route: any = useRoute();
   const {user} = route.params;
+
+  const dispatch: any = useAppDispatch();
 
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
@@ -22,11 +30,33 @@ const VideoCallRedirect = () => {
 
   const [activeScreen, setActiveScreen] = useState('home');
 
-  const client = useStreamVideoClient();
+  const [client, setClient] = useState<StreamVideoClient | null>(null);
+
+  const [call, setCall] = useState<Call>();
 
   useEffect(() => {
     const callId: any = uuid.v4();
     setCallId(callId);
+    const apiKey = 'tgmn64zvvytf';
+    const tokenProvider = async () => {
+      const token = await dispatch(videoCallToken({id: profileData?._id}))
+        .unwrap()
+        .then((response: any) => response.token);
+      return token;
+    };
+
+    const userMain = {
+      id: profileData?._id,
+      name: profileData?.name,
+      image: profileData?.profilePic,
+    };
+
+    const myClient = new StreamVideoClient({
+      apiKey,
+      user: userMain,
+      tokenProvider,
+    });
+    setClient(myClient);
   }, []);
 
   const goToCallScreen = useCallback(() => {
@@ -47,13 +77,8 @@ const VideoCallRedirect = () => {
       .catch(err => {
         console.error(`Failed to join the call`, err);
       });
-
+    setCall(myCall);
     setActiveScreen('call-screen');
-    return () => {
-      myCall.leave().catch(err => {
-        console.error(`Failed to leave the call`, err);
-      });
-    };
   }, [client, user]);
 
   const goToHomeScreen = () => {
@@ -62,20 +87,18 @@ const VideoCallRedirect = () => {
 
   return (
     <SafeAreaView style={styles.containerMain}>
-      {client &&
-        (activeScreen === 'call-screen' ? (
-          <CallScreen
+      {client && (
+        <StreamVideo client={client}>
+          <VideoCallInterface
+            client={client}
             goToHomeScreen={goToHomeScreen}
-            callId={callId}
-            enableCamera={enableCamera}
-          />
-        ) : (
-          <ChatPage
             user={user}
             goToCallScreen={goToCallScreen}
             setEnableCamera={setEnableCamera}
+            activeScreen={activeScreen}
           />
-        ))}
+        </StreamVideo>
+      )}
     </SafeAreaView>
   );
 };
