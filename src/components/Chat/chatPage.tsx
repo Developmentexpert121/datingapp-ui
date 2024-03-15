@@ -21,7 +21,7 @@ import {reciveMessages, sendAMessage} from '../../store/Auth/auth';
 import {ScrollView} from 'react-native-gesture-handler';
 import io from 'socket.io-client';
 
-const socket = io('https://dating-app-api-five.vercel.app');
+const socket = io('https://datingapp-api.onrender.com');
 
 type Props = {
   goToCallScreen: () => void;
@@ -106,29 +106,31 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
   }, []);
 
   const handleSendMessage = useCallback(() => {
-    const newMessage = {
-      sender: profileData._id,
-      receiver: user._id,
-      message: inputMessage,
-      timestamp: new Date().toISOString(), // You may need to adjust the timestamp format
-    };
-    socket.emit('chat message', newMessage);
-    setChatMessages((prevMessages: any) => [...prevMessages, newMessage]);
-    dispatch(
-      sendAMessage({
-        senderId: profileData?._id,
-        receiverId: user._id,
+    if (inputMessage !== '') {
+      const newMessage = {
+        sender: profileData._id,
+        receiver: user._id,
         message: inputMessage,
-      }),
-    );
-    setInputMessage('');
+        timestamp: new Date().toISOString(), // You may need to adjust the timestamp format
+      };
+      socket.emit('chat message', newMessage);
+      setChatMessages((prevMessages: any) => [...prevMessages, newMessage]);
+      dispatch(
+        sendAMessage({
+          senderId: profileData?._id,
+          receiverId: user._id,
+          message: inputMessage,
+        }),
+      );
+      setInputMessage('');
+    }
   }, [inputMessage, profileData, user]);
 
   return (
     <KeyboardAvoidingView
       behavior="padding"
       keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 40}
-      style={{flexGrow: 1}}>
+      style={{height: '100%'}}>
       <View style={styles.container}>
         <View
           style={{
@@ -187,6 +189,7 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
               scrollViewRef?.current?.scrollToEnd({animated: true});
             }
           }}>
+          <View style={{flexGrow: 1}} />
           {chatMessages.map((messageItem: any, index: any) => {
             return (
               <View
@@ -313,7 +316,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 16,
+    paddingTop: 16,
+    paddingBottom: 4,
     alignItems: 'center',
   },
   circularImage: {

@@ -16,7 +16,7 @@ const getToken = async () => {
 
 const http = axios.create({
   // baseURL: 'http://10.0.2.2:8000/api',
-  baseURL: 'https://dating-app-api-five.vercel.app/api',
+  baseURL: 'https://datingapp-api.onrender.com/api',
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
