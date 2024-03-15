@@ -7,24 +7,15 @@ export default function MyOutgoingCallUI({call, goToHomeScreen}: any) {
   const user: any = useAppSelector((state: any) => state?.ActivityLoader?.user);
   return (
     <View style={styles.container}>
-      {call && (
-        <StreamCall call={call}>
-          <View style={styles.container}>
-            <CallContent
-              onHangupCallHandler={() => {
-                goToHomeScreen();
-              }}
-            />
-          </View>
-        </StreamCall>
-      )}
-      {!call && (
-        <View>
-          <Text style={{fontFamily: 'Sansation_Regular'}}>
-            Calling...{user.name}
-          </Text>
+      <StreamCall call={call}>
+        <View style={styles.container}>
+          <CallContent
+            onHangupCallHandler={() => {
+              goToHomeScreen();
+            }}
+          />
         </View>
-      )}
+      </StreamCall>
     </View>
   );
 }

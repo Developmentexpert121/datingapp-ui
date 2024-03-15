@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 
 import {
   CallingState,
@@ -38,7 +38,15 @@ const VideoCallInterface = ({
   return (
     <SafeAreaView style={styles.containerMain}>
       {activeScreen === 'call-screen' ? (
-        <MyOutgoingCallUI call={call} goToHomeScreen={goToHomeScreen} />
+        call ? (
+          <MyOutgoingCallUI call={call} goToHomeScreen={goToHomeScreen} />
+        ) : (
+          <View>
+            <Text style={{fontFamily: 'Sansation_Regular'}}>
+              Calling...{user.name}
+            </Text>
+          </View>
+        )
       ) : (
         <ChatPage
           user={user}
