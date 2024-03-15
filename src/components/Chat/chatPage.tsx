@@ -129,10 +129,7 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
   }, [inputMessage, profileData, user]);
 
   return (
-    <KeyboardAvoidingView
-      behavior="padding"
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 40}
-      style={{flex: 1}}>
+    <KeyboardAvoidingView behavior="padding" style={{flex: 1}}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={{flex: 1}}>
           <View style={styles.container}>
