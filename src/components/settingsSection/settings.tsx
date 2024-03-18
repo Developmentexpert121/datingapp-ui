@@ -416,7 +416,7 @@ const SettingsSection = () => {
       <TouchableOpacity style={styles.boxContainer}>
         <Text
           style={[styles.textName, {color: '#AC25AC'}]}
-          onPress={logoutUser}>
+          onPress={() => logoutUser()}>
           Log Out
         </Text>
       </TouchableOpacity>

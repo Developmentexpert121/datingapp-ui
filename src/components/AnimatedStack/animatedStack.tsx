@@ -112,7 +112,7 @@ const AnimatedStack = (props: any) => {
     );
     const targetX = hiddenTranslateX;
     translateX.value = withSpring(targetX, {
-      duration: 5000,
+      duration: 12000,
       dampingRatio: 0.6,
       stiffness: 6,
       overshootClamping: false,
