@@ -49,11 +49,21 @@ const HomeScreen = () => {
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const [filteredUsers, setFilteredUser] = useState<any[]>([]);
+
   useEffect(() => {
     const getId = async () => {
       const userId = await getUserId();
       dispatch(getAllUsers(userId));
     };
+
+    const shuffledData = [...allUsers].sort(() => Math.random() - 0.5);
+
+    setFilteredUser(
+      shuffledData?.filter(
+        (profile: any) => !profileData.likes.includes(profile._id),
+      ),
+    );
 
     getId();
     setCurrentIndex(0);
@@ -91,7 +101,7 @@ const HomeScreen = () => {
       {activeScreen === 'HOME' ? (
         <View style={styles.pageContainer}>
           <AnimatedStack
-            data={allUsers}
+            data={filteredUsers}
             renderItem={({item}: any) => <Card user={item} />}
             currentIndex={currentIndex}
             setCurrentIndex={setCurrentIndex}
