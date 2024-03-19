@@ -60,7 +60,14 @@ const schema = yup.object().shape({
   // gender: yup.string().required('gender is required'),
 });
 
-const FilterSection = ({showIn, setShowIn}: any) => {
+const FilterSection = ({
+  showIn,
+  setShowIn,
+  checkedInterests,
+  setCheckedInterests,
+  distance,
+  setDistance,
+}: any) => {
   const dispatch: any = useAppDispatch();
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
@@ -84,18 +91,12 @@ const FilterSection = ({showIn, setShowIn}: any) => {
   ];
 
   const options2 = [
-    {value: 'men', label: 'Men'},
-    {value: 'women', label: 'Women'},
+    {value: 'Male', label: 'Men'},
+    {value: 'Female', label: 'Women'},
     {value: 'everyone', label: 'Everyone'},
   ];
 
   const [checked, setChecked] = React.useState(profileData?.gender);
-  const [checkedInterests, setCheckedInterests] = React.useState(
-    profileData?.interests,
-  );
-  const [distance, setDistance] = useState(
-    parseInt(profileData?.distance) || 0,
-  );
 
   const handleSliderChange = (value: any) => {
     setDistance(value);
@@ -215,7 +216,7 @@ const FilterSection = ({showIn, setShowIn}: any) => {
               <Controller
                 name={'interests'}
                 control={control}
-                defaultValue="Women"
+                defaultValue="female"
                 render={() => (
                   <View
                     style={{
@@ -236,18 +237,18 @@ const FilterSection = ({showIn, setShowIn}: any) => {
                     </Text>
                     <TouchableOpacity
                       onPress={() => {
-                        setCheckedInterests(item.label);
+                        setCheckedInterests(item.value);
                         dispatch(
                           updateProfileData({
                             field: 'interests',
-                            value: item.label,
+                            value: item.value,
                             id: getUserId(),
                           }),
                         );
                       }}>
                       <Ionicons
                         name={
-                          checkedInterests === item.label
+                          checkedInterests === item.value
                             ? 'radio-button-on'
                             : 'radio-button-off'
                         }

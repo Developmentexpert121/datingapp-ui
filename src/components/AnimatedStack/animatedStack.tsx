@@ -186,59 +186,68 @@ const AnimatedStack = (props: any) => {
       )}
 
       {currentProfile ? (
-        <PanGestureHandler onGestureEvent={gestureHandler}>
-          <Animated.View style={[styles.animatedCard, cardStyle]}>
-            <Animated.Image
-              source={require('../../assets/images/LIKE.png')}
-              style={[styles.like, {left: 10}, likeStyle]}
-              resizeMode="contain"
-            />
-            <Animated.Image
-              source={require('../../assets/images/nope.png')}
-              style={[styles.like, {right: 10}, nopeStyle]}
-              resizeMode="contain"
-            />
-            {renderItem({item: currentProfile})}
-          </Animated.View>
-        </PanGestureHandler>
-      ) : (
-        <Text style={{fontFamily: 'Sansation_Bold', fontSize: 26}}>
-          You have viewed all profiles!
-        </Text>
-      )}
-      <View style={{width: '100%', alignItems: 'center'}}>
-        <View style={styles.icons}>
-          {/* <TouchableOpacity>
+        <View style={{width: '100%', alignItems: 'center'}}>
+          <PanGestureHandler onGestureEvent={gestureHandler}>
+            <Animated.View style={[styles.animatedCard, cardStyle]}>
+              <Animated.Image
+                source={require('../../assets/images/LIKE.png')}
+                style={[styles.like, {left: 10}, likeStyle]}
+                resizeMode="contain"
+              />
+              <Animated.Image
+                source={require('../../assets/images/nope.png')}
+                style={[styles.like, {right: 10}, nopeStyle]}
+                resizeMode="contain"
+              />
+              {renderItem({item: currentProfile})}
+            </Animated.View>
+          </PanGestureHandler>
+          <View style={{width: '100%', alignItems: 'center'}}>
+            <View style={styles.icons}>
+              {/* <TouchableOpacity>
           <View style={styles.button}>
             <FontAwesome name="undo" size={30} color="#FBD88B" />
           </View>
         </TouchableOpacity> */}
 
-          <TouchableOpacity onPress={onSwipeLeft}>
-            <View style={styles.button}>
-              <Entypo name="cross" size={40} color="#FF2222" />
-            </View>
-          </TouchableOpacity>
+              <TouchableOpacity onPress={onSwipeLeft}>
+                <View style={styles.button}>
+                  <Entypo name="cross" size={40} color="#FF2222" />
+                </View>
+              </TouchableOpacity>
 
-          <TouchableOpacity onPress={onSwipeRight}>
-            <View style={styles.button}>
-              <FontAwesome name="heart" size={40} color="#4FCC94" />
-            </View>
-          </TouchableOpacity>
+              <TouchableOpacity onPress={onSwipeRight}>
+                <View style={styles.button}>
+                  <FontAwesome name="heart" size={40} color="#4FCC94" />
+                </View>
+              </TouchableOpacity>
 
-          <TouchableOpacity>
-            <View style={styles.button}>
-              <FontAwesome name="star" size={40} color="#3AB4CC" />
-            </View>
-          </TouchableOpacity>
+              <TouchableOpacity>
+                <View style={styles.button}>
+                  <FontAwesome name="star" size={40} color="#3AB4CC" />
+                </View>
+              </TouchableOpacity>
 
-          {/* <TouchableOpacity>
+              {/* <TouchableOpacity>
           <View style={styles.button}>
             <Ionicons name="flash" size={30} color="#A65CD2" />
           </View>
         </TouchableOpacity> */}
+            </View>
+          </View>
         </View>
-      </View>
+      ) : (
+        <Text
+          style={{
+            fontFamily: 'Sansation_Bold',
+            fontSize: 26,
+            textAlign: 'center',
+            paddingHorizontal: 22,
+          }}>
+          You have viewed all profiles! Or no profile matches your applied
+          filters!
+        </Text>
+      )}
     </View>
   );
 };

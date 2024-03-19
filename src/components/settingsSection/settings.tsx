@@ -234,7 +234,6 @@ const SettingsSection = () => {
   const [address, setAddress] = useState('');
 
   const [location, setLocation] = useState<any>(null);
-  const [geoLocation, setGeoLocation] = useState<any>(null);
 
   useEffect(() => {
     const getAddressFromCoordinates = async (latitude: any, longitude: any) => {
@@ -308,12 +307,6 @@ const SettingsSection = () => {
       position => {
         const {latitude, longitude} = position.coords;
 
-        const userLocation = {
-          type: 'Point',
-          coordinates: [longitude, latitude],
-        };
-        setGeoLocation(userLocation);
-
         setPermissionStatus('granted');
 
         // Call registration API here
@@ -324,15 +317,6 @@ const SettingsSection = () => {
             id: getUserId(),
           }),
         ).then(() => setLocation({latitude, longitude}));
-
-        dispatch(
-          updateProfileData({
-            field: 'geoLocation',
-            value: userLocation,
-            id: getUserId(),
-          }),
-        );
-        console.log(geoLocation);
 
         reset();
       },
