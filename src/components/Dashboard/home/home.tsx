@@ -49,10 +49,16 @@ const HomeScreen = () => {
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const [data, setData] = useState([]);
+
   useEffect(() => {
     const getId = async () => {
       const userId = await getUserId();
-      dispatch(getAllUsers(userId));
+      dispatch(getAllUsers(userId))
+        .unwrap()
+        .then((response: any) => {
+          setData(response.users);
+        });
     };
 
     getId();
@@ -91,9 +97,10 @@ const HomeScreen = () => {
       {activeScreen === 'HOME' ? (
         <View style={styles.pageContainer}>
           <AnimatedStack
-            data={allUsers}
+            data={data}
             renderItem={({item}: any) => <Card user={item} />}
             currentIndex={currentIndex}
+            setData={setData}
             setCurrentIndex={setCurrentIndex}
             profileData={profileData}
           />

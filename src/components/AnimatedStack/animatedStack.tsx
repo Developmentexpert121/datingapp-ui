@@ -30,7 +30,14 @@ const ROTATION = 60;
 const SWIPE_VELOCITY = 800;
 
 const AnimatedStack = (props: any) => {
-  const {data, renderItem, currentIndex, setCurrentIndex, profileData} = props;
+  const {
+    data,
+    renderItem,
+    currentIndex,
+    setData,
+    setCurrentIndex,
+    profileData,
+  } = props;
 
   const dispatch: any = useAppDispatch();
 
@@ -121,8 +128,11 @@ const AnimatedStack = (props: any) => {
       reduceMotion: ReduceMotion.Never,
     });
     setTimeout(() => {
-      setCurrentIndex(currentIndex + 1);
-      setNextIndex(nextIndex + 1);
+      // Remove the liked user from allUsers
+      const updatedUsers = [...data];
+      updatedUsers.splice(currentIndex, 1);
+      // Call the setData function passed as a prop to update the allUsers data
+      props.setData(updatedUsers);
     }, 10);
   };
 
