@@ -261,7 +261,7 @@ export const reciveMessages = createAsyncThunk(
   async (data: any, {dispatch}: any) => {
     try {
       const response = await http.get(
-        `/user/messages?senderId=${data.senderId}&receiverId=${data.receiverId}`,
+        `/user/messages?senderId=${data.senderId}&receiverId=${data.receiverId}&limit=${data.limit}&skip=${data.skip}`,
       );
 
       if (response.status === 200) {

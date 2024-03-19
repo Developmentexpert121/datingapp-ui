@@ -11,6 +11,7 @@ import {
   Button,
   TouchableWithoutFeedback,
   Keyboard,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
@@ -45,6 +46,10 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
   const [inputMessage, setInputMessage] = useState('');
 
   const [chatMessages, setChatMessages] = useState<any>([]);
+  const [messageCount, setMessageCount] = useState(0);
+  const [limit, setLimit] = useState(10); // Number of messages to fetch per request
+  const [skip, setSkip] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     socket.on('connection', () => {
@@ -73,39 +78,30 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
 
   useEffect(() => {
     const fetchMessages = async () => {
-      // Fetch messages sent by user 1 to user 2
-
-      const response1 = await dispatch(
-        reciveMessages({
-          senderId: profileData._id,
-          receiverId: user?._id,
-        }),
-      ).unwrap();
-
-      // Fetch messages sent by user 2 to user 1
-
-      const response2 = await dispatch(
-        reciveMessages({
-          senderId: user?._id,
-          receiverId: profileData._id,
-        }),
-      ).unwrap();
-
-      // Update chatMessages state with the latest messages
-
-      // Inside the useEffect hook after setting chatMessages state
-
-      setChatMessages(
-        [...response1.messages, ...response2.messages].sort((a, b) => {
-          return (
-            new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
-          );
-        }),
-      );
+      setIsLoading(true);
+      try {
+        const response = await dispatch(
+          reciveMessages({
+            senderId: profileData._id,
+            receiverId: user?._id,
+            limit,
+            skip,
+          }),
+        ).unwrap();
+        setChatMessages((prevMessages: any) => [
+          ...response.messages.reverse(),
+          ...prevMessages,
+        ]);
+        setMessageCount(response.messages.length);
+      } catch (error) {
+        console.error('Error fetching messages:', error);
+      } finally {
+        setIsLoading(false); // Stop loading indicator
+      }
     };
 
     fetchMessages();
-  }, []);
+  }, [skip]);
 
   const handleSendMessage = useCallback(() => {
     if (inputMessage !== '') {
@@ -127,6 +123,20 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
       setInputMessage('');
     }
   }, [inputMessage, profileData, user]);
+
+  const handleScroll = ({nativeEvent}: any) => {
+    if (nativeEvent.contentOffset.y === 0 && messageCount === limit) {
+      // If scrolled to the top and there are more messages to fetch
+      setIsLoading(true);
+      setSkip(prevSkip => prevSkip + limit);
+    }
+  };
+
+  const LoadingIndicator = () => (
+    <View style={styles.loadingContainer}>
+      <ActivityIndicator size="large" color="#AC25AC" />
+    </View>
+  );
 
   return (
     <KeyboardAvoidingView behavior="padding" style={{flex: 1}}>
@@ -189,8 +199,10 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
                 if (scrollViewRef?.current) {
                   scrollViewRef?.current?.scrollToEnd({animated: true});
                 }
-              }}>
+              }}
+              onScroll={handleScroll}>
               <View style={{flexGrow: 1}} />
+              {isLoading && <LoadingIndicator />}
               {chatMessages.map((messageItem: any, index: any) => {
                 return (
                   <View
@@ -294,6 +306,10 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
 export default ChatPage;
 
 const styles = StyleSheet.create({
+  loadingContainer: {
+    marginVertical: 20,
+    alignItems: 'center',
+  },
   sendButton: {
     padding: 10,
     backgroundColor: '#AC25AC',
