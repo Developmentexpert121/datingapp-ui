@@ -37,6 +37,7 @@ const ZeroStepScreen = ({
   control,
   errors,
   email,
+  dateDisplay,
   password,
   gender,
   country,
@@ -95,30 +96,38 @@ const ZeroStepScreen = ({
 
       <View style={styles.container}>
         <Text style={styles.label}>Date Of Birth </Text>
-        <TouchableOpacity
-          onPress={showDatepicker}
-          style={[
-            styles.dateBtn,
-            {
-              borderWidth: dateStr === null ? 2 : 1,
-              borderColor: dateStr === null ? 'red' : 'rgba(0, 0, 0, 0.2)',
-            },
-          ]}>
-          <Text
-            style={{
-              color: 'grey',
-              textAlign: 'center',
-              fontFamily: 'Sansation_Regular',
-            }}>
-            {dateStr === null
-              ? 'Select DOB'
-              : dateStr.getDate() +
-                '-' +
-                (dateStr.getMonth() + 1) +
-                '-' +
-                dateStr.getFullYear()}
-          </Text>
-        </TouchableOpacity>
+        <Controller
+          name={dateDisplay}
+          control={control}
+          render={() => (
+            <TouchableOpacity
+              onPress={showDatepicker}
+              style={[
+                styles.dateBtn,
+                {
+                  borderWidth: errors?.[dateDisplay] ? 2 : 1,
+                  borderColor: errors?.[dateDisplay]
+                    ? 'red'
+                    : 'rgba(0, 0, 0, 0.2)',
+                },
+              ]}>
+              <Text
+                style={{
+                  color: 'grey',
+                  textAlign: 'center',
+                  fontFamily: 'Sansation_Regular',
+                }}>
+                {dateStr === null
+                  ? 'Select DOB'
+                  : dateStr.getDate() +
+                    '-' +
+                    (dateStr.getMonth() + 1) +
+                    '-' +
+                    dateStr.getFullYear()}
+              </Text>
+            </TouchableOpacity>
+          )}
+        />
         <Text style={styles.label2}>Your age will be public</Text>
         {show && (
           <DateTimePicker

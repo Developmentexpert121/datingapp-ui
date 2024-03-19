@@ -82,6 +82,7 @@ const defaultValues = {
   geoLocation: null,
   profilePic: '',
   dob: '',
+  dateDisplay: '',
   profilePercentage: '60',
 };
 
@@ -103,6 +104,7 @@ const schema = yup.object().shape({
   //   .string()
   //   .oneOf([yup.ref('password')], 'Passwords must match')
   //   .required('Confirm Password is required'),
+  dateDisplay: yup.string().trim().required('DOB is required'),
 });
 
 const schema1 = yup.object().shape({
@@ -289,6 +291,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
               password="password"
               country="country"
               city="city"
+              dateDisplay="dateDisplay"
               gender="gender"
               dateStr={dateStr}
               setDateStr={setDateStr}
