@@ -102,7 +102,7 @@ const NotificationScreen = () => {
     return (
       <View style={styles.notificationItem}>
         <View style={{alignSelf: 'flex-start'}}>
-          <Image source={{uri: user.profilePic}} style={styles.userImage} />
+          <Image source={{uri: user?.profilePic}} style={styles.userImage} />
         </View>
         <View
           style={{
@@ -113,7 +113,7 @@ const NotificationScreen = () => {
           }}>
           <View style={{rowGap: 10, marginBottom: 6}}>
             <View style={styles.notificationText}>
-              <Text style={styles.title}>{user.name}</Text>
+              <Text style={styles.title}>{user?.name}</Text>
               <Text style={styles.subtitle}>
                 {item.type === 'like' && 'Has liked your profile'}
               </Text>
@@ -124,7 +124,7 @@ const NotificationScreen = () => {
                   <Text style={styles.actionButton}>Mark as Read</Text>
                 </TouchableOpacity>
               )}
-              <TouchableOpacity onPress={() => handleView(user._id)}>
+              <TouchableOpacity onPress={() => handleView(user?._id)}>
                 <Text style={styles.actionButton}>View</Text>
               </TouchableOpacity>
             </View>

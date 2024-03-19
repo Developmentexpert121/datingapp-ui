@@ -78,7 +78,7 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
       const response1 = await dispatch(
         reciveMessages({
           senderId: profileData._id,
-          receiverId: user._id,
+          receiverId: user?._id,
         }),
       ).unwrap();
 
@@ -86,7 +86,7 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
 
       const response2 = await dispatch(
         reciveMessages({
-          senderId: user._id,
+          senderId: user?._id,
           receiverId: profileData._id,
         }),
       ).unwrap();
@@ -111,7 +111,7 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
     if (inputMessage !== '') {
       const newMessage = {
         sender: profileData._id,
-        receiver: user._id,
+        receiver: user?._id,
         message: inputMessage,
         timestamp: new Date().toISOString(), // You may need to adjust the timestamp format
       };
@@ -120,7 +120,7 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
       dispatch(
         sendAMessage({
           senderId: profileData?._id,
-          receiverId: user._id,
+          receiverId: user?._id,
           message: inputMessage,
         }),
       );
@@ -149,7 +149,7 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
               </Pressable>
               <Avatar source={{uri: user?.profilePic}} rounded size={60} />
               <View style={{flexDirection: 'column'}}>
-                <Text style={styles.stepsText}>{user.name}</Text>
+                <Text style={styles.stepsText}>{user?.name}</Text>
                 <Text
                   style={{
                     fontSize: 16,

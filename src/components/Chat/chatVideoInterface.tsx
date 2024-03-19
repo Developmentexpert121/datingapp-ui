@@ -43,7 +43,7 @@ const VideoCallInterface = ({
         ) : (
           <View>
             <Text style={{fontFamily: 'Sansation_Regular'}}>
-              Calling...{user.name}
+              Calling...{user?.name}
             </Text>
           </View>
         )

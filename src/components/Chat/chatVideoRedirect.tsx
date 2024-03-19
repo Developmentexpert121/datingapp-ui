@@ -13,8 +13,7 @@ import {videoCallToken} from '../../store/Auth/auth';
 import VideoCallInterface from './chatVideoInterface';
 
 const VideoCallRedirect = () => {
-  const route: any = useRoute();
-  const {user} = route.params;
+  const user: any = useAppSelector((state: any) => state?.ActivityLoader?.user);
 
   const dispatch: any = useAppDispatch();
 
@@ -73,7 +72,7 @@ const VideoCallRedirect = () => {
             // include self
             {user_id: profileData._id},
             // include the userId of the callee
-            {user_id: user._id},
+            {user_id: user?._id},
           ],
         },
       })

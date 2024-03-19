@@ -190,7 +190,7 @@ const ChatSection = () => {
           keyExtractor={item => item.id}
           renderItem={({item}) => {
             const recieverMainInfo = allUsers.filter((user: any) =>
-              item?.receiverId?.includes(user._id),
+              item?.receiverId?.includes(user?._id),
             );
 
             return (

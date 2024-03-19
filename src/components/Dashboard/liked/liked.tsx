@@ -23,7 +23,7 @@ const LikedScreen = () => {
   );
 
   const likedUsers = allUsers.filter((user: any) =>
-    profileData?.likedBy.includes(user._id),
+    profileData?.likedBy.includes(user?._id),
   );
 
   const navigation = useNavigation();
