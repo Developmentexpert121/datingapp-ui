@@ -22,6 +22,7 @@ const AppTextInput = (Props: any) => {
     borderColor,
     borderWidth,
     marginLeft,
+    textstyle,
     ...textInputProps
   } = Props;
   const [focused, setFocused] = useState<boolean>(false);
@@ -38,13 +39,14 @@ const AppTextInput = (Props: any) => {
           {...textInputProps}
           style={[
             styles.textInput1,
-
             hasError
               ? styles.errorBorder
               : {borderWidth: 1, borderColor: 'rgba(0, 0, 0, 0.2)'},
             {
               width: '80%',
             },
+            ,
+            textstyle,
           ]}
           keyboardType={Props.keyboardType}
           placeholderTextColor={Colors.darkText}

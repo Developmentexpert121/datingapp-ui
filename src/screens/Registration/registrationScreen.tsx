@@ -373,6 +373,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  scrollViewContent: {
+    flexGrow: 1,
+  },
   contentContainer: {
     paddingHorizontal: 20,
   },
@@ -399,9 +402,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: '#F5F5F5',
   },
-  scrollViewContent: {
-    flexGrow: 1,
-  },
+  
   containerBtn: {
     alignItems: 'center',
     marginVertical: 10,

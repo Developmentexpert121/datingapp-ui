@@ -8,6 +8,7 @@ import {
   Image,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import * as yup from 'yup';
@@ -24,6 +25,8 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {LoginSignIn} from '../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import MainButton from '../../components/ButtonComponent/MainButton';
+import { useNavigation } from '@react-navigation/native';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 interface LoginForm {
@@ -45,6 +48,8 @@ const schema = yup.object().shape({
 });
 const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const dispatch: any = useAppDispatch();
+  
+  const navigation = useNavigation();
   const {
     control,
     handleSubmit,
@@ -81,72 +86,137 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     <KeyboardAvoidingView
       behavior="padding"
       keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
+      // keyboardVerticalOffset={Platform.OS === 'ios' ? 'padding' : undefined}
       style={styles.container}>
-      <View style={styles.circle}>
-        <Image
-          source={require('../../assets/images/logIcon.png')}
-          style={{width: 119, height: 122}}
-        />
-      </View>
-      <Image
-        source={require('../../assets/images/Group.png')}
-        style={{width: '100%', height: '34%', marginTop: 20}}
-      />
+      <ScrollView
+        style={{flex: 1, borderWidth: 0}}
+        nestedScrollEnabled={true}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollViewContent}
+        // style={{flexGrow: 1}}
+        keyboardShouldPersistTaps="always">
+        {/* <View style={styles.container1}> */}
+        <View
+          style={{
+            flex: 9 / 10,
+            alignItems: 'center',
+            // borderWidth: 1,
+            // width: '100%',
+            // height: '60%',
+          }}>
+          <View
+            style={{
+              width: '100%',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              borderWidth: 0,
+            }}>
+            <TouchableOpacity
+              style={{margin: 20}}
+              onPress={() => navigation.goBack()}>
+              <Image
+                source={require('../../assets/images/chevron-left.png')}
+                resizeMode="contain"
+                style={{width: 20, height: 20}}
+              />
+            </TouchableOpacity>
+            <View style={styles.circle}>
+              <Image
+                source={require('../../assets/images/logIcon.png')}
+                resizeMode="contain"
+                style={{width: 119, height: 122, alignSelf: 'center'}}
+              />
+            </View>
 
-      <Text style={styles.label}>What's your email?</Text>
-      <Text style={styles.subText}>
-        Don't lose access to your account,{'\n'}verify your email.
-      </Text>
-      <View
-        style={{width: '80%', justifyContent: 'center', alignItems: 'center'}}>
-        <AppTextInput
-          placeholder="Enter Your Email"
-          name="email"
-          control={control}
-          errors={Boolean(errors?.email)}
-        />
-        {errors.email && (
-          <Text style={{color: 'red', fontFamily: 'Sansation_Regular'}}>
-            {errors.email.message}
+            <View
+              style={{
+                width: 20,
+                height: 20,
+                borderWidth: 0,
+                margin: 20,
+              }}></View>
+          </View>
+          <Image
+            source={require('../../assets/images/Group.png')}
+            resizeMode="contain"
+            style={{
+              width: '100%',
+              height: '70%',
+              bottom: 0,
+              position: 'absolute',
+            }}
+          />
+        </View>
+        <View
+          style={{
+            flex: 1 / 10,
+            borderWidth: 0,
+            // width: '100%',
+            // height: '40%',
+            // alignItems: 'center',
+          }}>
+          <Text style={styles.label}>What's your email?</Text>
+          <Text style={styles.subText}>
+            Don't lose access to your account,{'\n'}verify your email.
           </Text>
-        )}
-        <AppTextInput
-          placeholder="Enter Your Password"
-          name="password"
-          control={control}
-          errors={Boolean(errors?.password)}
-        />
-        {errors.password && (
-          <Text style={{color: 'red', fontFamily: 'Sansation_Regular'}}>
-            {errors.password.message}
-          </Text>
-        )}
-      </View>
-
-      <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
-        <Text style={styles.buttonText}>Log In</Text>
-      </TouchableOpacity>
-
-      <Text style={styles.termsText}>Terms of use and privacy</Text>
-      {/* <View style={styles.signupContainer}>
-          <Text>Do not have an account?</Text>
-          <TouchableOpacity onPress={() => navigate('Register')}>
-            <Text style={styles.touchableText}> Sign-Up</Text>
-          </TouchableOpacity>
-        </View> */}
+          <View
+            style={{
+              width: '80%',
+              justifyContent: 'center',
+              alignSelf: 'center',
+            }}>
+            <AppTextInput
+              textstyle={{width: '"100%"'}}
+              placeholder="Enter Your Email"
+              name="email"
+              control={control}
+              errors={Boolean(errors?.email)}
+            />
+            {errors.email && (
+              <Text style={{color: 'red', fontFamily: 'Sansation_Regular'}}>
+                {errors.email.message}
+              </Text>
+            )}
+            <AppTextInput
+              textstyle={{width: '"100%"'}}
+              placeholder="Enter Your Password"
+              name="password"
+              control={control}
+              errors={Boolean(errors?.password)}
+            />
+            {errors.password && (
+              <Text style={{color: 'red', fontFamily: 'Sansation_Regular'}}>
+                {errors.password.message}
+              </Text>
+            )}
+            <MainButton
+              onPress={handleSubmit(onSubmit)}
+              ButtonName={'Log In'}
+            />
+          </View>
+          <Text style={styles.termsText}>Terms of use and privacy</Text>
+        </View>
+      </ScrollView>
+      {/* </View> */}
     </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 0,
-    justifyContent: 'center',
-    alignItems: 'center',
-    //paddingHorizontal: 20,
+  container1: {
+    flex: 1,
     backgroundColor: '#FFC7FF',
-    width: '100%',
-    height: '100%',
+    borderWidth: 2,
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    // alignItems: 'center',
+    // paddingVertical: 20,
+    backgroundColor: '#FFC7FF',
+  },
+  scrollViewContent: {
+    flexGrow: 1,
   },
   circle: {
     width: 180,
@@ -157,6 +227,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     justifyContent: 'center',
     alignItems: 'center',
+    // borderWidth:1
   },
   image1: {
     width: '100%',
@@ -192,6 +263,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginVertical: 12,
     width: '60%',
+    alignSelf: 'center',
   },
   buttonText: {
     color: 'white',
@@ -224,4 +296,5 @@ const styles = StyleSheet.create({
     marginBottom: 100,
   },
 });
+
 export default LoginScreen;
