@@ -21,6 +21,7 @@ import {getAllUsers} from '../../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FilterSection from '../FilterSection/filterSection';
 import NotificationScreen from '../Notification/notification';
+import {ServerContainer} from '@react-navigation/native';
 
 const getUserId = async () => {
   try {
@@ -47,14 +48,34 @@ const HomeScreen = () => {
 
   const [showIn, setShowIn] = useState(profileData?.showInDistance);
 
+  const [distance, setDistance] = useState(
+    parseInt(profileData?.distance) || 0,
+  );
+
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const [data, setData] = useState([]);
 
+  const [checkedInterests, setCheckedInterests] = React.useState(
+    profileData?.interests,
+  );
+
+  const [low, setLow] = useState<number>(18);
+  const [high, setHigh] = useState<number>(56);
+
   useEffect(() => {
     const getId = async () => {
       const userId = await getUserId();
-      dispatch(getAllUsers(userId))
+      dispatch(
+        getAllUsers({
+          userId: userId,
+          checkedInterests: checkedInterests,
+          showIn: showIn,
+          distance: distance,
+          low: low,
+          high: high,
+        }),
+      )
         .unwrap()
         .then((response: any) => {
           setData(response.users);
@@ -63,7 +84,7 @@ const HomeScreen = () => {
 
     getId();
     setCurrentIndex(0);
-  }, [showIn]);
+  }, [showIn, checkedInterests, distance, low, high]);
 
   const calculateDistance = (lat1: any, lon1: any, lat2: any, lon2: any) => {
     const R = 3958.8; // Earth radius in miles
@@ -162,7 +183,18 @@ const HomeScreen = () => {
           <FooterComponent />
         </View>
       ) : activeScreen === 'Filters' ? (
-        <FilterSection showIn={showIn} setShowIn={setShowIn} />
+        <FilterSection
+          showIn={showIn}
+          setShowIn={setShowIn}
+          checkedInterests={checkedInterests}
+          setCheckedInterests={setCheckedInterests}
+          distance={distance}
+          setDistance={setDistance}
+          low={low}
+          setLow={setLow}
+          high={high}
+          setHigh={setHigh}
+        />
       ) : (
         <NotificationScreen />
       )}

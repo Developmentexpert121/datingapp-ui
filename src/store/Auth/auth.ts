@@ -180,9 +180,21 @@ export const likedAUser = createAsyncThunk(
 
 export const getAllUsers = createAsyncThunk(
   'auth/getAllUsers',
-  async (userId: any, {dispatch}: any) => {
+  async (
+    {userId, checkedInterests, showIn, distance, low, high}: any,
+    {dispatch}: any,
+  ) => {
     try {
-      const response = await http.get('/user/getUsers', {params: {id: userId}});
+      const response = await http.get('/user/getUsers', {
+        params: {
+          id: userId,
+          checkedInterests: checkedInterests,
+          showIn: showIn,
+          distance: distance,
+          low: low,
+          high: high,
+        },
+      });
       if (response.status === 200) {
         return response.data;
       }
@@ -261,7 +273,7 @@ export const reciveMessages = createAsyncThunk(
   async (data: any, {dispatch}: any) => {
     try {
       const response = await http.get(
-        `/user/messages?senderId=${data.senderId}&receiverId=${data.receiverId}`,
+        `/user/messages?senderId=${data.senderId}&receiverId=${data.receiverId}&limit=${data.limit}&skip=${data.skip}`,
       );
 
       if (response.status === 200) {

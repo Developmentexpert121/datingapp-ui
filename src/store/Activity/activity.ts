@@ -57,7 +57,7 @@ const ActivityLoader: any = createSlice({
       .addCase(footerStatus.fulfilled, (state: any, action: any) => {
         state.footerStatus = action.payload.footerStatus;
       })
-      .addCase(videoCallUser.fulfilled, (state: any, action: any) => {
+      .addCase(videoCallUser?.fulfilled, (state: any, action: any) => {
         state.user = action.payload.user;
       });
   },
