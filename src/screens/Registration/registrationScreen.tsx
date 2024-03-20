@@ -196,7 +196,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
             location: {latitude, longitude},
             distance: `${distance}mi`,
             profilePic: profileImages?.join(','),
-            dob: `${dateStr}`,
+            dob: dateStr,
           }),
         );
         reset();
@@ -229,7 +229,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
                 ...data,
                 distance: `${distance}mi`,
                 profilePic: profileImages?.join(','),
-                dob: `${dateStr}`,
+                dob: dateStr,
               }),
             );
             reset();

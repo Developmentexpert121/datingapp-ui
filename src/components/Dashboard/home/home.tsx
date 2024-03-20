@@ -60,6 +60,9 @@ const HomeScreen = () => {
     profileData?.interests,
   );
 
+  const [low, setLow] = useState<number>(18);
+  const [high, setHigh] = useState<number>(56);
+
   useEffect(() => {
     const getId = async () => {
       const userId = await getUserId();
@@ -69,18 +72,19 @@ const HomeScreen = () => {
           checkedInterests: checkedInterests,
           showIn: showIn,
           distance: distance,
+          low: low,
+          high: high,
         }),
       )
         .unwrap()
         .then((response: any) => {
-          console.log(response);
           setData(response.users);
         });
     };
 
     getId();
     setCurrentIndex(0);
-  }, [showIn, checkedInterests, distance]);
+  }, [showIn, checkedInterests, distance, low, high]);
 
   const calculateDistance = (lat1: any, lon1: any, lat2: any, lon2: any) => {
     const R = 3958.8; // Earth radius in miles
@@ -186,6 +190,10 @@ const HomeScreen = () => {
           setCheckedInterests={setCheckedInterests}
           distance={distance}
           setDistance={setDistance}
+          low={low}
+          setLow={setLow}
+          high={high}
+          setHigh={setHigh}
         />
       ) : (
         <NotificationScreen />

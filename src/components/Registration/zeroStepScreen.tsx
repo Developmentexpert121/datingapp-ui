@@ -61,11 +61,10 @@ const ZeroStepScreen = ({
     const currentDate = selectedDate;
     setShow(false);
     setDate(currentDate);
-    const dateString = currentDate;
-    const date = new Date(dateString);
-    setDateStr(date);
-  };
 
+    setDateStr(currentDate);
+  };
+  console.log(dateStr);
   const showMode = (currentMode: any) => {
     setShow(true);
     setMode(currentMode);

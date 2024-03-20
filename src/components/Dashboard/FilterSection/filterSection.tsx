@@ -67,6 +67,10 @@ const FilterSection = ({
   setCheckedInterests,
   distance,
   setDistance,
+  low,
+  setLow,
+  high,
+  setHigh,
 }: any) => {
   const dispatch: any = useAppDispatch();
   const profileData: any = useAppSelector(
@@ -108,9 +112,6 @@ const FilterSection = ({
       }),
     );
   };
-
-  const [low, setLow] = useState<number>(18);
-  const [high, setHigh] = useState<number>(56);
 
   const [minValue, setMinValue] = useState(18);
   const [maxValue, setMaxValue] = useState(56);

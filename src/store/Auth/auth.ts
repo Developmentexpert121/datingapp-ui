@@ -181,7 +181,7 @@ export const likedAUser = createAsyncThunk(
 export const getAllUsers = createAsyncThunk(
   'auth/getAllUsers',
   async (
-    {userId, checkedInterests, showIn, distance}: any,
+    {userId, checkedInterests, showIn, distance, low, high}: any,
     {dispatch}: any,
   ) => {
     try {
@@ -191,6 +191,8 @@ export const getAllUsers = createAsyncThunk(
           checkedInterests: checkedInterests,
           showIn: showIn,
           distance: distance,
+          low: low,
+          high: high,
         },
       });
       if (response.status === 200) {
