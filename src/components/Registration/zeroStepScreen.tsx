@@ -6,6 +6,7 @@ import {
   FlatList,
   Button,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import React, {useMemo, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -20,6 +21,7 @@ import Font from '../../constants/Fonts';
 import FontSize from '../../constants/FontSize';
 import Spacing from '../../constants/Spacing';
 import {CountryPicker} from 'react-native-country-codes-picker';
+import {useNavigation} from '@react-navigation/native';
 interface RegForm0 {
   name: string;
   email: string;
@@ -56,6 +58,7 @@ const ZeroStepScreen = ({
   const [date, setDate] = useState(new Date(1598051730000));
   const [mode, setMode] = useState<any>('date');
   const [show, setShow] = useState<any>(false);
+  const navigation = useNavigation();
 
   const onChange = (event: any, selectedDate: any) => {
     const currentDate = selectedDate;
@@ -80,7 +83,21 @@ const ZeroStepScreen = ({
 
   return (
     <SafeAreaView>
-      <Text style={styles.headerLabel}>Personal</Text>
+      <View style={styles.topView}>
+        <TouchableOpacity
+          style={{margin: 20}}
+          onPress={() => navigation.goBack()}>
+          <Image
+            source={require('../../assets/images/chevron-left.png')}
+            resizeMode="contain"
+            style={{width: 20, height: 20}}
+          />
+        </TouchableOpacity>
+
+        <Text style={styles.headerLabel}>Personal</Text>
+
+        <View style={styles.blankview}></View>
+      </View>
       <View style={styles.container}>
         <Text style={styles.label}>My name is</Text>
         {/* <TextInput style={styles.input} placeholder="Enter your name" /> */}
@@ -339,6 +356,18 @@ const styles = StyleSheet.create({
     marginVertical: Spacing,
     width: '80%',
     borderRadius: 10,
+  },
+  blankview: {
+    width: 20,
+    height: 20,
+    borderWidth: 0,
+    margin: 20,
+  },
+  topView: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderWidth: 0,
   },
 });
 
