@@ -1,86 +1,112 @@
 import React, {useState} from 'react';
-import { Slider } from 'react-native-elements';
-import { View, Text, Image, StyleSheet, SafeAreaView } from 'react-native';
+import {Slider} from 'react-native-elements';
+import {View, Text, Image, StyleSheet, SafeAreaView} from 'react-native';
 
-const ThirdStepScreen = ({distance, setDistance}:any) => {
-
-    const handleSliderChange = (value:any) => {
-      setDistance(value);
-    };
+const ThirdStepScreen = ({distance, setDistance}: any) => {
+  const handleSliderChange = (value: any) => {
+    setDistance(value);
+  };
 
   return (
-    <SafeAreaView>
-    <View style={styles.container}>
-      <Text style={styles.headerText}>Your distance preference?</Text>
-      <Text style={styles.paragraphText}>Use the slider to set the maximum distance that you want to potential matches to be located</Text>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.contentContainer}>
+        <Text style={styles.headerText}>Your distance preference?</Text>
+        <Text style={styles.paragraphText}>
+          Use the slider to set the maximum distance you want to potential
+          matches to be located
+        </Text>
 
-      <View style={styles.sliderContainer}>
- 
-      <View style={styles.labelContainer}>
-        <Text style={styles.label}>Distance Preference</Text>
-        <Text style={styles.value}>{distance} Mi</Text>
+        <View style={styles.sliderContainer}>
+          <View style={styles.labelContainer}>
+            <Text style={styles.label}>Distance Preference</Text>
+            <Text style={styles.value}>{distance} Mi</Text>
+          </View>
+          <Slider
+            style={styles.slider}
+            minimumValue={1}
+            maximumValue={50}
+            value={distance}
+            onValueChange={handleSliderChange}
+            step={1}
+            thumbTintColor="#AC25AC"
+            minimumTrackTintColor="#AC25AC"
+            maximumTrackTintColor="gray"
+            thumbStyle={styles.thumbStyle}
+          />
+        </View>
+        <View style={{flexGrow: 1}}></View>
+        <View style={styles.containerBtn}>
+          <Text style={styles.containerBtnText}>
+            You can change preferences later in settings
+          </Text>
+        </View>
       </View>
-      <Slider
-        style={styles.slider}
-        minimumValue={1}
-        maximumValue={50}
-        value={distance}
-        onValueChange={handleSliderChange}
-        step={1}
-        thumbTintColor="#BB2CBB"
-        minimumTrackTintColor="#BB2CBB"
-        maximumTrackTintColor="gray"
-        thumbStyle={styles.thumbStyle}
-      />
-
-      </View>
-    </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 16,
+    flexGrow: 1,
+  },
+  contentContainer: {
+    flexGrow: 1,
+    paddingHorizontal: 40,
   },
   headerText: {
+    color: 'black',
     fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: 'Sansation_Bold',
     marginBottom: 8,
-    textAlign: 'center'
   },
   paragraphText: {
-    fontSize: 16,
-    marginBottom: 16,
-    textAlign: 'center'
-
+    fontFamily: 'Sansation_Regular',
+    fontSize: 14,
+    marginBottom: 20,
+    color: '#575757',
   },
-  sliderContainer: {
-    padding: 16,
-  },
+  sliderContainer: {},
   labelContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 8,
   },
   label: {
-    fontSize: 18,
-    marginBottom: 8,
+    fontSize: 16,
+    fontFamily: 'Sansation_Bold',
+    color: 'black',
   },
   value: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 16,
+    fontSize: 16,
+    fontFamily: 'Sansation_Regular',
+    color: 'black',
   },
   slider: {
     width: '100%',
   },
   thumbStyle: {
-    width: 16,
-    height: 16,
-    borderRadius: 8,
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    shadowColor: '#AC25AC',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
+
+    elevation: 10,
+  },
+  containerBtn: {
+    alignItems: 'center',
+  },
+  containerBtnText: {
+    fontFamily: 'Sansation_Regular',
+    fontSize: 16,
+    marginBottom: 20,
+    color: '#575757',
   },
 });
 

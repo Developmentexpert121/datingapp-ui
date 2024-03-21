@@ -1,27 +1,49 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
-import { Platform, PermissionsAndroid, View, Text, TouchableOpacity, Image, FlatList, StyleSheet } from 'react-native';
-import  {launchImageLibrary} from 'react-native-image-picker';
-import { request, PERMISSIONS } from 'react-native-permissions';
-import axios from 'axios';
-import http from '../../services/http/http-common';
-// import screenImage1 from '../../assets/images/screenImage1.png';
-const DummyProfileImages = [
-    require('../../assets/images/screenImage1.png'),
-    require('../../assets/images/screenImage2.png'),
-    require('../../assets/images/screenImage1.png'),
-    require('../../assets/images/screenImage2.png'),
-    require('../../assets/images/screenImage1.png'),
-    require('../../assets/images/screenImage2.png'),
-    // require('../../assets/images/screenImage1.png'),
-    // require('../../assets/images/screenImage2.png'),
-    // require('../../assets/images/screenImage1.png'),
-  ];
-const SeventhStepScreen = ({uploadError, setUploadError, selectedImage, setSelectedImage, title}:any) => {
-  const [uploadferImage, setUploadedImage] = useState<any>();
-  const [doc, setDoc] = useState<any>(null);
+import {useEffect, useState} from 'react';
+import {
+  Platform,
+  PermissionsAndroid,
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  FlatList,
+  StyleSheet,
+} from 'react-native';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {request, PERMISSIONS} from 'react-native-permissions';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import {useAppDispatch, useAppSelector} from '../../store/store';
+import {updateProfileData, uploadImages} from '../../store/Auth/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-  console.log('selectedImageselectedImage          ', selectedImage);
+const getUserId = async () => {
+  try {
+    const userId: any = await AsyncStorage.getItem('userId');
+
+    if (userId !== null) {
+      return JSON.parse(userId);
+    } else {
+      return null;
+    }
+  } catch (error) {
+    return null;
+  }
+};
+
+const SeventhStepScreen = ({
+  profileImages,
+  setProfileImages,
+  title,
+}: {
+  profileImages: any;
+  setProfileImages: any;
+  title?: any;
+}) => {
+  const [uploadError, setUploadError] = useState<boolean>(false);
+
+  const dispatch: any = useAppDispatch();
+
   const requestPermissions = async () => {
     if (Platform.OS === 'android') {
       await requestAndroidPermissions();
@@ -29,11 +51,10 @@ const SeventhStepScreen = ({uploadError, setUploadError, selectedImage, setSelec
       await requestIOSPermissions();
     }
   };
-  
+
   useEffect(() => {
     requestPermissions();
   }, []);
-
   const requestAndroidPermissions = async () => {
     try {
       const granted = await PermissionsAndroid.requestMultiple([
@@ -71,157 +92,145 @@ const SeventhStepScreen = ({uploadError, setUploadError, selectedImage, setSelec
     }
   };
 
+  useEffect(() => {
+    if (title !== 'Registeration') {
+      let fieldValue = profileImages?.join(',');
+      dispatch(
+        updateProfileData({
+          field: 'profilePic',
+          value: fieldValue,
+          id: getUserId(),
+        }),
+      );
+    }
+  }, [profileImages]);
 
-  const openImagePicker = () => {
-    const options:any = {
-      mediaType: 'photo',
-      includeBase64: false,
-      maxHeight: 2000,
-      maxWidth: 2000,
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
-    };
+  const handleImageSelection = async () => {
+    launchImageLibrary({mediaType: 'photo'}, async response => {
+      if (!response?.didCancel && !response?.errorMessage) {
+        if (response?.assets && response.assets.length > 0) {
+          try {
+            const asset = response.assets[0]; // Assuming you want to upload only the first selected image
 
-    launchImageLibrary(options, (response:any) => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('Image picker error: ', response.error);
-      } else {
-        let imageUri = response.uri || response.assets?.[0]?.uri;
-        console.log('response===================== ', response);
-        setDoc(response?.assets)
-        console.log('=============--------------======================', imageUri)
-        setSelectedImage({ uri: imageUri });
-        setUploadError(false);
+            const formData = new FormData();
+            formData.append('image', {
+              name: asset.fileName,
+              fileName: asset.fileName,
+              type: asset.type,
+              uri: asset.uri,
+            });
+
+            const uploadedImageUrl = await dispatch(uploadImages(formData))
+              .unwrap()
+              .then((response: any) => response.secureUrl);
+
+            setProfileImages((prevImages: any) => [
+              ...prevImages,
+              uploadedImageUrl,
+            ]);
+            setUploadError(false);
+          } catch (error) {
+            console.error('Error uploading image:', error);
+            setUploadError(true);
+          }
+        } else {
+          setUploadError(true); // Set error if no images are selected
+        }
       }
     });
   };
+  const handleRemoveImage = async (index: number) => {
+    // If there's only one image left, open the image picker for replacement
+    if (profileImages.length === 1) {
+      try {
+        launchImageLibrary({mediaType: 'photo'}, async response => {
+          if (!response?.didCancel && !response?.errorMessage) {
+            if (response?.assets && response.assets.length > 0) {
+              try {
+                const asset = response.assets[0]; // Assuming you want to upload only the first selected image
 
-  // const openImagePicker = () => {
-  //   const options = {
-  //     title: 'Select Image',
-  //     storageOptions: {
-  //       skipBackup: true,
-  //       path: 'images',
-  //     },
-  //   };
+                const formData = new FormData();
+                formData.append('image', {
+                  name: asset.fileName,
+                  fileName: asset.fileName,
+                  type: asset.type,
+                  uri: asset.uri,
+                });
 
-  //   ImagePicker?.showImagePicker(options, (response:any) => {
-  //     if (response.didCancel) {
-  //       console.log('User cancelled image picker');
-  //     } else if (response.error) {
-  //       console.log('ImagePicker Error: ', response.error);
-  //     } else {
-  //       const source:any = { uri: response.uri };
-  //       setSelectedImage(source);
-  //     }
-  //   });
-  // };
+                const uploadedImageUrl = await dispatch(uploadImages(formData))
+                  .unwrap()
+                  .then((response: any) => response.secureUrl);
 
-  const handleSelectImage2 = async() => {
-    // Handle the selection logic based on the selectedImage state
-    if (selectedImage) {
-      console.log('Image selected:', selectedImage);
-      // Handle the case where an image is selected
-      // You can upload the selected image here
-      //const file = selectedImage?.uri ?? selectedImage;
-      const formData = new FormData();
-      //formData.append('file', screenImage1);
-    // formData.append('file', {
-    //   uri: selectedImage,
-    //   type: 'image/jpeg', // Change the type if necessary
-    //   name: 'image.jpg', // Change the name if necessary
-    // });
-console.log('ddddddddddddddddddddddddd');
-    const response = await axios.post('http://localhost:8000/api/user/upload-pic', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-      console.log('response        ', response);
+                setProfileImages([uploadedImageUrl]);
+                setUploadError(false);
+              } catch (error) {
+                console.error('Error uploading image:', error);
+                setUploadError(true);
+              }
+            } else {
+              setUploadError(true); // Set error if no images are selected
+            }
+          }
+        });
+      } catch (error) {
+        // User cancelled image selection, do nothing
+      }
     } else {
-      // Handle the case where no image is selected
-      console.log('No image selected');
+      // If there are multiple images, remove the selected image
+      const updatedImages = [...profileImages];
+      updatedImages?.splice(index, 1);
+      setProfileImages(updatedImages);
+      setUploadError(false);
     }
   };
 
-  const handleSelectImage3 = async () => {
-    const formData:any = new FormData();
-    console.log('selectImage ============ ', doc);
-    console.log('doc.uri ', doc?.[0]?.uri);
-    console.log('doc.fileName ', doc?.[0]?.fileName);
-    console.log('doc.type ', doc?.[0]?.type);
-    const decodedFileUri = decodeURIComponent(doc.uri);
-    const decodedFileName = decodeURIComponent(doc.fileName);
-    //formData.append('file', selectedImage?.uri);
-    //Platform.OS === 'ios' ? doc.uri.replace('file://', '') :
-    formData.append('file', {
-      name: doc?.[0]?.fileName,
-      type: doc?.[0]?.type,
-      uri:  doc?.[0]?.uri,
-    });
-    console.log('formDataformDataformData', formData);
-    try {
-      const response = await http.post('/user/upload-pic',formData);
-      console.log('Upload response:', response);
-    } catch (error) {
-      console.error('Error uploading file:', error);
-    }
-  };
-
-  const handleSelectImage = async () => {
-    try {
-      const formData:any = new FormData();
-      formData.append('file', {
-        name: doc?.[0]?.fileName,
-        type: doc?.[0]?.type,
-        uri: doc?.[0]?.uri,
-      });
-  
-      console.log('formData:', formData);
-  
-      const response = await http.post('/user/upload-pic', formData,{
-        headers: {
-        Accept: 'application/json',
-        'Content-Type': 'multipart/form-data',
-      }}
-      );
-      console.log('Upload response:', response.data);
-      
-      // Handle success (if needed)
-    } catch (error) {
-      console.error('Error uploading file:', error);
-      // Handle error (if needed)
-    }
-  };
-  return (<View style={styles.container}>
-    <Text style={{marginBottom:5}}>Choose {title ?? ''} profile or upload from gallary</Text>
-    {selectedImage ? (
-      <Image source={selectedImage} style={styles.selectedImage} />
-    ) :
-    (
-     
+  return (
+    <View style={styles.container}>
       <View style={styles.containerdm}>
-      {DummyProfileImages.map((item, index) => (
-        <TouchableOpacity onPress={() => (setSelectedImage(item), setUploadError(false))} style={styles.imageContainerdm} key={index}>
-          <Image source={item} style={styles.dummyImagedm} />
-        </TouchableOpacity>
-      ))}
+        {[
+          ...profileImages,
+          ...Array(Math.max(6 - (profileImages?.length || 0), 0)),
+        ]?.map((item, index) => (
+          <TouchableOpacity
+            onPress={() => {
+              if (item) {
+                handleRemoveImage(index);
+              } else {
+                handleImageSelection();
+              }
+            }}
+            style={[styles.imageContainerdm, !item && {borderWidth: 2}]}
+            key={index}>
+            {item && <Image source={{uri: item}} style={styles.dummyImagedm} />}
+
+            <View
+              style={[
+                styles.addRemoveButton,
+                item && {transform: [{rotate: '45deg'}]},
+              ]}>
+              <FontAwesome6
+                name="plus"
+                size={20}
+                style={{
+                  color: 'white',
+                }}
+              />
+            </View>
+          </TouchableOpacity>
+        ))}
+      </View>
+
+      {uploadError && (
+        <Text
+          style={{
+            color: 'red',
+            textAlign: 'center',
+            fontFamily: 'Sansation_Regular',
+          }}>
+          Please select any picture or select from gallery
+        </Text>
+      )}
     </View>
-        
-    )
-    }
-    <TouchableOpacity onPress={openImagePicker} style={styles.uploadButton}>
-      <Text style={styles.buttonText}>{selectedImage ? 'Change Image' : 'Select from gallary'}</Text>
-    </TouchableOpacity>
-    <TouchableOpacity onPress={handleSelectImage} style={styles.selectButton}>
-      <Text style={styles.buttonText}>Upload</Text>
-    </TouchableOpacity>
-    {uploadError && <Text style={{color:'red'}}>plz select any profile or select from gallery</Text>}
-  </View>
   );
 };
 
@@ -230,55 +239,48 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    paddingHorizontal: 24,
   },
-  selectedImage: {
-    width: 200,
-    height: 200,
-    borderRadius: 10,
-    marginBottom: 20,
-  },
-  dummyImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 5,
-  },
-  imageContainer: {
-    margin: 5,
-    flexDirection: 'row'
-  },
-  uploadButton: {
-    backgroundColor: '#BB2CBB',
-    padding: 10,
-    borderRadius: 10,
-    marginTop: 10,
-  },
-  selectButton: {
-    backgroundColor: '#4CAF50',
-    padding: 10,
-    borderRadius: 10,
-    marginTop: 10,
-  },
-  buttonText: {
-    color: 'white',
-    textAlign: 'center',
-  },
-
   containerdm: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between', // Adjust as needed
+    rowGap: 20,
   },
   imageContainerdm: {
-    marginBottom: 10, // Adjust spacing between rows
+    borderRadius: 14,
+    borderColor: 'rgba(0, 0, 0, 0.4)',
+    borderStyle: 'dashed',
+    backgroundColor: '#E0E0E0',
+    position: 'relative',
+    width: 100,
+    height: 160,
   },
   dummyImagedm: {
-    width: 100, // Adjust image width as needed
-    height: 100, // Adjust image height as needed
-    resizeMode: 'cover',
-    borderRadius: 15, //
+    width: 100,
+    height: 160,
+    borderRadius: 12,
+  },
+  addRemoveButton: {
+    position: 'absolute',
+    bottom: -8,
+    right: -8,
+    backgroundColor: '#AC25AC',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    shadowColor: '#AC25AC',
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.51,
+    shadowRadius: 13.16,
+
+    elevation: 20,
   },
 });
-
 
 export default SeventhStepScreen;

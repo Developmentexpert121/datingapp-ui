@@ -1,51 +1,82 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 
-const SecondStepScreen = ({partnerType, control, errors}:any) => {
+const SecondStepScreen = ({partnerType, control, errors}: any) => {
   const avatars = [
-    { id: '1', name: 'Long term partner', image: require('../../assets/images/screenImage1.png') },
-    { id: '2', name: 'Long term open to short', image: require('../../assets/images/screenImage1.png') },
-    { id: '3', name: 'Shirt term open to long', image: require('../../assets/images/screenImage1.png') },
-    { id: '4', name: 'Short term fun', image: require('../../assets/images/screenImage1.png') },
-    { id: '5', name: 'New friends', image: require('../../assets/images/screenImage1.png') },
-    { id: '6', name: 'Still figuring it out', image: require('../../assets/images/screenImage1.png') },
+    {
+      id: '1',
+      name: 'Long term partner',
+      image: require('../../assets/images/kiss.png'),
+    },
+    {
+      id: '2',
+      name: 'Long term open to short',
+      image: require('../../assets/images/date.png'),
+    },
+    {
+      id: '3',
+      name: 'Short term open to long',
+      image: require('../../assets/images/love-you.png'),
+    },
+    {
+      id: '4',
+      name: 'Short term fun',
+      image: require('../../assets/images/hug.png'),
+    },
+    {
+      id: '5',
+      name: 'New friends',
+      image: require('../../assets/images/people.png'),
+    },
+    {
+      id: '6',
+      name: 'Still figuring it out',
+      image: require('../../assets/images/thinking.png'),
+    },
     // Add more avatars as needed
   ];
 
   return (
     <SafeAreaView>
-    <View style={styles.container}>
-      <Text style={styles.headerText}>Right now I'am looking for...</Text>
-      <Text style={styles.paragraphText}>Increase compatiblity by sharing yours</Text>
+      <View style={styles.container}>
+        <Text style={styles.headerText}>Right now I'm looking for...</Text>
+        <Text style={styles.paragraphText}>
+          Increase compatiblity by sharing yours
+        </Text>
 
-      <View style={styles.avatarContainer}>
-        {avatars.map((item) => (
-          <Controller
-            key={item.id}
-            name={partnerType}
-            control={control}
-            defaultValue={null}
-            render={({ field: { onChange, value } }) => (
-              <TouchableOpacity
-                key={item.id}
-                style={[
-                  errors && styles.errorBorder, 
-                  styles.avatarItem,
-                  value === item.name && styles.selectedAvatar // Add selected style if the avatar is selected
-                ]}
-                onPress={() => onChange(item.name)}
-              >
-                <View style={styles.avatarImageContainer}>
+        <View style={styles.avatarContainer}>
+          {avatars.map(item => (
+            <Controller
+              key={item.id}
+              name={partnerType}
+              control={control}
+              defaultValue={null}
+              render={({field: {onChange, value}}) => (
+                <TouchableOpacity
+                  key={item.id}
+                  style={[
+                    errors && styles.errorBorder,
+                    styles.avatarItem,
+                    value === item.name && styles.selectedAvatar, // Add selected style if the avatar is selected
+                  ]}
+                  onPress={() => onChange(item.name)}>
                   <Image source={item.image} style={styles.avatarImage} />
-                </View>
-                <Text style={styles.avatarLabel}>{item.name}</Text>
-              </TouchableOpacity>
-            )}
-          />
-        ))}
+
+                  <Text style={styles.avatarLabel}>{item.name}</Text>
+                </TouchableOpacity>
+              )}
+            />
+          ))}
+        </View>
       </View>
-    </View>
     </SafeAreaView>
   );
 };
@@ -53,19 +84,19 @@ const SecondStepScreen = ({partnerType, control, errors}:any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    paddingHorizontal: 40,
   },
   headerText: {
+    color: 'black',
     fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: 'Sansation_Bold',
     marginBottom: 8,
-    textAlign: 'center'
   },
   paragraphText: {
+    fontFamily: 'Sansation_Regular',
     fontSize: 16,
-    marginBottom: 16,
-    textAlign: 'center'
-
+    marginBottom: 20,
+    color: '#575757',
   },
   avatarContainer: {
     flexDirection: 'row',
@@ -73,38 +104,39 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   avatarItem: {
-    width: '30%',
+    height: 90,
+    width: 90,
+    justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 16,
-    backgroundColor: 'gray',
-    borderRadius: 10,
-    overflow: 'hidden',
+    marginBottom: 25,
+    backgroundColor: '#E8E8E8',
+    borderRadius: 45,
   },
-  avatarImageContainer: {
-    width: '100%',
-    aspectRatio: 1,
-    borderRadius: 50,
-    overflow: 'hidden',
-  },
+  avatarImageContainer: {},
   avatarImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    marginBottom: 8,
+    width: 32,
+    height: 32,
+
+    marginBottom: 2,
   },
   avatarLabel: {
-    fontSize: 14,
-    paddingHorizontal: 10,
+    fontSize: 10,
     alignItems: 'center',
+    textAlignVertical: 'center',
+    textAlign: 'center',
+    fontFamily: 'Sansation_Bold',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    color: 'black',
   },
   selectedAvatar: {
-    borderColor: '#BB2CBB', // Add border color for selected avatar
+    borderColor: '#AC25AC', // Add border color for selected avatar
     borderWidth: 2,
   },
-  errorBorder:{
-    borderColor: 'red', 
+  errorBorder: {
+    borderColor: 'red',
     borderWidth: 2,
-  }
+  },
 });
 
 export default SecondStepScreen;

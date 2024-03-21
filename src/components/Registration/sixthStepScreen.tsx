@@ -1,28 +1,26 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
-import { useForm, Controller } from 'react-hook-form';
+import React, {useState} from 'react';
+import {View, Text, TextInput, StyleSheet} from 'react-native';
+import {useForm, Controller} from 'react-hook-form';
 
-const SixthStepScreen = ({hobbies, control, errors}:any) => {
-  // const [hobbies, setHobbies] = useState('');
-console.log('errrrrrrrrrrrrrrrrrrrrrrr ', errors)
+const SixthStepScreen = ({hobbies, control, errors}: any) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Your hobbies?</Text>
+      <Text style={styles.title}>Tell use about yourself!</Text>
       <Text style={styles.paragraph}>
         You like what you like. Now, let everyone know.
       </Text>
       <Controller
         name={hobbies}
         control={control}
-        rules={{ required: true }}
+        rules={{required: true}}
         defaultValue=""
-        render={({ field: { onChange, onBlur, value } }) => (
+        render={({field: {onChange, onBlur, value}}) => (
           <View style={[styles.boxContainer, errors && styles.errorBorder]}>
             <TextInput
               style={[styles.textArea]}
               multiline
               numberOfLines={4}
-              placeholder="Write at least 5 hobbies..."
+              placeholder="This is your bio..."
               placeholderTextColor="#A9A9A9"
               value={value}
               onBlur={onBlur}
@@ -31,62 +29,52 @@ console.log('errrrrrrrrrrrrrrrrrrrrrrr ', errors)
           </View>
         )}
       />
-   
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
+    flexGrow: 1,
+    paddingHorizontal: 40,
   },
   title: {
+    color: 'black',
     fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 8,
-    marginLeft: 10
+    fontFamily: 'Sansation_Bold',
+    marginBottom: 10,
   },
   paragraph: {
-    fontSize: 16,
+    fontFamily: 'Sansation_Regular',
+    fontSize: 14,
     marginBottom: 16,
-    marginLeft: 10
-  },
-  textAreaContainer: {
-    //borderWidth: 1,
-    borderRadius: 10,
-    borderColor: '#BB2CBB',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-  },
-  textArea: {
-    fontSize: 16,
-    textAlignVertical:'top',
-    //minHeight:100
-    //paddingLeft: 10,
-    //elevation:2,
-    //borderRadius: 10
+    color: '#575757',
   },
 
-  errorBorder:{
-    borderColor:'red',
-    borderWidth:2
+  textArea: {
+    fontSize: 16,
+    textAlignVertical: 'top',
+    fontFamily: 'Sansation_Regular',
+  },
+
+  errorBorder: {
+    borderColor: 'red',
+    borderWidth: 2,
   },
   boxContainer: {
-    backgroundColor: '#fff',
-    borderRadius: 20,
-    //padding: 20,
-    marginHorizontal: 15,
-    marginBottom: 5,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    paddingLeft: 4,
+    marginBottom: 20,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 4,
   },
 });
 

@@ -44,26 +44,37 @@ import {
   DrawerItemList,
 } from '@react-navigation/drawer';
 import DrawerScreen from '../home/home';
-import {TouchableOpacity, View, Text, Image, StyleSheet, Button} from 'react-native';
+import {
+  TouchableOpacity,
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Button,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ProfileScreen from '../../../screens/Profile/profileScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { updateAuthentication } from '../../../store/Auth/auth';
-import { useAppDispatch } from '../../../store/store';
-import { activityLoaderFinished, activityLoaderStarted } from '../../../store/Activity/activity';
-import { useAppSelector } from '../../../store/store'
+import {updateAuthentication} from '../../../store/Auth/auth';
+import {useAppDispatch} from '../../../store/store';
+import {
+  activityLoaderFinished,
+  activityLoaderStarted,
+} from '../../../store/Activity/activity';
+import {useAppSelector} from '../../../store/store';
 const Drawer = createDrawerNavigator();
 
 const CustomDrawerContent = (props: any) => {
   const {navigation} = props;
-  const dispatch:any = useAppDispatch();
-  const profileData = useAppSelector((state:any)=>state?.Auth?.data?.profileData);
-  const handleLogout = async() => {
+  const dispatch: any = useAppDispatch();
+  const profileData = useAppSelector(
+    (state: any) => state?.Auth?.data?.profileData,
+  );
+  const handleLogout = async () => {
     dispatch(activityLoaderStarted());
     dispatch(updateAuthentication());
     await AsyncStorage.removeItem('authToken');
     dispatch(activityLoaderFinished());
-    console.log("Logout logic");
   };
 
   return (
@@ -81,7 +92,7 @@ const CustomDrawerContent = (props: any) => {
             shadowRadius: 2,
           }}
         />
-        <Text style={styles.username}>{profileData?.email ?? "username"}</Text>
+        <Text style={styles.username}>{profileData?.email ?? 'username'}</Text>
       </View>
       <DrawerItemList {...props} />
       <TouchableOpacity
@@ -91,7 +102,7 @@ const CustomDrawerContent = (props: any) => {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.logoutButton}
-        onPress={()=>handleLogout()}>
+        onPress={() => handleLogout()}>
         <Text style={styles.logoutButtonText}>Logout</Text>
       </TouchableOpacity>
     </DrawerContentScrollView>
@@ -101,7 +112,7 @@ const CustomDrawerContent = (props: any) => {
 const HomeDrawer = () => {
   return (
     <Drawer.Navigator
-     // initialRouteName="Dashboard"
+      // initialRouteName="Dashboard"
       drawerContent={props => <CustomDrawerContent {...props} />}>
       <Drawer.Screen
         name="Dashboard"

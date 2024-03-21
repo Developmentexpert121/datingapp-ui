@@ -9,43 +9,25 @@ import {
   Text,
 } from 'react-native';
 
-import Fontisto from 'react-native-vector-icons/Fontisto';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {useNavigation} from '@react-navigation/native';
+
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-const NotificationIcon = () => {
-  const navigation = useNavigation();
-  return <Pressable></Pressable>;
-};
 const HeaderComponent = (props: any) => {
-  const [activeScreen, setActiveScreen] = useState('HOME');
-  const navigation = useNavigation();
-  const color = '#b5b5b5';
-  const activeColor = '#F76C6B';
   const handleFilter = () => {
-    setActiveScreen('CHAT');
-    navigation.navigate('Filter');
+    props?.setActiveScreen('Filters');
   };
   const handleNotification = () => {
-    setActiveScreen('STAR');
-    navigation.navigate('Notification');
+    props?.setActiveScreen('Notifications');
   };
   return (
     <SafeAreaView style={styles.root}>
       <View style={styles.pageContainer}>
         <View style={styles.topNavigation}>
-          <Pressable onPress={() => setActiveScreen('HOME')}>
-            {/* <Fontisto
-              name="tinder"
-              size={30}
-              color={activeScreen === 'HOME' ? activeColor : color}
-            /> */}
-            {props.icon === true ? (
+          <Pressable>
+            {props.activeScreen !== 'HOME' ? (
               <Ionicons
-                onPress={() => navigation.navigate('Home')}
+                onPress={() => props?.setActiveScreen('HOME')}
                 style={styles.backPressIcon}
                 name="chevron-back-outline"
                 size={30}
@@ -58,25 +40,33 @@ const HeaderComponent = (props: any) => {
             )}
           </Pressable>
           <Text style={styles.title}>
-            {props.title ? props.title : 'Discover'}
+            {props?.activeScreen === 'HOME'
+              ? 'Discover'
+              : props?.activeScreen === 'Notifications'
+              ? 'Notifications'
+              : 'Filters'}
           </Text>
-          <Pressable onPress={() => handleNotification()}>
-            <MaterialIcons name="notifications-on" size={30} />
-            {/* <MaterialCommunityIcons
-            name="star-four-points"
-            size={30}
-            color={activeScreen === 'STAR' ? activeColor : color}
-          /> */}
-          </Pressable>
-          <Pressable onPress={() => handleFilter()}>
-            <Ionicons name="filter-outline" size={30} />
-            {/* <Ionicons
-              onPress={()=> navigation.navigate('Chat')}
-              name="chatbubble-ellipses-sharp"
-              size={30}
-              color={activeScreen === 'CHAT' ? activeColor : color}
-            /> */}
-          </Pressable>
+
+          {props.activeScreen === 'HOME' ? (
+            <View style={{flexDirection: 'row', gap: 20, marginRight: 10}}>
+              <Pressable onPress={() => handleNotification()}>
+                <MaterialIcons
+                  name="notifications-on"
+                  size={30}
+                  style={{color: 'black'}}
+                />
+              </Pressable>
+
+              <Pressable onPress={() => handleFilter()}>
+                <Image
+                  source={require('../../../assets/images/filter.png')}
+                  style={{height: 30, width: 30}}
+                />
+              </Pressable>
+            </View>
+          ) : (
+            <View style={{height: 30, width: 30, marginRight: 50}} />
+          )}
         </View>
       </View>
     </SafeAreaView>
@@ -84,33 +74,35 @@ const HeaderComponent = (props: any) => {
 };
 
 const styles = StyleSheet.create({
-  root: {
-    //flex: 1,
-  },
+  root: {},
   pageContainer: {
-    //  justifyContent: 'center',
-    //  alignItems: 'center',
-    //  flex: 1,
+    alignItems: 'center',
     marginTop: 20,
   },
   topNavigation: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     width: '100%',
-    padding: 10,
+    paddingHorizontal: 10,
+    alignItems: 'center',
+    paddingVertical: 4,
   },
   icon: {
-    width: 30,
-    height: 30,
+    marginLeft: 10,
+    marginRight: 32,
+    width: 38,
+    height: 39,
   },
   title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: 'grey',
+    fontSize: 26,
+    fontFamily: 'Sansation_Bold',
+    color: 'black',
   },
-  backPressIcon:{
-    color: '#BB2CBB'
-  }
+  backPressIcon: {
+    marginLeft: 10,
+    marginRight: 40,
+    color: '#AC25AC',
+  },
 });
 
 export default HeaderComponent;

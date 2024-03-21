@@ -1,18 +1,22 @@
 import React from 'react';
 import {Text, ImageBackground, View, StyleSheet} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
-const Card = (props:any) => {
-  const {name, image, bio} = props.user;
+const Card = (props: any) => {
+  const {name, profilePic, hobbies} = props.user;
   return (
     <View style={styles.card}>
       <ImageBackground
         source={{
-          uri: image,
+          uri: profilePic,
         }}
         style={styles.image}>
+        <LinearGradient
+          colors={['rgba(0,0,0,0)', 'rgba(0,0,0,0.8)']}
+          style={styles.gradient}></LinearGradient>
         <View style={styles.cardInner}>
           <Text style={styles.name}>{name}</Text>
-          <Text style={styles.bio}>{bio}</Text>
+          <Text style={styles.bio}>{hobbies}</Text>
         </View>
       </ImageBackground>
     </View>
@@ -25,7 +29,6 @@ const styles = StyleSheet.create({
     height: '100%',
     borderRadius: 10,
     backgroundColor: '#fefefe',
-
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -33,28 +36,35 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.36,
     shadowRadius: 6.68,
-
   },
   image: {
     width: '100%',
     height: '120%',
     borderRadius: 10,
     overflow: 'hidden',
-
     justifyContent: 'flex-end',
   },
+  gradient: {
+    ...StyleSheet.absoluteFillObject,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    top: '50%', // Adjust the position of the gradient
+    height: '50%',
+  },
   cardInner: {
-    padding: 10,
+    paddingHorizontal: 24,
+    paddingBottom: 20,
   },
   name: {
-    fontSize: 30,
+    fontSize: 26,
     color: 'white',
-    fontWeight: 'bold',
+    fontFamily: 'Sansation_Bold',
   },
   bio: {
     fontSize: 18,
     color: 'white',
     lineHeight: 25,
+    fontFamily: 'Sansation_Regular',
   },
 });
 

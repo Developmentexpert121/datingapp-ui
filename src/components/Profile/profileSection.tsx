@@ -1,96 +1,220 @@
-import React, {useState, useRef} from 'react';
-import {View, Text, Image, StyleSheet, TouchableOpacity, Pressable, SafeAreaView, FlatList} from 'react-native';
+import React, {useState, useRef, useEffect} from 'react';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Pressable,
+  SafeAreaView,
+  FlatList,
+} from 'react-native';
 import Icons from 'react-native-vector-icons/MaterialIcons';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import Svg, {Circle, Text as SvgText} from 'react-native-svg';
-import { useNavigation } from '@react-navigation/native';
-import { ListItem } from 'react-native-elements';
-import CommonBackbutton from "../commonBackbutton/backButton"
-import FooterComponent from '../Dashboard/footer/footer';
+import {useNavigation} from '@react-navigation/native';
+import {ListItem} from 'react-native-elements';
+import CommonBackbutton from '../commonBackbutton/backButton';
+import LinearGradient from 'react-native-linear-gradient';
+import {useAppDispatch, useAppSelector} from '../../store/store';
+import {updateProfileData} from '../../store/Auth/auth';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const getUserId = async () => {
+  try {
+    const userId: any = await AsyncStorage.getItem('userId');
+
+    if (userId !== null) {
+      return JSON.parse(userId);
+    } else {
+      return null;
+    }
+  } catch (error) {
+    return null;
+  }
+};
 
 const data = [
-  { title: 'Premium', description: 'Maximize your dating with all the benefits of premium with extra features included', price: '999INR' },
-  { title: 'Premium Plus', description: 'Maximize your dating with all the benefits of premium with extra features included', price: '1,999INR' },
+  {
+    title: 'Premium',
+    description:
+      'Maximize your dating with all the benefits of premium with extra features included',
+    price: '999INR',
+  },
+  {
+    title: 'Premium Plus',
+    description:
+      'Maximize your dating with all the benefits of premium with extra features included',
+    price: '1,999INR',
+  },
   // Add more data as needed
 ];
-const data2 = ['unlimited likes', 'See who likes you', 'Priority likes', 'unlimited Rewards'];
-const Box = ({ item, isActive }:any) => (
-  <View style={[styles.boxContainer, isActive && styles.activeBox, {backgroundColor: item.title==='Premium'?'#BB2CBB':'grey'}]}>
+const data2 = [
+  'Unlimited likes',
+  'See who likes you',
+  'Priority likes',
+  'Unlimited Rewards',
+];
+const Box = ({item, isActive}: any) => (
+  <LinearGradient
+    colors={[
+      item.title === 'Premium' ? '#AC25AC' : '#101010',
+      item.title === 'Premium' ? '#FF4FFF' : '#494949',
+    ]}
+    start={{x: 0, y: 0.5}}
+    end={{x: 1, y: 0.5}}
+    style={[styles.boxContainer]}>
     <Text style={styles.text}>{item.title}</Text>
     <Text style={styles.text2}>{item.description}</Text>
     <TouchableOpacity>
       <Text style={styles.upbtn}>Upgrade from {item.price}</Text>
     </TouchableOpacity>
-  </View>
+  </LinearGradient>
 );
 
-const TickListItem = ({ item }:any) => (
-  <ListItem>
-    <Icon name="checkmark-done" size={20} color="#BB2CBB" />
-    <ListItem.Content>
-      <ListItem.Title>{item}</ListItem.Title>
-    </ListItem.Content>
-  </ListItem>
+const TickListItem = ({item}: any) => (
+  <TouchableOpacity>
+    <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 20,
+        columnGap: 10,
+        paddingVertical: 5,
+      }}>
+      <Icon name="checkmark-done" size={24} color="#AC25AC" />
+      <View>
+        <Text
+          style={{
+            fontFamily: 'Sansation_Regular',
+            color: 'black',
+            fontSize: 16,
+          }}>
+          {item}
+        </Text>
+      </View>
+    </View>
+  </TouchableOpacity>
 );
 
 const ProfileSection = () => {
-  const navigation = useNavigation();
-  const profileImage = 'https://source.unsplash.com/random/?profile&3';
-  const profileCompletionPercentage = 71;
-  const userName = 'John Doe';
-  const userAddress = '123 Street, City';
-  const userLocation = 'New York, USA';
+  const profileData = useAppSelector(
+    (state: any) => state?.Auth?.data?.profileData,
+  );
 
-  const profileCompletion = 71; // Set the completion percentage
+  const dispatch: any = useAppDispatch();
+
+  const [profileCompletion, setProfileComplition] = useState(0);
+
+  useEffect(() => {
+    let filledFieldsCount = 0;
+    const fields = [
+      profileData?.phone || '',
+      profileData?.email || '',
+      String(profileData?.location?.longitude) || '',
+      String(profileData?.location?.latitude) || '',
+      profileData?.interests || '',
+      profileData?.language || '',
+      profileData?.gender || '',
+      profileData?.profilePic || '',
+      profileData?.work || '',
+      profileData?.education || '',
+      profileData?.allInterests || '',
+      profileData?.partnerType || '',
+    ];
+
+    fields?.forEach(field => {
+      if (field?.trim() !== '') {
+        filledFieldsCount++;
+      }
+    });
+
+    const totalFields = fields?.length;
+    const percentageValue = Math.round((filledFieldsCount / totalFields) * 100);
+    setProfileComplition(percentageValue);
+
+    dispatch(
+      updateProfileData({
+        field: 'profilePercentage',
+        value: percentageValue,
+        id: getUserId(),
+      }),
+    );
+  }, [
+    profileData?.phone,
+    profileData?.email,
+    profileData?.location?.longitude,
+    profileData?.location?.longitude,
+    profileData?.interests,
+    profileData?.language,
+    profileData?.gender,
+    profileData?.profilePic,
+    profileData?.work,
+    profileData?.education,
+    profileData?.allInterests,
+    profileData?.partnerType,
+  ]);
+
+  const navigation = useNavigation();
+
+  const profileImage = profileData?.profilePic?.split(',')[0];
 
   const calculateStrokeDasharray = (percentage: any) => {
-    const circumference = 440; // 2 * π * radius (140 * 2 * π)
+    const circumference = 465; // 2 * π * radius (140 * 2 * π)
     const completedLength = (percentage / 100) * circumference;
     return [completedLength, circumference];
   };
 
-
   const [activeIndex, setActiveIndex] = useState(0);
-  const flatListRef:any = useRef(null);
+  const flatListRef: any = useRef(null);
 
-  const renderBox = ({ item, index }:any) => (
+  const renderBox = ({item, index}: any) => (
     <Box item={item} isActive={index === activeIndex} />
   );
 
-  const handleDotPress = (index:any) => {
+  const handleDotPress = (index: any) => {
     setActiveIndex(index);
-    flatListRef.current.scrollToIndex({ animated: true, index });
+    flatListRef.current.scrollToIndex({animated: true, index});
   };
 
   return (
     <SafeAreaView>
       <CommonBackbutton title="Profile" />
-    <View style={styles.container}>
-      <TouchableOpacity onPress = {()=> navigation.navigate('Settings')}>
-        <Feather name="settings" size={24} color="#BB2CBB" style={styles.settingIcon} />
-      </TouchableOpacity>
-      <View style={styles.profileImageContainer}>
-        <Svg height="150" width="150" style={styles.progressCircle}>
-          <Circle
-            cx="75"
-            cy="75"
-            r="70"
-            stroke="#e0e0e0" // Set a background color for the circle
-            strokeWidth="5"
-            fill="transparent"
-          />
-          <Circle
-            cx="75"
-            cy="75"
-            r="70"
-            stroke="#BB2CBB"
-            strokeWidth="5"
-            fill="transparent"
-            strokeDasharray={calculateStrokeDasharray(profileCompletion)}
-          />
-          {/* <SvgText
+      <View style={styles.containerTop}>
+        <View style={styles.container}>
+          <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
+            <Feather
+              name="settings"
+              size={24}
+              color="#AC25AC"
+              style={styles.settingIcon}
+            />
+          </TouchableOpacity>
+          <View style={styles.profileImageContainer}>
+            <View>
+              <Svg height="154" width="154" style={styles.progressCircle}>
+                <Circle
+                  cx="76"
+                  cy="76"
+                  r="74"
+                  stroke="#D6D6D6" // Set a background color for the circle
+                  strokeWidth="4"
+                  fill="transparent"
+                />
+                <Circle
+                  cx="74"
+                  cy="76"
+                  r="74"
+                  stroke="#AC25AC"
+                  strokeWidth="4"
+                  fill="transparent"
+                  strokeDasharray={calculateStrokeDasharray(profileCompletion)}
+                  transform="rotate(-90, 75, 75)"
+                />
+                {/* <SvgText
             x="50%"
             y="50%"
             dy=".3em"
@@ -99,90 +223,134 @@ const ProfileSection = () => {
             fill="#3498db">
             {`${profileCompletion}%`}
           </SvgText> */}
-        </Svg>
-        <Image source={{uri: profileImage}} style={styles.profileImage} />
-        <View style={styles.completionContainer}>
-          <Text style={styles.completionText}>
-            {profileCompletionPercentage}% Complete
-          </Text>
-        </View>
-      </View>
-      {/* <View style={styles.detailsContainer}>
-        <Text style={styles.userName}>{userName}</Text>
-        <Text style={styles.userAddress}>{userAddress}</Text>
-        <View style={styles.locationContainer}>
-          <Text style={styles.userLocation}>{userLocation}</Text>
-          <Ionicons
-            name="location"
-            size={20}
-            color="#3498db"
-            style={styles.locationIcon}
-          />
-        </View>
-      </View> */}
-      <TouchableOpacity onPress={()=>navigation.navigate('UpdateProfile')}>
-        <Icons name="mode-edit" size={24} color="#BB2CBB" style={styles.editIcon} />
-      </TouchableOpacity>
-    </View>
-      <View style={{ flex: 0 }}>
-      <FlatList
-        ref={flatListRef}
-        horizontal
-        data={data}
-        renderItem={renderBox}
-        keyExtractor={(item, index) => index.toString()}
-        showsHorizontalScrollIndicator={false}
-        pagingEnabled
-        onScroll={(event) => {
-          const offsetX = event.nativeEvent.contentOffset.x;
-          const index = Math.floor(offsetX / 300); // Assuming each box has a width of 300
-          setActiveIndex(index);
-        }}
-      />
-      <View style={styles.dotsContainer}>
-        {data.map((_, index) => (
-          <TouchableOpacity key={index} onPress={() => handleDotPress(index)}>
-            <View style={[styles.dot, index === activeIndex && styles.activeDot]} />
+              </Svg>
+              <Image source={{uri: profileImage}} style={styles.profileImage} />
+              <View style={styles.completionContainer}>
+                <Text style={styles.completionText}>
+                  {profileCompletion}% Complete
+                </Text>
+              </View>
+            </View>
+          </View>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('UpdateProfile')}>
+            <Icons
+              name="mode-edit"
+              size={24}
+              color="#AC25AC"
+              style={styles.editIcon}
+            />
           </TouchableOpacity>
-        ))}
+        </View>
+        <View style={{alignItems: 'center'}}>
+          <Text
+            style={{
+              fontFamily: 'Sansation_Bold',
+              fontSize: 20,
+              color: 'black',
+              marginTop: 10,
+            }}>
+            {profileData.name}
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: 4,
+              columnGap: 2,
+            }}>
+            <Ionicons name="location" size={20} color="#AC25AC" />
+            <Text
+              style={{
+                fontFamily: 'Sansation_Regular',
+                fontSize: 18,
+              }}>
+              {profileData.city}, {profileData.country}
+            </Text>
+          </View>
+        </View>
       </View>
-    </View>
 
-    <View style={{ flex: 0, paddingBottom: 115, backgroundColor:'white' }}>
-      <FlatList
-        data={data2}
-        renderItem={({ item }) => <TickListItem item={item} />}
-        keyExtractor={(item, index) => index.toString()}
-      />
-    </View>
-    <FooterComponent />
+      <View style={{flex: 0}}>
+        <FlatList
+          ref={flatListRef}
+          horizontal
+          data={data}
+          renderItem={renderBox}
+          keyExtractor={(item, index) => index.toString()}
+          showsHorizontalScrollIndicator={false}
+          pagingEnabled
+          onScroll={event => {
+            const offsetX = event.nativeEvent.contentOffset.x;
+            const index = Math.floor(offsetX / 300); // Assuming each box has a width of 300
+            setActiveIndex(index);
+          }}
+        />
+        <View style={styles.dotsContainer}>
+          {data.map((_, index) => (
+            <TouchableOpacity key={index} onPress={() => handleDotPress(index)}>
+              <View
+                style={[styles.dot, index === activeIndex && styles.activeDot]}
+              />
+            </TouchableOpacity>
+          ))}
+        </View>
+      </View>
+
+      <View style={{flex: 0, paddingTop: 16}}>
+        <FlatList
+          data={data2}
+          renderItem={({item}) => <TickListItem item={item} />}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  containerTop: {
+    backgroundColor: '#FFFFFF',
+    marginBottom: 26,
+    paddingTop: 26,
+    paddingBottom: 20,
+    shadowColor: '#AC25AC',
+    shadowOffset: {
+      width: 0,
+      height: 9,
+    },
+    shadowOpacity: 0.48,
+    shadowRadius: 11.95,
+
+    elevation: 18,
+  },
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent:'space-between',
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ecf0f1',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
   },
   profileImageContainer: {
     position: 'relative',
+    alignItems: 'center',
   },
   completionContainer: {
     position: 'absolute',
     bottom: 0,
-    right: 0,
-    backgroundColor: '#BB2CBB',
-    padding: 4,
-    borderRadius: 12,
+    right: 18,
+    backgroundColor: '#AC25AC',
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderWidth: 2,
+    borderColor: '#FFFFFF',
+    borderRadius: 22,
+    shadowColor: '#000',
+    elevation: 6,
   },
   completionText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    color: '#FFFFFF',
+
+    fontFamily: 'Sansation_Regular',
   },
   detailsContainer: {
     flex: 1,
@@ -203,24 +371,26 @@ const styles = StyleSheet.create({
   },
   editIcon: {
     marginRight: 30,
-    backgroundColor:'#edb9ed',
-    borderRadius:20,
-    padding:8
+    backgroundColor: '#FFE1FF',
+    color: '#AC25AC',
+    borderRadius: 20,
+    padding: 8,
   },
   settingIcon: {
     marginLeft: 30,
-    backgroundColor:'#edb9ed',
-    borderRadius:20,
-    padding:8
+    borderRadius: 20,
+    backgroundColor: '#FFE1FF',
+    color: '#AC25AC',
+    padding: 8,
   },
   progressCircle: {
     position: 'absolute',
   },
   profileImage: {
     margin: 10,
-    width: 130,
-    height: 130,
-    borderRadius: 75,
+    width: 132,
+    height: 132,
+    borderRadius: 66,
   },
   profileText: {
     marginTop: 10,
@@ -233,7 +403,7 @@ const styles = StyleSheet.create({
   },
 
   locationIcon: {
-    marginLeft: 5,
+    marginRight: 5,
   },
 
   backPress: {
@@ -244,12 +414,12 @@ const styles = StyleSheet.create({
   },
   backPressIcon: {
     marginRight: 8,
-    color: '#BB2CBB',
+    color: '#AC25AC',
   },
   stepsText: {
     color: 'grey',
     fontSize: 20,
-    //backgroundColor: '#BB2CBB',
+    //backgroundColor: '#AC25AC',
     paddingHorizontal: 20,
     borderRadius: 15,
     marginLeft: 80,
@@ -257,40 +427,48 @@ const styles = StyleSheet.create({
   },
 
   boxContainer: {
-    borderRadius: 10,
-    padding: 20,
-    marginHorizontal: 15,
+    borderRadius: 6,
+    padding: 16,
+    alignItems: 'center',
+    paddingHorizontal: 28,
+    marginHorizontal: 30,
     marginBottom: 5,
+    width: 350,
     shadowColor: '#000',
-    width:380,
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 4,
   },
-  text:{
-    alignSelf:'center',
+  text: {
+    alignItems: 'center',
     color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 24,
+    fontFamily: 'Sansation_Bold',
   },
-  text2:{
-    alignSelf:'center',
+  text2: {
+    alignItems: 'center',
+    textAlign: 'center',
+    marginTop: 4,
     color: 'white',
     fontSize: 16,
-    //fontWeight: 'bold',
+    fontFamily: 'Sansation_Regular',
   },
-  upbtn:{
-    alignSelf:'center',
+  upbtn: {
+    alignSelf: 'center',
     color: 'black',
-    backgroundColor:'yellow',
-    fontSize: 16,
-    borderRadius:20,
-    paddingHorizontal:15,
-    paddingVertical:6,
+    backgroundColor: '#F99A21',
+    fontFamily: 'Sansation_Regular',
+    marginTop: 16,
+    marginBottom: 6,
+    fontSize: 14,
+    borderRadius: 30,
+    paddingHorizontal: 20,
+    paddingVertical: 4,
   },
 
   dotsContainer: {
@@ -307,10 +485,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   activeDot: {
-    backgroundColor: '#BB2CBB',
+    backgroundColor: '#AC25AC',
   },
   activeBox: {
-   // borderWidth: 2,
+    // borderWidth: 2,
     //borderColor: 'blue',
   },
 });

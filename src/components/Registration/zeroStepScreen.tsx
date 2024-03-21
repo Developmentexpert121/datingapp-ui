@@ -6,6 +6,7 @@ import {
   FlatList,
   Button,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import React, {useMemo, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -20,6 +21,7 @@ import Font from '../../constants/Fonts';
 import FontSize from '../../constants/FontSize';
 import Spacing from '../../constants/Spacing';
 import {CountryPicker} from 'react-native-country-codes-picker';
+import {useNavigation} from '@react-navigation/native';
 interface RegForm0 {
   name: string;
   email: string;
@@ -31,21 +33,13 @@ const defaultValues = {
   password: '',
 };
 
-const schema = yup.object().shape({
-  name: yup.string().required('Name is required'),
-  email: yup.string().email('Invalid email').required('Email is required'),
-  gender: yup.string().required('Please select your gender'),
-  password: yup
-    .string()
-    .min(6, 'Password must be at least 6 characters')
-    .required('Password is required'),
-});
 const ZeroStepScreen = ({
   name,
   phone,
   control,
   errors,
   email,
+  dateDisplay,
   password,
   gender,
   country,
@@ -64,16 +58,16 @@ const ZeroStepScreen = ({
   const [date, setDate] = useState(new Date(1598051730000));
   const [mode, setMode] = useState<any>('date');
   const [show, setShow] = useState<any>(false);
+  const navigation = useNavigation();
 
   const onChange = (event: any, selectedDate: any) => {
     const currentDate = selectedDate;
     setShow(false);
     setDate(currentDate);
-    const dateString = currentDate;
-    const date = new Date(dateString);
-    setDateStr(date);
-  };
 
+    setDateStr(currentDate);
+  };
+  console.log(dateStr);
   const showMode = (currentMode: any) => {
     setShow(true);
     setMode(currentMode);
@@ -86,22 +80,24 @@ const ZeroStepScreen = ({
   const showTimepicker = () => {
     showMode('time');
   };
-  console.log('dateee ===== ', date);
-  // const {
-  //   control,
-  //   handleSubmit,
-  //   watch,
-  //   reset,
-  //   formState: {errors},
-  // } = useForm<RegForm0>({
-  //   defaultValues,
-  //   resolver: yupResolver(schema),
-  // });
 
   return (
     <SafeAreaView>
-     
-      <Text style={styles.headerLabel}>Personal</Text>
+      <View style={styles.topView}>
+        <TouchableOpacity
+          style={{margin: 20}}
+          onPress={() => navigation.goBack()}>
+          <Image
+            source={require('../../assets/images/chevron-left.png')}
+            resizeMode="contain"
+            style={{width: 20, height: 20}}
+          />
+        </TouchableOpacity>
+
+        <Text style={styles.headerLabel}>Personal</Text>
+
+        <View style={styles.blankview}></View>
+      </View>
       <View style={styles.container}>
         <Text style={styles.label}>My name is</Text>
         {/* <TextInput style={styles.input} placeholder="Enter your name" /> */}
@@ -116,18 +112,39 @@ const ZeroStepScreen = ({
 
       <View style={styles.container}>
         <Text style={styles.label}>Date Of Birth </Text>
-        <TouchableOpacity onPress={showDatepicker} style={[styles.dateBtn]}>
-          <Text style={{color: 'grey', textAlign: 'center'}}>
-            {dateStr === null
-              ? 'Select DOB'
-              : dateStr.getDate() +
-                '-' +
-                (dateStr.getMonth() + 1) +
-                '-' +
-                dateStr.getFullYear()}
-          </Text>
-        </TouchableOpacity>
-        <Text style={styles.label2}>Your age will be in public</Text>
+        <Controller
+          name={dateDisplay}
+          control={control}
+          render={() => (
+            <TouchableOpacity
+              onPress={showDatepicker}
+              style={[
+                styles.dateBtn,
+                {
+                  borderWidth: errors?.[dateDisplay] ? 2 : 1,
+                  borderColor: errors?.[dateDisplay]
+                    ? 'red'
+                    : 'rgba(0, 0, 0, 0.2)',
+                },
+              ]}>
+              <Text
+                style={{
+                  color: 'grey',
+                  textAlign: 'center',
+                  fontFamily: 'Sansation_Regular',
+                }}>
+                {dateStr === null
+                  ? 'Select DOB'
+                  : dateStr.getDate() +
+                    '-' +
+                    (dateStr.getMonth() + 1) +
+                    '-' +
+                    dateStr.getFullYear()}
+              </Text>
+            </TouchableOpacity>
+          )}
+        />
+        <Text style={styles.label2}>Your age will be public</Text>
         {show && (
           <DateTimePicker
             testID="dateTimePicker"
@@ -147,6 +164,7 @@ const ZeroStepScreen = ({
           name={phone}
           control={control}
           errors={Boolean(errors?.phone)}
+          keyboardType="numeric"
         />
         <Text style={styles.label2}>Yor name will be public</Text>
       </View>
@@ -160,20 +178,29 @@ const ZeroStepScreen = ({
               control={control}
               defaultValue=""
               render={({field: {onChange, value}}) => (
-                <>
+                <View
+                  style={{
+                    marginTop: 4,
+                    marginHorizontal: 24,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}>
+                  <Text
+                    style={[
+                      styles.radioLabel,
+                      {color: errors?.[gender] ? 'red' : 'black'},
+                    ]}>
+                    {item.label}
+                  </Text>
                   <RadioButton
                     value={item.label}
                     status={value === item.label ? 'checked' : 'unchecked'}
                     onPress={() => onChange(item.label)}
+                    color={errors?.[gender] ? 'red' : '#AC25AC'}
+                    uncheckedColor={errors?.[gender] ? 'red' : '#AC25AC'}
                   />
-                  <Text
-                    style={[
-                      styles.radioLabel,
-                      {color: errors?.[gender] ? 'red' : 'grey'},
-                    ]}>
-                    {item.label}
-                  </Text>
-                </>
+                </View>
               )}
             />
           </View>
@@ -206,18 +233,22 @@ const ZeroStepScreen = ({
           control={control}
           errors={Boolean(errors?.email)}
         />
+        {errors.email && (
+          <Text style={{color: 'red', fontFamily: 'Sansation_Regular'}}>
+            {errors.email.message}
+          </Text>
+        )}
       </View>
       <View style={styles.container}>
         <Text style={styles.label}>Password</Text>
         <AppTextInput
           placeholder="Enter Your Password"
-          type="password"
+          keyboardType="password"
           name={password}
           control={control}
           errors={Boolean(errors?.password)}
         />
       </View>
-    
     </SafeAreaView>
   );
 };
@@ -242,48 +273,57 @@ const styles = StyleSheet.create({
   container: {
     width: '90%',
     //padding: 5,
-    borderRadius: 10,
+    borderRadius: 5,
     borderWidth: 1,
-    // borderColor: '#BB2CBB',
+    borderColor: '#AA22AA',
     marginTop: 20,
+    marginBottom: 10,
     backgroundColor: '#E1D1E1',
     marginHorizontal: 20,
     flex: 1,
     justifyContent: 'center', // Center items vertically
     alignItems: 'center',
+    paddingVertical: 12,
   },
   container1: {
     width: '90%',
-    padding: 5,
-    borderRadius: 10,
+
+    borderRadius: 5,
     borderWidth: 1,
-    // borderColor: '#BB2CBB',
+    borderColor: '#AA22AA',
     marginTop: 20,
+    marginBottom: 10,
     backgroundColor: '#E1D1E1',
     marginHorizontal: 20,
+    paddingVertical: 12,
   },
 
   headerLabel: {
-    fontSize: 20,
+    fontSize: 22,
+    fontFamily: 'Sansation_Bold',
     textAlign: 'center',
-    marginTop: 10,
+    marginTop: 20,
+    color: 'black',
   },
   label1: {
     fontSize: 20,
     //marginBottom: 0,
     textAlign: 'center',
+    fontFamily: 'Sansation_Bold',
+    color: 'black',
   },
 
   label: {
     fontSize: 20,
-   // marginBottom: 0,
-    // textAlign: 'center',
+    fontFamily: 'Sansation_Bold',
+    color: 'black',
   },
 
   label2: {
     fontSize: 16,
     textAlign: 'center',
-      marginBottom: 2,
+    marginBottom: 2,
+    fontFamily: 'Sansation_Regular',
   },
 
   input: {
@@ -294,29 +334,40 @@ const styles = StyleSheet.create({
   },
 
   buttonPressed: {
-    backgroundColor: '#BB2CBB',
+    backgroundColor: '#AC25AC',
   },
   radio: {
-    flexDirection: 'row',
-    marginLeft: 100,
-    alignItems: 'center',
+    flexGrow: 1,
+    alignContent: 'flex-start',
   },
   radioLabel: {
-    marginLeft: 10,
+    fontSize: 16,
+
+    fontFamily: 'Sansation_Regular',
   },
   radioContainer: {
-   flexDirection: 'column',
+    flexDirection: 'column',
     alignItems: 'flex-start',
     marginTop: 2,
   },
   dateBtn: {
-    fontFamily: Font['poppins-regular'],
-    fontSize: FontSize.small,
-    padding: Spacing * 1,
+    padding: 12,
     backgroundColor: Colors.onPrimary,
-    borderRadius: Spacing * 2,
     marginVertical: Spacing,
-    width: 300,
+    width: '80%',
+    borderRadius: 10,
+  },
+  blankview: {
+    width: 20,
+    height: 20,
+    borderWidth: 0,
+    margin: 20,
+  },
+  topView: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderWidth: 0,
   },
 });
 

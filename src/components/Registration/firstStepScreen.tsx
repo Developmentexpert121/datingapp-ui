@@ -1,67 +1,85 @@
-import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, {useState} from 'react';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 
 const FirstStepScreen = ({interests, control, errors}: any) => {
-  const options = [{ value: 'Women' }, { value: 'Men' }, { value: 'Everyone' }];
+  const options = [{value: 'Women'}, {value: 'Men'}, {value: 'Everyone'}];
   const [checked, setChecked] = useState('');
- console.log('errors22222222222222222222 ', errors);
+
   return (
     <SafeAreaView>
-    <View>
-      <Text style={styles.textLabel}>Who are you interested in seeing? </Text>
-      {options.map((item:any, index) => (
-        <View key={index} style={styles.containerBtn}>
-        <Controller
-          name={interests}
-          control={control}
-          defaultValue=""
-          render={({ field: { onChange, value } }) => (
-            <TouchableOpacity
-              style={[
-                value === item.value && styles.checkedBtn,
-                styles.button,
-                {borderColor: errors ? 'red' : '#BB2CBB'}
-              ]}
-              onPress={() => onChange(item.value)}
-            >
-              <Text style={styles.buttonText}>{item.value}</Text>
-            </TouchableOpacity>
-          )}
-        /></View>
-      ))}
-    </View>
+      <View
+        style={{
+          paddingHorizontal: 40,
+          justifyContent: 'center',
+          alignItems: 'center',
+          flex: 1,
+        }}>
+        <Text style={styles.textLabel}>Who are you interested in seeing? </Text>
+        {options.map((item: any, index) => (
+          <View key={index} style={styles.containerBtn}>
+            <Controller
+              name={interests}
+              control={control}
+              defaultValue=""
+              render={({field: {onChange, value}}) => (
+                <TouchableOpacity
+                  style={[
+                    value === item.value && styles.checkedBtn,
+                    styles.button,
+                    {borderColor: errors ? 'red' : '#747474'},
+                  ]}
+                  onPress={() => onChange(item.value)}>
+                  <Text
+                    style={[
+                      styles.buttonText,
+                      {color: value === item.value ? 'white' : 'black'},
+                    ]}>
+                    {item.value}
+                  </Text>
+                </TouchableOpacity>
+              )}
+            />
+          </View>
+        ))}
+      </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   textLabel: {
-    marginVertical: 20,
-    textAlign: 'center',
-    fontSize: 20,
+    color: 'black',
+    fontSize: 24,
+    fontFamily: 'Sansation_Bold',
+    marginBottom: 28,
   },
   containerBtn: {
-    flexDirection: 'row',
-    flex: 1,
-    justifyContent: 'center',
+    width: '90%',
     alignItems: 'center',
   },
   button: {
-    width: 250,
+    width: '100%',
     padding: 10,
-    borderRadius: 20,
+    borderRadius: 37,
     marginBottom: 20,
     borderWidth: 1,
-    borderColor: '#BB2CBB',
+    borderColor: '#747474',
   },
   checkedBtn: {
-    backgroundColor: '#BB2CBB',
+    backgroundColor: '#AC25AC',
   },
   buttonText: {
-    color: 'grey',
-    fontSize: 16,
+    color: 'black',
+    fontSize: 18,
     textAlign: 'center',
+    fontFamily: 'Sansation_Bold',
   },
 });
 
