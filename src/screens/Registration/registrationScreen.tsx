@@ -79,7 +79,6 @@ const defaultValues = {
   password: '',
   distance: '',
   location: '',
-
   profilePic: '',
   dob: '',
   dateDisplay: '',
@@ -180,6 +179,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     defaultValues,
     resolver: Schemas(steps),
   });
+  console.log("OnPress", handleSubmit)
 
   const getLocationAndRegister = (data: RegisterForm) => {
     Geolocation.getCurrentPosition(
@@ -192,7 +192,6 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
         dispatch(
           RegisterSignUp({
             ...data,
-
             location: {latitude, longitude},
             distance: `${distance}mi`,
             profilePic: profileImages?.join(','),
@@ -241,6 +240,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
       ],
     );
   };
+  console.log("showPermissionPopup",showPermissionPopup)
 
   const onSubmit: any = (data: RegisterForm) => {
     if (steps === 7) {
@@ -251,6 +251,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
       setSteps(prev => prev + 1);
     }
   };
+  console.log("button ...",onSubmit)
 
   return (
     <KeyboardAvoidingView
@@ -261,7 +262,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
         nestedScrollEnabled={true}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollViewContent}>
-        {steps > 0 && (
+        {/* {steps > 0 && (
           <Pressable style={styles.backPress}>
             <Ionicons
               onPress={() => setSteps(prev => prev - 1)}
@@ -272,7 +273,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
             <Text style={styles.stepsText}>{steps + '/8'}</Text>
             <View style={{width: 26}}></View>
           </Pressable>
-        )}
+        )} */}
         <View style={{flexGrow: 1}}>
           {steps === 0 ? (
             <ZeroStepScreen
@@ -349,6 +350,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
               handleSubmit(onSubmit)
               //}
             }
+            
             style={styles.button}>
             <Text style={styles.buttonText}>
               {steps === 0 ? 'Continue' : steps < 8 ? 'Next' : 'Done'}

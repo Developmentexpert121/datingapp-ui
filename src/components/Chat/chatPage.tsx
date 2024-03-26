@@ -23,6 +23,7 @@ import {useAppDispatch, useAppSelector} from '../../store/store';
 import {reciveMessages, sendAMessage} from '../../store/Auth/auth';
 import {ScrollView} from 'react-native-gesture-handler';
 import io from 'socket.io-client';
+import {SendIC} from '../../assets/svgs';
 
 const socket = io('https://datingapp-api.onrender.com');
 
@@ -34,7 +35,7 @@ type Props = {
 };
 
 const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
-  const scrollViewRef: any = useRef(null);
+  // const scrollViewRef: any = useRef(null);
 
   const navigation = useNavigation();
   const dispatch: any = useAppDispatch();
@@ -50,6 +51,43 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
   const [limit, setLimit] = useState(10); // Number of messages to fetch per request
   const [skip, setSkip] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const scrollViewRef = useRef<ScrollView>(null);
+
+  // const handleSendMessage = () => {
+  //   // Implement logic to send the message
+  //   // Example:
+  //   console.log('Sending message:', inputMessage);
+  //   setInputMessage(''); // Clear the input field after sending
+  // };
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setIsKeyboardVisible(true);
+      },
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setIsKeyboardVisible(false);
+      },
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
+  useEffect(() => {
+    // Scroll to the end of the ScrollView whenever new content is added
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollToEnd({animated: true});
+    }
+  }, [scrollViewRef /* Add any dependencies */]);
 
   useEffect(() => {
     socket.on('connection', () => {
@@ -139,167 +177,173 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
   );
 
   return (
-    <KeyboardAvoidingView behavior="padding" style={{flex: 1}}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={{flex: 1}}>
-          <View style={styles.container}>
-            <View
-              style={{
-                flexDirection: 'row',
-                paddingStart: 10,
-                alignItems: 'center',
-              }}>
-              <Pressable style={styles.backPress}>
-                <Ionicons
-                  onPress={() => navigation.navigate('ChatScreen')}
-                  style={styles.backPressIcon}
-                  name="chevron-back-outline"
-                  size={30}
-                />
-              </Pressable>
-              <Avatar source={{uri: user?.profilePic}} rounded size={60} />
-              <View style={{flexDirection: 'column'}}>
-                <Text style={styles.stepsText}>{user?.name}</Text>
-                <Text
-                  style={{
-                    fontSize: 16,
-                    fontFamily: 'Sansation_Regular',
-                    marginStart: 12,
-                    color: '#6D6D6D',
+    <>
+      <KeyboardAvoidingView
+        // behavior="padding"
+        style={{flex: 1}}
+        // behavior={Platform.OS === 'ios' ? 'padding' : null}
+        behavior="padding"
+        // keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={{flex: 1}}>
+            <View style={styles.container}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  paddingStart: 10,
+                  alignItems: 'center',
+                  borderWidth: 0,
+                }}>
+                <Pressable style={styles.backPress}>
+                  <Ionicons
+                    onPress={() => navigation.goBack()}
+                    style={styles.backPressIcon}
+                    name="chevron-back-outline"
+                    size={30}
+                  />
+                </Pressable>
+                <Avatar source={{uri: user?.profilePic}} rounded size={60} />
+                <View style={{flexDirection: 'column'}}>
+                  <Text style={styles.stepsText}>{user?.name}</Text>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontFamily: 'Sansation_Regular',
+                      marginStart: 12,
+                      color: '#6D6D6D',
+                    }}>
+                    online 30m ago
+                  </Text>
+                </View>
+              </View>
+              <View style={{flexDirection: 'row', marginEnd: 10}}>
+                <TouchableOpacity
+                  onPress={() => {
+                    setEnableCamera(false);
+                    goToCallScreen();
                   }}>
-                  online 30m ago
-                </Text>
+                  <View style={styles.editIcon}>
+                    <Icon1 name="phone" size={26} color="#AC25AC" />
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    setEnableCamera(true);
+                    goToCallScreen();
+                  }}>
+                  <View style={styles.editIcon}>
+                    <Icon2 name="video" size={24} color="#AC25AC" />
+                  </View>
+                </TouchableOpacity>
               </View>
             </View>
-            <View style={{flexDirection: 'row', marginEnd: 10}}>
+            <View style={{marginTop: 10, flex: 1, borderWidth: 0}}>
+              <ScrollView
+                ref={scrollViewRef}
+                onContentSizeChange={() => {
+                  if (scrollViewRef?.current) {
+                    scrollViewRef?.current?.scrollToEnd({animated: true});
+                  }
+                }}
+                onScroll={handleScroll}>
+                <View style={{flexGrow: 1}} />
+                {isLoading && <LoadingIndicator />}
+                {chatMessages.map((messageItem: any, index: any) => {
+                  return (
+                    <View
+                      key={index}
+                      style={{
+                        flexDirection: 'row',
+                        alignSelf:
+                          messageItem?.sender === profileData._id
+                            ? 'flex-end'
+                            : 'flex-start',
+                        margin: 10,
+                        marginBottom: 12,
+                        alignItems: 'baseline',
+                      }}>
+                      {messageItem?.sender !== profileData._id && (
+                        <View
+                          style={{
+                            alignSelf: 'flex-end',
+                            marginBottom: 'auto',
+                          }}>
+                          <Image
+                            source={{
+                              uri: user?.profilePic,
+                            }}
+                            style={styles.circularImage}
+                          />
+                        </View>
+                      )}
+
+                      <View
+                        style={{
+                          backgroundColor:
+                            messageItem?.sender === profileData._id
+                              ? '#AC25AC'
+                              : '#D9D9D9',
+                          padding: 10,
+                          marginHorizontal: 10,
+                          borderRadius: 8,
+                          maxWidth: 260,
+
+                          borderBottomRightRadius:
+                            messageItem?.sender === profileData._id ? 0 : 8,
+                          borderBottomLeftRadius:
+                            messageItem?.sender === profileData._id ? 8 : 0,
+                        }}>
+                        <Text
+                          style={{
+                            color:
+                              messageItem?.sender === profileData._id
+                                ? 'white'
+                                : 'black',
+                          }}>
+                          {messageItem?.message}
+                        </Text>
+                      </View>
+                      {messageItem?.sender === profileData._id && (
+                        <View
+                          style={{
+                            alignSelf: 'flex-end',
+                            marginBottom: 'auto',
+                          }}>
+                          <Image
+                            source={{uri: profileData?.profilePic}}
+                            style={styles.circularImage}
+                          />
+                        </View>
+                      )}
+                    </View>
+                  );
+                })}
+              </ScrollView>
+            </View>
+
+            <View
+              style={[
+                styles.inputView,
+                isKeyboardVisible && {marginBottom: 40},
+              ]}>
+              <TextInput
+                value={inputMessage}
+                onChangeText={setInputMessage}
+                placeholder="Type your message..."
+                style={styles.input}
+              />
               <TouchableOpacity
-                onPress={() => {
-                  setEnableCamera(false);
-                  goToCallScreen();
-                }}>
-                <View style={styles.editIcon}>
-                  <Icon1 name="phone" size={26} color="#AC25AC" />
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  setEnableCamera(true);
-                  goToCallScreen();
-                }}>
-                <View style={styles.editIcon}>
-                  <Icon2 name="video" size={24} color="#AC25AC" />
-                </View>
+                // onPress={handleSendMessage}
+                style={styles.sendButton}>
+                {/* <Text style={styles.sendButtonText}>Send</Text> */}
+                <SendIC onPress={handleSendMessage} />
               </TouchableOpacity>
             </View>
           </View>
-          <View style={{marginTop: 10, flex: 1}}>
-            <ScrollView
-              ref={scrollViewRef}
-              onContentSizeChange={() => {
-                if (scrollViewRef?.current) {
-                  scrollViewRef?.current?.scrollToEnd({animated: true});
-                }
-              }}
-              onScroll={handleScroll}>
-              <View style={{flexGrow: 1}} />
-              {isLoading && <LoadingIndicator />}
-              {chatMessages.map((messageItem: any, index: any) => {
-                return (
-                  <View
-                    key={index}
-                    style={{
-                      flexDirection: 'row',
-                      alignSelf:
-                        messageItem?.sender === profileData._id
-                          ? 'flex-end'
-                          : 'flex-start',
-                      margin: 10,
-                      marginBottom: 12,
-                      alignItems: 'baseline',
-                    }}>
-                    {messageItem?.sender !== profileData._id && (
-                      <View
-                        style={{
-                          alignSelf: 'flex-end',
-                          marginBottom: 'auto',
-                        }}>
-                        <Image
-                          source={{
-                            uri: user?.profilePic,
-                          }}
-                          style={styles.circularImage}
-                        />
-                      </View>
-                    )}
-
-                    <View
-                      style={{
-                        backgroundColor:
-                          messageItem?.sender === profileData._id
-                            ? '#AC25AC'
-                            : '#D9D9D9',
-                        padding: 10,
-                        marginHorizontal: 10,
-                        borderRadius: 8,
-                        maxWidth: 260,
-
-                        borderBottomRightRadius:
-                          messageItem?.sender === profileData._id ? 0 : 8,
-                        borderBottomLeftRadius:
-                          messageItem?.sender === profileData._id ? 8 : 0,
-                      }}>
-                      <Text
-                        style={{
-                          color:
-                            messageItem?.sender === profileData._id
-                              ? 'white'
-                              : 'black',
-                        }}>
-                        {messageItem?.message}
-                      </Text>
-                    </View>
-                    {messageItem?.sender === profileData._id && (
-                      <View
-                        style={{
-                          alignSelf: 'flex-end',
-                          marginBottom: 'auto',
-                        }}>
-                        <Image
-                          source={{uri: profileData?.profilePic}}
-                          style={styles.circularImage}
-                        />
-                      </View>
-                    )}
-                  </View>
-                );
-              })}
-            </ScrollView>
-          </View>
-
-          <View
-            style={{
-              padding: 20,
-              borderTopWidth: 1,
-              borderTopColor: '#ADADAD',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}>
-            <TextInput
-              value={inputMessage}
-              onChangeText={setInputMessage}
-              placeholder="Type your message..."
-              style={styles.input}
-            />
-            <TouchableOpacity
-              onPress={handleSendMessage}
-              style={styles.sendButton}>
-              <Text style={styles.sendButtonText}>Send</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    </>
   );
 };
 
@@ -311,9 +355,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   sendButton: {
-    padding: 10,
-    backgroundColor: '#AC25AC',
-    borderRadius: 8,
+    // padding: 10,
+    // backgroundColor: '#AC25AC',
+    // borderRadius: 8,
   },
   containerMain: {
     flex: 1,
@@ -340,6 +384,7 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 4,
     alignItems: 'center',
+    borderWidth: 0,
   },
   circularImage: {
     width: 20,
@@ -367,5 +412,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#FFA7FF',
+  },
+  inputView: {
+    padding: 20,
+    borderTopWidth: 1,
+    borderTopColor: '#ADADAD',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });

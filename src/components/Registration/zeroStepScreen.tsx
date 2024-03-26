@@ -2,9 +2,6 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
-  FlatList,
-  Button,
   TouchableOpacity,
   Image,
 } from 'react-native';
@@ -12,16 +9,13 @@ import React, {useMemo, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {RadioButton} from 'react-native-paper';
 import AppTextInput from '../AppTextInput/AppTextInput';
-import {useForm, Controller} from 'react-hook-form';
-import {yupResolver} from '@hookform/resolvers/yup';
+import {Controller} from 'react-hook-form';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import * as yup from 'yup';
 import Colors from '../../constants/Colors';
-import Font from '../../constants/Fonts';
-import FontSize from '../../constants/FontSize';
 import Spacing from '../../constants/Spacing';
-import {CountryPicker} from 'react-native-country-codes-picker';
 import {useNavigation} from '@react-navigation/native';
+import PhoneInput from '../AppTextInput/PhoneInput';
+
 interface RegForm0 {
   name: string;
   email: string;
@@ -157,7 +151,7 @@ const ZeroStepScreen = ({
       </View>
 
       <View style={styles.container}>
-        <Text style={styles.label}>Phone number</Text>
+        {/* <Text style={styles.label}>Phone number</Text> */}
         {/* <TextInput style={styles.input} placeholder="Enter your name" /> */}
         <AppTextInput
           placeholder="Enter Your Phone"
@@ -166,6 +160,19 @@ const ZeroStepScreen = ({
           errors={Boolean(errors?.phone)}
           keyboardType="numeric"
         />
+        <PhoneInput
+          name={phone}
+          control={control}
+          label="Phone Number"
+          // showError={touched.phoneNumber}
+          showError={Boolean(errors?.phone)}
+          errors={Boolean(errors?.phone)}
+          // value={values.phoneNumber}
+          // code={values.countryCode}
+          // onChangeText={handleChange("phoneNumber")}
+          // onCountryCode={handleChange("countryCode")}
+        />
+
         <Text style={styles.label2}>Yor name will be public</Text>
       </View>
 

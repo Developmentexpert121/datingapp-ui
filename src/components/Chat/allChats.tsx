@@ -93,7 +93,6 @@ const UsersDrawer = ({isOpen, onClose}: any) => {
 const ChatSection = () => {
   const navigation: any = useNavigation();
   const dispatch: any = useAppDispatch();
-
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
@@ -102,6 +101,8 @@ const ChatSection = () => {
   );
 
   const [receiverData, setReceiverData] = useState<any>([]);
+
+  console.log('--------------Array', receiverData);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -115,19 +116,39 @@ const ChatSection = () => {
       }
     };
 
-    const intervalId = setInterval(fetchData, 5000); // Poll every 5 seconds
+    // const intervalId = setInterval(fetchData, 5000); // Poll every 5 seconds
     fetchData(); // Fetch data immediately on component mount
-    return () => clearInterval(intervalId);
+    // return () => clearInterval(intervalId);
   }, []);
-
-  const [search, setSearch] = useState<any>('');
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
+  const [search, setSearch] = useState<any>('');
+  const [username, setUserName] = useState<any>([]);
+  const [username2, setUserName2] = useState<any>([]);
+  // console.log(username);
+
+  // setUserName2((data)=>[...data, username])
+  const receiverIds = receiverData.map(receiver => receiver.receiverId);
+
+  const receiverMainInfo2 = allUsers.filter(user =>
+    receiverIds.includes(user._id),
+  );
+  console.log('ggggg----------', receiverMainInfo2);
+
+  console.log(username2);
+  const filteredReceiverData = receiverMainInfo2.filter(
+    (item: any, recieverMainInfo: any, user: any, receiverData: any,receiverMainInfo2:any) =>
+    item?.name.toLowerCase().includes(search.toLowerCase()),
+  );
+  console.log('filter---------', filteredReceiverData);
+
   const updateSearch = (text: string) => {
     setSearch(text);
+    filteredReceiverData
   };
 
+  ///?`,
   const closeDrawer = () => {
     setIsDrawerOpen(false);
   };
@@ -192,7 +213,8 @@ const ChatSection = () => {
             const recieverMainInfo = allUsers.filter((user: any) =>
               item?.receiverId?.includes(user?._id),
             );
-
+            console.log(recieverMainInfo);
+            // setUserName(recieverMainInfo[0]?.name);
             return (
               <ListItem
                 containerStyle={styles.listItemContainer}
