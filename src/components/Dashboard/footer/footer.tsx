@@ -9,30 +9,28 @@ import {
   Text,
 } from 'react-native';
 
-import Fontisto from 'react-native-vector-icons/Fontisto';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Feather from 'react-native-vector-icons/Feather';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import FontAwesome2 from 'react-native-vector-icons/FontAwesome';
 import {useAppDispatch, useAppSelector} from '../../../store/store';
 import {footerStatus} from '../../../store/Activity/activity';
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import {getReceivers,} from '../../../store/Auth/auth';
-import {ChatIC, ChatpressIC, FindIC, FindpressIc, FireIC, FirepressIC, LoveIC, LovepressIC, ProfileIC, ProfilepressIC} from '../../../assets/svgs';
+import {getReceivers} from '../../../store/Auth/auth';
+import {
+  ChatIC,
+  ChatpressIC,
+  FindIC,
+  FindpressIc,
+  FireIC,
+  FirepressIC,
+  LoveIC,
+  LovepressIC,
+  ProfileIC,
+  ProfilepressIC, } from '../../../assets/svgs';
 interface Receiver {
   senderMessages: any[]; // Assuming senderMessages is an array of any type
   // Define other properties if they exist in your receiver data
 }
 const FooterComponent = () => {
-  //const [activeScreen, setActiveScreen] = useState('HOME');
-
-  // const [receiverData, setReceiverData] = useState<any>([]);
   const [receiverData, setReceiverData] = useState<Receiver[]>([]);
-  const [totalSenderMessages, setTotalSenderMessages] = useState(0);
+  const [totalSenderMessages, setTotalSenderMessages] = useState(undefined);
 
   const dispatch: any = useAppDispatch();
   const activeScreen = useAppSelector(
@@ -42,7 +40,6 @@ const FooterComponent = () => {
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-
 
   const navigation = useNavigation();
   const color = '#b5b5b5';
@@ -67,9 +64,9 @@ const FooterComponent = () => {
     };
 
     const calculateTotalSenderMessages = () => {
-      let total :any =null
+      let total: any = 
       receiverData.forEach(receiver => {
-        total += receiver.senderMessages.length;
+        total += receiver.senderMessages?.length;
       });
       setTotalSenderMessages(total);
     };
@@ -121,7 +118,7 @@ const FooterComponent = () => {
                 size={34}
                 color={activeScreen === 'EXPLORED' ? activeColor : color}
               /> */}
-              
+
               {activeScreen === 'EXPLORED' ? <FindpressIc /> : <FindIC />}
             </View>
           </Pressable>
@@ -136,7 +133,7 @@ const FooterComponent = () => {
                 size={34}
                 color={activeScreen === 'LIKED' ? activeColor : color}
               /> */}
-              
+
               {activeScreen === 'LIKED' ? <LovepressIC /> : <LoveIC />}
             </View>
           </Pressable>
@@ -152,7 +149,7 @@ const FooterComponent = () => {
                 size={34}
                 color={activeScreen === 'CHAT' ? activeColor : color}
               /> */}
-              
+
               {activeScreen === 'CHAT' ? <ChatpressIC /> : <ChatIC />}
             </View>
           </Pressable>
@@ -167,7 +164,7 @@ const FooterComponent = () => {
                 size={34}
                 color={activeScreen === 'PROFILE' ? activeColor : color}
               /> */}
-              
+
               {activeScreen === 'PROFILE' ? <ProfilepressIC /> : <ProfileIC />}
             </View>
           </Pressable>

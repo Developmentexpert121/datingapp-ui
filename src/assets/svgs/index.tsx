@@ -7,7 +7,9 @@ import LovepressIC from './Lovepress.svg';
 import ChatpressIC from './Chatpress.svg';
 import ChatIC from './Chat.svg';
 import ProfileIC from './Profile.svg';
-import ProfilepressIC from 'src/asstes/svgs/Profilepress.svg';
+import ProfilepressIC from './Profilepress.svg';
+import SendIC from './Send.svg';
+import Down1IC from './down1.svg';
 export {
   FireIC,
   FirepressIC,
@@ -18,5 +20,7 @@ export {
   ChatpressIC,
   ChatIC,
   ProfileIC,
-  ProfilepressIC
+  ProfilepressIC,
+  SendIC,
+  Down1IC,
 };

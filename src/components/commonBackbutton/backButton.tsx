@@ -10,10 +10,10 @@ const BackButton = ({title, iconName, setIsDrawerOpen}: any) => {
   const dispatch: any = useAppDispatch();
   const handleBack = () => {
     if (title === 'Edit Profile' || title === 'Settings') {
-      navigation.navigate('Profile');
+      navigation.goBack();
       dispatch(footerStatus({footerStatus: 'PROFILE'}));
     } else {
-      navigation.navigate('Home');
+      navigation.goBack();
       dispatch(footerStatus({footerStatus: 'HOME'}));
     }
   };
