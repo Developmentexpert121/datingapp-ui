@@ -12,7 +12,7 @@ import Colors from '../../constants/Colors';
 import Font from '../../constants/Fonts';
 import FontSize from '../../constants/FontSize';
 import Spacing from '../../constants/Spacing';
-import {Controller, FieldErrors, Control, FieldValues} from 'react-hook-form';
+import {Controller, } from 'react-hook-form';
 
 const AppTextInput = (Props: any) => {
   const {
