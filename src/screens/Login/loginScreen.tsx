@@ -26,7 +26,7 @@ import {useAppDispatch, useAppSelector} from '../../store/store';
 import {LoginSignIn} from '../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MainButton from '../../components/ButtonComponent/MainButton';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 interface LoginForm {
@@ -48,7 +48,6 @@ const schema = yup.object().shape({
 });
 const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const dispatch: any = useAppDispatch();
-  
   const navigation = useNavigation();
   const {
     control,
@@ -127,14 +126,7 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
                 style={{width: 119, height: 122, alignSelf: 'center'}}
               />
             </View>
-
-            <View
-              style={{
-                width: 20,
-                height: 20,
-                borderWidth: 0,
-                margin: 20,
-              }}></View>
+            <View style={styles.blankview}></View>
           </View>
           <Image
             source={require('../../assets/images/Group.png')}
@@ -294,6 +286,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 10,
     marginBottom: 100,
+  },
+  blankview: {
+    width: 20,
+    height: 20,
+    borderWidth: 0,
+    margin: 20,
   },
 });
 
