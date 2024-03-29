@@ -10,3 +10,18 @@ export function findFlagByDialCode(dialCode: string) {
     // If the country is found, return its flag; otherwise, return null or any default value
     return country ? country.flag : null;
   }
+  export const findScrollEnd = ({
+    layoutMeasurement,
+    contentOffset,
+    contentSize,
+  }: {
+    layoutMeasurement: any;
+    contentOffset: any;
+    contentSize: any;
+  }) => {
+    const paddingToBottom = 20;
+    return (
+      layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom
+    );
+  };

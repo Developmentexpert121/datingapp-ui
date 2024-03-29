@@ -185,6 +185,7 @@ const styles = StyleSheet.create({
     // right: 0,
     // bottom: 0,
     height: 80,
+    // borderWidth: 1,
   },
   pageContainer: {
     //  justifyContent: 'center',
@@ -219,7 +220,7 @@ const styles = StyleSheet.create({
   iconView: {
     height: '100%',
     width: 'auto',
-    // borderWidth: 5,
+    borderWidth: 0,
     justifyContent: 'center',
   },
 });

@@ -1,20 +1,13 @@
 import {
-  NativeSyntheticEvent,
   StyleSheet,
-  Text,
-  TextInput,
-  TextInputFocusEventData,
-  TextInputProps,
-  View,
+  TextInput
 } from 'react-native';
 import React, {useState} from 'react';
 import Colors from '../../constants/Colors';
-import Font from '../../constants/Fonts';
-import FontSize from '../../constants/FontSize';
 import Spacing from '../../constants/Spacing';
-import {Controller, } from 'react-hook-form';
+import {Controller} from 'react-hook-form';
 
-const AppTextInput = (Props: any) => {
+const LoginTextInput = (Props: any) => {
   const {
     name,
     control,
@@ -61,19 +54,19 @@ const AppTextInput = (Props: any) => {
   );
 };
 
-export default AppTextInput;
+export default LoginTextInput;
 
 const styles = StyleSheet.create({
   textInput1: {
-    height:45,
+    height: 45,
     fontFamily: 'Sansation_Regular',
     fontSize: 16,
     padding: Spacing,
     backgroundColor: Colors.onPrimary,
     borderRadius: 10,
     marginVertical: 10,
-    borderWidth:3,
-    textAlign:"center",
+    borderWidth: 3,
+    // textAlign: 'center',
   },
 
   errorBorder: {

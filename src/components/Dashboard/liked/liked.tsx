@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Pressable,
   Dimensions,
+  SafeAreaView,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FooterComponent from '../footer/footer';
@@ -43,7 +44,7 @@ const LikedScreen = () => {
   );
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <CommonBackbutton title="Liked You" />
       {likedUsers.length === 0 ? (
         <View
@@ -73,7 +74,7 @@ const LikedScreen = () => {
       )}
 
       <FooterComponent />
-    </View>
+    </SafeAreaView>
   );
 };
 

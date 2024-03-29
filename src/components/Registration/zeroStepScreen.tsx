@@ -4,8 +4,9 @@ import {
   View,
   TouchableOpacity,
   Image,
+  Button,
 } from 'react-native';
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {RadioButton} from 'react-native-paper';
 import AppTextInput from '../AppTextInput/AppTextInput';
@@ -15,6 +16,10 @@ import Colors from '../../constants/Colors';
 import Spacing from '../../constants/Spacing';
 import {useNavigation} from '@react-navigation/native';
 import PhoneInput from '../AppTextInput/PhoneInput';
+import BackButton from '../commonBackbutton/backButton';
+import {ChevronLeftIC} from '../../assets/svgs';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import CustomDatePicker from '../AppTextInput/CustomDatePicker';
 
 interface RegForm0 {
   name: string;
@@ -78,7 +83,7 @@ const ZeroStepScreen = ({
   return (
     <SafeAreaView>
       <View style={styles.topView}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{margin: 20}}
           onPress={() => navigation.goBack()}>
           <Image
@@ -86,7 +91,11 @@ const ZeroStepScreen = ({
             resizeMode="contain"
             style={{width: 20, height: 20}}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+        {/* <View style={{borderWidth: 2}}> */}
+        {/* <BackButton /> */}
+        <ChevronLeftIC onPress={() => navigation.goBack()} />
+        {/* </View> */}
 
         <Text style={styles.headerLabel}>Personal</Text>
 
@@ -105,8 +114,8 @@ const ZeroStepScreen = ({
       </View>
 
       <View style={styles.container}>
-        <Text style={styles.label}>Date Of Birth </Text>
-        <Controller
+        {/* <Text style={styles.label}>Date Of Birth </Text> */}
+        {/* <Controller
           name={dateDisplay}
           control={control}
           render={() => (
@@ -137,29 +146,40 @@ const ZeroStepScreen = ({
               </Text>
             </TouchableOpacity>
           )}
-        />
-        <Text style={styles.label2}>Your age will be public</Text>
-        {show && (
+        /> */}
+        {/* {show && (
           <DateTimePicker
+            style={{alignSelf: 'center'}}
             testID="dateTimePicker"
             value={date}
             mode={mode}
             is24Hour={true}
             onChange={onChange}
           />
-        )}
+        )} */}
+        {/*  */}
+        <CustomDatePicker
+          // disabled={user?.profileKyc !== "unverified"}
+          // editable={!(user?.profileKyc !== "unverified")}
+          // onChangeText={handleChange('dateOfBirth')}
+          // value={values.dateOfBirth}
+          // containerStyle={{marginBottom: 20}}
+          label="Date Of Birth"
+          placeholder="Date of birth"
+        />
+        <Text style={styles.label2}>Your age will be public</Text>
       </View>
 
       <View style={styles.container}>
         {/* <Text style={styles.label}>Phone number</Text> */}
         {/* <TextInput style={styles.input} placeholder="Enter your name" /> */}
-        <AppTextInput
+        {/* <AppTextInput
           placeholder="Enter Your Phone"
           name={phone}
           control={control}
           errors={Boolean(errors?.phone)}
           keyboardType="numeric"
-        />
+        /> */}
         <PhoneInput
           name={phone}
           control={control}
@@ -200,13 +220,16 @@ const ZeroStepScreen = ({
                     ]}>
                     {item.label}
                   </Text>
-                  <RadioButton
-                    value={item.label}
-                    status={value === item.label ? 'checked' : 'unchecked'}
-                    onPress={() => onChange(item.label)}
-                    color={errors?.[gender] ? 'red' : '#AC25AC'}
-                    uncheckedColor={errors?.[gender] ? 'red' : '#AC25AC'}
-                  />
+                  <View
+                    style={styles.cricleView}>
+                    <RadioButton
+                      value={item.label}
+                      status={value === item.label ? 'checked' : 'unchecked'}
+                      onPress={() => onChange(item.label)}
+                      color={errors?.[gender] ? 'red' : '#AC25AC'}
+                      uncheckedColor={errors?.[gender] ? 'red' : '#AC25AC'}
+                    />
+                  </View>
                 </View>
               )}
             />
@@ -309,7 +332,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontFamily: 'Sansation_Bold',
     textAlign: 'center',
-    marginTop: 20,
+    // marginTop: 20,
     color: 'black',
   },
   label1: {
@@ -329,7 +352,7 @@ const styles = StyleSheet.create({
   label2: {
     fontSize: 16,
     textAlign: 'center',
-    marginBottom: 2,
+    // marginBottom: 2,
     fontFamily: 'Sansation_Regular',
   },
 
@@ -368,14 +391,23 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderWidth: 0,
-    margin: 20,
+    // margin: 20,
   },
   topView: {
-    width: '100%',
+    width: '90%',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignSelf: 'center',
     borderWidth: 0,
-  },
+  },cricleView:{
+    borderWidth: 1,
+    // height: 30,
+    // width: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius:20,
+    borderColor:"#AC25AC"
+  }
 });
 
 export default ZeroStepScreen;

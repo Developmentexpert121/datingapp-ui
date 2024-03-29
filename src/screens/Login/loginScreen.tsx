@@ -13,10 +13,6 @@ import {
 import React, {useEffect, useState} from 'react';
 import * as yup from 'yup';
 import Spacing from '../../constants/Spacing';
-import FontSize from '../../constants/FontSize';
-import Colors from '../../constants/Colors';
-import Font from '../../constants/Fonts';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../types';
 import AppTextInput from '../../components/AppTextInput/AppTextInput';
@@ -27,6 +23,7 @@ import {LoginSignIn} from '../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MainButton from '../../components/ButtonComponent/MainButton';
 import {useNavigation} from '@react-navigation/native';
+import LoginTextInput from '../../components/AppTextInput/LoginTextInput';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 interface LoginForm {
@@ -157,7 +154,7 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
               justifyContent: 'center',
               alignSelf: 'center',
             }}>
-            <AppTextInput
+            <LoginTextInput
               textstyle={{width: '"100%"'}}
               placeholder="Enter Your Email"
               name="email"
@@ -169,7 +166,7 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
                 {errors.email.message}
               </Text>
             )}
-            <AppTextInput
+            <LoginTextInput
               textstyle={{width: '"100%"'}}
               placeholder="Enter Your Password"
               name="password"

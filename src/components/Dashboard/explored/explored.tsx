@@ -7,6 +7,7 @@ import {
   FlatList,
   StyleSheet,
   Dimensions,
+  SafeAreaView,
 } from 'react-native';
 
 import FooterComponent from '../footer/footer';
@@ -74,7 +75,7 @@ const ExploredScreen = () => {
   );
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <CommonBackbutton title="Explore" />
       <View
         style={{
@@ -89,7 +90,7 @@ const ExploredScreen = () => {
         />
       </View>
       <FooterComponent />
-    </View>
+    </SafeAreaView>
   );
 };
 
