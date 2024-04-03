@@ -17,7 +17,7 @@ const SixthStepScreen = ({hobbies, control, errors}: any) => {
         render={({field: {onChange, onBlur, value}}) => (
           <View style={[styles.boxContainer, errors && styles.errorBorder]}>
             <TextInput
-              style={[styles.textArea]}
+              style={[styles.textArea, { height: 80 }]}
               multiline
               numberOfLines={4}
               placeholder="This is your bio..."

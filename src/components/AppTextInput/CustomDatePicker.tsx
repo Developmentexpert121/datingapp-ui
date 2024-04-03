@@ -38,6 +38,7 @@ interface Iprops {
   editable?: boolean;
   returnKeyType?: 'done' | 'go' | 'next' | 'search' | 'send';
   disabled?: any;
+  errors?: boolean;
 }
 
 const CustomDatePicker = ({
@@ -51,6 +52,7 @@ const CustomDatePicker = ({
   showError,
   onChangeText,
   disabled,
+  errors,
 }: Iprops) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -73,10 +75,18 @@ const CustomDatePicker = ({
   useEffect(() => {
     setDate(value ?? '');
   }, [value]);
+  const hasError = errors;
   return (
     <View style={[styles.container, containerStyle]}>
       <Label text={label} style={[styles.label]} />
-      <View style={[styles.inputContainer, InputContainerStyle]}>
+      <View
+        style={[
+          styles.inputContainer,
+          InputContainerStyle,
+          hasError
+            ? styles.errorBorder
+            : {borderWidth: 1, borderColor: 'rgba(0, 0, 0, 0.2)'},
+        ]}>
         <Pressable
           disabled={disabled}
           style={styles.input}
@@ -152,6 +162,11 @@ const styles = StyleSheet.create({
     width: '80%',
     borderRadius: 10,
     alignSelf: 'center',
+    borderWidth: 1,
   },
   error: {marginTop: 5, color: 'red'},
+  errorBorder: {
+    borderWidth: 2,
+    borderColor: 'red',
+  },
 });

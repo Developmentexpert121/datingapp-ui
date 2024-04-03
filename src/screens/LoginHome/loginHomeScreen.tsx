@@ -38,68 +38,78 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     <SafeAreaView
       style={{
         backgroundColor: '#FFC7FF',
-        flex: 0,
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         //paddingHorizontal: 20,
         width: '100%',
         height: '100%',
       }}>
-      {/* <View style={styles.container}>
+      <View
+        style={{
+          flex: 3 / 5,
+          borderWidth: 0,
+          width: '100%',
+          height: '100%',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        {/* <View style={styles.circle}>
+          <Image
+            source={require('../../assets/images/logIcon.png')}
+            style={{width: 119, height: 122}}
+          />
+        </View>
         <Image
-          source={images[currentImageIndex]}
-          style={
-            currentImageIndex === images.length - 1
-              ? styles.image2
-              : styles.image1
-          }
-          resizeMode="cover"
-        />
-        {currentImageIndex === images.length - 1 && (
-          <View> */}
-      <View style={styles.circle}>
+          source={require('../../assets/images/Group4.png')}
+          style={{width: '100%', height: '34%', marginTop: 20}}
+        /> */}
         <Image
-          source={require('../../assets/images/logIcon.png')}
-          style={{width: 119, height: 122}}
+          source={require('../../assets/images/login_Image.png')}
+          resizeMode="contain"
+          style={{width: '100%', height: '100%'}}
         />
       </View>
-      <Image
-        source={require('../../assets/images/Group4.png')}
-        style={{width: '100%', height: '34%', marginTop: 20}}
-      />
-      <Text style={styles.label}>What's your email?</Text>
-      <Text style={styles.subText}>
-        Don't lose access to your account,{'\n'}verify your email.
-      </Text>
-
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigate('Register')}>
-        <Text style={styles.buttonText}>Create Account</Text>
-      </TouchableOpacity>
-
-      <View style={styles.loginContainer}>
-        <Text style={styles.loginText}>Already a member?</Text>
-        <TouchableOpacity onPress={() => navigate('Login')}>
-          <Text style={styles.touchableText}> Log In</Text>
-        </TouchableOpacity>
-      </View>
-      {signInInfo && (
-        <Text
-          style={{
-            fontFamily: 'Sansation_Regular',
-            color: 'red',
-            fontSize: 14,
-            textAlign: 'center',
-          }}>
-          {signInInfo}
+      <View
+        style={{
+          flex: 2 / 5,
+          // borderWidth: 1,
+          width: '100%',
+          height: '100%',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <Text style={styles.label}>What's your email?</Text>
+        <Text style={styles.subText}>
+          Don't lose access to your account,{'\n'}verify your email.
         </Text>
-      )}
 
-      <Text style={styles.termsText}>Terms of use and privacy</Text>
-      {/* </View>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigate('Register')}>
+          <Text style={styles.buttonText}>Create Account</Text>
+        </TouchableOpacity>
+
+        <View style={styles.loginContainer}>
+          <Text style={styles.loginText}>Already a member?</Text>
+          <TouchableOpacity onPress={() => navigate('Login')}>
+            <Text style={styles.touchableText}> Log In</Text>
+          </TouchableOpacity>
+        </View>
+        {signInInfo && (
+          <Text
+            style={{
+              fontFamily: 'Sansation_Regular',
+              color: 'red',
+              fontSize: 14,
+              textAlign: 'center',
+            }}>
+            {signInInfo}
+          </Text>
         )}
-      </View> */}
+
+        <Text style={styles.termsText}>Terms of use and privacy</Text>
+      </View>
     </SafeAreaView>
   );
 };
@@ -160,16 +170,19 @@ const styles = StyleSheet.create({
     fontFamily: 'Sansation_Regular',
   },
   termsText: {
-    marginTop: 36,
+    // marginTop: 36,
     color: 'gray',
     textAlign: 'center',
     fontFamily: 'Sansation_Regular',
+    bottom: 20,
+    position: 'absolute',
   },
   loginContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 10,
+    borderWidth: 0,
   },
   loginText: {
     color: 'black',

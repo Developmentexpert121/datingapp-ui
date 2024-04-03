@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Image,
   Button,
+  Platform,
 } from 'react-native';
 import React, {useEffect, useMemo, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -20,6 +21,7 @@ import BackButton from '../commonBackbutton/backButton';
 import {ChevronLeftIC} from '../../assets/svgs';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import CustomDatePicker from '../AppTextInput/CustomDatePicker';
+import PasswodTextInput from '../AppTextInput/PasswodTextInput';
 
 interface RegForm0 {
   name: string;
@@ -38,7 +40,7 @@ const ZeroStepScreen = ({
   control,
   errors,
   email,
-  dateDisplay,
+  dob,
   password,
   gender,
   country,
@@ -81,7 +83,7 @@ const ZeroStepScreen = ({
   };
 
   return (
-    <SafeAreaView>
+    <View>
       <View style={styles.topView}>
         {/* <TouchableOpacity
           style={{margin: 20}}
@@ -110,6 +112,9 @@ const ZeroStepScreen = ({
           control={control}
           errors={Boolean(errors?.name)}
         />
+        {errors.name && (
+          <Text style={styles.errorText}>{errors.name.message}</Text>
+        )}
         <Text style={styles.label2}>This is how it will appear in dating</Text>
       </View>
 
@@ -158,7 +163,7 @@ const ZeroStepScreen = ({
           />
         )} */}
         {/*  */}
-        <CustomDatePicker
+        {/* <CustomDatePicker
           // disabled={user?.profileKyc !== "unverified"}
           // editable={!(user?.profileKyc !== "unverified")}
           // onChangeText={handleChange('dateOfBirth')}
@@ -166,10 +171,30 @@ const ZeroStepScreen = ({
           // containerStyle={{marginBottom: 20}}
           label="Date Of Birth"
           placeholder="Date of birth"
+        /> */}
+        <Controller
+          control={control}
+          name={dob} // You can specify the name for the field
+          rules={{required: true}} // Add any validation rules here
+          defaultValue="" // Set the default value
+          render={({field: {onChange, onBlur, value}}) => (
+            <CustomDatePicker
+              label="Date Of Birth"
+              placeholder="Date of birth"
+              value={value}
+              onChangeText={onChange}
+              showError={Boolean(errors?.phone)}
+              errors={Boolean(errors?.dob)}
+              // onBlur={field.onBlur}
+              // You can pass any additional props required by CustomDatePicker
+            />
+          )}
         />
+        {errors.dob && (
+          <Text style={styles.errorText}>{errors.dob.message}</Text>
+        )}
         <Text style={styles.label2}>Your age will be public</Text>
       </View>
-
       <View style={styles.container}>
         {/* <Text style={styles.label}>Phone number</Text> */}
         {/* <TextInput style={styles.input} placeholder="Enter your name" /> */}
@@ -192,8 +217,11 @@ const ZeroStepScreen = ({
           // onChangeText={handleChange("phoneNumber")}
           // onCountryCode={handleChange("countryCode")}
         />
+        {errors.phone && (
+          <Text style={styles.errorText}>{errors.phone.message}</Text>
+        )}
 
-        <Text style={styles.label2}>Yor name will be public</Text>
+        <Text style={styles.label2}>Yor phone will be public</Text>
       </View>
 
       <View style={[styles.container1]}>
@@ -221,7 +249,10 @@ const ZeroStepScreen = ({
                     {item.label}
                   </Text>
                   <View
-                    style={styles.cricleView}>
+                    style={[
+                      styles.cricleView,
+                      Platform.OS === 'ios' && styles.iosBorder,
+                    ]}>
                     <RadioButton
                       value={item.label}
                       status={value === item.label ? 'checked' : 'unchecked'}
@@ -235,6 +266,9 @@ const ZeroStepScreen = ({
             />
           </View>
         ))}
+        {errors.gender && (
+          <Text style={styles.errorText}>{errors.gender.message}</Text>
+        )}
       </View>
 
       <View style={styles.container}>
@@ -247,12 +281,18 @@ const ZeroStepScreen = ({
           control={control}
           errors={Boolean(errors?.country)}
         />
+        {errors.country && (
+          <Text style={styles.errorText}>{errors.country.message}</Text>
+        )}
         <AppTextInput
           placeholder="Enter Your City"
           name={city}
           control={control}
           errors={Boolean(errors?.city)}
         />
+        {errors.city && (
+          <Text style={styles.errorText}>{errors.city.message}</Text>
+        )}
       </View>
 
       <View style={styles.container}>
@@ -264,22 +304,24 @@ const ZeroStepScreen = ({
           errors={Boolean(errors?.email)}
         />
         {errors.email && (
-          <Text style={{color: 'red', fontFamily: 'Sansation_Regular'}}>
-            {errors.email.message}
-          </Text>
+          <Text style={styles.errorText}>{errors.email.message}</Text>
         )}
       </View>
       <View style={styles.container}>
         <Text style={styles.label}>Password</Text>
-        <AppTextInput
+        <PasswodTextInput
           placeholder="Enter Your Password"
           keyboardType="password"
           name={password}
           control={control}
           errors={Boolean(errors?.password)}
+          secureTextEntry
         />
+        {errors.password && (
+          <Text style={styles.errorText}>{errors.password.message}</Text>
+        )}
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -287,11 +329,9 @@ const styles = StyleSheet.create({
   scrollViewContent: {
     flexGrow: 1,
   },
-
   flatList: {
     width: '100%',
   },
-
   maindiv: {
     flex: 1,
     justifyContent: 'center',
@@ -299,7 +339,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: '#F5F5F5', // Set a background color for the entire screen
   },
-
   container: {
     width: '90%',
     //padding: 5,
@@ -317,7 +356,6 @@ const styles = StyleSheet.create({
   },
   container1: {
     width: '90%',
-
     borderRadius: 5,
     borderWidth: 1,
     borderColor: '#AA22AA',
@@ -327,7 +365,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     paddingVertical: 12,
   },
-
   headerLabel: {
     fontSize: 22,
     fontFamily: 'Sansation_Bold',
@@ -342,27 +379,23 @@ const styles = StyleSheet.create({
     fontFamily: 'Sansation_Bold',
     color: 'black',
   },
-
   label: {
     fontSize: 20,
     fontFamily: 'Sansation_Bold',
     color: 'black',
   },
-
   label2: {
     fontSize: 16,
     textAlign: 'center',
     // marginBottom: 2,
     fontFamily: 'Sansation_Regular',
   },
-
   input: {
     //height: 40,
     color: 'gray',
     textAlign: 'center',
     //borderRadius: 5,
   },
-
   buttonPressed: {
     backgroundColor: '#AC25AC',
   },
@@ -372,7 +405,6 @@ const styles = StyleSheet.create({
   },
   radioLabel: {
     fontSize: 16,
-
     fontFamily: 'Sansation_Regular',
   },
   radioContainer: {
@@ -391,7 +423,6 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderWidth: 0,
-    // margin: 20,
   },
   topView: {
     width: '90%',
@@ -399,15 +430,22 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignSelf: 'center',
     borderWidth: 0,
-  },cricleView:{
-    borderWidth: 1,
-    // height: 30,
-    // width: 30,
+    marginTop: 10,
+  },
+  cricleView: {
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius:20,
-    borderColor:"#AC25AC"
-  }
+  },
+  errorText: {
+    color: 'red',
+    fontFamily: 'Sansation_Regular',
+    textAlign: 'center',
+  },
+  iosBorder: {
+    borderWidth: 1,
+    borderRadius: 20,
+    borderColor: '#AC25AC',
+  },
 });
 
 export default ZeroStepScreen;

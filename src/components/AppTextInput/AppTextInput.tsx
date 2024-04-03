@@ -12,7 +12,7 @@ import Colors from '../../constants/Colors';
 import Font from '../../constants/Fonts';
 import FontSize from '../../constants/FontSize';
 import Spacing from '../../constants/Spacing';
-import {Controller, } from 'react-hook-form';
+import {Controller} from 'react-hook-form';
 
 const AppTextInput = (Props: any) => {
   const {
@@ -65,15 +65,15 @@ export default AppTextInput;
 
 const styles = StyleSheet.create({
   textInput1: {
-    height:45,
+    height: 45,
     fontFamily: 'Sansation_Regular',
     fontSize: 16,
     padding: Spacing,
     backgroundColor: Colors.onPrimary,
     borderRadius: 10,
     marginVertical: 10,
-    borderWidth:3,
-    textAlign:"center",
+    borderWidth: 3,
+    textAlign: 'center',
   },
 
   errorBorder: {

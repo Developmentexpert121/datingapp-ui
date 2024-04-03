@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  ImageBackground,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import * as yup from 'yup';
@@ -24,6 +25,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import MainButton from '../../components/ButtonComponent/MainButton';
 import {useNavigation} from '@react-navigation/native';
 import LoginTextInput from '../../components/AppTextInput/LoginTextInput';
+import ImageContainer from '../../components/container/ImageContainer';
+import {ChevronLeftIC} from '../../assets/svgs';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 interface LoginForm {
@@ -79,36 +82,37 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   }, []);
 
   return (
+    // <ImageContainer
+    // isScroll
+    // // title="Sign In"
+    // // subTitle="Sign In to continue"
+    // bgImage={require("../../assets/images/login_Image.png")}
+    // >
     <KeyboardAvoidingView
       behavior="padding"
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
-      // keyboardVerticalOffset={Platform.OS === 'ios' ? 'padding' : undefined}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 10 : 0}
       style={styles.container}>
       <ScrollView
         style={{flex: 1, borderWidth: 0}}
         nestedScrollEnabled={true}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollViewContent}
-        // style={{flexGrow: 1}}
         keyboardShouldPersistTaps="always">
-        {/* <View style={styles.container1}> */}
         <View
           style={{
             flex: 9 / 10,
             alignItems: 'center',
-            // borderWidth: 1,
-            // width: '100%',
-            // height: '60%',
           }}>
-          <View
+          <ImageBackground
+            source={require('../../assets/images/login_Image.png')}
+            resizeMode="contain"
             style={{
               width: '100%',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              borderWidth: 0,
+              height: '100%',
+              marginTop: 20,
             }}>
             <TouchableOpacity
-              style={{margin: 20}}
+              style={{marginLeft: 20, marginTop: 50}}
               onPress={() => navigation.goBack()}>
               <Image
                 source={require('../../assets/images/chevron-left.png')}
@@ -116,33 +120,13 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
                 style={{width: 20, height: 20}}
               />
             </TouchableOpacity>
-            <View style={styles.circle}>
-              <Image
-                source={require('../../assets/images/logIcon.png')}
-                resizeMode="contain"
-                style={{width: 119, height: 122, alignSelf: 'center'}}
-              />
-            </View>
-            <View style={styles.blankview}></View>
-          </View>
-          <Image
-            source={require('../../assets/images/Group.png')}
-            resizeMode="contain"
-            style={{
-              width: '100%',
-              height: '70%',
-              bottom: 0,
-              position: 'absolute',
-            }}
-          />
+          </ImageBackground>
         </View>
+
         <View
           style={{
             flex: 1 / 10,
             borderWidth: 0,
-            // width: '100%',
-            // height: '40%',
-            // alignItems: 'center',
           }}>
           <Text style={styles.label}>What's your email?</Text>
           <Text style={styles.subText}>
@@ -186,8 +170,8 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
           <Text style={styles.termsText}>Terms of use and privacy</Text>
         </View>
       </ScrollView>
-      {/* </View> */}
     </KeyboardAvoidingView>
+    // </ImageContainer>
   );
 };
 
@@ -195,14 +179,13 @@ const styles = StyleSheet.create({
   container1: {
     flex: 1,
     backgroundColor: '#FFC7FF',
-    borderWidth: 2,
+    borderWidth: 0,
   },
   container: {
     flex: 1,
     justifyContent: 'center',
-    // alignItems: 'center',
-    // paddingVertical: 20,
     backgroundColor: '#FFC7FF',
+    borderWidth: 0,
   },
   scrollViewContent: {
     flexGrow: 1,
@@ -218,17 +201,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     // borderWidth:1
   },
-  image1: {
-    width: '100%',
-    height: '100%',
-  },
-  image2: {
-    width: '100%',
-    height: '50%',
-  },
   label: {
     fontSize: 22,
-    marginTop: 16,
+    marginTop: 20,
     textAlign: 'center',
     fontFamily: 'Sansation_Bold',
     color: 'black',
@@ -241,25 +216,6 @@ const styles = StyleSheet.create({
     color: 'black',
     marginBottom: 8,
   },
-  subText2: {
-    textAlign: 'center',
-    marginBottom: 20,
-    color: 'gray',
-  },
-  button: {
-    backgroundColor: '#AC25AC',
-    padding: 10,
-    borderRadius: 20,
-    marginVertical: 12,
-    width: '60%',
-    alignSelf: 'center',
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    textAlign: 'center',
-    fontFamily: 'Sansation_Regular',
-  },
   loginText: {
     color: 'blue',
     marginBottom: 10,
@@ -269,20 +225,6 @@ const styles = StyleSheet.create({
     color: 'gray',
     textAlign: 'center',
     fontFamily: 'Sansation_Regular',
-  },
-  touchableText: {
-    color: 'blue',
-    textDecorationLine: 'underline',
-  },
-  viewMargin: {
-    marginVertical: Spacing * 3,
-  },
-  signupContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 100,
   },
   blankview: {
     width: 20,

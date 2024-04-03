@@ -11,6 +11,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Alert,
+  StatusBar,
 } from 'react-native';
 import * as yup from 'yup';
 import React, {useState} from 'react';
@@ -97,13 +98,12 @@ const schema = yup.object().shape({
   gender: yup.string().trim().required('Gender is required'),
   password: yup
     .string()
-    .min(6, 'Password must be at least 6 characters')
-    .required('Password is required'),
-  // confirmPassword: yup
-  //   .string()
-  //   .oneOf([yup.ref('password')], 'Passwords must match')
-  //   .required('Confirm Password is required'),
-  dateDisplay: yup.string().trim().required('DOB is required'),
+    .required('Please Enter your password')
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})/,
+      'Must Contain 6 Characters, One Uppercase, One Lowercase, One Number and one special case Character',
+    ),
+  dob: yup.string().trim().required('DOB is required'),
 });
 
 const schema1 = yup.object().shape({
@@ -179,11 +179,11 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     defaultValues,
     resolver: Schemas(steps),
   });
-  console.log("OnPress", handleSubmit)
-
+  console.log('OnPress', handleSubmit);
+  console.log('errors ', errors);
   const getLocationAndRegister = (data: RegisterForm) => {
     Geolocation.getCurrentPosition(
-      position => {
+      (position: any) => {
         const {latitude, longitude} = position.coords;
         setLocation({latitude, longitude});
         setPermissionStatus('granted');
@@ -201,14 +201,13 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
         reset();
         navigate('Login');
       },
-      err => {
+      (err: any) => {
         setError(err.message);
         setPermissionStatus('denied');
       },
       {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
     );
   };
-
   const requestLocationPermission = (data: RegisterForm) => {
     Geolocation.requestAuthorization();
     getLocationAndRegister(data);
@@ -240,134 +239,143 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
       ],
     );
   };
-  console.log("showPermissionPopup",showPermissionPopup)
+  console.log('showPermissionPopup', showPermissionPopup);
 
   const onSubmit: any = (data: RegisterForm) => {
+    console.log('dataaaaa:::', data);
     if (steps === 7) {
       setSteps(prev => prev + 1);
     } else if (steps === 8) {
       showPermissionPopup(data);
     } else if (steps < 8) {
       setSteps(prev => prev + 1);
+    } else if (steps === 0) {
+      data.phone = callingCode + data.phone;
     }
   };
-  console.log("button ...",onSubmit)
+  console.log('button ...', onSubmit);
 
   return (
-    <KeyboardAvoidingView
-      behavior="padding"
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
-      style={styles.container}>
-      <ScrollView
-        nestedScrollEnabled={true}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollViewContent}>
-        {/* {steps > 0 && (
-          <Pressable style={styles.backPress}>
-            <Ionicons
-              onPress={() => setSteps(prev => prev - 1)}
-              style={styles.backPressIcon}
-              name="chevron-back-outline"
-              size={26}
-            />
-            <Text style={styles.stepsText}>{steps + '/8'}</Text>
-            <View style={{width: 26}}></View>
-          </Pressable>
-        )} */}
-        <View style={{flexGrow: 1}}>
-          {steps === 0 ? (
-            <ZeroStepScreen
-              phone="phone"
-              name="name"
-              email="email"
-              password="password"
-              country="country"
-              city="city"
-              dateDisplay="dateDisplay"
-              gender="gender"
-              dateStr={dateStr}
-              setDateStr={setDateStr}
-              control={control}
-              errors={errors}
-            />
-          ) : steps === 1 ? (
-            <FirstStepScreen
-              interests="interests"
-              control={control}
-              errors={Boolean(errors?.interests)}
-            />
-          ) : steps === 2 ? (
-            <SecondStepScreen
-              partnerType="partnerType"
-              control={control}
-              errors={Boolean(errors?.partnerType)}
-            />
-          ) : steps === 3 ? (
-            <ThirdStepScreen distance={distance} setDistance={setDistance} />
-          ) : steps === 4 ? (
-            <ForthStepScreen
-              habits1="habits1"
-              control={control}
-              errors={errors}
-            />
-          ) : steps === 5 ? (
-            <FifthStepScreen
-              habits2="habits2"
-              control={control}
-              errors={errors}
-            />
-          ) : steps === 6 ? (
-            <SixthStepScreen
-              hobbies="hobbies"
-              control={control}
-              errors={Boolean(errors?.hobbies)}
-            />
-          ) : steps === 7 ? (
-            <SafeAreaView style={styles.container}>
-              <View style={styles.contentContainer}>
-                <Text style={styles.headerText}>Add photos</Text>
-                <Text style={styles.paragraphText}>
-                  Pick Some photos for your profile
-                </Text>
-                <SeventhStepScreen
-                  profileImages={profileImages}
-                  setProfileImages={setProfileImages}
-                  title="Registeration"
-                />
-              </View>
-            </SafeAreaView>
-          ) : steps === 8 ? (
-            <EighthStepScreen />
-          ) : (
-            ''
-          )}
-        </View>
-        <View style={styles.containerBtn}>
-          <TouchableOpacity
-            onPress={
-              //() => {
-              //forwardStep(steps);
-              handleSubmit(onSubmit)
-              //}
-            }
-            
-            style={styles.button}>
-            <Text style={styles.buttonText}>
-              {steps === 0 ? 'Continue' : steps < 8 ? 'Next' : 'Done'}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+    <SafeAreaView style={styles.container}>
+      <StatusBar translucent backgroundColor="transparent" />
+      <KeyboardAvoidingView
+        behavior="padding"
+        keyboardVerticalOffset={
+          Platform.OS === 'ios' ? StatusBar.currentHeight || 0 : 0
+        }
+        style={{flex: 1}}>
+        <ScrollView
+          nestedScrollEnabled={true}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollViewContent}>
+          {steps > 0 ? (
+            <Pressable style={styles.backPress}>
+              <Ionicons
+                onPress={() => setSteps(prev => prev - 1)}
+                style={styles.backPressIcon}
+                name="chevron-back-outline"
+                size={26}
+              />
+              <Text style={styles.stepsText}>{steps + '/8'}</Text>
+              <View style={{width: 26}}></View>
+            </Pressable>
+          ) : null}
+          <View style={{flexGrow: 1}}>
+            {steps === 0 ? (
+              <ZeroStepScreen
+                phone="phone"
+                name="name"
+                email="email"
+                password="password"
+                country="country"
+                city="city"
+                dob="dob"
+                gender="gender"
+                dateStr={dateStr}
+                setDateStr={setDateStr}
+                control={control}
+                errors={errors}
+              />
+            ) : steps === 1 ? (
+              <FirstStepScreen
+                interests="interests"
+                control={control}
+                errors={Boolean(errors?.interests)}
+              />
+            ) : steps === 2 ? (
+              <SecondStepScreen
+                partnerType="partnerType"
+                control={control}
+                errors={Boolean(errors?.partnerType)}
+              />
+            ) : steps === 3 ? (
+              <ThirdStepScreen distance={distance} setDistance={setDistance} />
+            ) : steps === 4 ? (
+              <ForthStepScreen
+                habits1="habits1"
+                control={control}
+                errors={errors}
+              />
+            ) : steps === 5 ? (
+              <FifthStepScreen
+                habits2="habits2"
+                control={control}
+                errors={errors}
+              />
+            ) : steps === 6 ? (
+              <SixthStepScreen
+                hobbies="hobbies"
+                control={control}
+                errors={Boolean(errors?.hobbies)}
+              />
+            ) : steps === 7 ? (
+              <SafeAreaView style={styles.container}>
+                <View style={styles.contentContainer}>
+                  <Text style={styles.headerText}>Add photos</Text>
+                  <Text style={styles.paragraphText}>
+                    Pick Some photos for your profile
+                  </Text>
+                  <SeventhStepScreen
+                    profileImages={profileImages}
+                    setProfileImages={setProfileImages}
+                    title="Registeration"
+                  />
+                </View>
+              </SafeAreaView>
+            ) : steps === 8 ? (
+              <EighthStepScreen />
+            ) : (
+              ''
+            )}
+          </View>
+          <View style={styles.containerBtn}>
+            <TouchableOpacity
+              onPress={
+                //() => {
+                //forwardStep(steps);
+                handleSubmit(onSubmit)
+                //}
+              }
+              style={styles.button}>
+              <Text style={styles.buttonText}>
+                {steps === 0 ? 'Continue' : steps < 8 ? 'Next' : 'Done'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
   },
   scrollViewContent: {
     flexGrow: 1,
+    paddingTop: StatusBar.currentHeight || 0,
   },
   contentContainer: {
     paddingHorizontal: 20,
@@ -395,7 +403,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: '#F5F5F5',
   },
-  
+
   containerBtn: {
     alignItems: 'center',
     marginVertical: 10,
@@ -431,8 +439,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#AC25AC',
     paddingVertical: 2,
     paddingHorizontal: 16,
-    borderRadius: 28,
+    borderRadius: 10,
     fontFamily: 'Sansation_Regular',
+    overflow: 'hidden',
   },
 });
 

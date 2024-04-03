@@ -76,10 +76,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   text: {
-    fontSize: moderateScale(18),
-    color: "#0C1D3F",
-    flex: 1,
-    textAlign: "center",
-    fontFamily: "Inter-Medium",
+    color: 'black',
+    fontSize: 24,
+    fontFamily: 'Sansation_Bold',
   },
 });

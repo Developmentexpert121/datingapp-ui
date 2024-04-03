@@ -13,6 +13,8 @@ import {
 import FooterComponent from '../footer/footer';
 import CommonBackbutton from '../../commonBackbutton/backButton';
 import LinearGradient from 'react-native-linear-gradient';
+import CustomHeader from '../../Headers/CustomHeader';
+import Container from '../../container';
 const ExploredScreen = () => {
   const likedData = [
     {
@@ -76,13 +78,16 @@ const ExploredScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* <Container color="#fff"> */}
       <CommonBackbutton title="Explore" />
+      {/* <CustomHeader label={"Explore"}/> */}
       <View
         style={{
           flex: 1,
           marginHorizontal: 26,
         }}>
         <FlatList
+          showsVerticalScrollIndicator={false}
           data={likedData}
           renderItem={renderGridItem}
           keyExtractor={item => item.id}
@@ -90,6 +95,7 @@ const ExploredScreen = () => {
         />
       </View>
       <FooterComponent />
+      {/* </Container> */}
     </SafeAreaView>
   );
 };

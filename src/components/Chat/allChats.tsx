@@ -9,6 +9,7 @@ import {
   Modal,
   Pressable,
   TouchableOpacity,
+  SafeAreaView,
 } from 'react-native';
 import {ListItem, Avatar, SearchBar} from 'react-native-elements';
 import CommonBackbutton from '../commonBackbutton/backButton';
@@ -189,7 +190,7 @@ const ChatSection = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <CommonBackbutton
         title="Chat"
         iconName="person-add-sharp"
@@ -266,7 +267,7 @@ const ChatSection = () => {
       </View>
       <UsersDrawer isOpen={isDrawerOpen} onClose={closeDrawer} />
       <FooterComponent />
-    </View>
+    </SafeAreaView>
   );
 };
 

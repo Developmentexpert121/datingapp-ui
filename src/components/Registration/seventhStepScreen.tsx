@@ -68,9 +68,9 @@ const SeventhStepScreen = ({
         granted['android.permission.WRITE_EXTERNAL_STORAGE'] === 'granted' &&
         granted['android.permission.READ_EXTERNAL_STORAGE'] === 'granted'
       ) {
-        console.log('Permissions granted');
+        console.log('Permissions granted ......');
       } else {
-        console.log('Permissions denied');
+        console.log('Permissions denied.....0');
       }
     } catch (err) {
       console.warn(err);
