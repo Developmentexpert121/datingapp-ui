@@ -1,19 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  SafeAreaView,
-  TouchableOpacity,
-  Pressable,
-  Text,
-  Image,
-} from 'react-native';
+import {View, StyleSheet, Text, Image, ScrollView} from 'react-native';
 import Card from '../homeCard/homeCard';
-import users from '../../../assets/data/users';
 import AnimatedStack from '../../AnimatedStack/animatedStack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Entypo from 'react-native-vector-icons/Entypo';
 import HeaderComponent from '../header/header';
 import FooterComponent from '../footer/footer';
 import {useAppDispatch, useAppSelector} from '../../../store/store';
@@ -21,7 +10,6 @@ import {getAllUsers} from '../../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FilterSection from '../FilterSection/filterSection';
 import NotificationScreen from '../Notification/notification';
-import {ServerContainer} from '@react-navigation/native';
 
 const getUserId = async () => {
   try {
@@ -116,16 +104,18 @@ const HomeScreen = () => {
         activeScreen={activeScreen}
       />
       {activeScreen === 'HOME' ? (
-        <View style={styles.pageContainer}>
-          <AnimatedStack
-            data={data}
-            renderItem={({item}: any) => <Card user={item} />}
-            currentIndex={currentIndex}
-            setData={setData}
-            setCurrentIndex={setCurrentIndex}
-            profileData={profileData}
-          />
-
+        <>
+        <ScrollView style={styles.pageContainer2} showsVerticalScrollIndicator={false}>
+          <View style={{marginTop: 30, }}>
+            <AnimatedStack
+              data={data}
+              renderItem={({item}: any) => <Card user={item} />}
+              currentIndex={currentIndex}
+              setData={setData}
+              setCurrentIndex={setCurrentIndex}
+              profileData={profileData}
+            />
+          </View>
           <View style={styles.locText}>
             <Ionicons name="location-sharp" size={20} color="#AC25AC" />
             <Text style={{fontFamily: 'Sansation_Regular', color: 'black'}}>
@@ -143,6 +133,8 @@ const HomeScreen = () => {
               }
             </Text>
           </View>
+
+
           <View style={styles.container}>
             {allUsers[currentIndex]?.habits1?.map((item: any, index: any) => {
               let imagePath;
@@ -179,9 +171,11 @@ const HomeScreen = () => {
               );
             })}
           </View>
-
-          <FooterComponent />
-        </View>
+          </ScrollView>
+          <View style={{}}>
+            <FooterComponent />
+          </View>
+          </>
       ) : activeScreen === 'Filters' ? (
         <FilterSection
           showIn={showIn}
@@ -207,6 +201,13 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     backgroundColor: '#ededed',
+    // borderWidth: 2,
+  },
+  pageContainer2: {
+    flex: 1,
+    width: '100%',
+    backgroundColor: '#ededed',
+    // borderWidth: 2,
   },
   icons: {
     flexDirection: 'row',
@@ -214,32 +215,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '70%',
     marginVertical: 12,
+    // borderWidth:2
   },
-  button: {
-    width: 60,
-    height: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
-
-    borderRadius: 60,
-    borderWidth: 2,
-    borderColor: '#AC25AC',
-  },
-
   locText: {
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 20,
     marginBottom: 16,
     columnGap: 2,
+    // borderWidth: 2,
   },
   container: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     columnGap: 10, // Adjust as needed
     marginHorizontal: 20,
-    marginBottom: 20,
+    // marginBottom: 20,
+    marginTop: 70,
+    // borderWidth: 1,
+    // bottom:0,
+    // position:"absolute"
   },
   item: {
     borderWidth: 1.4,

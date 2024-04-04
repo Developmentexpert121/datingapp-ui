@@ -2,16 +2,12 @@ import {
   StyleSheet,
   Text,
   View,
-  Pressable,
-  FlatList,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {Slider} from 'react-native-elements';
-import {RadioButton} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useNavigation} from '@react-navigation/native';
-import CommonBackbutton from '../../commonBackbutton/backButton';
 import RangeSlider from 'rn-range-slider';
 import {Controller, useForm} from 'react-hook-form';
 import {useAppDispatch, useAppSelector} from '../../../store/store';
@@ -24,7 +20,6 @@ import Label from '../../settingsSection/Label';
 import Notch from '../../settingsSection/Notch';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import HeaderComponent from '../header/header';
 
 const getUserId = async () => {
   try {
@@ -86,22 +81,18 @@ const FilterSection = ({
     defaultValues,
     resolver: yupResolver<any>(schema),
   });
-
   const options = [
     {label: 'Male', value: 'first'},
     {label: 'Female', value: 'second'},
     {label: 'Non-Binary', value: 'third'},
     {label: 'Transgender', value: 'fourth'},
   ];
-
   const options2 = [
     {value: 'Male', label: 'Men'},
     {value: 'Female', label: 'Women'},
     {value: 'everyone', label: 'Everyone'},
   ];
-
   const [checked, setChecked] = React.useState(profileData?.gender);
-
   const handleSliderChange = (value: any) => {
     setDistance(value);
     dispatch(
@@ -112,10 +103,8 @@ const FilterSection = ({
       }),
     );
   };
-
   const [minValue, setMinValue] = useState(18);
   const [maxValue, setMaxValue] = useState(56);
-
   const renderThumb = useCallback(() => <Thumb />, []);
   const renderRail = useCallback(() => <Rail />, []);
   const renderRailSelected = useCallback(() => <RailSelected />, []);
@@ -145,7 +134,7 @@ const FilterSection = ({
   };
 
   return (
-    <View style={{marginTop: 10}}>
+    <ScrollView style={{marginTop: 10,}}>
       <View style={styles.boxContainer}>
         <View style={styles.distance}>
           <Text style={styles.textName}>Distance Preference</Text>
@@ -293,7 +282,7 @@ const FilterSection = ({
       <View style={styles.boxContainer}>
         <Text style={styles.textName}>Gender</Text>
         <View style={styles.line} />
-        <View>
+        {/* <View> */}
           {options.map(item => (
             <View key={item.value} style={styles.radio}>
               <Controller
@@ -344,34 +333,15 @@ const FilterSection = ({
               />
             </View>
           ))}
-        </View>
+        {/* </View> */}
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
 export default FilterSection;
 
 const styles = StyleSheet.create({
-  backPress: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-    marginTop: 15,
-  },
-  backPressIcon: {
-    marginRight: 8,
-    color: '#AC25AC',
-  },
-  stepsText: {
-    color: 'grey',
-    fontSize: 20,
-    //backgroundColor: '#AC25AC',
-    paddingHorizontal: 20,
-    borderRadius: 15,
-    marginLeft: 80,
-  },
-
   boxContainer: {
     backgroundColor: '#FFFFFF',
     borderRadius: 4,

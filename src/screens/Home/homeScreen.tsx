@@ -19,7 +19,11 @@ const HomeScreen = () => {
     };
     fetchToken();
   }, []);
-  return <HomeComponent />;
+  return (
+    <View style={{flex:1}}>
+      <HomeComponent />
+    </View>
+  );
 };
 
 export default HomeScreen;

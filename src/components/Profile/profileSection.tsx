@@ -8,6 +8,10 @@ import {
   Pressable,
   SafeAreaView,
   FlatList,
+  ScrollView,
+  Dimensions,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
 } from 'react-native';
 import Icons from 'react-native-vector-icons/MaterialIcons';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -23,6 +27,8 @@ import {updateProfileData} from '../../store/Auth/auth';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const {width} = Dimensions.get('window');
+const eightyPercentWidth: number = width * 0.84;
 const getUserId = async () => {
   try {
     const userId: any = await AsyncStorage.getItem('userId');
@@ -101,6 +107,14 @@ const TickListItem = ({item}: any) => (
 );
 
 const ProfileSection = () => {
+  const [isScrollEnabled, setIsScrollEnabled] = useState<boolean>(true);
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const {layoutMeasurement, contentOffset, contentSize} = event.nativeEvent;
+    const isContentFullyVisible =
+      layoutMeasurement.height + contentOffset.y >= contentSize.height;
+    setIsScrollEnabled(!isContentFullyVisible);
+  };
+
   const profileData = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
@@ -181,40 +195,47 @@ const ProfileSection = () => {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex: 1}}>
       <CommonBackbutton title="Profile" />
-      <View style={styles.containerTop}>
-        <View style={styles.container}>
-          <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
-            <Feather
-              name="settings"
-              size={24}
-              color="#AC25AC"
-              style={styles.settingIcon}
-            />
-          </TouchableOpacity>
-          <View style={styles.profileImageContainer}>
-            <View>
-              <Svg height="154" width="154" style={styles.progressCircle}>
-                <Circle
-                  cx="76"
-                  cy="76"
-                  r="74"
-                  stroke="#D6D6D6" // Set a background color for the circle
-                  strokeWidth="4"
-                  fill="transparent"
-                />
-                <Circle
-                  cx="74"
-                  cy="76"
-                  r="74"
-                  stroke="#AC25AC"
-                  strokeWidth="4"
-                  fill="transparent"
-                  strokeDasharray={calculateStrokeDasharray(profileCompletion)}
-                  transform="rotate(-90, 75, 75)"
-                />
-                {/* <SvgText
+      <ScrollView
+        // onScroll={handleScroll}
+        // scrollEnabled={isScrollEnabled}
+        showsVerticalScrollIndicator={false}
+        style={{width: '100%', height: '100%'}}>
+        <View style={styles.containerTop}>
+          <View style={styles.container}>
+            <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
+              <Feather
+                name="settings"
+                size={24}
+                color="#AC25AC"
+                style={styles.settingIcon}
+              />
+            </TouchableOpacity>
+            <View style={styles.profileImageContainer}>
+              <View>
+                <Svg height="154" width="154" style={styles.progressCircle}>
+                  <Circle
+                    cx="76"
+                    cy="76"
+                    r="74"
+                    stroke="#D6D6D6" // Set a background color for the circle
+                    strokeWidth="4"
+                    fill="transparent"
+                  />
+                  <Circle
+                    cx="74"
+                    cy="76"
+                    r="74"
+                    stroke="#AC25AC"
+                    strokeWidth="4"
+                    fill="transparent"
+                    strokeDasharray={calculateStrokeDasharray(
+                      profileCompletion,
+                    )}
+                    transform="rotate(-90, 75, 75)"
+                  />
+                  {/* <SvgText
             x="50%"
             y="50%"
             dy=".3em"
@@ -223,87 +244,97 @@ const ProfileSection = () => {
             fill="#3498db">
             {`${profileCompletion}%`}
           </SvgText> */}
-              </Svg>
-              <Image source={{uri: profileImage}} style={styles.profileImage} />
-              <View style={styles.completionContainer}>
-                <Text style={styles.completionText}>
-                  {profileCompletion}% Complete
-                </Text>
+                </Svg>
+                <Image
+                  source={{uri: profileImage}}
+                  style={styles.profileImage}
+                />
+                <View style={styles.completionContainer}>
+                  <Text style={styles.completionText}>
+                    {profileCompletion}% Complete
+                  </Text>
+                </View>
               </View>
             </View>
-          </View>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('UpdateProfile')}>
-            <Icons
-              name="mode-edit"
-              size={24}
-              color="#AC25AC"
-              style={styles.editIcon}
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={{alignItems: 'center'}}>
-          <Text
-            style={{
-              fontFamily: 'Sansation_Bold',
-              fontSize: 20,
-              color: 'black',
-              marginTop: 10,
-            }}>
-            {profileData.name}
-          </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginTop: 4,
-              columnGap: 2,
-            }}>
-            <Ionicons name="location" size={20} color="#AC25AC" />
-            <Text
-              style={{
-                fontFamily: 'Sansation_Regular',
-                fontSize: 18,
-              }}>
-              {profileData.city}, {profileData.country}
-            </Text>
-          </View>
-        </View>
-      </View>
-
-      <View style={{flex: 0}}>
-        <FlatList
-          ref={flatListRef}
-          horizontal
-          data={data}
-          renderItem={renderBox}
-          keyExtractor={(item, index) => index.toString()}
-          showsHorizontalScrollIndicator={false}
-          pagingEnabled
-          onScroll={event => {
-            const offsetX = event.nativeEvent.contentOffset.x;
-            const index = Math.floor(offsetX / 300); // Assuming each box has a width of 300
-            setActiveIndex(index);
-          }}
-        />
-        <View style={styles.dotsContainer}>
-          {data.map((_, index) => (
-            <TouchableOpacity key={index} onPress={() => handleDotPress(index)}>
-              <View
-                style={[styles.dot, index === activeIndex && styles.activeDot]}
+            <TouchableOpacity
+              onPress={() => navigation.navigate('UpdateProfile')}>
+              <Icons
+                name="mode-edit"
+                size={24}
+                color="#AC25AC"
+                style={styles.editIcon}
               />
             </TouchableOpacity>
-          ))}
+          </View>
+          <View style={{alignItems: 'center'}}>
+            <Text
+              style={{
+                fontFamily: 'Sansation_Bold',
+                fontSize: 20,
+                color: 'black',
+                marginTop: 10,
+              }}>
+              {profileData.name}
+            </Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginTop: 4,
+                columnGap: 2,
+              }}>
+              <Ionicons name="location" size={20} color="#AC25AC" />
+              <Text
+                style={{
+                  fontFamily: 'Sansation_Regular',
+                  fontSize: 18,
+                }}>
+                {profileData.city}, {profileData.country}
+              </Text>
+            </View>
+          </View>
         </View>
-      </View>
 
-      <View style={{flex: 0, paddingTop: 16}}>
-        <FlatList
-          data={data2}
-          renderItem={({item}) => <TickListItem item={item} />}
-          keyExtractor={(item, index) => index.toString()}
-        />
-      </View>
+        <View style={{}}>
+          <FlatList
+            ref={flatListRef}
+            horizontal
+            data={data}
+            renderItem={renderBox}
+            keyExtractor={(item, index) => index.toString()}
+            showsHorizontalScrollIndicator={false}
+            pagingEnabled
+            onScroll={event => {
+              const offsetX = event.nativeEvent.contentOffset.x;
+              const index = Math.floor(offsetX / 300); // Assuming each box has a width of 300
+              setActiveIndex(index);
+            }}
+          />
+          <View style={styles.dotsContainer}>
+            {data.map((_, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() => handleDotPress(index)}>
+                <View
+                  style={[
+                    styles.dot,
+                    index === activeIndex && styles.activeDot,
+                  ]}
+                />
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+
+        <View style={{flex: 0, paddingTop: 16}}>
+          <FlatList
+            scrollEnabled={false}
+            data={data2}
+            renderItem={({item}) => <TickListItem item={item} />}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -321,7 +352,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.48,
     shadowRadius: 11.95,
-
     elevation: 18,
   },
   container: {
@@ -349,25 +379,7 @@ const styles = StyleSheet.create({
   },
   completionText: {
     color: '#FFFFFF',
-
     fontFamily: 'Sansation_Regular',
-  },
-  detailsContainer: {
-    flex: 1,
-    marginLeft: 16,
-  },
-  userName: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 4,
-  },
-  userAddress: {
-    fontSize: 16,
-    marginBottom: 4,
-  },
-  userLocation: {
-    fontSize: 16,
-    color: '#95a5a6',
   },
   editIcon: {
     marginRight: 30,
@@ -392,40 +404,12 @@ const styles = StyleSheet.create({
     height: 132,
     borderRadius: 66,
   },
-  profileText: {
-    marginTop: 10,
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  locationContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
-  locationIcon: {
-    marginRight: 5,
-  },
-
   backPress: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
     marginTop: 15,
   },
-  backPressIcon: {
-    marginRight: 8,
-    color: '#AC25AC',
-  },
-  stepsText: {
-    color: 'grey',
-    fontSize: 20,
-    //backgroundColor: '#AC25AC',
-    paddingHorizontal: 20,
-    borderRadius: 15,
-    marginLeft: 80,
-    fontWeight: 'bold',
-  },
-
   boxContainer: {
     borderRadius: 6,
     padding: 16,
@@ -433,7 +417,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 28,
     marginHorizontal: 30,
     marginBottom: 5,
-    width: 350,
+    width: eightyPercentWidth,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -441,7 +425,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
-
     elevation: 4,
   },
   text: {
@@ -470,7 +453,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 4,
   },
-
   dotsContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -486,10 +468,6 @@ const styles = StyleSheet.create({
   },
   activeDot: {
     backgroundColor: '#AC25AC',
-  },
-  activeBox: {
-    // borderWidth: 2,
-    //borderColor: 'blue',
   },
 });
 

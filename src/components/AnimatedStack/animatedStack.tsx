@@ -6,7 +6,6 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
-
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -21,10 +20,12 @@ import Animated, {
 import {PanGestureHandler} from 'react-native-gesture-handler';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {useAppDispatch} from '../../store/store';
+import {useAppDispatch, useAppSelector} from '../../store/store';
 import {likedAUser} from '../../store/Auth/auth';
 import {current} from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const ROTATION = 60;
 const SWIPE_VELOCITY = 800;
@@ -51,6 +52,26 @@ const AnimatedStack = (props: any) => {
   const hiddenTranslateX = 2 * screenWidth;
 
   const translateX = useSharedValue(0);
+  const allUsers: any = useAppSelector(
+    (state: any) => state?.Auth?.data?.allUsers,
+  );
+  const calculateDistance = (lat1: any, lon1: any, lat2: any, lon2: any) => {
+    const R = 3958.8; // Earth radius in miles
+    const dLat = toRadians(lat2 - lat1);
+    const dLon = toRadians(lon2 - lon1);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(toRadians(lat1)) *
+        Math.cos(toRadians(lat2)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c;
+    return distance;
+  };
+  const toRadians = (degrees: any) => {
+    return (degrees * Math.PI) / 180;
+  };
   const rotate = useDerivedValue(
     () =>
       interpolate(translateX.value, [0, hiddenTranslateX], [0, ROTATION]) +
@@ -152,7 +173,6 @@ const AnimatedStack = (props: any) => {
         translateX.value = withSpring(0);
         return;
       }
-
       const direction = Math.sign(event.translationX);
       if (direction === 1) {
         // Swipe to the right
@@ -184,7 +204,6 @@ const AnimatedStack = (props: any) => {
           </Animated.View>
         </View>
       )}
-
       {currentProfile ? (
         <View style={{width: '100%', alignItems: 'center'}}>
           <PanGestureHandler onGestureEvent={gestureHandler}>
@@ -202,39 +221,44 @@ const AnimatedStack = (props: any) => {
               {renderItem({item: currentProfile})}
             </Animated.View>
           </PanGestureHandler>
-          <View style={{width: '100%', alignItems: 'center'}}>
-            <View style={styles.icons}>
-              {/* <TouchableOpacity>
-          <View style={styles.button}>
-            <FontAwesome name="undo" size={30} color="#FBD88B" />
+          {/* <View style={{width: '100%', alignItems: 'center'}}> */}
+          {/* <View style={styles.locText}>
+            <Ionicons name="location-sharp" size={20} color="#AC25AC" />
+            <Text style={{fontFamily: 'Sansation_Regular', color: 'black'}}>
+              {
+                profileData.location && allUsers[currentIndex]?.location // Check if both locations are available
+                  ? `${Math.round(
+                      calculateDistance(
+                        profileData.location.latitude,
+                        profileData.location.longitude,
+                        allUsers[currentIndex].location.latitude,
+                        allUsers[currentIndex].location.longitude,
+                      ),
+                    ).toFixed(0)} miles away` // Calculate distance and round off to the nearest whole number
+                  : 'Distance information unavailable' // Display a message if distance information is missing
+              }
+            </Text>
+          </View> */}
+          <View style={styles.icons}>
+            <TouchableOpacity onPress={onSwipeLeft}>
+              <View style={styles.button}>
+                <Entypo name="cross" size={40} color="#FF2222" />
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={onSwipeRight}>
+              <View style={styles.button}>
+                <FontAwesome name="heart" size={40} color="#4FCC94" />
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity>
+              <View style={styles.button}>
+                <FontAwesome name="star" size={40} color="#3AB4CC" />
+              </View>
+            </TouchableOpacity>
           </View>
-        </TouchableOpacity> */}
-
-              <TouchableOpacity onPress={onSwipeLeft}>
-                <View style={styles.button}>
-                  <Entypo name="cross" size={40} color="#FF2222" />
-                </View>
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={onSwipeRight}>
-                <View style={styles.button}>
-                  <FontAwesome name="heart" size={40} color="#4FCC94" />
-                </View>
-              </TouchableOpacity>
-
-              <TouchableOpacity>
-                <View style={styles.button}>
-                  <FontAwesome name="star" size={40} color="#3AB4CC" />
-                </View>
-              </TouchableOpacity>
-
-              {/* <TouchableOpacity>
-          <View style={styles.button}>
-            <Ionicons name="flash" size={30} color="#A65CD2" />
-          </View>
-        </TouchableOpacity> */}
-            </View>
-          </View>
+          {/* </View> */}
         </View>
       ) : (
         <Text
@@ -257,8 +281,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
-
     width: '100%',
+    // borderWidth: 1,
   },
   animatedCard: {
     width: '80%',
@@ -286,7 +310,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     width: '70%',
-    marginVertical: 12,
+    // marginVertical: 12,
+    marginTop: 40,
+    // borderWidth: 1,
   },
   button: {
     width: 60,
@@ -294,10 +320,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
-
     borderRadius: 60,
     borderWidth: 2,
     borderColor: '#AC25AC',
+  },
+  locText: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 20,
+    marginBottom: 16,
+    columnGap: 2,
+    // borderWidth: 2,
   },
 });
 

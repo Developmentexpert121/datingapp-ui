@@ -176,23 +176,11 @@ const FooterComponent = () => {
 
 const styles = StyleSheet.create({
   root: {
-    // backgroundColor: '#f0f0f0',
-    // alignItems: 'center',
     justifyContent: 'center',
-    // height: 50, // Adjust the height as needed
-    // position: 'absolute',
-    // left: 0,
-    // right: 0,
-    // bottom: 0,
     height: 80,
     // borderWidth: 1,
   },
   pageContainer: {
-    //  justifyContent: 'center',
-    //  alignItems: 'center',
-    //  flex: 1,
-    // marginVertical: 16,
-    // borderWidth: 2,
   },
   topNavigation: {
     flexDirection: 'row',
@@ -207,11 +195,6 @@ const styles = StyleSheet.create({
   icon: {
     width: 30,
     height: 30,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: 'grey',
   },
   horizontalLine: {
     height: 2,

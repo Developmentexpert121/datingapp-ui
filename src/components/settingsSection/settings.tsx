@@ -7,6 +7,7 @@ import {
   Modal,
   FlatList,
   Alert,
+  SafeAreaView,
 } from 'react-native';
 import React, {useState, useCallback, useEffect} from 'react';
 import CommonBackbutton from '../commonBackbutton/backButton';
@@ -306,9 +307,7 @@ const SettingsSection = () => {
     Geolocation.getCurrentPosition(
       position => {
         const {latitude, longitude} = position.coords;
-
         setPermissionStatus('granted');
-
         // Call registration API here
         dispatch(
           updateProfileData({
@@ -358,66 +357,68 @@ const SettingsSection = () => {
   };
 
   return (
-    <ScrollView>
+    <SafeAreaView style={{flex: 1}}>
       <CommonBackbutton title="Settings" />
-      <Text style={styles.title}>Account Settings</Text>
-      {dataArr &&
-        dataArr.map((item, index) => (
-          <View style={styles.boxContainer} key={index}>
-            <Text style={styles.textName}>{item.title}</Text>
-            <View style={styles.line} />
-            <View>
-              <TouchableOpacity
-                style={styles.textField}
-                onPress={() => {
-                  if (item.title === 'Location') {
-                    showPermissionPopup();
-                  } else {
-                    handleModal(item);
-                  }
-                }}>
-                {index === 0 ? (
-                  <Icon1 name="phone" size={20} color="grey" />
-                ) : index === 1 ? (
-                  <Icon2 name="email" size={20} color="grey" />
-                ) : index === 2 ? (
-                  <Icon3 name="location" size={20} color="grey" />
-                ) : (
-                  ''
-                )}
-                <Text
-                  style={{
-                    fontFamily: 'Sansation_Regular',
-                    textAlign: 'center',
+      <ScrollView>
+        <Text style={styles.title}>Account Settings</Text>
+        {dataArr &&
+          dataArr.map((item, index) => (
+            <View style={styles.boxContainer} key={index}>
+              <Text style={styles.textName}>{item.title}</Text>
+              <View style={styles.line} />
+              <View>
+                <TouchableOpacity
+                  style={styles.textField}
+                  onPress={() => {
+                    if (item.title === 'Location') {
+                      showPermissionPopup();
+                    } else {
+                      handleModal(item);
+                    }
                   }}>
-                  {item.name}
-                </Text>
-              </TouchableOpacity>
+                  {index === 0 ? (
+                    <Icon1 name="phone" size={20} color="grey" />
+                  ) : index === 1 ? (
+                    <Icon2 name="email" size={20} color="grey" />
+                  ) : index === 2 ? (
+                    <Icon3 name="location" size={20} color="grey" />
+                  ) : (
+                    ''
+                  )}
+                  <Text
+                    style={{
+                      fontFamily: 'Sansation_Regular',
+                      textAlign: 'center',
+                    }}>
+                    {item.name}
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-        ))}
+          ))}
 
-      <TouchableOpacity style={styles.boxContainer}>
-        <Text
-          style={[styles.textName, {color: '#AC25AC'}]}
-          onPress={() => logoutUser()}>
-          Log Out
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.boxContainer}>
-        <Text
-          style={[styles.textName, {color: '#AC25AC'}]}
-          onPress={deleteUserButton}>
-          Delete Account
-        </Text>
-      </TouchableOpacity>
-      <BottomDrawer
-        isOpen={isDrawerOpen}
-        onClose={closeDrawer}
-        title={title}
-        value={values}
-      />
-    </ScrollView>
+        <TouchableOpacity style={styles.boxContainer}>
+          <Text
+            style={[styles.textName, {color: '#AC25AC'}]}
+            onPress={() => logoutUser()}>
+            Log Out
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.boxContainer}>
+          <Text
+            style={[styles.textName, {color: '#AC25AC'}]}
+            onPress={deleteUserButton}>
+            Delete Account
+          </Text>
+        </TouchableOpacity>
+        <BottomDrawer
+          isOpen={isDrawerOpen}
+          onClose={closeDrawer}
+          title={title}
+          value={values}
+        />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -437,7 +438,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
-
     elevation: 2,
   },
   title: {
@@ -468,67 +468,18 @@ const styles = StyleSheet.create({
   },
   slider: {
     marginHorizontal: 20,
-  },
-  thumbStyle: {
-    width: 18,
-    height: 18,
-    borderRadius: 9,
-    shadowColor: '#AC25AC',
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowOpacity: 0.34,
-    shadowRadius: 6.27,
-
-    elevation: 10,
-  },
+  }, 
   distance: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: 20,
   },
-  radio: {
-    flexDirection: 'row',
-    marginHorizontal: 18,
-    alignItems: 'center',
-  },
-
-  sliderContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 10,
-  },
-  dot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: '#AC25AC',
-  },
-
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
   },
-
-  rangeContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-  },
-  rangeSlider: {
-    flex: 1,
-  },
-  rangeDot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: '#AC25AC',
-  },
-
   containerBtn: {
     marginVertical: 10,
     justifyContent: 'center',

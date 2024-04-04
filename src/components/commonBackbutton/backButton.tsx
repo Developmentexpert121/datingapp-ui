@@ -18,7 +18,7 @@ const BackButton = ({title, iconName, setIsDrawerOpen}: any) => {
     }
   };
   return (
-    <View>
+    <View style={{borderWidth:0}}>
       <Pressable style={styles.backPress}>
         <Ionicons
           onPress={() => handleBack()}
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginLeft: 20,
-    marginVertical: 24,
+    marginVertical: 15,
   },
   backPressIcon: {
     color: '#AC25AC',
