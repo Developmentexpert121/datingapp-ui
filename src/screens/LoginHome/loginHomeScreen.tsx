@@ -12,9 +12,8 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../types';
 import {useAppSelector} from '../../store/store';
 const images = [
-  require('../../assets/images/screenImage1.png'),
-  require('../../assets/images/screenImage2.png'),
-  //  require('./path-to-your-image3.jpg'),
+  require('../../assets/images/screenImage1.jpg'),
+  require('../../assets/images/screenImage2.jpg'),
 ];
 type Props = NativeStackScreenProps<RootStackParamList, 'Loginhome'>;
 const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
@@ -54,16 +53,6 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        {/* <View style={styles.circle}>
-          <Image
-            source={require('../../assets/images/logIcon.png')}
-            style={{width: 119, height: 122}}
-          />
-        </View>
-        <Image
-          source={require('../../assets/images/Group4.png')}
-          style={{width: '100%', height: '34%', marginTop: 20}}
-        /> */}
         <Image
           source={require('../../assets/images/login_Image.png')}
           resizeMode="contain"
@@ -73,7 +62,6 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
       <View
         style={{
           flex: 2 / 5,
-          // borderWidth: 1,
           width: '100%',
           height: '100%',
           justifyContent: 'center',
