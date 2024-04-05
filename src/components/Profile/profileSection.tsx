@@ -26,6 +26,7 @@ import {useAppDispatch, useAppSelector} from '../../store/store';
 import {updateProfileData} from '../../store/Auth/auth';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import FooterComponent from '../Dashboard/footer/footer';
 
 const {width} = Dimensions.get('window');
 const eightyPercentWidth: number = width * 0.84;
@@ -295,7 +296,7 @@ const ProfileSection = () => {
           </View>
         </View>
 
-        <View style={{}}>
+        <View style={{marginTop:20,}}>
           <FlatList
             ref={flatListRef}
             horizontal
@@ -335,6 +336,9 @@ const ProfileSection = () => {
           />
         </View>
       </ScrollView>
+      <View style={{}}>
+        <FooterComponent />
+      </View>
     </SafeAreaView>
   );
 };
@@ -342,9 +346,8 @@ const ProfileSection = () => {
 const styles = StyleSheet.create({
   containerTop: {
     backgroundColor: '#FFFFFF',
-    marginBottom: 26,
-    paddingTop: 26,
-    paddingBottom: 20,
+    paddingVertical: 22,
+    marginTop:10,
     shadowColor: '#AC25AC',
     shadowOffset: {
       width: 0,
@@ -353,6 +356,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.48,
     shadowRadius: 11.95,
     elevation: 18,
+    // borderWidth: 1,
   },
   container: {
     flexDirection: 'row',
