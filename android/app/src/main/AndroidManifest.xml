@@ -20,6 +20,7 @@
 
 
     <application
+      name="com.example.bliss_000.todolistapp.AppController"
       android:name=".MainApplication"
       android:label="@string/app_name"
       android:icon="@mipmap/ic_launcher"
