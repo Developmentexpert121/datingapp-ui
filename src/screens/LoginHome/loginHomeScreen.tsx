@@ -23,15 +23,15 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (currentImageIndex < images.length - 1) {
-        setCurrentImageIndex(currentImageIndex + 1);
-      }
-    }, 6000); // Change the delay time (in milliseconds) as needed
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     if (currentImageIndex < images.length - 1) {
+  //       setCurrentImageIndex(currentImageIndex + 1);
+  //     }
+  //   }, 6000); // Change the delay time (in milliseconds) as needed
 
-    return () => clearTimeout(timer);
-  }, [currentImageIndex]);
+  //   return () => clearTimeout(timer);
+  // }, [currentImageIndex]);
 
   return (
     <SafeAreaView

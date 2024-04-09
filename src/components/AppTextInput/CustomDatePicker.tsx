@@ -40,7 +40,6 @@ interface Iprops {
   disabled?: any;
   errors?: boolean;
 }
-
 const CustomDatePicker = ({
   rightIcon,
   label,

@@ -11,25 +11,25 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useAppSelector} from './src/store/store';
 import LoadingSpinner from './src/services/spinner/spinner';
 import SplashScreen from 'react-native-splash-screen';
-// import messaging from '@react-native-firebase/messaging';
+import messaging from '@react-native-firebase/messaging';
 import {requestNotifications} from 'react-native-permissions';
 
 const App = () => {
-  // async function requestUserPermission() {
-  //   await requestNotifications(['alert', 'sound']);
-  //   const authStatus = await messaging().requestPermission();
-  //   const enabled =
-  //     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-  //     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+  async function requestUserPermission() {
+    await requestNotifications(['alert', 'sound']);
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
-  //   if (enabled) {
-  //     console.log('Authorization status:', authStatus);
-  //   }
-  // }
-  // const getToken = async () => {
-  //   const token = await messaging().getToken();
-  //   console.log('Token:', token);
-  // };
+    if (enabled) {
+      console.log('Authorization status:', authStatus);
+    }
+  }
+  const getToken = async () => {
+    const token = await messaging().getToken();
+    console.log('Token:', token);
+  };
 
   const isLoading = useAppSelector(
     (state: any) => state.ActivityLoader.loading,
@@ -44,13 +44,13 @@ const App = () => {
     (state: any) => state?.Auth?.isAuthenticated,
   );
 
-  // useEffect(() => {
-  //   if (Platform.OS === 'android') {
-  //     SplashScreen.hide();
-  //   }
-  //   requestUserPermission();
-  //   getToken();
-  // }, []);
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      SplashScreen.hide();
+    }
+    requestUserPermission();
+    getToken();
+  }, []);
 
   const authToken: any = async () => {
     try {
