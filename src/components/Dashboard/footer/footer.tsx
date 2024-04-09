@@ -28,16 +28,16 @@ interface Receiver {
   // Define other properties if they exist in your receiver data
 }
 const FooterComponent = () => {
-  //const [activeScreen, setActiveScreen] = useState('HOME');
+  const [activeScreen, setActiveScreen] = useState('HOME');
 
   // const [receiverData, setReceiverData] = useState<any>([]);
   const [receiverData, setReceiverData] = useState<Receiver[]>([]);
   const [totalSenderMessages, setTotalSenderMessages] = useState(0);
 
   const dispatch: any = useAppDispatch();
-  const activeScreen = useAppSelector(
-    (state: any) => state.ActivityLoader.footerStatus,
-  );
+  // const activeScreen = useAppSelector(
+  //   (state: any) => state.ActivityLoader.footerStatus,
+  // );
 
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
@@ -93,36 +93,36 @@ const FooterComponent = () => {
             style={styles.iconView}>
             <View style={{alignItems: 'flex-end'}}>
               <Text style={{top: 5}}></Text>
-              {/* <FontAwesome6
+              <FontAwesome6
                 name="fire"
                 size={34}
                 color={activeScreen === 'HOME' ? activeColor : color}
-              /> */}
-              {activeScreen === 'HOME' ? <FirepressIC /> : <FireIC />}
+              />
+              {/* {activeScreen === 'HOME' ? <FirepressIC /> : <FireIC />} */}
               {/* <FireIC onPress={() => handleView('Home', 'HOME')}/> */}
             </View>
           </Pressable>
 
-          {/* <Pressable onPress={() => setActiveScreen('STAR')}>
+          <Pressable onPress={() => setActiveScreen('STAR')}>
           <MaterialCommunityIcons
             name="star-four-points"
             size={34}
             color={activeScreen === 'STAR' ? activeColor : color}
           />
-          </Pressable> */}
+          </Pressable>
 
           <Pressable
             onPress={() => handleView('Explore', 'EXPLORED')}
             style={styles.iconView}>
             <View style={{alignItems: 'flex-end'}}>
               <Text style={{top: 5}}></Text>
-              {/* <Feather
+              <Feather
                 name="refresh-ccw"
                 size={34}
                 color={activeScreen === 'EXPLORED' ? activeColor : color}
-              /> */}
+              />
               
-              {activeScreen === 'EXPLORED' ? <FindpressIc /> : <FindIC />}
+              {/* {activeScreen === 'EXPLORED' ? <FindpressIc /> : <FindIC />} */}
             </View>
           </Pressable>
 
@@ -131,13 +131,13 @@ const FooterComponent = () => {
             style={styles.iconView}>
             <View style={{alignItems: 'flex-end'}}>
               <Text style={{top: 5}}></Text>
-              {/* <AntDesign
+              <AntDesign
                 name="heart"
                 size={34}
                 color={activeScreen === 'LIKED' ? activeColor : color}
-              /> */}
+              />
               
-              {activeScreen === 'LIKED' ? <LovepressIC /> : <LoveIC />}
+              {/* {activeScreen === 'LIKED' ? <LovepressIC /> : <LoveIC />} */}
             </View>
           </Pressable>
           <Pressable
@@ -147,13 +147,13 @@ const FooterComponent = () => {
               <Text style={{top: 8, color: '#AC25AC'}}>
                 {totalSenderMessages}
               </Text>
-              {/* <Ionicons
+              <Ionicons
                 name="chatbubbles"
                 size={34}
                 color={activeScreen === 'CHAT' ? activeColor : color}
-              /> */}
+              />
               
-              {activeScreen === 'CHAT' ? <ChatpressIC /> : <ChatIC />}
+              {/* {activeScreen === 'CHAT' ? <ChatpressIC /> : <ChatIC />} */}
             </View>
           </Pressable>
 
@@ -162,13 +162,13 @@ const FooterComponent = () => {
             style={styles.iconView}>
             <View style={{alignItems: 'flex-end'}}>
               <Text style={{top: 5}}>{}</Text>
-              {/* <FontAwesome
+              <FontAwesome
                 name="user"
                 size={34}
                 color={activeScreen === 'PROFILE' ? activeColor : color}
-              /> */}
+              />
               
-              {activeScreen === 'PROFILE' ? <ProfilepressIC /> : <ProfileIC />}
+              {/* {activeScreen === 'PROFILE' ? <ProfilepressIC /> : <ProfileIC />} */}
             </View>
           </Pressable>
         </View>
