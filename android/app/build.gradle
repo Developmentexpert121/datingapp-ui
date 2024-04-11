@@ -79,13 +79,14 @@ android {
         targetCompatibility JavaVersion.VERSION_11
     }
 
-    namespace "com.datingapp"
+    namespace "com.toptierdating"
     defaultConfig {
-        applicationId "com.datingapp"
+        applicationId "com.toptierdating"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        resConfigs "en", "US"
     }
     signingConfigs {
         release {
