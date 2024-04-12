@@ -2,25 +2,18 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
-  Image,
-  Button,
   Platform,
   ScrollView,
 } from 'react-native';
 import React, {useEffect, useMemo, useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {RadioButton} from 'react-native-paper';
 import AppTextInput from '../AppTextInput/AppTextInput';
 import {Controller} from 'react-hook-form';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import Colors from '../../constants/Colors';
 import Spacing from '../../constants/Spacing';
 import {useNavigation} from '@react-navigation/native';
 import PhoneInput from '../AppTextInput/PhoneInput';
-import BackButton from '../commonBackbutton/backButton';
 import {ChevronLeftIC} from '../../assets/svgs';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import CustomDatePicker from '../AppTextInput/CustomDatePicker';
 import PasswodTextInput from '../AppTextInput/PasswodTextInput';
 
@@ -86,28 +79,13 @@ const ZeroStepScreen = ({
   return (
     <View style={{borderWidth: 0, flex: 1}}>
       <View style={styles.topView}>
-        {/* <TouchableOpacity
-          style={{margin: 20}}
-          onPress={() => navigation.goBack()}>
-          <Image
-            source={require('../../assets/images/chevron-left.png')}
-            resizeMode="contain"
-            style={{width: 20, height: 20}}
-          />
-        </TouchableOpacity> */}
-        {/* <View style={{borderWidth: 2}}> */}
-        {/* <BackButton /> */}
         <ChevronLeftIC onPress={() => navigation.goBack()} />
-        {/* </View> */}
-
         <Text style={styles.headerLabel}>Personal</Text>
-
         <View style={styles.blankview}></View>
       </View>
       <ScrollView style={{borderWidth: 0, flex: 1}} showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <Text style={styles.label}>My name is</Text>
-          {/* <TextInput style={styles.input} placeholder="Enter your name" /> */}
           <AppTextInput
             placeholder="Enter Your Name"
             name={name}

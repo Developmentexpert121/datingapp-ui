@@ -2,11 +2,7 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
-  ScrollView,
-  FlatList,
   Pressable,
   KeyboardAvoidingView,
   Platform,
@@ -15,20 +11,12 @@ import {
 } from 'react-native';
 import * as yup from 'yup';
 import React, {useState} from 'react';
-import Spacing from '../../constants/Spacing';
-import FontSize from '../../constants/FontSize';
-import Colors from '../../constants/Colors';
-import Font from '../../constants/Fonts';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../types';
 import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
-import AppTextInput from '../../components/AppTextInput/AppTextInput';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {RegisterSignUp} from '../../store/Auth/auth';
-import {RadioButton} from 'react-native-paper';
-// import ZeroStepScreen from '../Registration/zeroStepScreen';
 import ZeroStepScreen from '../../components/Registration/zeroStepScreen';
 import FirstStepScreen from '../../components/Registration/firstStepScreen';
 import SecondStepScreen from '../../components/Registration/secondStepScreen';
@@ -39,10 +27,8 @@ import FifthStepScreen from '../../components/Registration/fifthStepScreen';
 import SixthStepScreen from '../../components/Registration/sixthStepScreen';
 import SeventhStepScreen from '../../components/Registration/seventhStepScreen';
 import EighthStepScreen from '../../components/Registration/eighthStepScreen';
-
 import Geolocation from '@react-native-community/geolocation';
 import MainButton from '../../components/ButtonComponent/MainButton';
-import {brown100} from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 type Props = NativeStackScreenProps<RootStackParamList, 'Register'>;
 
 interface RegisterForm {
@@ -61,7 +47,6 @@ interface RegisterForm {
   confirmPassword: string;
   distance: string;
   location: string;
-
   profilePic: string;
   dob: string;
   profilePercentage: string;
@@ -146,16 +131,13 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const profileData = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-
   const [steps, setSteps] = React.useState(0);
   const [dateStr, setDateStr] = useState<any>(null);
   const [location, setLocation] = useState<any>(null);
   const [distance, setDistance] = useState<any>(20);
   const [error, setError] = useState<any>(null);
   const [profileImages, setProfileImages] = useState<any>([]);
-
   const [permissionStatus, setPermissionStatus] = useState<any>(null);
-
   const dispatch: any = useAppDispatch();
   const Schemas = (steps: any) => {
     if (steps === 0) {
@@ -181,7 +163,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     defaultValues,
     resolver: Schemas(steps),
   });
-  console.log('OnPress', handleSubmit);
+  console.log('OnPress handleSubmit', handleSubmit);
   console.log('errors ', errors);
   const getLocationAndRegister = (data: RegisterForm) => {
     Geolocation.getCurrentPosition(
@@ -189,7 +171,6 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
         const {latitude, longitude} = position.coords;
         setLocation({latitude, longitude});
         setPermissionStatus('granted');
-
         // Call registration API here
         dispatch(
           RegisterSignUp({
@@ -205,7 +186,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
       },
       (err: any) => {
         setError(err.message);
-        setPermissionStatus('denied');
+        setPermissionStatus('denied.');
       },
       {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
     );
@@ -255,7 +236,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
       data.phone = callingCode + data.phone;
     }
   };
-  console.log('button ...', onSubmit);
+  console.log('onSubmitbutton ...', onSubmit);
 
   return (
     <SafeAreaView style={styles.container}>

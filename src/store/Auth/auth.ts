@@ -65,6 +65,7 @@ export const LoginSignIn = createAsyncThunk(
 
 export const RegisterSignUp = createAsyncThunk(
   'auth/RegisterSignUp',
+  // (navigation:any)=>
   async (data: any, {dispatch}: any) => {
     try {
       // dispatch(activityLoaderStarted());
@@ -72,6 +73,7 @@ export const RegisterSignUp = createAsyncThunk(
       if (response.status === 200) {
         return response.data;
       }
+      // navigation("LoginHomeScreen")
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};

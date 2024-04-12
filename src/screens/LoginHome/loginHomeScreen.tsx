@@ -114,16 +114,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  circle: {
-    width: 180,
-    height: 180,
-    borderRadius: 90,
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
-    padding: 20,
-    marginTop: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   image1: {
     width: '100%',
     height: '100%',
