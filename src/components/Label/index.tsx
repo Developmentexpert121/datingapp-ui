@@ -40,14 +40,12 @@ const Label = ({
     </Text>
   );
 };
-
 export default Label;
-
 const styles = StyleSheet.create({
   text: {
     fontSize: moderateScale(16),
     // textAlign: 'center',
-    fontFamily: "Inter-Regular",
+    fontFamily: "Sansation-Regular",
     // color:light.colors.text
   },
 });

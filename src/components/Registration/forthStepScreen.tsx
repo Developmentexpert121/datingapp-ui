@@ -206,11 +206,11 @@ const styles = StyleSheet.create({
   headerText: {
     color: 'black',
     fontSize: 24,
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
     marginBottom: 10,
   },
   paragraphText: {
-    fontFamily: 'Sansation_Regular',
+    fontFamily: 'Sansation-Regular',
     fontSize: 14,
     marginBottom: 16,
     color: '#575757',
@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
   title: {
     color: 'black',
     fontSize: 14,
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
   },
   textsContainer: {
     marginLeft: 4,
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   textItem: {
-    fontFamily: 'Sansation_Regular',
+    fontFamily: 'Sansation-Regular',
     color: '#545454',
     fontSize: 12,
     borderColor: '#ABABAB',

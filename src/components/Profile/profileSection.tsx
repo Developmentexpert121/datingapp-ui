@@ -96,7 +96,7 @@ const TickListItem = ({item}: any) => (
       <View>
         <Text
           style={{
-            fontFamily: 'Sansation_Regular',
+            fontFamily: 'Sansation-Regular',
             color: 'black',
             fontSize: 16,
           }}>
@@ -270,7 +270,7 @@ const ProfileSection = () => {
           <View style={{alignItems: 'center'}}>
             <Text
               style={{
-                fontFamily: 'Sansation_Bold',
+                fontFamily: 'Sansation-Bold',
                 fontSize: 20,
                 color: 'black',
                 marginTop: 10,
@@ -287,7 +287,7 @@ const ProfileSection = () => {
               <Ionicons name="location" size={20} color="#AC25AC" />
               <Text
                 style={{
-                  fontFamily: 'Sansation_Regular',
+                  fontFamily: 'Sansation-Regular',
                   fontSize: 18,
                 }}>
                 {profileData.city}, {profileData.country}
@@ -383,7 +383,7 @@ const styles = StyleSheet.create({
   },
   completionText: {
     color: '#FFFFFF',
-    fontFamily: 'Sansation_Regular',
+    fontFamily: 'Sansation-Regular',
   },
   editIcon: {
     marginRight: 30,
@@ -435,7 +435,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     color: 'white',
     fontSize: 24,
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
   },
   text2: {
     alignItems: 'center',
@@ -443,13 +443,13 @@ const styles = StyleSheet.create({
     marginTop: 4,
     color: 'white',
     fontSize: 16,
-    fontFamily: 'Sansation_Regular',
+    fontFamily: 'Sansation-Regular',
   },
   upbtn: {
     alignSelf: 'center',
     color: 'black',
     backgroundColor: '#F99A21',
-    fontFamily: 'Sansation_Regular',
+    fontFamily: 'Sansation-Regular',
     marginTop: 16,
     marginBottom: 6,
     fontSize: 14,

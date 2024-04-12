@@ -139,7 +139,7 @@ const ZeroStepScreen = ({
                 style={{
                   color: 'grey',
                   textAlign: 'center',
-                  fontFamily: 'Sansation_Regular',
+                  fontFamily: 'Sansation-Regular',
                 }}>
                 {dateStr === null
                   ? 'Select DOB'
@@ -367,7 +367,7 @@ const styles = StyleSheet.create({
   },
   headerLabel: {
     fontSize: 22,
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
     textAlign: 'center',
     // marginTop: 20,
     color: 'black',
@@ -376,19 +376,19 @@ const styles = StyleSheet.create({
     fontSize: 20,
     //marginBottom: 0,
     textAlign: 'center',
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
     color: 'black',
   },
   label: {
     fontSize: 20,
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
     color: 'black',
   },
   label2: {
     fontSize: 16,
     textAlign: 'center',
     // marginBottom: 2,
-    fontFamily: 'Sansation_Regular',
+    fontFamily: 'Sansation-Regular',
   },
   input: {
     //height: 40,
@@ -405,7 +405,7 @@ const styles = StyleSheet.create({
   },
   radioLabel: {
     fontSize: 16,
-    fontFamily: 'Sansation_Regular',
+    fontFamily: 'Sansation-Regular',
   },
   radioContainer: {
     flexDirection: 'column',
@@ -438,7 +438,7 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: 'red',
-    fontFamily: 'Sansation_Regular',
+    fontFamily: 'Sansation-Regular',
     textAlign: 'center',
   },
   iosBorder: {

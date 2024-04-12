@@ -224,7 +224,7 @@ const AnimatedStack = (props: any) => {
           {/* <View style={{width: '100%', alignItems: 'center'}}> */}
           {/* <View style={styles.locText}>
             <Ionicons name="location-sharp" size={20} color="#AC25AC" />
-            <Text style={{fontFamily: 'Sansation_Regular', color: 'black'}}>
+            <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
               {
                 profileData.location && allUsers[currentIndex]?.location // Check if both locations are available
                   ? `${Math.round(
@@ -263,7 +263,7 @@ const AnimatedStack = (props: any) => {
       ) : (
         <Text
           style={{
-            fontFamily: 'Sansation_Bold',
+            fontFamily: 'Sansation-Bold',
             fontSize: 26,
             textAlign: 'center',
             paddingHorizontal: 22,

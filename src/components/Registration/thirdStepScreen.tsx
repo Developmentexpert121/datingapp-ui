@@ -56,11 +56,11 @@ const styles = StyleSheet.create({
   headerText: {
     color: 'black',
     fontSize: 24,
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
     marginBottom: 8,
   },
   paragraphText: {
-    fontFamily: 'Sansation_Regular',
+    fontFamily: 'Sansation-Regular',
     fontSize: 14,
     marginBottom: 20,
     color: '#575757',
@@ -74,12 +74,12 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 16,
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
     color: 'black',
   },
   value: {
     fontSize: 16,
-    fontFamily: 'Sansation_Regular',
+    fontFamily: 'Sansation-Regular',
     color: 'black',
   },
   slider: {
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   containerBtnText: {
-    fontFamily: 'Sansation_Regular',
+    fontFamily: 'Sansation-Regular',
     fontSize: 16,
     marginBottom: 20,
     color: '#575757',

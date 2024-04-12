@@ -141,13 +141,13 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 20,
     textAlign: 'center',
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
     color: '#fff',
   },
   bio: {
     fontSize: 16,
     color: '#fff',
-    fontFamily: 'Sansation_Regular',
+    fontFamily: 'Sansation-Regular',
   },
   backPress: {
     flexDirection: 'row',

@@ -225,7 +225,7 @@ const SeventhStepScreen = ({
           style={{
             color: 'red',
             textAlign: 'center',
-            fontFamily: 'Sansation_Regular',
+            fontFamily: 'Sansation-Regular',
           }}>
           Please select any picture or select from gallery
         </Text>

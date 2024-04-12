@@ -42,7 +42,7 @@ const VideoCallInterface = ({
           <MyOutgoingCallUI call={call} goToHomeScreen={goToHomeScreen} />
         ) : (
           <View>
-            <Text style={{fontFamily: 'Sansation_Regular'}}>
+            <Text style={{fontFamily: 'Sansation-Regular'}}>
               Calling...{user?.name}
             </Text>
           </View>

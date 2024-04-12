@@ -20,9 +20,7 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const signInInfo: any = useAppSelector(
     (state: any) => state?.Auth?.data?.signInInfo,
   );
-
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
   // useEffect(() => {
   //   const timer = setTimeout(() => {
   //     if (currentImageIndex < images.length - 1) {
@@ -87,7 +85,7 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
         {signInInfo && (
           <Text
             style={{
-              fontFamily: 'Sansation_Regular',
+              fontFamily: 'Sansation-Regular',
               color: 'red',
               fontSize: 14,
               textAlign: 'center',
@@ -134,13 +132,12 @@ const styles = StyleSheet.create({
     fontSize: 22,
     marginTop: 16,
     textAlign: 'center',
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
     color: 'black',
   },
   subText: {
     marginTop: 8,
-    fontFamily: 'Sansation_Regular',
-
+    fontFamily: 'Sansation-Regular',
     textAlign: 'center',
     color: 'black',
   },
@@ -155,13 +152,13 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     textAlign: 'center',
-    fontFamily: 'Sansation_Regular',
+    fontFamily: 'Sansation-Regular',
   },
   termsText: {
     // marginTop: 36,
     color: 'gray',
     textAlign: 'center',
-    fontFamily: 'Sansation_Regular',
+    fontFamily: 'Sansation-Regular',
     bottom: 20,
     position: 'absolute',
   },
@@ -174,15 +171,13 @@ const styles = StyleSheet.create({
   },
   loginText: {
     color: 'black',
-
     marginRight: 5,
-    fontFamily: 'Sansation_Regular',
+    fontFamily: 'Sansation-Regular',
   },
   touchableText: {
     color: 'blue',
-
     textDecorationLine: 'underline',
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
   },
 });
 

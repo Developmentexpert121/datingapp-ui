@@ -146,7 +146,7 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
               errors={Boolean(errors?.email)}
             />
             {errors.email && (
-              <Text style={{color: 'red', fontFamily: 'Sansation_Regular'}}>
+              <Text style={{color: 'red', fontFamily: 'Sansation-Regular'}}>
                 {errors.email.message}
               </Text>
             )}
@@ -158,7 +158,7 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
               errors={Boolean(errors?.password)}
             />
             {errors.password && (
-              <Text style={{color: 'red', fontFamily: 'Sansation_Regular'}}>
+              <Text style={{color: 'red', fontFamily: 'Sansation-Regular'}}>
                 {errors.password.message}
               </Text>
             )}
@@ -205,12 +205,12 @@ const styles = StyleSheet.create({
     fontSize: 22,
     marginTop: 20,
     textAlign: 'center',
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
     color: 'black',
   },
   subText: {
     marginTop: 6,
-    fontFamily: 'Sansation_Regular',
+    fontFamily: 'Sansation-Regular',
 
     textAlign: 'center',
     color: 'black',
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
   termsText: {
     color: 'gray',
     textAlign: 'center',
-    fontFamily: 'Sansation_Regular',
+    fontFamily: 'Sansation-Regular',
   },
   blankview: {
     width: 20,

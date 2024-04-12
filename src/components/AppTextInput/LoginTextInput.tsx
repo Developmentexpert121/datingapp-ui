@@ -59,7 +59,7 @@ export default LoginTextInput;
 const styles = StyleSheet.create({
   textInput1: {
     height: 45,
-    fontFamily: 'Sansation_Regular',
+    fontFamily: 'Sansation-Regular',
     fontSize: 16,
     padding: Spacing,
     backgroundColor: Colors.onPrimary,

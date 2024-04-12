@@ -78,6 +78,6 @@ const styles = StyleSheet.create({
   text: {
     color: 'black',
     fontSize: 24,
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
   },
 });

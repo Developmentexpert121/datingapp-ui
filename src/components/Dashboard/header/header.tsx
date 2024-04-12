@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 26,
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
     color: 'black',
   },
   backPressIcon: {

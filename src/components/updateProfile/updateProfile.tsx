@@ -149,7 +149,7 @@ const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
             color: 'white',
             paddingVertical: 6,
             paddingHorizontal: 12,
-            fontFamily: 'Sansation_Regular',
+            fontFamily: 'Sansation-Regular',
           }}>
           {item}
         </Text>
@@ -165,7 +165,7 @@ const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
             color: 'grey',
             paddingVertical: 6,
             paddingHorizontal: 12,
-            fontFamily: 'Sansation_Regular',
+            fontFamily: 'Sansation-Regular',
           }}>
           {item}
         </Text>
@@ -242,7 +242,7 @@ const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
                     borderRadius: 32,
                     paddingVertical: 6,
                     paddingHorizontal: 12,
-                    fontFamily: 'Sansation_Regular',
+                    fontFamily: 'Sansation-Regular',
                   }}>
                   {selectedAvatar}
                 </Text>
@@ -337,7 +337,7 @@ const UpdateProfile = () => {
       <View style={[styles.boxContainer, {marginTop: 28}]}>
         <View style={styles.distance}>
           <Text style={styles.textName}>Height</Text>
-          <Text style={{fontFamily: 'Sansation_Regular'}}>{height} mt</Text>
+          <Text style={{fontFamily: 'Sansation-Regular'}}>{height} mt</Text>
         </View>
         <View style={styles.line} />
         <Slider
@@ -362,7 +362,7 @@ const UpdateProfile = () => {
               <TouchableOpacity
                 style={styles.textField}
                 onPress={() => handleModal(item)}>
-                <Text style={{fontFamily: 'Sansation_Regular'}}>
+                <Text style={{fontFamily: 'Sansation-Regular'}}>
                   {item.name}
                 </Text>
               </TouchableOpacity>
@@ -408,7 +408,7 @@ const styles = StyleSheet.create({
   textName: {
     alignSelf: 'center',
     fontSize: 16,
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
     color: 'black',
   },
   line: {
@@ -470,7 +470,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     marginLeft: 40,
     color: 'black',
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
   },
 
   closeButton: {
@@ -507,7 +507,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
     textAlign: 'center',
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
   },
 
   containerModal: {

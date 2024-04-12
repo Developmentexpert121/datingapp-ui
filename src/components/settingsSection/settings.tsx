@@ -387,7 +387,7 @@ const SettingsSection = () => {
                   )}
                   <Text
                     style={{
-                      fontFamily: 'Sansation_Regular',
+                      fontFamily: 'Sansation-Regular',
                       textAlign: 'center',
                     }}>
                     {item.name}
@@ -442,7 +442,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
     color: 'black',
     marginLeft: 24,
     marginBottom: 12,
@@ -450,7 +450,7 @@ const styles = StyleSheet.create({
   textName: {
     alignSelf: 'center',
     fontSize: 16,
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
     color: 'black',
   },
   line: {
@@ -497,7 +497,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
     textAlign: 'center',
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
   },
 
   overlay: {
@@ -516,7 +516,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     marginLeft: 40,
     color: 'black',
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
   },
 
   listItem: {

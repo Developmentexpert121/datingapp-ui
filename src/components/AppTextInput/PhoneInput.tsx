@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 20,
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
     color: 'black',
     textAlign: 'center',
   },

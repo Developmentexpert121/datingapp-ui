@@ -383,12 +383,12 @@ const styles = StyleSheet.create({
   headerText: {
     color: 'black',
     fontSize: 24,
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
     marginBottom: 10,
     textAlign: 'center',
   },
   paragraphText: {
-    fontFamily: 'Sansation_Regular',
+    fontFamily: 'Sansation-Regular',
     fontSize: 16,
     textAlign: 'center',
     marginBottom: 20,
@@ -421,7 +421,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 18,
     textAlign: 'center',
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
   },
   backPress: {
     flexDirection: 'row',
@@ -440,7 +440,7 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     paddingHorizontal: 16,
     borderRadius: 10,
-    fontFamily: 'Sansation_Regular',
+    fontFamily: 'Sansation-Regular',
     overflow: 'hidden',
   },
 });

@@ -130,7 +130,7 @@ const NotificationScreen = () => {
             </View>
           </View>
           <View style={{marginHorizontal: 20}}>
-            <Text style={{fontFamily: 'Sansation_Bold'}}>
+            <Text style={{fontFamily: 'Sansation-Bold'}}>
               {getTimeAgo(item.timestamp)}
             </Text>
           </View>
@@ -149,7 +149,7 @@ const NotificationScreen = () => {
             alignItems: 'center',
             marginBottom: 40,
           }}>
-          <Text style={{fontFamily: 'Sansation_Bold', fontSize: 20}}>
+          <Text style={{fontFamily: 'Sansation-Bold', fontSize: 20}}>
             You have no Notifications!
           </Text>
         </View>
@@ -194,17 +194,17 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 16,
     alignSelf: 'flex-start',
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
   },
   subtitle: {
     fontSize: 12,
     color: '#666',
     flexWrap: 'nowrap',
     alignSelf: 'flex-start',
-    fontFamily: 'Sansation_Regular',
+    fontFamily: 'Sansation-Regular',
   },
   actionButton: {
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
     color: '#AC25AC',
     marginRight: 20,
   },

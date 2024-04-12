@@ -138,7 +138,7 @@ const FilterSection = ({
       <View style={styles.boxContainer}>
         <View style={styles.distance}>
           <Text style={styles.textName}>Distance Preference</Text>
-          <Text style={{fontFamily: 'Sansation_Regular', color: 'black'}}>
+          <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
             {distance} Mi
           </Text>
         </View>
@@ -167,7 +167,7 @@ const FilterSection = ({
               }}>
               <Text
                 style={{
-                  fontFamily: 'Sansation_Regular',
+                  fontFamily: 'Sansation-Regular',
                   marginTop: 2,
                   marginBottom: 8,
                   color: 'black',
@@ -219,7 +219,7 @@ const FilterSection = ({
                       style={[
                         {
                           color: errors?.interests ? 'red' : 'black',
-                          fontFamily: 'Sansation_Regular',
+                          fontFamily: 'Sansation-Regular',
                           paddingBottom: 8,
                         },
                       ]}>
@@ -257,7 +257,7 @@ const FilterSection = ({
       <View style={styles.boxContainer}>
         <View style={styles.distance}>
           <Text style={styles.textName}>Age Range</Text>
-          <Text style={{fontFamily: 'Sansation_Regular', color: 'black'}}>
+          <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
             {low + '-' + high}
           </Text>
         </View>
@@ -301,7 +301,7 @@ const FilterSection = ({
                       style={[
                         {
                           color: errors?.gender ? 'red' : 'black',
-                          fontFamily: 'Sansation_Regular',
+                          fontFamily: 'Sansation-Regular',
                           paddingBottom: 8,
                         },
                       ]}>
@@ -383,7 +383,7 @@ const styles = StyleSheet.create({
   textName: {
     alignSelf: 'center',
     fontSize: 16,
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
     color: 'black',
   },
 

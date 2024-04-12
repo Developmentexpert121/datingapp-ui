@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   textLabel: {
     color: 'black',
     fontSize: 24,
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
     marginBottom: 28,
   },
   containerBtn: {
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 18,
     textAlign: 'center',
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
   },
 });
 

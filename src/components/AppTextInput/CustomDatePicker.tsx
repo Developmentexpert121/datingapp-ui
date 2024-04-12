@@ -102,7 +102,7 @@ const CustomDatePicker = ({
               fontSize: 16,
               color: 'grey',
               textAlign: 'center',
-              fontFamily: 'Sansation_Regular',
+              fontFamily: 'Sansation-Regular',
               //   color:
               //     date == "" ? light.colors.titaltext + "99" : light.colors.black,
             }}
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     //marginBottom: 0,
     textAlign: 'center',
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
     color: 'black',
   },
   input: {

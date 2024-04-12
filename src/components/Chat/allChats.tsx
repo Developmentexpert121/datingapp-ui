@@ -61,7 +61,7 @@ const UsersDrawer = ({isOpen, onClose}: any) => {
               <Avatar source={{uri: users.profilePic}} rounded size={54} />
               <Text
                 style={{
-                  fontFamily: 'Sansation_Bold',
+                  fontFamily: 'Sansation-Bold',
                   fontSize: 20,
                   color: 'black',
                 }}>
@@ -72,7 +72,7 @@ const UsersDrawer = ({isOpen, onClose}: any) => {
           <Text
             onPress={onClose}
             style={{
-              fontFamily: 'Sansation_Bold',
+              fontFamily: 'Sansation-Bold',
               fontSize: 16,
               color: 'white',
               borderWidth: 1,
@@ -229,7 +229,7 @@ const ChatSection = () => {
                   <View style={{paddingBottom: 10}}>
                     <Text
                       style={{
-                        fontFamily: 'Sansation_Bold',
+                        fontFamily: 'Sansation-Bold',
                         fontSize: 18,
                         color: 'black',
                         marginBottom: 8,
@@ -238,7 +238,7 @@ const ChatSection = () => {
                     </Text>
                     <Text
                       style={{
-                        fontFamily: 'Sansation_Regular',
+                        fontFamily: 'Sansation-Regular',
                       }}>
                       {item.latestMessage}
                     </Text>
@@ -251,7 +251,7 @@ const ChatSection = () => {
                     }}>
                     <Text
                       style={{
-                        fontFamily: 'Sansation_Regular',
+                        fontFamily: 'Sansation-Regular',
                         fontSize: 10,
                         color: 'black',
                       }}>
@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
   msgs: {
     marginTop: 16,
     fontSize: 24,
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
     color: 'black',
     marginLeft: 20,
     marginBottom: 4,
@@ -319,7 +319,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 16,
-    fontFamily: 'Sansation_Regular',
+    fontFamily: 'Sansation-Regular',
   },
   centeredView: {
     flex: 1,
@@ -349,7 +349,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     textAlign: 'center',
     color: 'black',
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-sBold',
   },
 });
 

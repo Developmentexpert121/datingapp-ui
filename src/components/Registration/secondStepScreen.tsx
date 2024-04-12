@@ -89,11 +89,11 @@ const styles = StyleSheet.create({
   headerText: {
     color: 'black',
     fontSize: 24,
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
     marginBottom: 8,
   },
   paragraphText: {
-    fontFamily: 'Sansation_Regular',
+    fontFamily: 'Sansation-Regular',
     fontSize: 16,
     marginBottom: 20,
     color: '#575757',
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     textAlignVertical: 'center',
     textAlign: 'center',
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
     paddingHorizontal: 6,
     paddingVertical: 2,
     color: 'black',

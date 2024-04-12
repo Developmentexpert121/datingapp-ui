@@ -118,7 +118,7 @@ const HomeScreen = () => {
           </View>
           <View style={styles.locText}>
             <Ionicons name="location-sharp" size={20} color="#AC25AC" />
-            <Text style={{fontFamily: 'Sansation_Regular', color: 'black'}}>
+            <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
               {
                 profileData.location && allUsers[currentIndex]?.location // Check if both locations are available
                   ? `${Math.round(
@@ -164,7 +164,7 @@ const HomeScreen = () => {
 
                   <Text
                     key={index.id}
-                    style={{fontFamily: 'Sansation_Regular', color: 'black'}}>
+                    style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
                     {item.selectedText}
                   </Text>
                 </View>

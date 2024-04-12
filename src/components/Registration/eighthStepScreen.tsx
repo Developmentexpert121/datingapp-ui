@@ -86,11 +86,11 @@ const styles = StyleSheet.create({
   headerText: {
     color: 'black',
     fontSize: 24,
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
     marginBottom: 10,
   },
   paragraphText: {
-    fontFamily: 'Sansation_Regular',
+    fontFamily: 'Sansation-Regular',
     fontSize: 14,
     textAlign: 'center',
     color: '#575757',

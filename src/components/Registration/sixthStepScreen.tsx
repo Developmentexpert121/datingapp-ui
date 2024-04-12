@@ -41,11 +41,11 @@ const styles = StyleSheet.create({
   title: {
     color: 'black',
     fontSize: 24,
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
     marginBottom: 10,
   },
   paragraph: {
-    fontFamily: 'Sansation_Regular',
+    fontFamily: 'Sansation-Regular',
     fontSize: 14,
     marginBottom: 16,
     color: '#575757',
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   textArea: {
     fontSize: 16,
     textAlignVertical: 'top',
-    fontFamily: 'Sansation_Regular',
+    fontFamily: 'Sansation-Regular',
   },
 
   errorBorder: {

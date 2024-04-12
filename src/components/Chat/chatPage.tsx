@@ -209,7 +209,7 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
                   <Text
                     style={{
                       fontSize: 16,
-                      fontFamily: 'Sansation_Regular',
+                      fontFamily: 'Sansation-Regular',
                       marginStart: 12,
                       color: '#6D6D6D',
                     }}>
@@ -367,7 +367,7 @@ const styles = StyleSheet.create({
   sendButtonText: {
     color: 'white',
     fontSize: 16,
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
   },
   input: {
     flex: 1,
@@ -401,7 +401,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 20,
     marginHorizontal: 12,
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
   },
 
   editIcon: {
