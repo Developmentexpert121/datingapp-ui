@@ -41,6 +41,8 @@ import SeventhStepScreen from '../../components/Registration/seventhStepScreen';
 import EighthStepScreen from '../../components/Registration/eighthStepScreen';
 
 import Geolocation from '@react-native-community/geolocation';
+import MainButton from '../../components/ButtonComponent/MainButton';
+import {brown100} from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 type Props = NativeStackScreenProps<RootStackParamList, 'Register'>;
 
 interface RegisterForm {
@@ -264,10 +266,13 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
           Platform.OS === 'ios' ? StatusBar.currentHeight || 0 : 0
         }
         style={{flex: 1}}>
-        <ScrollView
-          nestedScrollEnabled={true}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.scrollViewContent}>
+        <View
+          style={{flex: 1}}
+          // scrollEnabled={false}
+          // nestedScrollEnabled={true}
+          // showsVerticalScrollIndicator={false}
+          // contentContainerStyle={styles.scrollViewContent}
+        >
           {steps > 0 ? (
             <Pressable style={styles.backPress}>
               <Ionicons
@@ -329,49 +334,33 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
                 errors={Boolean(errors?.hobbies)}
               />
             ) : steps === 7 ? (
-              <SafeAreaView style={styles.container}>
-                <View style={styles.contentContainer}>
-                  <Text style={styles.headerText}>Add photos</Text>
-                  <Text style={styles.paragraphText}>
-                    Pick Some photos for your profile
-                  </Text>
-                  <SeventhStepScreen
-                    profileImages={profileImages}
-                    setProfileImages={setProfileImages}
-                    title="Registeration"
-                  />
-                </View>
-              </SafeAreaView>
-            ) : steps === 8 ? (
+              <SeventhStepScreen
+                profileImages={profileImages}
+                setProfileImages={setProfileImages}
+                title="Registeration"
+              />
+            ) :
+            steps === 8 ? (
               <EighthStepScreen />
             ) : (
               ''
             )}
           </View>
-          <View style={styles.containerBtn}>
-            <TouchableOpacity
-              onPress={
-                //() => {
-                //forwardStep(steps);
-                handleSubmit(onSubmit)
-                //}
-              }
-              style={styles.button}>
-              <Text style={styles.buttonText}>
-                {steps === 0 ? 'Continue' : steps < 8 ? 'Next' : 'Done'}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
+          <MainButton
+            buttonStyle={{width: '90%'}}
+            ButtonName={steps === 0 ? 'Continue' : steps < 8 ? 'Next' : 'Done'}
+            onPress={handleSubmit(onSubmit)}
+          />
+        </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+    borderWidth: 0,
   },
   scrollViewContent: {
     flexGrow: 1,
@@ -380,43 +369,6 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingHorizontal: 20,
   },
-  headerText: {
-    color: 'black',
-    fontSize: 24,
-    fontFamily: 'Sansation-Bold',
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-  paragraphText: {
-    fontFamily: 'Sansation-Regular',
-    fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 20,
-    color: 'black',
-  },
-  maindiv: {
-    width: '100%',
-    height: '100%',
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    backgroundColor: '#F5F5F5',
-  },
-
-  containerBtn: {
-    alignItems: 'center',
-    marginVertical: 10,
-  },
-
-  button: {
-    width: '80%',
-    backgroundColor: '#AA22AA',
-    padding: 10,
-    borderRadius: 20,
-    marginBottom: 20,
-  },
-
   buttonText: {
     color: 'white',
     fontSize: 18,

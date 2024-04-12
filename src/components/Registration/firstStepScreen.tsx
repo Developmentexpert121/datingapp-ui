@@ -13,11 +13,10 @@ const FirstStepScreen = ({interests, control, errors}: any) => {
   const [checked, setChecked] = useState('');
 
   return (
-    <SafeAreaView>
       <View
         style={{
           paddingHorizontal: 40,
-          justifyContent: 'center',
+          // justifyContent: 'center',
           alignItems: 'center',
           flex: 1,
         }}>
@@ -49,7 +48,6 @@ const FirstStepScreen = ({interests, control, errors}: any) => {
           </View>
         ))}
       </View>
-    </SafeAreaView>
   );
 };
 

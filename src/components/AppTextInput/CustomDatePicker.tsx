@@ -70,6 +70,11 @@ const CustomDatePicker = ({
     onChangeText && onChangeText(date.toString());
     hideDatePicker();
   };
+  const currentDate = new Date();
+  const minDate = new Date(currentDate);
+  minDate.setFullYear(minDate.getFullYear() - 56); // 56 years ago
+  const maxDate = new Date(currentDate);
+  maxDate.setFullYear(maxDate.getFullYear() - 18); // 18 years ago
 
   useEffect(() => {
     setDate(value ?? '');
@@ -95,7 +100,9 @@ const CustomDatePicker = ({
             mode="date"
             onConfirm={handleConfirm}
             onCancel={hideDatePicker}
-            maximumDate={new Date()}
+            // maximumDate={new Date()}
+            minimumDate={minDate}
+            maximumDate={maxDate}
           />
           <Label
             style={{

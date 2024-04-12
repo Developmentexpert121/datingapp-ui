@@ -14,11 +14,11 @@
       "sha1": "5acf813f59c57f10555e64824fccbf588001b478"
     },
     {
-      "path": "src/assets/fonts/Sansation-Bold.ttf",
+      "path": "src/assets/fonts/Sansation_Bold.ttf",
       "sha1": "cb34aa6e1b227aea85452ec2170723d702529d45"
     },
     {
-      "path": "src/assets/fonts/Sansation-Bold_Italic.ttf",
+      "path": "src/assets/fonts/Sansation_Bold_Italic.ttf",
       "sha1": "d78e5f0d0fe5b82f52d8f10b19abb0370fc8886c"
     },
     {
@@ -34,7 +34,7 @@
       "sha1": "339f19f40bc7d65d45a075b57a554d1a5b5802aa"
     },
     {
-      "path": "src/assets/fonts/Sansation-Regular.ttf",
+      "path": "src/assets/fonts/Sansation_Regular.ttf",
       "sha1": "cce586ccae3991a117fb36f80e4f71cc321fd670"
     }
   ]

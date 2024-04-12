@@ -114,7 +114,7 @@ const PhoneInput = ({
                 returnKeyType="done"
                 onChangeText={onChange}
                 keyboardType="phone-pad"
-                maxLength={25}
+                maxLength={12}
               />
             </View>
           </View>

@@ -1,8 +1,6 @@
 import {
-  SafeAreaView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
   Image,
@@ -13,27 +11,22 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import * as yup from 'yup';
-import Spacing from '../../constants/Spacing';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../types';
-import AppTextInput from '../../components/AppTextInput/AppTextInput';
 import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useAppDispatch, useAppSelector} from '../../store/store';
-import {LoginSignIn} from '../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MainButton from '../../components/ButtonComponent/MainButton';
 import {useNavigation} from '@react-navigation/native';
 import LoginTextInput from '../../components/AppTextInput/LoginTextInput';
-import ImageContainer from '../../components/container/ImageContainer';
-import {ChevronLeftIC} from '../../assets/svgs';
+import {LoginSignIn} from '../../store/Auth/auth';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 interface LoginForm {
   email: string;
   password: string;
 }
-
 const defaultValues = {
   email: '',
   password: '',
@@ -59,11 +52,14 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     defaultValues,
     resolver: yupResolver(schema),
   });
-
   const onSubmit: any = (data: LoginForm) => {
     dispatch(LoginSignIn(data));
     reset();
   };
+
+  const signInInfo: any = useAppSelector(
+    (state: any) => state?.Auth?.data?.signInInfo,
+  );
 
   useEffect(() => {
     const fetchToken = async () => {
@@ -126,7 +122,11 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
         <View
           style={{
             flex: 1 / 10,
-            borderWidth: 0,
+            width: '100%',
+            height: '100%',
+            // justifyContent: 'center',
+            alignItems: 'center',
+            // borderWidth: 1,
           }}>
           <Text style={styles.label}>What's your email?</Text>
           <Text style={styles.subText}>
@@ -162,7 +162,21 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
                 {errors.password.message}
               </Text>
             )}
+            {signInInfo && (
+              <Text
+                style={{
+                  fontFamily: 'Sansation-Regular',
+                  color: 'red',
+                  fontSize: 14,
+                  textAlign: 'center',
+                }}>
+                {signInInfo}
+              </Text>
+            )}
             <MainButton
+              buttonStyle={{
+                width: '100%',
+              }}
               onPress={handleSubmit(onSubmit)}
               ButtonName={'Log In'}
             />
@@ -225,6 +239,8 @@ const styles = StyleSheet.create({
     color: 'gray',
     textAlign: 'center',
     fontFamily: 'Sansation-Regular',
+    // bottom:20,
+    // position:'absolute'
   },
   blankview: {
     width: 20,

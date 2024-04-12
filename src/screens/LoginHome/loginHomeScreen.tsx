@@ -17,9 +17,11 @@ const images = [
 ];
 type Props = NativeStackScreenProps<RootStackParamList, 'Loginhome'>;
 const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
+
   const signInInfo: any = useAppSelector(
     (state: any) => state?.Auth?.data?.signInInfo,
   );
+
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   // useEffect(() => {
   //   const timer = setTimeout(() => {
@@ -62,14 +64,16 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
           flex: 2 / 5,
           width: '100%',
           height: '100%',
-          justifyContent: 'center',
+          // justifyContent: 'center',
           alignItems: 'center',
+          // borderWidth: 1,
         }}>
-        <Text style={styles.label}>What's your email?</Text>
-        <Text style={styles.subText}>
-          Don't lose access to your account,{'\n'}verify your email.
-        </Text>
-
+        <View>
+          <Text style={styles.label}>What's your email?</Text>
+          <Text style={styles.subText}>
+            Don't lose access to your account,{'\n'}verify your email.
+          </Text>
+        </View>
         <TouchableOpacity
           style={styles.button}
           onPress={() => navigate('Register')}>
@@ -130,7 +134,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 22,
-    marginTop: 16,
+    marginTop: 20,
     textAlign: 'center',
     fontFamily: 'Sansation-Bold',
     color: 'black',

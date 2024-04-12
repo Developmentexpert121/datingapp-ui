@@ -186,10 +186,14 @@ const SeventhStepScreen = ({
 
   return (
     <View style={styles.container}>
+      <Text style={styles.headerText}>Add photos</Text>
+      <Text style={styles.paragraphText}>
+        Pick Some photos for your profile
+      </Text>
       <View style={styles.containerdm}>
         {[
           ...profileImages,
-          ...Array(Math.max(6 - (profileImages?.length || 0), 0)),
+          ...Array(Math.max(9 - (profileImages?.length || 0), 0)),
         ]?.map((item, index) => (
           <TouchableOpacity
             onPress={() => {
@@ -225,7 +229,7 @@ const SeventhStepScreen = ({
           style={{
             color: 'red',
             textAlign: 'center',
-            fontFamily: 'Sansation-Regular',
+            fontFamily: 'Sansation_Regular',
           }}>
           Please select any picture or select from gallery
         </Text>
@@ -237,9 +241,10 @@ const SeventhStepScreen = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    // justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 24,
+    // borderWidth:1
   },
   containerdm: {
     flexDirection: 'row',
@@ -253,12 +258,12 @@ const styles = StyleSheet.create({
     borderStyle: 'dashed',
     backgroundColor: '#E0E0E0',
     position: 'relative',
-    width: 100,
-    height: 160,
+    width: 90,
+    height: 90,
   },
   dummyImagedm: {
-    width: 100,
-    height: 160,
+    width: 90,
+    height: 90,
     borderRadius: 12,
   },
   addRemoveButton: {
@@ -278,8 +283,22 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.51,
     shadowRadius: 13.16,
-
     elevation: 20,
+  },
+  headerText: {
+    color: 'black',
+    fontSize: 24,
+    fontFamily: 'Sansation-Bold',
+    marginTop: 10,
+    textAlign: 'center',
+  },
+  paragraphText: {
+    fontFamily: 'Sansation-Regular',
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 20,
+    color: 'black',
+    marginVertical:10
   },
 });
 

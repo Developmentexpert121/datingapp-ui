@@ -45,7 +45,7 @@ const SecondStepScreen = ({partnerType, control, errors}: any) => {
   ];
 
   return (
-    <SafeAreaView>
+    <View>
       <View style={styles.container}>
         <Text style={styles.headerText}>Right now I'm looking for...</Text>
         <Text style={styles.paragraphText}>
@@ -77,7 +77,7 @@ const SecondStepScreen = ({partnerType, control, errors}: any) => {
           ))}
         </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -111,6 +111,8 @@ const styles = StyleSheet.create({
     marginBottom: 25,
     backgroundColor: '#E8E8E8',
     borderRadius: 45,
+    borderWidth:2,
+    borderColor:"transparent"
   },
   avatarImageContainer: {},
   avatarImage: {

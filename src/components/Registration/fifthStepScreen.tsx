@@ -6,6 +6,7 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
+  ScrollView,
 } from 'react-native';
 import React, {useState} from 'react';
 import {useForm, Controller} from 'react-hook-form';
@@ -84,7 +85,7 @@ const FifthStepScreen = ({habits2, control, errors}: any) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.contentContainer}>
         <Text style={styles.headerText}>What else makes you, you?</Text>
         <Text style={styles.paragraphText}>
@@ -163,7 +164,7 @@ const FifthStepScreen = ({habits2, control, errors}: any) => {
           </Text>
         )}
       </View>
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 
@@ -172,6 +173,7 @@ export default FifthStepScreen;
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
+    flex: 1,
   },
   contentContainer: {
     flexGrow: 1,

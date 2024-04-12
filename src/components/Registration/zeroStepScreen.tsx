@@ -6,6 +6,7 @@ import {
   Image,
   Button,
   Platform,
+  ScrollView,
 } from 'react-native';
 import React, {useEffect, useMemo, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -83,7 +84,7 @@ const ZeroStepScreen = ({
   };
 
   return (
-    <View>
+    <View style={{borderWidth: 0, flex: 1}}>
       <View style={styles.topView}>
         {/* <TouchableOpacity
           style={{margin: 20}}
@@ -103,24 +104,27 @@ const ZeroStepScreen = ({
 
         <View style={styles.blankview}></View>
       </View>
-      <View style={styles.container}>
-        <Text style={styles.label}>My name is</Text>
-        {/* <TextInput style={styles.input} placeholder="Enter your name" /> */}
-        <AppTextInput
-          placeholder="Enter Your Name"
-          name={name}
-          control={control}
-          errors={Boolean(errors?.name)}
-        />
-        {errors.name && (
-          <Text style={styles.errorText}>{errors.name.message}</Text>
-        )}
-        <Text style={styles.label2}>This is how it will appear in dating</Text>
-      </View>
+      <ScrollView style={{borderWidth: 0, flex: 1}} showsVerticalScrollIndicator={false}>
+        <View style={styles.container}>
+          <Text style={styles.label}>My name is</Text>
+          {/* <TextInput style={styles.input} placeholder="Enter your name" /> */}
+          <AppTextInput
+            placeholder="Enter Your Name"
+            name={name}
+            control={control}
+            errors={Boolean(errors?.name)}
+          />
+          {errors.name && (
+            <Text style={styles.errorText}>{errors.name.message}</Text>
+          )}
+          <Text style={styles.label2}>
+            This is how it will appear in dating
+          </Text>
+        </View>
 
-      <View style={styles.container}>
-        {/* <Text style={styles.label}>Date Of Birth </Text> */}
-        {/* <Controller
+        <View style={styles.container}>
+          {/* <Text style={styles.label}>Date Of Birth </Text> */}
+          {/* <Controller
           name={dateDisplay}
           control={control}
           render={() => (
@@ -152,7 +156,7 @@ const ZeroStepScreen = ({
             </TouchableOpacity>
           )}
         /> */}
-        {/* {show && (
+          {/* {show && (
           <DateTimePicker
             style={{alignSelf: 'center'}}
             testID="dateTimePicker"
@@ -162,8 +166,8 @@ const ZeroStepScreen = ({
             onChange={onChange}
           />
         )} */}
-        {/*  */}
-        {/* <CustomDatePicker
+          {/*  */}
+          {/* <CustomDatePicker
           // disabled={user?.profileKyc !== "unverified"}
           // editable={!(user?.profileKyc !== "unverified")}
           // onChangeText={handleChange('dateOfBirth')}
@@ -172,155 +176,156 @@ const ZeroStepScreen = ({
           label="Date Of Birth"
           placeholder="Date of birth"
         /> */}
-        <Controller
-          control={control}
-          name={dob} // You can specify the name for the field
-          rules={{required: true}} // Add any validation rules here
-          defaultValue="" // Set the default value
-          render={({field: {onChange, onBlur, value}}) => (
-            <CustomDatePicker
-              label="Date Of Birth"
-              placeholder="Date of birth"
-              value={value}
-              onChangeText={onChange}
-              showError={Boolean(errors?.phone)}
-              errors={Boolean(errors?.dob)}
-              // onBlur={field.onBlur}
-              // You can pass any additional props required by CustomDatePicker
-            />
+          <Controller
+            control={control}
+            name={dob} // You can specify the name for the field
+            rules={{required: true}} // Add any validation rules here
+            defaultValue="" // Set the default value
+            render={({field: {onChange, onBlur, value}}) => (
+              <CustomDatePicker
+                label="Date Of Birth"
+                placeholder="Date of birth"
+                value={value}
+                onChangeText={onChange}
+                showError={Boolean(errors?.phone)}
+                errors={Boolean(errors?.dob)}
+                // onBlur={field.onBlur}
+                // You can pass any additional props required by CustomDatePicker
+              />
+            )}
+          />
+          {errors.dob && (
+            <Text style={styles.errorText}>{errors.dob.message}</Text>
           )}
-        />
-        {errors.dob && (
-          <Text style={styles.errorText}>{errors.dob.message}</Text>
-        )}
-        <Text style={styles.label2}>Your age will be public</Text>
-      </View>
-      <View style={styles.container}>
-        {/* <Text style={styles.label}>Phone number</Text> */}
-        {/* <TextInput style={styles.input} placeholder="Enter your name" /> */}
-        {/* <AppTextInput
+          <Text style={styles.label2}>Your age will be public</Text>
+        </View>
+        <View style={styles.container}>
+          {/* <Text style={styles.label}>Phone number</Text> */}
+          {/* <TextInput style={styles.input} placeholder="Enter your name" /> */}
+          {/* <AppTextInput
           placeholder="Enter Your Phone"
           name={phone}
           control={control}
           errors={Boolean(errors?.phone)}
           keyboardType="numeric"
         /> */}
-        <PhoneInput
-          name={phone}
-          control={control}
-          label="Phone Number"
-          // showError={touched.phoneNumber}
-          showError={Boolean(errors?.phone)}
-          errors={Boolean(errors?.phone)}
-          // value={values.phoneNumber}
-          // code={values.countryCode}
-          // onChangeText={handleChange("phoneNumber")}
-          // onCountryCode={handleChange("countryCode")}
-        />
-        {errors.phone && (
-          <Text style={styles.errorText}>{errors.phone.message}</Text>
-        )}
+          <PhoneInput
+            name={phone}
+            control={control}
+            label="Phone Number"
+            // showError={touched.phoneNumber}
+            showError={Boolean(errors?.phone)}
+            errors={Boolean(errors?.phone)}
+            // value={values.phoneNumber}
+            // code={values.countryCode}
+            // onChangeText={handleChange("phoneNumber")}
+            // onCountryCode={handleChange("countryCode")}
+          />
+          {errors.phone && (
+            <Text style={styles.errorText}>{errors.phone.message}</Text>
+          )}
 
-        <Text style={styles.label2}>Yor phone will be public</Text>
-      </View>
+          <Text style={styles.label2}>Your phone will be public</Text>
+        </View>
 
-      <View style={[styles.container1]}>
-        <Text style={styles.label1}>Gender</Text>
-        {options.map(item => (
-          <View key={item.value} style={styles.radio}>
-            <Controller
-              name={gender}
-              control={control}
-              defaultValue=""
-              render={({field: {onChange, value}}) => (
-                <View
-                  style={{
-                    marginTop: 4,
-                    marginHorizontal: 24,
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                  }}>
-                  <Text
-                    style={[
-                      styles.radioLabel,
-                      {color: errors?.[gender] ? 'red' : 'black'},
-                    ]}>
-                    {item.label}
-                  </Text>
+        <View style={[styles.container1]}>
+          <Text style={styles.label1}>Gender</Text>
+          {options.map(item => (
+            <View key={item.value} style={styles.radio}>
+              <Controller
+                name={gender}
+                control={control}
+                defaultValue=""
+                render={({field: {onChange, value}}) => (
                   <View
-                    style={[
-                      styles.cricleView,
-                      Platform.OS === 'ios' && styles.iosBorder,
-                    ]}>
-                    <RadioButton
-                      value={item.label}
-                      status={value === item.label ? 'checked' : 'unchecked'}
-                      onPress={() => onChange(item.label)}
-                      color={errors?.[gender] ? 'red' : '#AC25AC'}
-                      uncheckedColor={errors?.[gender] ? 'red' : '#AC25AC'}
-                    />
+                    style={{
+                      marginTop: 4,
+                      marginHorizontal: 24,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}>
+                    <Text
+                      style={[
+                        styles.radioLabel,
+                        {color: errors?.[gender] ? 'red' : 'black'},
+                      ]}>
+                      {item.label}
+                    </Text>
+                    <View
+                      style={[
+                        styles.cricleView,
+                        Platform.OS === 'ios' && styles.iosBorder,
+                      ]}>
+                      <RadioButton
+                        value={item.label}
+                        status={value === item.label ? 'checked' : 'unchecked'}
+                        onPress={() => onChange(item.label)}
+                        color={errors?.[gender] ? 'red' : '#AC25AC'}
+                        uncheckedColor={errors?.[gender] ? 'red' : '#AC25AC'}
+                      />
+                    </View>
                   </View>
-                </View>
-              )}
-            />
-          </View>
-        ))}
-        {errors.gender && (
-          <Text style={styles.errorText}>{errors.gender.message}</Text>
-        )}
-      </View>
+                )}
+              />
+            </View>
+          ))}
+          {errors.gender && (
+            <Text style={styles.errorText}>{errors.gender.message}</Text>
+          )}
+        </View>
 
-      <View style={styles.container}>
-        <Text style={styles.label}>Location</Text>
-        {/* <TextInput style={styles.input} placeholder="Country" />
+        <View style={styles.container}>
+          <Text style={styles.label}>Location</Text>
+          {/* <TextInput style={styles.input} placeholder="Country" />
           <TextInput style={styles.input} placeholder="City" /> */}
-        <AppTextInput
-          placeholder="Enter Your Country"
-          name={country}
-          control={control}
-          errors={Boolean(errors?.country)}
-        />
-        {errors.country && (
-          <Text style={styles.errorText}>{errors.country.message}</Text>
-        )}
-        <AppTextInput
-          placeholder="Enter Your City"
-          name={city}
-          control={control}
-          errors={Boolean(errors?.city)}
-        />
-        {errors.city && (
-          <Text style={styles.errorText}>{errors.city.message}</Text>
-        )}
-      </View>
+          <AppTextInput
+            placeholder="Enter Your Country"
+            name={country}
+            control={control}
+            errors={Boolean(errors?.country)}
+          />
+          {errors.country && (
+            <Text style={styles.errorText}>{errors.country.message}</Text>
+          )}
+          <AppTextInput
+            placeholder="Enter Your City"
+            name={city}
+            control={control}
+            errors={Boolean(errors?.city)}
+          />
+          {errors.city && (
+            <Text style={styles.errorText}>{errors.city.message}</Text>
+          )}
+        </View>
 
-      <View style={styles.container}>
-        <Text style={styles.label}>Email</Text>
-        <AppTextInput
-          placeholder="Enter Your Email"
-          name={email}
-          control={control}
-          errors={Boolean(errors?.email)}
-        />
-        {errors.email && (
-          <Text style={styles.errorText}>{errors.email.message}</Text>
-        )}
-      </View>
-      <View style={styles.container}>
-        <Text style={styles.label}>Password</Text>
-        <PasswodTextInput
-          placeholder="Enter Your Password"
-          keyboardType="password"
-          name={password}
-          control={control}
-          errors={Boolean(errors?.password)}
-          secureTextEntry
-        />
-        {errors.password && (
-          <Text style={styles.errorText}>{errors.password.message}</Text>
-        )}
-      </View>
+        <View style={styles.container}>
+          <Text style={styles.label}>Email</Text>
+          <AppTextInput
+            placeholder="Enter Your Email"
+            name={email}
+            control={control}
+            errors={Boolean(errors?.email)}
+          />
+          {errors.email && (
+            <Text style={styles.errorText}>{errors.email.message}</Text>
+          )}
+        </View>
+        <View style={styles.container}>
+          <Text style={styles.label}>Password</Text>
+          <PasswodTextInput
+            placeholder="Enter Your Password"
+            keyboardType="password"
+            name={password}
+            control={control}
+            errors={Boolean(errors?.password)}
+            secureTextEntry
+          />
+          {errors.password && (
+            <Text style={styles.errorText}>{errors.password.message}</Text>
+          )}
+        </View>
+      </ScrollView>
     </View>
   );
 };

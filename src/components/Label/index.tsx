@@ -5,10 +5,11 @@ import {
   Text,
   TextStyle,
   ViewStyle,
-} from "react-native";
-import React from "react";
+} from 'react-native';
+import React from 'react';
 // import { light } from "../../Theme";
-import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
+import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
+import Colors from '../../constants/Colors';
 
 interface Iprops {
   text?: string;
@@ -27,15 +28,14 @@ const Label = ({
   onPress,
   opacity,
   numberOfLines,
-  // fontFamily = "Inter-Regular",
-}: Iprops) => {
+}: // fontFamily = "Inter-Regular",
+Iprops) => {
   // const { colors } = light;
   return (
     <Text
       onPress={onPress}
-      style={[styles.text,  style]}
-      numberOfLines={numberOfLines}
-    >
+      style={[styles.text, style]}
+      numberOfLines={numberOfLines}>
       {text}
     </Text>
   );
@@ -44,8 +44,7 @@ export default Label;
 const styles = StyleSheet.create({
   text: {
     fontSize: moderateScale(16),
-    // textAlign: 'center',
-    fontFamily: "Sansation-Regular",
-    // color:light.colors.text
+    fontFamily: 'Sansation-Regular',
+    color: Colors.grayDark,
   },
 });

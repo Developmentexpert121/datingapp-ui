@@ -17,7 +17,7 @@ const SixthStepScreen = ({hobbies, control, errors}: any) => {
         render={({field: {onChange, onBlur, value}}) => (
           <View style={[styles.boxContainer, errors && styles.errorBorder]}>
             <TextInput
-              style={[styles.textArea, { height: 80 }]}
+              style={[styles.textArea, {height: 80}]}
               multiline
               numberOfLines={4}
               placeholder="This is your bio..."
@@ -55,6 +55,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlignVertical: 'top',
     fontFamily: 'Sansation-Regular',
+    padding: 10,
+    paddingTop: 10,
   },
 
   errorBorder: {

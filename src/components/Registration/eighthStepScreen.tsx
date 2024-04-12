@@ -44,7 +44,7 @@ const EighthStepScreen = () => {
   //   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.contentContainer}>
         <Text style={styles.headerText}>So, are you from around here? </Text>
         <Text style={styles.paragraphText}>
@@ -66,13 +66,14 @@ const EighthStepScreen = () => {
         </View>
         <View style={{flexGrow: 1}}></View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
+    // borderWidth:1
   },
   contentContainer: {
     flexGrow: 1,

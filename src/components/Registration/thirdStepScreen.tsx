@@ -8,7 +8,7 @@ const ThirdStepScreen = ({distance, setDistance}: any) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.contentContainer}>
         <Text style={styles.headerText}>Your distance preference?</Text>
         <Text style={styles.paragraphText}>
@@ -41,7 +41,7 @@ const ThirdStepScreen = ({distance, setDistance}: any) => {
           </Text>
         </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -96,7 +96,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.34,
     shadowRadius: 6.27,
-
     elevation: 10,
   },
   containerBtn: {
@@ -107,6 +106,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 20,
     color: '#575757',
+    textAlign:"center"
   },
 });
 
