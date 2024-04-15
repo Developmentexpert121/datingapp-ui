@@ -12,6 +12,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   ActivityIndicator,
+  ScrollView
 } from 'react-native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
@@ -21,7 +22,6 @@ import Icon1 from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/FontAwesome6';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {reciveMessages, sendAMessage} from '../../store/Auth/auth';
-import {ScrollView} from 'react-native-gesture-handler';
 import io from 'socket.io-client';
 import {SendIC} from '../../assets/svgs';
 

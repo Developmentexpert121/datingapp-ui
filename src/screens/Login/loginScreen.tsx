@@ -142,8 +142,10 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
               textstyle={{width: '"100%"'}}
               placeholder="Enter Your Email"
               name="email"
+              autoCapitalize="none"
               control={control}
               errors={Boolean(errors?.email)}
+              keyboardType='email-address'
             />
             {errors.email && (
               <Text style={{color: 'red', fontFamily: 'Sansation-Regular'}}>

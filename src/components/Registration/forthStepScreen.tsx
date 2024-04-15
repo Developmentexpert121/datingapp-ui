@@ -114,20 +114,6 @@ const ForthStepScreen = ({habits1, control, errors}: any) => {
         <Text style={styles.paragraphText}>
           Do their habits match yours? You go first.
         </Text>
-        {/* {dataArray.map((item) => (
-        <View style={styles.itemContainer} key={item.id}>
-          <Text style={styles.title}>{item.title}</Text>
-          <View style={styles.textsContainer}>
-            {item.texts.map((text, index) => (
-              <TouchableOpacity key={index} onPress={() => handleTextTouch(item.id, text)}>
-                <Text style={[styles.textItem, isTextTouched(item.id, text) && { color: '#AC25AC', borderColor:'#AC25AC' }]}>
-                  {text}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
-      ))} */}
         <Controller
           name={habits1}
           control={control}

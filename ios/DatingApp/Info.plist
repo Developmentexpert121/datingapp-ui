@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key> NSLocationWhenInUseUsageDescription</key>
-	<string>$(PRODUCT_NAME) location description.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<array>
 		<string/>
@@ -36,15 +34,15 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like to use your camera</string>
+	<string>TopTier Dating App use camera for a click photo.</string>
+	<key> NSLocationWhenInUseUsageDescription</key>
+	<string>TopTier Dating app using current location to get near by another users.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string/>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string>TopTier Dating app using current location to get near by another users.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like to use your microphone</string>
+	<string>TopTier Dating app using microphone to call.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>$(PRODUCT_NAME)photos description.</string>
+	<string>TopTier Dating App use gallery for a pick photo.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Sansation_Italic.ttf</string>

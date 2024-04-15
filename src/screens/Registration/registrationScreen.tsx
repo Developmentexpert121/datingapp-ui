@@ -51,7 +51,6 @@ interface RegisterForm {
   dob: string;
   profilePercentage: string;
 }
-
 const defaultValues = {
   name: '',
   phone: '',
@@ -126,7 +125,9 @@ const schema5 = yup.object().shape({
 const schema6 = yup.object().shape({
   hobbies: yup.string().trim().required('Hobbies are required'),
 });
-
+const schema7 = yup.object().shape({
+  hobbies: yup.string().trim().required('Photos are required'),
+});
 const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const profileData = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
@@ -152,6 +153,8 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
       return yupResolver<any>(schema5);
     } else if (steps === 6) {
       return yupResolver<any>(schema6);
+    } else if (steps === 7) {
+      return yupResolver<any>(schema7);
     }
   };
   const {
@@ -214,11 +217,25 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
               }),
             );
             reset();
-            navigate('Login');
+            // navigate('Login');s
           },
           style: 'cancel',
         },
-        {text: 'Allow', onPress: () => requestLocationPermission(data)},
+        {
+          text: 'Allow',
+          onPress: () => {
+            requestLocationPermission(data);
+            dispatch(
+              RegisterSignUp({
+                ...data,
+                distance: `${distance}mi`,
+                profilePic: profileImages?.join(','),
+                dob: dateStr,
+              }),
+            );
+            navigate('Login');
+          },
+        },
       ],
     );
   };
@@ -269,6 +286,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
           <View style={{flexGrow: 1}}>
             {steps === 0 ? (
               <ZeroStepScreen
+                countryCode="countryCode"
                 phone="phone"
                 name="name"
                 email="email"
@@ -319,9 +337,9 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
                 profileImages={profileImages}
                 setProfileImages={setProfileImages}
                 title="Registeration"
+                // errors={errors}
               />
-            ) :
-            steps === 8 ? (
+            ) : steps === 8 ? (
               <EighthStepScreen />
             ) : (
               ''

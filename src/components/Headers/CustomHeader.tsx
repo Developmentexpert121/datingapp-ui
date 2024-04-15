@@ -1,10 +1,6 @@
 import {
-  Alert,
-  Pressable,
   StyleSheet,
-  Text,
   View,
-  TouchableOpacity,
   ViewStyle,
   StyleProp,
   Platform,

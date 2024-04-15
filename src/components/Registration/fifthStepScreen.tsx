@@ -91,21 +91,6 @@ const FifthStepScreen = ({habits2, control, errors}: any) => {
         <Text style={styles.paragraphText}>
           Don't hold back Authenticity attracts authenticity.
         </Text>
-        {/* {dataArray.map((item) => (
-        <View style={styles.itemContainer} key={item.id}>
-          <Text style={styles.title}>{item.title}</Text>
-          <View style={styles.textsContainer}>
-            {item.texts.map((text, index) => (
-              <TouchableOpacity key={index} onPress={() => handleTextTouch(item.id, text)}>
-                <Text style={[styles.textItem, isTextTouched(item.id, text) && { color: '#AC25AC', borderColor:'#AC25AC' }]}>
-                  {text}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
-      ))} */}
-
         <Controller
           name={habits2}
           control={control}

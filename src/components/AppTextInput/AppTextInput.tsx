@@ -23,6 +23,7 @@ const AppTextInput = (Props: any) => {
     borderWidth,
     marginLeft,
     textstyle,
+    autoCapitalize,
     ...textInputProps
   } = Props;
   const [focused, setFocused] = useState<boolean>(false);
@@ -55,6 +56,7 @@ const AppTextInput = (Props: any) => {
           onChangeText={onChange}
           value={value}
           error={Boolean(errors)}
+          autoCapitalize={autoCapitalize}
         />
       )}
     />

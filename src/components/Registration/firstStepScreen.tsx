@@ -13,41 +13,42 @@ const FirstStepScreen = ({interests, control, errors}: any) => {
   const [checked, setChecked] = useState('');
 
   return (
-      <View
-        style={{
-          paddingHorizontal: 40,
-          // justifyContent: 'center',
-          alignItems: 'center',
-          flex: 1,
-        }}>
-        <Text style={styles.textLabel}>Who are you interested in seeing? </Text>
-        {options.map((item: any, index) => (
-          <View key={index} style={styles.containerBtn}>
-            <Controller
-              name={interests}
-              control={control}
-              defaultValue=""
-              render={({field: {onChange, value}}) => (
-                <TouchableOpacity
+    <View
+      style={{
+        paddingHorizontal: 40,
+        // justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1,
+      }}>
+      <Text style={styles.textLabel}>Who are you interested in seeing? </Text>
+      {options.map((item: any, index) => (
+        <View key={index} style={styles.containerBtn}>
+          <Controller
+            name={interests}
+            control={control}
+            defaultValue=""
+            render={({field: {onChange, value}}) => (
+              <TouchableOpacity
+                style={[
+                  value === item.value && styles.checkedBtn,
+                  styles.button,
+                  {borderColor: errors ? 'red' : '#747474'},
+                ]}
+                onPress={() => onChange(item.value)}>
+                <Text
                   style={[
-                    value === item.value && styles.checkedBtn,
-                    styles.button,
-                    {borderColor: errors ? 'red' : '#747474'},
-                  ]}
-                  onPress={() => onChange(item.value)}>
-                  <Text
-                    style={[
-                      styles.buttonText,
-                      {color: value === item.value ? 'white' : 'black'},
-                    ]}>
-                    {item.value}
-                  </Text>
-                </TouchableOpacity>
-              )}
-            />
-          </View>
-        ))}
-      </View>
+                    styles.buttonText,
+                    {color: value === item.value ? 'white' : 'black'},
+                  ]}>
+                  {item.value}
+                </Text>
+              </TouchableOpacity>
+            )}
+          />
+        </View>
+      ))}
+      {/* <Text>dfhiue</Text> */}
+    </View>
   );
 };
 

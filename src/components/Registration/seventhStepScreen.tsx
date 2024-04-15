@@ -7,7 +7,6 @@ import {
   Text,
   TouchableOpacity,
   Image,
-  FlatList,
   StyleSheet,
 } from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
@@ -16,6 +15,7 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {updateProfileData, uploadImages} from '../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Controller} from 'react-hook-form';
 
 const getUserId = async () => {
   try {
@@ -35,10 +35,16 @@ const SeventhStepScreen = ({
   profileImages,
   setProfileImages,
   title,
+  images,
+  control,
+  error,
 }: {
   profileImages: any;
   setProfileImages: any;
   title?: any;
+  images?: any;
+  control?: any;
+  error?: any;
 }) => {
   const [uploadError, setUploadError] = useState<boolean>(false);
 
@@ -147,8 +153,7 @@ const SeventhStepScreen = ({
           if (!response?.didCancel && !response?.errorMessage) {
             if (response?.assets && response.assets.length > 0) {
               try {
-                const asset = response.assets[0]; // Assuming you want to upload only the first selected image
-
+                const asset = response.assets[1]; // Assuming you want to upload only the first selected image
                 const formData = new FormData();
                 formData.append('image', {
                   name: asset.fileName,
@@ -191,47 +196,51 @@ const SeventhStepScreen = ({
         Pick Some photos for your profile
       </Text>
       <View style={styles.containerdm}>
-        {[
-          ...profileImages,
-          ...Array(Math.max(9 - (profileImages?.length || 0), 0)),
-        ]?.map((item, index) => (
-          <TouchableOpacity
-            onPress={() => {
-              if (item) {
-                handleRemoveImage(index);
-              } else {
-                handleImageSelection();
-              }
-            }}
-            style={[styles.imageContainerdm, !item && {borderWidth: 2}]}
-            key={index}>
-            {item && <Image source={{uri: item}} style={styles.dummyImagedm} />}
+        
+              {[
+                ...profileImages,
+                ...Array(Math.max(6 - (profileImages?.length || 0), 0)),
+              ]?.map((item, index) => (
+                <TouchableOpacity
+                  onPress={() => {
+                    if (item) {
+                      handleRemoveImage(index);
+                    } else {
+                      handleImageSelection();
+                    }
+                  }}
+                  style={[styles.imageContainerdm, !item && {borderWidth: 2}]}
+                  key={index}>
+                  {item && (
+                    <Image source={{uri: item}} style={styles.dummyImagedm} />
+                  )}
 
-            <View
-              style={[
-                styles.addRemoveButton,
-                item && {transform: [{rotate: '45deg'}]},
-              ]}>
-              <FontAwesome6
-                name="plus"
-                size={20}
-                style={{
-                  color: 'white',
-                }}
-              />
-            </View>
-          </TouchableOpacity>
-        ))}
+                  <View
+                    style={[
+                      styles.addRemoveButton,
+                      item && {transform: [{rotate: '45deg'}]},
+                    ]}>
+                    <FontAwesome6
+                      name="plus"
+                      size={20}
+                      style={{
+                        color: 'white',
+                      }}
+                    />
+                  </View>
+                </TouchableOpacity>
+              ))}
+           
       </View>
-
-      {uploadError && (
+      {error && (
         <Text
           style={{
             color: 'red',
             textAlign: 'center',
             fontFamily: 'Sansation_Regular',
+            marginTop: 30,
           }}>
-          Please select any picture or select from gallery
+          Please select any picture or select from gallery.
         </Text>
       )}
     </View>
@@ -298,7 +307,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 20,
     color: 'black',
-    marginVertical:10
+    marginVertical: 10,
   },
 });
 

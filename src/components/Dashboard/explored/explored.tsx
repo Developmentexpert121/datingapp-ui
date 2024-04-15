@@ -16,50 +16,50 @@ import LinearGradient from 'react-native-linear-gradient';
 import CustomHeader from '../../Headers/CustomHeader';
 import Container from '../../container';
 const ExploredScreen = () => {
-  // const likedData = [
-  //   {
-  //     id: '1',
-  //     name: "Let's be Friends",
-  //     imageUrl: require('../../../assets/images/friends.png'),
-  //   },
-  //   {
-  //     id: '2',
-  //     name: 'Coffee date',
-  //     imageUrl: require('../../../assets/images/coffee.png'),
-  //   },
-  //   {
-  //     id: '3',
-  //     name: 'Date Night',
-  //     imageUrl: require('../../../assets/images/exploreDate.png'),
-  //   },
-  //   {
-  //     id: '4',
-  //     name: 'Binge Watcher',
-  //     imageUrl: require('../../../assets/images/movies.png'),
-  //   },
-  //   {
-  //     id: '5',
-  //     name: 'Creatives',
-  //     imageUrl: require('../../../assets/images/art.png'),
-  //   },
-  //   {
-  //     id: '6',
-  //     name: 'Sporty',
-  //     imageUrl: require('../../../assets/images/sporty.png'),
-  //   },
-  //   {
-  //     id: '7',
-  //     name: 'Music Lover',
-  //     imageUrl: require('../../../assets/images/musical.png'),
-  //   },
-  //   {
-  //     id: '8',
-  //     name: 'Travel',
-  //     imageUrl: require('../../../assets/images/travel.png'),
-  //   },
+  const likedData = [
+    {
+      id: '1',
+      name: "Let's be Friends",
+      imageUrl: require('../../../assets/images/friends.png'),
+    },
+    {
+      id: '2',
+      name: 'Coffee date',
+      imageUrl: require('../../../assets/images/coffee.png'),
+    },
+    {
+      id: '3',
+      name: 'Date Night',
+      imageUrl: require('../../../assets/images/exploreDate.png'),
+    },
+    {
+      id: '4',
+      name: 'Binge Watcher',
+      imageUrl: require('../../../assets/images/movies.png'),
+    },
+    {
+      id: '5',
+      name: 'Creatives',
+      imageUrl: require('../../../assets/images/art.png'),
+    },
+    {
+      id: '6',
+      name: 'Sporty',
+      imageUrl: require('../../../assets/images/sporty.png'),
+    },
+    {
+      id: '7',
+      name: 'Music Lover',
+      imageUrl: require('../../../assets/images/musical.png'),
+    },
+    {
+      id: '8',
+      name: 'Travel',
+      imageUrl: require('../../../assets/images/travel.png'),
+    },
 
-  //   // Add more data as needed
-  // ];
+    // Add more data as needed
+  ];
 
   const navigation = useNavigation();
 
@@ -86,13 +86,13 @@ const ExploredScreen = () => {
           flex: 1,
           marginHorizontal: 26,
         }}>
-        {/* <FlatList
+        <FlatList
           showsVerticalScrollIndicator={false}
           data={likedData}
           renderItem={renderGridItem}
           keyExtractor={item => item.id}
           numColumns={2}
-        /> */}
+        />
       </View>
       <FooterComponent />
       {/* </Container> */}

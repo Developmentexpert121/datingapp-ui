@@ -22,10 +22,6 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {likedAUser} from '../../store/Auth/auth';
-import {current} from '@reduxjs/toolkit';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const ROTATION = 60;
 const SWIPE_VELOCITY = 800;

@@ -284,6 +284,8 @@ const ZeroStepScreen = ({
             name={email}
             control={control}
             errors={Boolean(errors?.email)}
+            autoCapitalize="none"
+            keyboardType='email-address'
           />
           {errors.email && (
             <Text style={styles.errorText}>{errors.email.message}</Text>

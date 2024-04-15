@@ -10,9 +10,6 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import Colors from '../../constants/Colors';
-import Font from '../../constants/Fonts';
-import FontSize from '../../constants/FontSize';
-import Spacing from '../../constants/Spacing';
 import {Controller} from 'react-hook-form';
 import {EyeslashIC} from '../../assets/svgs';
 
