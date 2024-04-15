@@ -196,41 +196,37 @@ const SeventhStepScreen = ({
         Pick Some photos for your profile
       </Text>
       <View style={styles.containerdm}>
-        
-              {[
-                ...profileImages,
-                ...Array(Math.max(6 - (profileImages?.length || 0), 0)),
-              ]?.map((item, index) => (
-                <TouchableOpacity
-                  onPress={() => {
-                    if (item) {
-                      handleRemoveImage(index);
-                    } else {
-                      handleImageSelection();
-                    }
-                  }}
-                  style={[styles.imageContainerdm, !item && {borderWidth: 2}]}
-                  key={index}>
-                  {item && (
-                    <Image source={{uri: item}} style={styles.dummyImagedm} />
-                  )}
+        {[
+          ...profileImages,
+          ...Array(Math.max(6 - (profileImages?.length || 0), 0)),
+        ]?.map((item, index) => (
+          <TouchableOpacity
+            onPress={() => {
+              if (item) {
+                handleRemoveImage(index);
+              } else {
+                handleImageSelection();
+              }
+            }}
+            style={[styles.imageContainerdm, !item && {borderWidth: 2}]}
+            key={index}>
+            {item && <Image source={{uri: item}} style={styles.dummyImagedm} />}
 
-                  <View
-                    style={[
-                      styles.addRemoveButton,
-                      item && {transform: [{rotate: '45deg'}]},
-                    ]}>
-                    <FontAwesome6
-                      name="plus"
-                      size={20}
-                      style={{
-                        color: 'white',
-                      }}
-                    />
-                  </View>
-                </TouchableOpacity>
-              ))}
-           
+            <View
+              style={[
+                styles.addRemoveButton,
+                item && {transform: [{rotate: '45deg'}]},
+              ]}>
+              <FontAwesome6
+                name="plus"
+                size={20}
+                style={{
+                  color: 'white',
+                }}
+              />
+            </View>
+          </TouchableOpacity>
+        ))}
       </View>
       {error && (
         <Text

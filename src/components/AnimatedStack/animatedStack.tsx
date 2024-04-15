@@ -201,40 +201,22 @@ const AnimatedStack = (props: any) => {
         </View>
       )}
       {currentProfile ? (
-        <View style={{width: '100%', alignItems: 'center'}}>
+        <View style={{width: '100%', alignItems: 'center', }}>
           <PanGestureHandler onGestureEvent={gestureHandler}>
             <Animated.View style={[styles.animatedCard, cardStyle]}>
               <Animated.Image
                 source={require('../../assets/images/LIKE.png')}
-                style={[styles.like, {left: 10}, likeStyle]}
+                style={[styles.like, {left: 1}, likeStyle]}
                 resizeMode="contain"
               />
               <Animated.Image
                 source={require('../../assets/images/nope.png')}
-                style={[styles.like, {right: 10}, nopeStyle]}
+                style={[styles.like, {right: 1}, nopeStyle]}
                 resizeMode="contain"
               />
               {renderItem({item: currentProfile})}
             </Animated.View>
           </PanGestureHandler>
-          {/* <View style={{width: '100%', alignItems: 'center'}}> */}
-          {/* <View style={styles.locText}>
-            <Ionicons name="location-sharp" size={20} color="#AC25AC" />
-            <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
-              {
-                profileData.location && allUsers[currentIndex]?.location // Check if both locations are available
-                  ? `${Math.round(
-                      calculateDistance(
-                        profileData.location.latitude,
-                        profileData.location.longitude,
-                        allUsers[currentIndex].location.latitude,
-                        allUsers[currentIndex].location.longitude,
-                      ),
-                    ).toFixed(0)} miles away` // Calculate distance and round off to the nearest whole number
-                  : 'Distance information unavailable' // Display a message if distance information is missing
-              }
-            </Text>
-          </View> */}
           <View style={styles.icons}>
             <TouchableOpacity onPress={onSwipeLeft}>
               <View style={styles.button}>
@@ -262,7 +244,7 @@ const AnimatedStack = (props: any) => {
             fontFamily: 'Sansation-Bold',
             fontSize: 26,
             textAlign: 'center',
-            paddingHorizontal: 22,
+            paddingHorizontal: 20,
           }}>
           You have viewed all profiles! Or no profile matches your applied
           filters!
@@ -307,8 +289,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '70%',
     // marginVertical: 12,
-    marginTop: 40,
-    // borderWidth: 1,
+    marginTop: 30,
+    borderWidth: 0,
   },
   button: {
     width: 60,

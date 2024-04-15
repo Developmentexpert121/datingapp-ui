@@ -185,7 +185,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
           }),
         );
         reset();
-        navigate('Login');
+        // navigate('Login');
       },
       (err: any) => {
         setError(err.message);
@@ -233,7 +233,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
                 dob: dateStr,
               }),
             );
-            navigate('Login');
+            navigate('Loginhome');
           },
         },
       ],
