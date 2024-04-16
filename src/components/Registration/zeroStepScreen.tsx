@@ -41,6 +41,7 @@ const ZeroStepScreen = ({
   city,
   dateStr,
   setDateStr,
+  code,
 }: any) => {
   const options = [
     {label: 'Male', value: 'first'},
@@ -55,7 +56,7 @@ const ZeroStepScreen = ({
   const [show, setShow] = useState<any>(false);
   const navigation = useNavigation();
 
-  const onChange = (event: any, selectedDate: any) => {
+  const   onChange = (event: any, selectedDate: any) => {
     const currentDate = selectedDate;
     setShow(false);
     setDate(currentDate);
@@ -195,7 +196,8 @@ const ZeroStepScreen = ({
             showError={Boolean(errors?.phone)}
             errors={Boolean(errors?.phone)}
             // value={values.phoneNumber}
-            // code={values.countryCode}
+            // code={code}
+            // onChange={onChange}
             // onChangeText={handleChange("phoneNumber")}
             // onCountryCode={handleChange("countryCode")}
           />

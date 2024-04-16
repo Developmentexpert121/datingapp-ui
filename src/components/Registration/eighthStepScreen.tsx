@@ -12,34 +12,34 @@ const EighthStepScreen = () => {
   const [location, setLocation] = useState<any>(null);
   const [error, setError] = useState<any>(null);
 
-  //   useEffect(() => {
-  //     // Request location permission on component mount
-  //     Geolocation.requestAuthorization();
-  //   }, []);
+    useEffect(() => {
+      // Request location permission on component mount
+      Geolocation.requestAuthorization();
+    }, []);
 
-  //   const getLocation = async () => {
-  //     try {
-  //       const granted:any = Geolocation.requestAuthorization();
-  //       if (granted === 'granted') {
-  //         Geolocation.getCurrentPosition(
-  //           position => {
-  //             const { latitude, longitude } = position.coords;
-  //             setLocation({ latitude, longitude });
-  //           },
-  //           err => setError(err.message),
-  //           { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-  //         );
-  //       } else {
-  //         setError('Location permission denied');
-  //       }
-  //     } catch (error) {
-  //       console.error('Error requesting location permission:', error);
-  //     }
-  //   };
+    const getLocation = async () => {
+      try {
+        const granted:any = Geolocation.requestAuthorization();
+        if (granted === 'granted') {
+          Geolocation.getCurrentPosition(
+            position => {
+              const { latitude, longitude } = position.coords;
+              setLocation({ latitude, longitude });
+            },
+            err => setError(err.message),
+            { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+          );
+        } else {
+          setError('Location permission denied');
+        }
+      } catch (error) {
+        console.error('Error requesting location permission:', error);
+      }
+    };
 
-  // useEffect(() => {
-  //     Geolocation.requestAuthorization();
-  //   }, []);
+  useEffect(() => {
+      Geolocation.requestAuthorization();
+    }, []);
 
   return (
     <View style={styles.container}>

@@ -52,13 +52,12 @@ const PhoneInput = ({
   const [countryFlag, setCountryFlag] = useState(
     findFlagByDialCode(code || '+91'),
   );
-  console.log("callllllllll:  ", callingCode);
-  console.log("callllllllll flag:  ", countryFlag);
+  console.log('callllllllll:  ', callingCode);
+  console.log('callllllllll flag:  ', countryFlag);
   const hasError = errors;
   return (
     <Controller
       name={name}
-      // code={code}
       control={control}
       rules={{required: true}}
       defaultValue=""
