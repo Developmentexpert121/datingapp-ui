@@ -8,6 +8,7 @@ import {
   Platform,
   ScrollView,
   ImageBackground,
+  Linking,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import * as yup from 'yup';
@@ -139,13 +140,13 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
               alignSelf: 'center',
             }}>
             <LoginTextInput
-              textstyle={{width: '"100%"'}}
+              // textstyle={{width: "100%"}}
               placeholder="Enter Your Email"
               name="email"
               autoCapitalize="none"
               control={control}
               errors={Boolean(errors?.email)}
-              keyboardType='email-address'
+              keyboardType="email-address"
             />
             {errors.email && (
               <Text style={{color: 'red', fontFamily: 'Sansation-Regular'}}>
@@ -153,11 +154,12 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
               </Text>
             )}
             <LoginTextInput
-              textstyle={{width: '"100%"'}}
+              // textstyle={{width: "100%"}}
               placeholder="Enter Your Password"
               name="password"
               control={control}
               errors={Boolean(errors?.password)}
+              secureTextEntry
             />
             {errors.password && (
               <Text style={{color: 'red', fontFamily: 'Sansation-Regular'}}>
@@ -183,7 +185,23 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
               ButtonName={'Log In'}
             />
           </View>
-          <Text style={styles.termsText}>Terms of use and privacy</Text>
+          <View style={{flexDirection: 'row'}}>
+            <Text
+              style={styles.termsText}
+              onPress={() => {
+                Linking.openURL('https://sheikhproperty.com/privacy-policy');
+              }}>
+              Terms of use
+            </Text>
+            <Text style={styles.termsText1}> and </Text>
+            <Text
+              style={styles.termsText}
+              onPress={() => {
+                Linking.openURL('https://sheikhproperty.com/privacy-policy');
+              }}>
+              privacy policy{' '}
+            </Text>
+          </View>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -237,12 +255,17 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: 'center',
   },
-  termsText: {
+  termsText1: {
     color: 'gray',
     textAlign: 'center',
     fontFamily: 'Sansation-Regular',
     // bottom:20,
     // position:'absolute'
+  },
+  termsText: {
+    color: '#000',
+    textAlign: 'center',
+    fontFamily: 'Sansation-Bold',
   },
   blankview: {
     width: 20,

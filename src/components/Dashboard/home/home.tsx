@@ -106,7 +106,7 @@ const HomeScreen = () => {
       {activeScreen === 'HOME' ? (
         <>
         <ScrollView style={styles.pageContainer2} showsVerticalScrollIndicator={false}>
-          <View style={{marginTop: 40, borderWidth:0}}>
+          <View style={{marginTop: 40, borderWidth:1}}>
             <AnimatedStack
               data={data}
               renderItem={({item}: any) => <Card user={item} />}
@@ -116,7 +116,7 @@ const HomeScreen = () => {
               profileData={profileData}
             />
           </View>
-          <View style={styles.locText}>
+          {/* <View style={styles.locText}>
             <Ionicons name="location-sharp" size={20} color="#AC25AC" />
             <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
               {
@@ -132,10 +132,10 @@ const HomeScreen = () => {
                   : 'Distance information unavailable' // Display a message if distance information is missing
               }
             </Text>
-          </View>
+          </View> */}
 
 
-          <View style={styles.container}>
+          {/* <View style={styles.container}>
             {allUsers[currentIndex]?.habits1?.map((item: any, index: any) => {
               let imagePath;
               switch (item.imagePath) {
@@ -170,7 +170,7 @@ const HomeScreen = () => {
                 </View>
               );
             })}
-          </View>
+          </View> */}
           </ScrollView>
           <View style={{}}>
             <FooterComponent />
@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginBottom: 16,
     columnGap: 2,
-    // borderWidth: 2,
+    borderWidth: 0,
   },
   container: {
     flexDirection: 'row',
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     // marginBottom: 20,
     marginTop: 70,
-    // borderWidth: 1,
+    borderWidth: 1,
     // bottom:0,
     // position:"absolute"
   },

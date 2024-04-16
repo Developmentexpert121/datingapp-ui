@@ -5,6 +5,7 @@ import {
   useWindowDimensions,
   Text,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -22,6 +23,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {likedAUser} from '../../store/Auth/auth';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const ROTATION = 60;
 const SWIPE_VELOCITY = 800;
@@ -217,6 +219,23 @@ const AnimatedStack = (props: any) => {
               {renderItem({item: currentProfile})}
             </Animated.View>
           </PanGestureHandler>
+          <View style={styles.locText}>
+            <Ionicons name="location-sharp" size={20} color="#AC25AC" />
+            <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
+              {
+                profileData.location && allUsers[currentIndex]?.location // Check if both locations are available
+                  ? `${Math.round(
+                      calculateDistance(
+                        profileData.location.latitude,
+                        profileData.location.longitude,
+                        allUsers[currentIndex].location.latitude,
+                        allUsers[currentIndex].location.longitude,
+                      ),
+                    ).toFixed(0)} miles away` // Calculate distance and round off to the nearest whole number
+                  : 'Distance information unavailable' // Display a message if distance information is missing
+              }
+            </Text>
+          </View>
           <View style={styles.icons}>
             <TouchableOpacity onPress={onSwipeLeft}>
               <View style={styles.button}>
@@ -236,8 +255,44 @@ const AnimatedStack = (props: any) => {
               </View>
             </TouchableOpacity>
           </View>
-          {/* </View> */}
+          {/* <View style={styles.container}>
+            {allUsers[currentIndex]?.habits1?.map((item: any, index: any) => {
+              let imagePath;
+              switch (item.imagePath) {
+                case 'src/assets/images/bottleofchampagne.png':
+                  imagePath = require('../../assets/images/bottleofchampagne.png');
+                  break;
+                case 'src/assets/images/smoking.png':
+                  imagePath = require('../../assets/images/smoking.png');
+                  break;
+                case 'src/assets/images/Mandumbbells.png':
+                  imagePath = require('../../assets/images/Mandumbbells.png');
+                  break;
+                case 'src/assets/images/dogheart.png':
+                  imagePath = require('../../assets/images/dogheart.png');
+                  break;
+                case 'src/assets/images/datestep.png':
+                  imagePath = require('../../assets/images/datestep.png');
+                  break;
+                // Add more cases for other image paths as needed
+              }
+              return (
+                <View style={styles.item}>
+                  {imagePath && (
+                    <Image source={imagePath} style={{height: 20, width: 20}} />
+                  )}
+
+                  <Text
+                    key={index.id}
+                    style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
+                    {item.selectedText}
+                  </Text>
+                </View>
+              );
+            })}
+          </View> */}
         </View>
+        
       ) : (
         <Text
           style={{
@@ -260,7 +315,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     width: '100%',
-    // borderWidth: 1,
+    borderWidth: 1,
   },
   animatedCard: {
     width: '80%',
@@ -272,7 +327,7 @@ const styles = StyleSheet.create({
   },
   nextCardContainer: {
     ...StyleSheet.absoluteFillObject,
-    marginBottom: 68,
+    // marginBottom: 68,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -290,7 +345,7 @@ const styles = StyleSheet.create({
     width: '70%',
     // marginVertical: 12,
     marginTop: 30,
-    borderWidth: 0,
+    borderWidth: 1,
   },
   button: {
     width: 60,
@@ -306,9 +361,32 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 20,
-    marginBottom: 16,
+    // marginBottom: 16,
     columnGap: 2,
     // borderWidth: 2,
+    alignSelf:"flex-start"
+  },
+  container: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    columnGap: 10, // Adjust as needed
+    marginHorizontal: 20,
+    // marginBottom: 20,
+    marginTop: 70,
+    borderWidth: 1,
+    // bottom:0,
+    // position:"absolute"
+  },
+  item: {
+    borderWidth: 1.4,
+    borderRadius: 52,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+    columnGap: 4,
+    backgroundColor: '#FFFFFF',
   },
 });
 

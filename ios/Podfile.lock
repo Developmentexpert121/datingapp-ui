@@ -994,6 +994,10 @@ PODS:
     - React-Core
   - react-native-version-check (3.4.7):
     - React-Core
+  - react-native-webview (13.8.5):
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
+    - React-Core
   - React-nativeconfig (0.73.1)
   - React-NativeModulesApple (0.73.1):
     - glog
@@ -1252,6 +1256,7 @@ DEPENDENCIES:
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-version-check (from `../node_modules/react-native-version-check`)
+  - react-native-webview (from `../node_modules/react-native-webview`)
   - React-nativeconfig (from `../node_modules/react-native/ReactCommon`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -1378,6 +1383,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-splash-screen"
   react-native-version-check:
     :path: "../node_modules/react-native-version-check"
+  react-native-webview:
+    :path: "../node_modules/react-native-webview"
   React-nativeconfig:
     :path: "../node_modules/react-native/ReactCommon"
   React-NativeModulesApple:
@@ -1501,6 +1508,7 @@ SPEC CHECKSUMS:
   react-native-safe-area-context: b97eb6f9e3b7f437806c2ce5983f479f8eb5de4b
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   react-native-version-check: 6cd36aad4e30b8e3216747e3b4ddeb09e0647af8
+  react-native-webview: 6bb378b55f12609947e1bf83bf2da28a659ef548
   React-nativeconfig: a8685fce6d0ffbb77b1fe983895dbbc7bfe949ad
   React-NativeModulesApple: 63accd5672e433f187e4c35ce61641f2b303098c
   React-perflogger: 5ffc4d6ccb74eaac7b8b2867e58a447232483d6d

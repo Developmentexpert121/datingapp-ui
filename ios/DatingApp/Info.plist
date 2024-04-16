@@ -2,9 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key> NSLocationWhenInUseUsageDescription</key>
+	<string>TopTier Dating app using current location to get near by another users.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<array>
-		<string/>
+		<string></string>
 	</array>
 	<key>CFBundleDisplayName</key>
 	<string>DatingApp</string>
@@ -35,8 +37,6 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>TopTier Dating App use camera for a click photo.</string>
-	<key> NSLocationWhenInUseUsageDescription</key>
-	<string>TopTier Dating app using current location to get near by another users.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>TopTier Dating app using current location to get near by another users.</string>
 	<key>NSMicrophoneUsageDescription</key>

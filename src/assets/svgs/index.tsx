@@ -12,6 +12,9 @@ import SendIC from './Send.svg';
 import Down1IC from './down1.svg';
 import ChevronLeftIC from './ChevronLeft.svg';
 import EyeslashIC from './eyeslash.svg';
+import AppleIC from './apple.svg';
+import FacebookIC from './facebook.svg';
+import GoogleIC from './google.svg';
 
 export {
   FireIC,
@@ -27,5 +30,8 @@ export {
   SendIC,
   Down1IC,
   ChevronLeftIC,
-  EyeslashIC
+  EyeslashIC,
+  AppleIC,
+  FacebookIC,
+  GoogleIC,
 };

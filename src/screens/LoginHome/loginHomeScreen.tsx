@@ -11,6 +11,8 @@ import {
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../types';
 import {useAppSelector} from '../../store/store';
+import {AppleIC, FacebookIC, GoogleIC} from '../../assets/svgs';
+import MainButton from '../../components/ButtonComponent/MainButton';
 const images = [
   require('../../assets/images/screenImage1.jpg'),
   require('../../assets/images/screenImage2.jpg'),
@@ -22,15 +24,14 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   );
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     if (currentImageIndex < images.length - 1) {
-  //       setCurrentImageIndex(currentImageIndex + 1);
-  //     }
-  //   }, 6000); // Change the delay time (in milliseconds) as needed
-
-  //   return () => clearTimeout(timer);
-  // }, [currentImageIndex]);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (currentImageIndex < images.length - 1) {
+        setCurrentImageIndex(currentImageIndex + 1);
+      }
+    }, 6000); // Change the delay time (in milliseconds) as needed
+    return () => clearTimeout(timer);
+  }, [currentImageIndex]);
 
   return (
     <SafeAreaView
@@ -73,18 +74,30 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
             Don't lose access to your account,{'\n'}verify your email.
           </Text>
         </View>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigate('Register')}>
-          <Text style={styles.buttonText}>Create Account</Text>
-        </TouchableOpacity>
-
+        <MainButton
+          buttonStyle={{width: '75%'}}
+          ButtonName={'Create Account'}
+          onPress={() => navigate('Register')}
+        />
+        <View
+          style={{
+            flexDirection: 'row',
+            marginVertical: 10,
+            alignItems: 'center',
+            width: '50%',
+            justifyContent: 'space-evenly',
+          }}>
+          <GoogleIC />
+          <FacebookIC />
+          <AppleIC />
+        </View>
         <View style={styles.loginContainer}>
           <Text style={styles.loginText}>Already a member?</Text>
           <TouchableOpacity onPress={() => navigate('Login')}>
             <Text style={styles.touchableText}> Log In</Text>
           </TouchableOpacity>
         </View>
+
         {signInInfo && (
           <Text
             style={{
@@ -133,19 +146,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Sansation-Regular',
     textAlign: 'center',
     color: 'black',
-  },
-  button: {
-    backgroundColor: '#AC25AC',
-    paddingVertical: 8,
-    borderRadius: 20,
-    marginVertical: 26,
-    width: '60%',
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    textAlign: 'center',
-    fontFamily: 'Sansation-Regular',
   },
   termsText: {
     // marginTop: 36,
