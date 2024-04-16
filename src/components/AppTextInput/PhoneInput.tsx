@@ -32,28 +32,29 @@ interface Iprops {
   errors?: boolean;
   name?: any;
   control?: any;
+  callingCode?: any;
+  setCallingCode?: any;
 }
 const PhoneInput = ({
+  name,
+  control,
   label,
   code,
-  onCountryCode,
   showError,
   error,
   onChangeText,
-  value,
   editable,
   countryDisable,
   errors,
-  name,
-  control,
+  callingCode,
+  setCallingCode,
 }: Iprops) => {
   const [show, setShow] = useState<boolean>(false);
-  const [callingCode, setCallingCode] = useState(code || '+91');
+
   const [countryFlag, setCountryFlag] = useState(
     findFlagByDialCode(code || '+91'),
   );
-  console.log('callllllllll:  ', callingCode);
-  console.log('callllllllll flag:  ', countryFlag);
+
   const hasError = errors;
   return (
     <Controller
@@ -91,9 +92,7 @@ const PhoneInput = ({
               show={show}
               onBackdropPress={() => setShow(false)}
               pickerButtonOnPress={item => {
-                console.log({item});
                 setCallingCode(item.dial_code);
-                onCountryCode && onCountryCode(item.dial_code);
                 setCountryFlag(item?.flag);
                 setShow(false);
               }}

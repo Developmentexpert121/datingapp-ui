@@ -139,6 +139,8 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const [error, setError] = useState<any>(null);
   const [profileImages, setProfileImages] = useState<any>([]);
   const [permissionStatus, setPermissionStatus] = useState<any>(null);
+  const [callingCode, setCallingCode] = useState('+91');
+
   const dispatch: any = useAppDispatch();
   const Schemas = (steps: any) => {
     if (steps === 0) {
@@ -255,6 +257,13 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   };
   console.log('onSubmitbutton ...', onSubmit);
 
+  const phone = {
+    countryCode: callingCode,
+    // phoneNumber: data?.phone,
+  };
+
+  console.log('callllllllll:  ', phone);
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar translucent backgroundColor="transparent" />
@@ -299,6 +308,8 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
                 setDateStr={setDateStr}
                 control={control}
                 errors={errors}
+                callingCode={callingCode}
+                setCallingCode={setCallingCode}
               />
             ) : steps === 1 ? (
               <FirstStepScreen

@@ -1,10 +1,4 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Platform,
-  ScrollView,
-} from 'react-native';
+import {StyleSheet, Text, View, Platform, ScrollView} from 'react-native';
 import React, {useEffect, useMemo, useState} from 'react';
 import {RadioButton} from 'react-native-paper';
 import AppTextInput from '../AppTextInput/AppTextInput';
@@ -42,6 +36,8 @@ const ZeroStepScreen = ({
   dateStr,
   setDateStr,
   code,
+  callingCode,
+  setCallingCode,
 }: any) => {
   const options = [
     {label: 'Male', value: 'first'},
@@ -49,14 +45,13 @@ const ZeroStepScreen = ({
     {label: 'Non-Binary', value: 'third'},
     {label: 'Transgender', value: 'fourth'},
   ];
-  const [checked, setChecked] = React.useState('Male');
 
   const [date, setDate] = useState(new Date(1598051730000));
   const [mode, setMode] = useState<any>('date');
   const [show, setShow] = useState<any>(false);
   const navigation = useNavigation();
 
-  const   onChange = (event: any, selectedDate: any) => {
+  const onChange = (event: any, selectedDate: any) => {
     const currentDate = selectedDate;
     setShow(false);
     setDate(currentDate);
@@ -84,7 +79,9 @@ const ZeroStepScreen = ({
         <Text style={styles.headerLabel}>Personal</Text>
         <View style={styles.blankview}></View>
       </View>
-      <ScrollView style={{borderWidth: 0, flex: 1}} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={{borderWidth: 0, flex: 1}}
+        showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <Text style={styles.label}>My name is</Text>
           <AppTextInput
@@ -192,14 +189,12 @@ const ZeroStepScreen = ({
             name={phone}
             control={control}
             label="Phone Number"
-            // showError={touched.phoneNumber}
+            // code={code}
             showError={Boolean(errors?.phone)}
             errors={Boolean(errors?.phone)}
-            // value={values.phoneNumber}
-            // code={code}
-            // onChange={onChange}
+            callingCode={callingCode}
+            setCallingCode={setCallingCode}
             // onChangeText={handleChange("phoneNumber")}
-            // onCountryCode={handleChange("countryCode")}
           />
           {errors.phone && (
             <Text style={styles.errorText}>{errors.phone.message}</Text>
@@ -287,7 +282,7 @@ const ZeroStepScreen = ({
             control={control}
             errors={Boolean(errors?.email)}
             autoCapitalize="none"
-            keyboardType='email-address'
+            keyboardType="email-address"
           />
           {errors.email && (
             <Text style={styles.errorText}>{errors.email.message}</Text>
@@ -297,7 +292,7 @@ const ZeroStepScreen = ({
           <Text style={styles.label}>Password</Text>
           <PasswodTextInput
             placeholder="Enter Your Password"
-            keyboardType="password"
+            keyboardType="visible-password"
             name={password}
             control={control}
             errors={Boolean(errors?.password)}
