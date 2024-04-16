@@ -45,11 +45,10 @@
 	<string>TopTier Dating App use gallery for a pick photo.</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Sansation_Italic.ttf</string>
-		<string>Sansation_Light.ttf</string>
-		<string>Sansation_Light_Italic.ttf</string>
+		<string>Sansation-Italic.ttf</string>
+		<string>Sansation-Light.ttf</string>
+		<string>Sansation-Light-Italic.ttf</string>
 		<string>PassionOne-Black.ttf</string>
-		<string>PassionOne-Bold.ttf</string>
 		<string>PassionOne-Regular.ttf</string>
 		<string>MaterialIcons.ttf</string>
 		<string>MaterialCommunityIcons.ttf</string>
@@ -61,9 +60,9 @@
 		<string>FontAwesome6_Solid.ttf</string>
 		<string>FontAwesome6_Regular.ttf</string>
 		<string>FontAwesome6_Brands.ttf</string>
-		<string>Sansation_Bold.ttf</string>
-		<string>Sansation_Bold_Italic.ttf</string>
-		<string>Sansation_Regular.ttf</string>
+		<string>Sansation-Bold.ttf</string>
+		<string>Sansation-Bold-Italic.ttf</string>
+		<string>Sansation-Regular.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

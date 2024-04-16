@@ -125,12 +125,12 @@ const styles = StyleSheet.create({
     fontSize: 22,
     marginTop: 20,
     textAlign: 'center',
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
     color: 'black',
   },
   subText: {
     marginTop: 8,
-    fontFamily: 'Sansation_Regular',
+    fontFamily: 'Sansation-Regular',
     textAlign: 'center',
     color: 'black',
   },
@@ -145,13 +145,13 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     textAlign: 'center',
-    fontFamily: 'Sansation_Regular',
+    fontFamily: 'Sansation-Regular',
   },
   termsText: {
     // marginTop: 36,
     color: 'gray',
     textAlign: 'center',
-    fontFamily: 'Sansation_Regular',
+    fontFamily: 'Sansation-Regular',
     bottom: 20,
     position: 'absolute',
   },
@@ -165,12 +165,12 @@ const styles = StyleSheet.create({
   loginText: {
     color: 'black',
     marginRight: 5,
-    fontFamily: 'Sansation_Regular',
+    fontFamily: 'Sansation-Regular',
   },
   touchableText: {
     color: 'blue',
     textDecorationLine: 'underline',
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
   },
 });
 

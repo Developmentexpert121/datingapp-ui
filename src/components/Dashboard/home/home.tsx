@@ -106,7 +106,7 @@ const HomeScreen = () => {
       {activeScreen === 'HOME' ? (
         <>
         <ScrollView style={styles.pageContainer2} showsVerticalScrollIndicator={false}>
-          <View style={{marginTop: 30, }}>
+          <View style={{marginTop: 40, borderWidth:0}}>
             <AnimatedStack
               data={data}
               renderItem={({item}: any) => <Card user={item} />}
