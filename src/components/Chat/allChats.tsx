@@ -127,26 +127,27 @@ const ChatSection = () => {
   const [search, setSearch] = useState<any>('');
   const [username, setUserName] = useState<any>([]);
   const [username2, setUserName2] = useState<any>([]);
-  // console.log(username);
 
   // setUserName2((data)=>[...data, username])
-  const receiverIds = receiverData.map(receiver => receiver.receiverId);
+  const receiverIds = receiverData.map((receiver: any) => receiver.receiverId);
 
-  const receiverMainInfo2 = allUsers.filter(user =>
+  const receiverMainInfo2 = allUsers.filter((user: any) =>
     receiverIds.includes(user._id),
   );
-  console.log('ggggg----------', receiverMainInfo2);
 
-  console.log(username2);
   const filteredReceiverData = receiverMainInfo2.filter(
-    (item: any, recieverMainInfo: any, user: any, receiverData: any,receiverMainInfo2:any) =>
-    item?.name.toLowerCase().includes(search.toLowerCase()),
+    (
+      item: any,
+      recieverMainInfo: any,
+      user: any,
+      receiverData: any,
+      receiverMainInfo2: any,
+    ) => item?.name.toLowerCase().includes(search.toLowerCase()),
   );
-  console.log('filter---------', filteredReceiverData);
 
   const updateSearch = (text: string) => {
     setSearch(text);
-    filteredReceiverData
+    filteredReceiverData;
   };
 
   ///?`,
@@ -211,18 +212,13 @@ const ChatSection = () => {
           data={receiverData}
           keyExtractor={item => item.id}
           renderItem={({item}) => {
-            const recieverMainInfo = allUsers.filter((user: any) =>
-              item?.receiverId?.includes(user?._id),
-            );
-            console.log(recieverMainInfo);
-            // setUserName(recieverMainInfo[0]?.name);
             return (
               <ListItem
                 containerStyle={styles.listItemContainer}
-                onPress={() => handleMovepage(recieverMainInfo[0])}>
+                onPress={() => handleMovepage(item?.userInfo)}>
                 <Avatar
                   size={60}
-                  source={{uri: recieverMainInfo[0]?.profilePic}}
+                  source={{uri: item?.userInfo?.profilePic}}
                   rounded
                 />
                 <View style={styles.line}>
@@ -234,7 +230,7 @@ const ChatSection = () => {
                         color: 'black',
                         marginBottom: 8,
                       }}>
-                      {recieverMainInfo[0]?.name}
+                      {item?.userInfo?.name}
                     </Text>
                     <Text
                       style={{

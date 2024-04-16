@@ -17,7 +17,6 @@ const images = [
 ];
 type Props = NativeStackScreenProps<RootStackParamList, 'Loginhome'>;
 const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
-
   const signInInfo: any = useAppSelector(
     (state: any) => state?.Auth?.data?.signInInfo,
   );
@@ -89,7 +88,7 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
         {signInInfo && (
           <Text
             style={{
-              fontFamily: 'Sansation-Regular',
+              fontFamily: 'Sansation_Regular',
               color: 'red',
               fontSize: 14,
               textAlign: 'center',
@@ -126,12 +125,12 @@ const styles = StyleSheet.create({
     fontSize: 22,
     marginTop: 20,
     textAlign: 'center',
-    fontFamily: 'Sansation-Bold',
+    fontFamily: 'Sansation_Bold',
     color: 'black',
   },
   subText: {
     marginTop: 8,
-    fontFamily: 'Sansation-Regular',
+    fontFamily: 'Sansation_Regular',
     textAlign: 'center',
     color: 'black',
   },
@@ -146,13 +145,13 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     textAlign: 'center',
-    fontFamily: 'Sansation-Regular',
+    fontFamily: 'Sansation_Regular',
   },
   termsText: {
     // marginTop: 36,
     color: 'gray',
     textAlign: 'center',
-    fontFamily: 'Sansation-Regular',
+    fontFamily: 'Sansation_Regular',
     bottom: 20,
     position: 'absolute',
   },
@@ -166,12 +165,12 @@ const styles = StyleSheet.create({
   loginText: {
     color: 'black',
     marginRight: 5,
-    fontFamily: 'Sansation-Regular',
+    fontFamily: 'Sansation_Regular',
   },
   touchableText: {
     color: 'blue',
     textDecorationLine: 'underline',
-    fontFamily: 'Sansation-Bold',
+    fontFamily: 'Sansation_Bold',
   },
 });
 
