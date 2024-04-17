@@ -16,8 +16,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launch" translatesAutoresizingMaskIntoConstraints="NO" id="xCo-8E-drh">
-                                <rect key="frame" x="112.5" y="268.5" width="150" height="150"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="launch" translatesAutoresizingMaskIntoConstraints="NO" id="xCo-8E-drh">
+                                <rect key="frame" x="-96" y="130" width="546" height="413"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="150" id="1JO-SH-c01"/>
                                     <constraint firstAttribute="width" constant="150" id="r11-EB-ut9"/>
@@ -27,8 +27,8 @@
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
                         <color key="backgroundColor" red="0.89741742609999997" green="0.69338136910000003" blue="0.87154918910000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="xCo-8E-drh" firstAttribute="top" secondItem="Bcu-3y-fUS" secondAttribute="top" constant="248.5" id="GeV-vb-24x"/>
-                            <constraint firstItem="xCo-8E-drh" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="n05-1L-Klg"/>
+                            <constraint firstItem="xCo-8E-drh" firstAttribute="bottom" secondItem="Bcu-3y-fUS" secondAttribute="bottom" id="WKh-Lv-g7h"/>
+                            <constraint firstItem="xCo-8E-drh" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="v8P-O8-upw"/>
                         </constraints>
                     </view>
                 </viewController>

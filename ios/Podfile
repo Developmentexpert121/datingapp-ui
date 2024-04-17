@@ -38,6 +38,9 @@ target 'DatingApp' do
   # pod 'RNFBApp', :modular_headers => true
   # pod 'RNFBAnalytics', :modular_headers => true
   pod 'RNFBApp', :path => '../node_modules/@react-native-firebase/app'
+  # permissions_path = '../node_modules/react-native-permissions/ios'
+  # pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways/Permission-LocationAlways.podspec"
+  # pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse/Permission-LocationWhenInUse.podspec"
 
   use_frameworks! :linkage => :static
   $RNFirebaseAsStaticFramework = true
