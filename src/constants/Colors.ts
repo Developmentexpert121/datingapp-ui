@@ -5,6 +5,7 @@ const blue = '#1F41BB';
 const gray = '#ECECEC';
 const lightBlue = 'lightblue';
 const grayDark = '#585858';
+const pinkDark = '#AC25AC';
 
 export default {
   darkText: dark,
@@ -17,4 +18,5 @@ export default {
   lightPrimary: lightBlue,
   gray: gray,
   grayDark: grayDark,
+  pinkDark: pinkDark,
 };

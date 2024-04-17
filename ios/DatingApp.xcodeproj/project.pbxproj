@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -16,9 +16,9 @@
 		3B895E11EF2936C033842C6E /* Pods_DatingApp_DatingAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DA205B2F181DC0AA63C34BD /* Pods_DatingApp_DatingAppTests.framework */; };
 		54DC74199FCA46BEBEC2534F /* Sansation-Bold-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1712274B9BA2416BAA4B7F3A /* Sansation-Bold-Italic.ttf */; };
 		7285AFA7023C4B529C0D1770 /* Sansation-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3493808075B145EA8E667BB7 /* Sansation-Regular.ttf */; };
+		7331E0172BCFD5F1004EB46D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7331E0162BCFD5F1004EB46D /* LaunchScreen.storyboard */; };
 		739CF37F2BB6830E003D6DD3 /* google-services.json in Resources */ = {isa = PBXBuildFile; fileRef = 739CF37E2BB6830E003D6DD3 /* google-services.json */; };
 		79709297455745AE8066D636 /* Sansation-Light-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 015A02611A6B4266B1BD5573 /* Sansation-Light-Italic.ttf */; };
-		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		9CE107756C384B38B03C7E5D /* Sansation-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AEE6C8E87E924536BC5E27BB /* Sansation-Light.ttf */; };
 		A4502E740C3D48C5B4DFB619 /* PassionOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 429238E6A24647B59BDE49ED /* PassionOne-Regular.ttf */; };
 		A70C928F2BAD85DC00646DD7 /* PassionOne-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FB51463032AE48548C8355C8 /* PassionOne-Black.ttf */; };
@@ -51,25 +51,26 @@
 		00E356EE1AD99517003FC87E /* DatingAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DatingAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* DatingAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DatingAppTests.m; sourceTree = "<group>"; };
-		015A02611A6B4266B1BD5573 /* Sansation-Light-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Sansation-Light-Italic.ttf"; path = "../src/assets/fonts/Sansation-Light-Italic.ttf"; sourceTree = "<group>"; };
+		015A02611A6B4266B1BD5573 /* Sansation-Light-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Sansation-Light-Italic.ttf"; path = "../src/assets/fonts/Sansation-Light-Italic.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* DatingApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DatingApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = DatingApp/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = DatingApp/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = DatingApp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = DatingApp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = DatingApp/main.m; sourceTree = "<group>"; };
-		1712274B9BA2416BAA4B7F3A /* Sansation-Bold-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Sansation-Bold-Italic.ttf"; path = "../src/assets/fonts/Sansation-Bold-Italic.ttf"; sourceTree = "<group>"; };
-		3493808075B145EA8E667BB7 /* Sansation-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Sansation-Regular.ttf"; path = "../src/assets/fonts/Sansation-Regular.ttf"; sourceTree = "<group>"; };
+		1712274B9BA2416BAA4B7F3A /* Sansation-Bold-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Sansation-Bold-Italic.ttf"; path = "../src/assets/fonts/Sansation-Bold-Italic.ttf"; sourceTree = "<group>"; };
+		3493808075B145EA8E667BB7 /* Sansation-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Sansation-Regular.ttf"; path = "../src/assets/fonts/Sansation-Regular.ttf"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-DatingApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DatingApp.debug.xcconfig"; path = "Target Support Files/Pods-DatingApp/Pods-DatingApp.debug.xcconfig"; sourceTree = "<group>"; };
 		429238E6A24647B59BDE49ED /* PassionOne-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PassionOne-Regular.ttf"; path = "../src/assets/fonts/PassionOne-Regular.ttf"; sourceTree = "<group>"; };
-		4A53DC6938B541EE8651D1EC /* Sansation-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Sansation-Italic.ttf"; path = "../src/assets/fonts/Sansation-Italic.ttf"; sourceTree = "<group>"; };
+		4A53DC6938B541EE8651D1EC /* Sansation-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Sansation-Italic.ttf"; path = "../src/assets/fonts/Sansation-Italic.ttf"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-DatingApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DatingApp.release.xcconfig"; path = "Target Support Files/Pods-DatingApp/Pods-DatingApp.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-DatingApp-DatingAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DatingApp-DatingAppTests.debug.xcconfig"; path = "Target Support Files/Pods-DatingApp-DatingAppTests/Pods-DatingApp-DatingAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DA205B2F181DC0AA63C34BD /* Pods_DatingApp_DatingAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DatingApp_DatingAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7331E0152BCFD5F1004EB46D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		7331E0182BCFD5F1004EB46D /* mul */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = mul; path = mul.lproj/LaunchScreen.xcstrings; sourceTree = "<group>"; };
 		739CF37E2BB6830E003D6DD3 /* google-services.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "google-services.json"; path = "../../../../Downloads/google-services.json"; sourceTree = "<group>"; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = DatingApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-DatingApp-DatingAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DatingApp-DatingAppTests.release.xcconfig"; path = "Target Support Files/Pods-DatingApp-DatingAppTests/Pods-DatingApp-DatingAppTests.release.xcconfig"; sourceTree = "<group>"; };
-		8A3C669BAB1F4219ADDF3BC1 /* Sansation-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Sansation-Bold.ttf"; path = "../src/assets/fonts/Sansation-Bold.ttf"; sourceTree = "<group>"; };
+		8A3C669BAB1F4219ADDF3BC1 /* Sansation-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Sansation-Bold.ttf"; path = "../src/assets/fonts/Sansation-Bold.ttf"; sourceTree = "<group>"; };
 		8E368A74222157622DA2477F /* Pods_DatingApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DatingApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A70C92922BAD904D00646DD7 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialCommunityIcons.ttf; sourceTree = "<group>"; };
 		A70C92932BAD904D00646DD7 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
@@ -81,7 +82,7 @@
 		A70C92992BAD904E00646DD7 /* FontAwesome6_Solid.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome6_Solid.ttf; sourceTree = "<group>"; };
 		A70C929A2BAD904E00646DD7 /* AntDesign.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AntDesign.ttf; sourceTree = "<group>"; };
 		A70C929B2BAD904E00646DD7 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Ionicons.ttf; sourceTree = "<group>"; };
-		AEE6C8E87E924536BC5E27BB /* Sansation-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Sansation-Light.ttf"; path = "../src/assets/fonts/Sansation-Light.ttf"; sourceTree = "<group>"; };
+		AEE6C8E87E924536BC5E27BB /* Sansation-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Sansation-Light.ttf"; path = "../src/assets/fonts/Sansation-Light.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FB51463032AE48548C8355C8 /* PassionOne-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PassionOne-Black.ttf"; path = "../src/assets/fonts/PassionOne-Black.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -141,7 +142,7 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				739CF37E2BB6830E003D6DD3 /* google-services.json */,
-				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
+				7331E0162BCFD5F1004EB46D /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
 			name = DatingApp;
@@ -320,7 +321,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				739CF37F2BB6830E003D6DD3 /* google-services.json in Resources */,
 				3A04FE25AEC1490EAF39DA49 /* PassionOne-Black.ttf in Resources */,
@@ -330,6 +330,7 @@
 				79709297455745AE8066D636 /* Sansation-Light-Italic.ttf in Resources */,
 				9CE107756C384B38B03C7E5D /* Sansation-Light.ttf in Resources */,
 				7285AFA7023C4B529C0D1770 /* Sansation-Regular.ttf in Resources */,
+				7331E0172BCFD5F1004EB46D /* LaunchScreen.storyboard in Resources */,
 				1DAD973DE5544D209CF27E96 /* Sansation-Bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -494,6 +495,19 @@
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		7331E0162BCFD5F1004EB46D /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7331E0152BCFD5F1004EB46D /* Base */,
+				7331E0182BCFD5F1004EB46D /* mul */,
+			);
+			name = LaunchScreen.storyboard;
+			path = DatingApp;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {

@@ -37,7 +37,7 @@ const LoginTextInput = (Props: any) => {
             styles.viewInput,
             hasError
               ? styles.errorBorder
-              : {borderWidth: 1, borderColor: 'rgba(0, 0, 0, 0.2)'},
+              : {borderWidth: 2, borderColor: 'rgba(0, 0, 0, 0.2)'},
             viewStyle,
           ]}>
           <TextInput
@@ -82,15 +82,15 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     backgroundColor: Colors.onPrimary,
     borderRadius: 10,
-    marginVertical: 10,
-    borderWidth: 3,
+    marginVertical: 4,
     width: '100%',
   },
   icon: {
     height: 45,
     width: 45,
+    justifyContent: 'center',
     alignItems: 'center',
-    right: 10,
+    right: 15,
   },
   errorBorder: {
     borderWidth: 2,

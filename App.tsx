@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {NavigationContainer} from '@react-navigation/native';
 
@@ -15,6 +15,13 @@ import messaging from '@react-native-firebase/messaging';
 import {requestNotifications} from 'react-native-permissions';
 
 const App = () => {
+  const [loading, setLoading] = useState<boolean>(true);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //     SplashScreen.hide();
+  //   }, 2000);
+  // }, []);
   async function requestUserPermission() {
     await requestNotifications(['alert', 'sound']);
     const authStatus = await messaging().requestPermission();
@@ -51,7 +58,7 @@ const App = () => {
       }
       requestUserPermission();
       getToken();
-    }, 10000);
+    }, 5000);
     return () => clearTimeout(timeout); // Cleanup function to clear the timeout
   }, []);
 
@@ -67,6 +74,8 @@ const App = () => {
       return null;
     }
   };
+
+  // if (loading) return null;
   return (
     <SafeAreaProvider>
       {isLoading ? (

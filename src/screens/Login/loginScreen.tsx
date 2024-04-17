@@ -22,6 +22,8 @@ import MainButton from '../../components/ButtonComponent/MainButton';
 import {useNavigation} from '@react-navigation/native';
 import LoginTextInput from '../../components/AppTextInput/LoginTextInput';
 import {LoginSignIn} from '../../store/Auth/auth';
+import Colors from '../../constants/Colors';
+import Loader from '../../components/Loader/Loader';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 interface LoginForm {
@@ -43,6 +45,7 @@ const schema = yup.object().shape({
 const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const dispatch: any = useAppDispatch();
   const navigation = useNavigation();
+  const [loader, setLoader] = useState<boolean>(false);
   const {
     control,
     handleSubmit,
@@ -61,7 +64,6 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const signInInfo: any = useAppSelector(
     (state: any) => state?.Auth?.data?.signInInfo,
   );
-
   useEffect(() => {
     const fetchToken = async () => {
       try {
@@ -85,6 +87,7 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     // // subTitle="Sign In to continue"
     // bgImage={require("../../assets/images/login_Image.png")}
     // >
+    <>
     <KeyboardAvoidingView
       behavior="padding"
       keyboardVerticalOffset={Platform.OS === 'ios' ? 10 : 0}
@@ -125,7 +128,6 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
             flex: 1 / 10,
             width: '100%',
             height: '100%',
-            // justifyContent: 'center',
             alignItems: 'center',
             // borderWidth: 1,
           }}>
@@ -140,7 +142,6 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
               alignSelf: 'center',
             }}>
             <LoginTextInput
-              // textstyle={{width: "100%"}}
               placeholder="Enter Your Email"
               name="email"
               autoCapitalize="none"
@@ -148,24 +149,28 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
               errors={Boolean(errors?.email)}
               keyboardType="email-address"
             />
-            {errors.email && (
-              <Text style={{color: 'red', fontFamily: 'Sansation-Regular'}}>
-                {errors.email.message}
-              </Text>
-            )}
+            <View style={{height: 15}}>
+              {errors.email && (
+                <Text style={{color: 'red', fontFamily: 'Sansation-Regular'}}>
+                  {errors.email.message}
+                </Text>
+              )}
+            </View>
+
             <LoginTextInput
-              // textstyle={{width: "100%"}}
               placeholder="Enter Your Password"
               name="password"
               control={control}
               errors={Boolean(errors?.password)}
               secureTextEntry
             />
-            {errors.password && (
-              <Text style={{color: 'red', fontFamily: 'Sansation-Regular'}}>
-                {errors.password.message}
-              </Text>
-            )}
+            <View style={{height: 15}}>
+              {errors.password && (
+                <Text style={{color: 'red', fontFamily: 'Sansation-Regular'}}>
+                  {errors.password.message}
+                </Text>
+              )}
+            </View>
             {signInInfo && (
               <Text
                 style={{
@@ -185,7 +190,8 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
               ButtonName={'Log In'}
             />
           </View>
-          <View style={{flexDirection: 'row'}}>
+          <View
+            style={{flexDirection: 'row', bottom: 20, position: 'absolute'}}>
             <Text
               style={styles.termsText}
               onPress={() => {
@@ -205,7 +211,10 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
+    {loader ? <Loader /> : null}
+    </>
     // </ImageContainer>
+
   );
 };
 
@@ -259,11 +268,9 @@ const styles = StyleSheet.create({
     color: 'gray',
     textAlign: 'center',
     fontFamily: 'Sansation-Regular',
-    // bottom:20,
-    // position:'absolute'
   },
   termsText: {
-    color: '#000',
+    color: Colors.pinkDark,
     textAlign: 'center',
     fontFamily: 'Sansation-Bold',
   },

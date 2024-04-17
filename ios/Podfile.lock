@@ -93,6 +93,12 @@ PODS:
   - hermes-engine/Pre-built (0.73.1)
   - JitsiWebRTC (118.0.0)
   - libevent (2.1.12)
+  - lottie-ios (4.4.1)
+  - lottie-react-native (6.7.2):
+    - glog
+    - lottie-ios (= 4.4.1)
+    - RCT-Folly (= 2022.05.16.00)
+    - React-Core
   - nanopb (2.30910.0):
     - nanopb/decode (= 2.30910.0)
     - nanopb/encode (= 2.30910.0)
@@ -1226,6 +1232,7 @@ DEPENDENCIES:
   - GoogleUtilities
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
   - libevent (~> 2.1.12)
+  - lottie-react-native (from `../node_modules/lottie-react-native`)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCT-Folly/Fabric (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
@@ -1307,6 +1314,7 @@ SPEC REPOS:
     - GoogleUtilities
     - JitsiWebRTC
     - libevent
+    - lottie-ios
     - nanopb
     - PromisesObjC
     - SocketRocket
@@ -1327,6 +1335,8 @@ EXTERNAL SOURCES:
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2023-11-17-RNv0.73.0-21043a3fc062be445e56a2c10ecd8be028dd9cc5
+  lottie-react-native:
+    :path: "../node_modules/lottie-react-native"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -1478,6 +1488,8 @@ SPEC CHECKSUMS:
   hermes-engine: 34df9d5034e90bd9bf1505e1ca198760373935af
   JitsiWebRTC: 3a41671ef65a51d7204323814b055a2690b921c7
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
+  lottie-ios: e047b1d2e6239b787cc5e9755b988869cf190494
+  lottie-react-native: 3444859381572e468f1b3a57cc5728968af868a6
   nanopb: 438bc412db1928dac798aa6fd75726007be04262
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   RCT-Folly: 7169b2b1c44399c76a47b5deaaba715eeeb476c0

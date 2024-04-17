@@ -7,12 +7,14 @@ import {
   TouchableOpacity,
   StyleSheet,
   SafeAreaView,
+  Linking,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../types';
 import {useAppSelector} from '../../store/store';
 import {AppleIC, FacebookIC, GoogleIC} from '../../assets/svgs';
 import MainButton from '../../components/ButtonComponent/MainButton';
+import Colors from '../../constants/Colors';
 const images = [
   require('../../assets/images/screenImage1.jpg'),
   require('../../assets/images/screenImage2.jpg'),
@@ -64,9 +66,7 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
           flex: 2 / 5,
           width: '100%',
           height: '100%',
-          // justifyContent: 'center',
           alignItems: 'center',
-          // borderWidth: 1,
         }}>
         <View>
           <Text style={styles.label}>What's your email?</Text>
@@ -98,7 +98,7 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
           </TouchableOpacity>
         </View>
 
-        {signInInfo && (
+        {/* {signInInfo && (
           <Text
             style={{
               fontFamily: 'Sansation_Regular',
@@ -108,9 +108,25 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
             }}>
             {signInInfo}
           </Text>
-        )}
+        )} */}
 
-        <Text style={styles.termsText}>Terms of use and privacy</Text>
+        <View style={{flexDirection: 'row', bottom: 20, position: 'absolute'}}>
+          <Text
+            style={styles.termsText}
+            onPress={() => {
+              Linking.openURL('https://sheikhproperty.com/privacy-policy');
+            }}>
+            Terms of use
+          </Text>
+          <Text style={styles.termsText1}> and </Text>
+          <Text
+            style={styles.termsText}
+            onPress={() => {
+              Linking.openURL('https://sheikhproperty.com/privacy-policy');
+            }}>
+            privacy policy{' '}
+          </Text>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -147,13 +163,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'black',
   },
-  termsText: {
-    // marginTop: 36,
+  termsText1: {
     color: 'gray',
     textAlign: 'center',
     fontFamily: 'Sansation-Regular',
-    bottom: 20,
-    position: 'absolute',
+  },
+  termsText: {
+    color: Colors.pinkDark,
+    textAlign: 'center',
+    fontFamily: 'Sansation-Bold',
   },
   loginContainer: {
     flexDirection: 'row',
