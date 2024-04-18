@@ -4,18 +4,22 @@ import {NavigationContainer} from '@react-navigation/native';
 
 import {Platform, useColorScheme} from 'react-native';
 
-import {useSelector} from 'react-redux';
+import {useSelector , useDispatch} from 'react-redux';
 import {AuthNavigator, MainNavigator} from './src/navigation/index';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useAppSelector} from './src/store/store';
+import {useAppSelector, useAppDispatch} from './src/store/store';
 import LoadingSpinner from './src/services/spinner/spinner';
-import SplashScreen from 'react-native-splash-screen';
+import SplashScreenn from 'react-native-splash-screen';
 import messaging from '@react-native-firebase/messaging';
 import {requestNotifications} from 'react-native-permissions';
+import SplashScreen from 'react-native-splash-screen';
+import ProfileData  from './src/store/Auth/auth';
+import Root from './src/navigation/Root';
 
 const App = () => {
-  const [loading, setLoading] = useState<boolean>(true);
+  const dispatch = useAppDispatch();
+  // const [loading, setLoading] = useState<boolean>(true);
   // useEffect(() => {
   //   setTimeout(() => {
   //     setLoading(false);
@@ -47,7 +51,7 @@ const App = () => {
   //   backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   // };
 
-  const isAuthenticated = useSelector(
+  const isAuthenticated = useAppSelector(
     (state: any) => state?.Auth?.isAuthenticated,
   );
 
@@ -62,6 +66,8 @@ const App = () => {
     return () => clearTimeout(timeout); // Cleanup function to clear the timeout
   }, []);
 
+  
+
   const authToken: any = async () => {
     try {
       const token = await AsyncStorage.getItem('authToken');
@@ -75,6 +81,10 @@ const App = () => {
     }
   };
 
+  // useEffect(()=>{
+  //     dispatch(ProfileData());
+  //   },[]) 
+
   // if (loading) return null;
   return (
     <SafeAreaProvider>
@@ -87,6 +97,7 @@ const App = () => {
           ) : (
             <AuthNavigator />
           )}
+          {/* <Root/> */}
         </NavigationContainer>
       )}
     </SafeAreaProvider>

@@ -1,4 +1,10 @@
 PODS:
+  - AppAuth (1.7.4):
+    - AppAuth/Core (= 1.7.4)
+    - AppAuth/ExternalUserAgent (= 1.7.4)
+  - AppAuth/Core (1.7.4)
+  - AppAuth/ExternalUserAgent (1.7.4):
+    - AppAuth/Core
   - boost (1.83.0)
   - BVLinearGradient (2.8.3):
     - React-Core
@@ -44,6 +50,10 @@ PODS:
     - GoogleUtilities/Network (~> 7.11)
     - "GoogleUtilities/NSData+zlib (~> 7.11)"
     - nanopb (< 2.30911.0, >= 2.30908.0)
+  - GoogleSignIn (7.0.0):
+    - AppAuth (~> 1.5)
+    - GTMAppAuth (< 3.0, >= 1.3)
+    - GTMSessionFetcher/Core (< 4.0, >= 1.1)
   - GoogleUtilities (7.13.0):
     - GoogleUtilities/AppDelegateSwizzler (= 7.13.0)
     - GoogleUtilities/Environment (= 7.13.0)
@@ -88,6 +98,10 @@ PODS:
   - GoogleUtilities/UserDefaults (7.13.0):
     - GoogleUtilities/Logger
     - GoogleUtilities/Privacy
+  - GTMAppAuth (2.0.0):
+    - AppAuth/Core (~> 1.6)
+    - GTMSessionFetcher/Core (< 4.0, >= 1.5)
+  - GTMSessionFetcher/Core (3.4.0)
   - hermes-engine (0.73.1):
     - hermes-engine/Pre-built (= 0.73.1)
   - hermes-engine/Pre-built (0.73.1)
@@ -1179,7 +1193,7 @@ PODS:
     - React
   - RNCAsyncStorage (1.23.1):
     - React-Core
-  - RNDateTimePicker (7.6.4):
+  - RNDateTimePicker (7.7.0):
     - React-Core
   - RNFBAnalytics (19.2.2):
     - Firebase/AnalyticsWithoutAdIdSupport (= 10.24.0)
@@ -1191,6 +1205,9 @@ PODS:
   - RNGestureHandler (2.16.0):
     - glog
     - RCT-Folly (= 2022.05.16.00)
+    - React-Core
+  - RNGoogleSignin (11.0.1):
+    - GoogleSignIn (~> 7.0.0)
     - React-Core
   - RNPermissions (4.1.5):
     - React-Core
@@ -1292,6 +1309,7 @@ DEPENDENCIES:
   - "RNFBAnalytics (from `../node_modules/@react-native-firebase/analytics`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -1304,6 +1322,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - AppAuth
     - Firebase
     - FirebaseAnalytics
     - FirebaseCore
@@ -1311,7 +1330,10 @@ SPEC REPOS:
     - FirebaseInstallations
     - fmt
     - GoogleAppMeasurement
+    - GoogleSignIn
     - GoogleUtilities
+    - GTMAppAuth
+    - GTMSessionFetcher
     - JitsiWebRTC
     - libevent
     - lottie-ios
@@ -1451,6 +1473,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/app"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNGoogleSignin:
+    :path: "../node_modules/@react-native-google-signin/google-signin"
   RNPermissions:
     :path: "../node_modules/react-native-permissions"
   RNReanimated:
@@ -1471,6 +1495,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  AppAuth: 182c5b88630569df5acb672720534756c29b3358
   boost: 26fad476bfa736552bbfa698a06cc530475c1505
   BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
   DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953
@@ -1484,7 +1509,10 @@ SPEC CHECKSUMS:
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: c5d68082e772fa1c511173d6b30a9de2c05a69a2
   GoogleAppMeasurement: f3abf08495ef2cba7829f15318c373b8d9226491
+  GoogleSignIn: b232380cf495a429b8095d3178a8d5855b42e842
   GoogleUtilities: d053d902a8edaa9904e1bd00c37535385b8ed152
+  GTMAppAuth: 99fb010047ba3973b7026e45393f51f27ab965ae
+  GTMSessionFetcher: ed61055dc13f769533d057edc520a4cb8f41c324
   hermes-engine: 34df9d5034e90bd9bf1505e1ca198760373935af
   JitsiWebRTC: 3a41671ef65a51d7204323814b055a2690b921c7
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
@@ -1545,10 +1573,11 @@ SPEC CHECKSUMS:
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNCallKeep: aa9b1f9286f8f60d7b7d41ee5de47de564356aac
   RNCAsyncStorage: 826b603ae9c0f88b5ac4e956801f755109fa4d5c
-  RNDateTimePicker: 08f00a2c341bf96e4b30da15799fbdd4c5fa48a3
+  RNDateTimePicker: 4f3c4dbd4f908be32ec8c93f086e8924bd4a2e07
   RNFBAnalytics: 56a13f68c23e236cc5ca7fab1573398287633c15
   RNFBApp: 91311b27bc9a33e23b76a62825afd1635501018a
   RNGestureHandler: fdcd620c0e90c3d80612dd994e8518a8866ed34b
+  RNGoogleSignin: 24d3b3261f78b0fae0aa013f8ab6f8d25e369b0c
   RNPermissions: 294531ede5a64d1528463e88fffef05675842042
   RNReanimated: 8c009e95ed82289b412801b9fc220dca24455f8d
   RNScreens: 56b4a83c6c84e01f4eaa7e06d4f335a0300f99ab
@@ -1560,6 +1589,6 @@ SPEC CHECKSUMS:
   stream-video-react-native: 170df9bdf51319aa63f98e74f9441427db416ba7
   Yoga: 4f53dc50008d626fa679c7a1cb4bed898f8c0bde
 
-PODFILE CHECKSUM: 27e2102d674b704f6fb48e255992ff1f0acba1f8
+PODFILE CHECKSUM: 6dc0f6ab38f5d26e20679c879d4e35c0f7ca5553
 
 COCOAPODS: 1.15.2

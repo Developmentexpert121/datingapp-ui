@@ -13,11 +13,14 @@ interface authData {
 
 export const ProfileData = createAsyncThunk(
   'auth/ProfileData',
-  async (id: any, {dispatch}: any) => {
+  async () => {
     try {
-      const response: any = await http.get(`/user/profile?id=${id}`);
+
+      console.log("called")
+      const response: any = await http.get(`/user/profile`);
 
       if (response.status === 200) {
+        console.log("respo", response.data)
         return response.data;
       }
     } catch (error: any) {
@@ -44,11 +47,12 @@ export const LoginSignIn = createAsyncThunk(
           'userId',
           JSON.stringify(response?.data?._id),
         );
-        console.log(response?.data?.token, response?.data?._id);
-        await dispatch(ProfileData(response?.data?._id));
+        console.log("dfjdfhjhjdf",response?.data?.token, response?.data?._id);
+       
         return response.data;
       }
     } catch (error: any) {
+      console.log("first error", error)
       if (error.response && error.response.status === 400) {
         return {
           error:
@@ -145,7 +149,7 @@ export const updateProfileData = createAsyncThunk(
       console.log('Updating Data', data);
       const response = await http.patch('/user/update-profile', data);
       if (response.status === 200) {
-        dispatch(ProfileData(data.id._j));
+        dispatch(ProfileData());
         return response.data;
       }
     } catch (error: any) {
@@ -387,6 +391,7 @@ const Auth: any = createSlice({
         if (action.payload.data) {
           // Check if data is present in the payload
           state.data.signin = action.payload.data;
+          state.isAuthenticated = true;
         } else {
           state.data.signInInfo = action.payload.error; // Assuming the error field is set properly on unsuccessful login
         }
@@ -408,7 +413,7 @@ const Auth: any = createSlice({
 
       .addCase(ProfileData.fulfilled, (state, action) => {
         state.data.profileData = action.payload.data;
-        state.isAuthenticated = true;
+        
         state.loading = false;
       })
       .addCase(ProfileData.pending, (state, action) => {

@@ -1,6 +1,7 @@
 #import "AppDelegate.h"
 #import <React/RCTBundleURLProvider.h>
 #import "StreamVideoReactNative.h"
+#import <Firebase.h>
 
 @implementation AppDelegate
 
@@ -11,6 +12,7 @@
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
   [StreamVideoReactNative setup];
+  [FIRApp configure];
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 

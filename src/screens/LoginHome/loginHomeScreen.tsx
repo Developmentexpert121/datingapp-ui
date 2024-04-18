@@ -3,7 +3,6 @@ import {
   View,
   Text,
   Image,
-  TextInput,
   TouchableOpacity,
   StyleSheet,
   SafeAreaView,
@@ -15,12 +14,48 @@ import {useAppSelector} from '../../store/store';
 import {AppleIC, FacebookIC, GoogleIC} from '../../assets/svgs';
 import MainButton from '../../components/ButtonComponent/MainButton';
 import Colors from '../../constants/Colors';
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
+
+GoogleSignin.configure({
+  webClientId:
+    '1074716618334-m6trdmrc4b3tojpaaufbslg616vt1al7.apps.googleusercontent.com',
+  offlineAccess: true,
+});
+
 const images = [
   require('../../assets/images/screenImage1.jpg'),
   require('../../assets/images/screenImage2.jpg'),
 ];
+
 type Props = NativeStackScreenProps<RootStackParamList, 'Loginhome'>;
 const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
+  const signIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      console.log(userInfo);
+      // Handle successful sign-in, e.g., store user info in state or navigate to another screen
+    } catch (error) {
+      if (error && error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // User cancelled the sign-in flow
+        console.log('Sign in cancelled');
+      } else if (error && error.code === statusCodes.IN_PROGRESS) {
+        // Sign-in process is already in progress
+        console.log('Sign in in progress');
+      } else if (error && error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // Play services not available or outdated
+        console.log('Play services not available');
+      } else {
+        // Some other error occurred
+        console.error('askfhksfi',error);
+      }
+    }
+  };
+
   const signInInfo: any = useAppSelector(
     (state: any) => state?.Auth?.data?.signInInfo,
   );
@@ -87,7 +122,7 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
             width: '50%',
             justifyContent: 'space-evenly',
           }}>
-          <GoogleIC />
+          <GoogleIC onPress={signIn} />
           <FacebookIC />
           <AppleIC />
         </View>
@@ -137,7 +172,6 @@ const styles = StyleSheet.create({
     flex: 0,
     justifyContent: 'center',
     alignItems: 'center',
-    //paddingHorizontal: 20,
     backgroundColor: '#FFC7FF',
     width: '100%',
     height: '100%',

@@ -57,13 +57,16 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     resolver: yupResolver(schema),
   });
   const onSubmit: any = (data: LoginForm) => {
+    console.log("data user",data)
     dispatch(LoginSignIn(data));
     reset();
+
   };
 
   const signInInfo: any = useAppSelector(
     (state: any) => state?.Auth?.data?.signInInfo,
   );
+
   useEffect(() => {
     const fetchToken = async () => {
       try {
@@ -171,7 +174,7 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
                 </Text>
               )}
             </View>
-            {signInInfo && (
+            {/* {signInInfo && ( */}
               <Text
                 style={{
                   fontFamily: 'Sansation-Regular',
@@ -179,9 +182,9 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
                   fontSize: 14,
                   textAlign: 'center',
                 }}>
-                {signInInfo}
+                ignInInfo
               </Text>
-            )}
+           {/* )} */}
             <MainButton
               buttonStyle={{
                 width: '100%',
@@ -211,7 +214,7 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
-    {loader ? <Loader /> : null}
+    {/* {loader ? <Loader /> : null} */}
     </>
     // </ImageContainer>
 

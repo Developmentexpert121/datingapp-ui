@@ -6,7 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import HeaderComponent from '../header/header';
 import FooterComponent from '../footer/footer';
 import {useAppDispatch, useAppSelector} from '../../../store/store';
-import {getAllUsers} from '../../../store/Auth/auth';
+import {ProfileData, getAllUsers} from '../../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FilterSection from '../FilterSection/filterSection';
 import NotificationScreen from '../Notification/notification';
@@ -30,9 +30,19 @@ const HomeScreen = () => {
   const allUsers: any = useAppSelector(
     (state: any) => state?.Auth?.data?.allUsers,
   );
+  const isAuthenticated = useAppSelector(
+    (state: any) => state?.Auth?.isAuthenticated,
+  );
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
+
+  useEffect(()=>
+    {
+      if(isAuthenticated){dispatch(ProfileData());}
+    },[isAuthenticated])
+
+  console.log(profileData)
 
   const [showIn, setShowIn] = useState(profileData?.showInDistance);
 
@@ -116,7 +126,7 @@ const HomeScreen = () => {
               profileData={profileData}
             />
           </View>
-          {/* <View style={styles.locText}>
+          <View style={styles.locText}>
             <Ionicons name="location-sharp" size={20} color="#AC25AC" />
             <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
               {
@@ -132,10 +142,10 @@ const HomeScreen = () => {
                   : 'Distance information unavailable' // Display a message if distance information is missing
               }
             </Text>
-          </View> */}
+          </View>
 
 
-          {/* <View style={styles.container}>
+          <View style={styles.container}>
             {allUsers[currentIndex]?.habits1?.map((item: any, index: any) => {
               let imagePath;
               switch (item.imagePath) {
@@ -170,7 +180,7 @@ const HomeScreen = () => {
                 </View>
               );
             })}
-          </View> */}
+          </View>
           </ScrollView>
           <View style={{}}>
             <FooterComponent />
