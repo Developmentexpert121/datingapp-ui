@@ -101,7 +101,7 @@ PODS:
   - GTMAppAuth (2.0.0):
     - AppAuth/Core (~> 1.6)
     - GTMSessionFetcher/Core (< 4.0, >= 1.5)
-  - GTMSessionFetcher/Core (3.4.0)
+  - GTMSessionFetcher/Core (3.4.1)
   - hermes-engine (0.73.1):
     - hermes-engine/Pre-built (= 0.73.1)
   - hermes-engine/Pre-built (0.73.1)
@@ -1512,7 +1512,7 @@ SPEC CHECKSUMS:
   GoogleSignIn: b232380cf495a429b8095d3178a8d5855b42e842
   GoogleUtilities: d053d902a8edaa9904e1bd00c37535385b8ed152
   GTMAppAuth: 99fb010047ba3973b7026e45393f51f27ab965ae
-  GTMSessionFetcher: ed61055dc13f769533d057edc520a4cb8f41c324
+  GTMSessionFetcher: 8000756fc1c19d2e5697b90311f7832d2e33f6cd
   hermes-engine: 34df9d5034e90bd9bf1505e1ca198760373935af
   JitsiWebRTC: 3a41671ef65a51d7204323814b055a2690b921c7
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
@@ -1589,6 +1589,6 @@ SPEC CHECKSUMS:
   stream-video-react-native: 170df9bdf51319aa63f98e74f9441427db416ba7
   Yoga: 4f53dc50008d626fa679c7a1cb4bed898f8c0bde
 
-PODFILE CHECKSUM: 6dc0f6ab38f5d26e20679c879d4e35c0f7ca5553
+PODFILE CHECKSUM: c6ffb4887fe42363f479abeacf8709cb5391b475
 
 COCOAPODS: 1.15.2
