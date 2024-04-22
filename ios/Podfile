@@ -35,19 +35,9 @@ target 'DatingApp' do
   pod 'GoogleUtilities',:modular_headers => true
   pod 'FirebaseCoreInternal',:modular_headers => true
   pod 'FirebaseCore', :modular_headers => true
-  # pod 'RNGoogleSignin', :modular_headers => true
-  # pod 'RNPermissions', :modular_headers => true
-  # pod 'RNCAsyncStorage', :modular_headers => true
-  # pod 'RNDateTimePicker', :modular_headers => true
-  # pod 'RNFBAnalytics', :modular_headers => true
-  # pod 'RNGestureHandler', :modular_headers => true
-  
   # pod 'RNFBApp', :modular_headers => true
   # pod 'RNFBAnalytics', :modular_headers => true
   pod 'RNFBApp', :path => '../node_modules/@react-native-firebase/app'
-  # permissions_path = '../node_modules/react-native-permissions/ios'
-  # pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways/Permission-LocationAlways.podspec"
-  # pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse/Permission-LocationWhenInUse.podspec"
 
   use_frameworks! :linkage => :static
   $RNFirebaseAsStaticFramework = true
@@ -72,10 +62,10 @@ target 'DatingApp' do
 
   post_install do |installer|
     # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
-    # react_native_post_install(
-    #   installer,
-    #   config[:reactNativePath],
-    #   :mac_catalyst_enabled => false
-    # )
+    react_native_post_install(
+      installer,
+      config[:reactNativePath],
+      :mac_catalyst_enabled => false
+    )
   end
 end

@@ -62,7 +62,7 @@ const App = () => {
       }
       requestUserPermission();
       getToken();
-    }, 5000);
+    }, 2000);
     return () => clearTimeout(timeout); // Cleanup function to clear the timeout
   }, []);
 
