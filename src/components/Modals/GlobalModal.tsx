@@ -11,8 +11,6 @@ const GlobalModal = () => {
     (state: RootState) => state.authSliceState,
   );
   const dispatch = useAppDispatch();
-  console.log({modalData});
-
   return (
     <Modal
       style={{backgroundColor: 'transparent', margin: 0}}
@@ -20,16 +18,12 @@ const GlobalModal = () => {
       isVisible={showGlobalModal}>
       <View style={styles.modal}>
         <View style={styles.modalstyle}>
-          {/* {modalData?.cancel ? <CloseInvestIc /> : <InvestIc />} */}
           <Label text={modalData?.label} style={styles.textstyle} />
 
           <MainButton
             style={{
               width: '85%',
               marginTop: 30,
-              // backgroundColor: modalData?.cancel
-              //   ? light.colors.cancel
-              //   : light.colors.primary,
             }}
             ButtonName={modalData?.text}
             onPress={() => {
@@ -67,11 +61,5 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  modalstyle1: {
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginVertical: 15,
   },
 });

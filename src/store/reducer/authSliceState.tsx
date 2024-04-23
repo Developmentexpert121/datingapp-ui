@@ -19,7 +19,7 @@ export const authSice = createSlice({
       state.modalData = action?.payload?.data || {text: '', label: ''};
     },
     otpModal: (state, action) => {
-      state.showOtpModal = action.payload;
+      state.showOtpModal = action.payload.visible;
     },
   },
 });

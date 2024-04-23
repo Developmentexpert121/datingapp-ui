@@ -21,24 +21,53 @@ interface LoginFailModalProps {
   onPress?: () => void | undefined;
   text?: string | undefined;
   isVisible?: boolean | undefined;
+  setOtp: any;
+  otp: any;
+  value?: any;
 }
-const OtpModal = ({label, onPress, text, isVisible}: LoginFailModalProps) => {
+const OtpModal = ({
+  label,
+  onPress,
+  text,
+  isVisible,
+  setOtp,
+  otp,
+  value,
+}: LoginFailModalProps) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const {showOtpModal} = useAppSelector(
     (state: RootState) => state.authSliceState,
   );
   const dispatch = useAppDispatch();
-  // console.log({modalData});
-
-  const [otp, setOtp] = useState<string>('');
+  const [otp1, setOtp1] = useState<string>('');
   const [resendAllowed, setResendAllowed] = useState<boolean>(true);
   const [timer, setTimer] = useState<number>(30);
   const [feedbackMessage, setFeedbackMessage] = useState<string>('');
 
+  const inputRefs = [
+    useRef<TextInput>(null),
+    useRef<TextInput>(null),
+    useRef<TextInput>(null),
+    useRef<TextInput>(null),
+    useRef<TextInput>(null),
+    useRef<TextInput>(null),
+  ];
+  const handleOTPChange = (txt: string, index: number) => {
+    const newOtp = [...otp];
+    newOtp[index] = txt;
+    setOtp(newOtp);
+    if (txt.length >= 1 && index < otp.length - 1) {
+      inputRefs[index + 1].current?.focus();
+    } else if (txt.length === 0 && index > 0) {
+      inputRefs[index - 1].current?.focus();
+    }
+  };
+
   useEffect(() => {
     sendNewOTP();
   }, []);
+
   const sendNewOTP = async () => {
     if (resendAllowed) {
       setResendAllowed(false);
@@ -74,7 +103,7 @@ const OtpModal = ({label, onPress, text, isVisible}: LoginFailModalProps) => {
   };
   // Handle OTP input changes
   const handleOtpChange = (text: string) => {
-    setOtp(text);
+    setOtp1(text);
   };
   return (
     <Modal
@@ -88,7 +117,22 @@ const OtpModal = ({label, onPress, text, isVisible}: LoginFailModalProps) => {
             text={'Enter your verification code'}
             style={styles.textstyle}
           />
-          <OtpComponent />
+          {/* <OtpComponent />   */}
+
+          <View style={styles.otpContainer}>
+            {otp.map((value: any, index: any) => (
+              <TextInput
+                key={index}
+                style={styles.input}
+                value={value}
+                onChangeText={txt => handleOTPChange(txt, index)}
+                keyboardType="numeric"
+                maxLength={1}
+                ref={inputRefs[index]}
+              />
+            ))}
+          </View>
+
           <View style={styles.loginContainer}>
             <Text style={styles.loginText}>Didn’t receive a OTP? </Text>
             <TouchableOpacity onPress={sendNewOTP} disabled={!resendAllowed}>
@@ -154,5 +198,19 @@ const styles = StyleSheet.create({
     color: 'blue',
     textDecorationLine: 'underline',
     fontFamily: 'Sansation-Bold',
+  },
+  otpContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 20,
+  },
+  input: {
+    width: 40,
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#000',
+    marginRight: 10,
+    textAlign: 'center',
+    borderRadius: 5,
   },
 });

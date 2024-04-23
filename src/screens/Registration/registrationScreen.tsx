@@ -34,6 +34,8 @@ import EighthStepScreen from '../../components/Registration/eighthStepScreen';
 import Geolocation from '@react-native-community/geolocation';
 import MainButton from '../../components/ButtonComponent/MainButton';
 import OtpModal from '../../components/OtpModal/OtpModal';
+import Loader from '../../components/Loader/Loader';
+import {toggleGlobalModal} from '../../store/reducer/authSliceState';
 type Props = NativeStackScreenProps<RootStackParamList, 'Register'>;
 
 interface RegisterForm {
@@ -137,7 +139,6 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const profileData = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-  const [modalVisible, setModalVisible] = useState(true);
   const [steps, setSteps] = React.useState(0);
   const [dateStr, setDateStr] = useState<any>(null);
   const [location, setLocation] = useState<any>(null);
@@ -146,6 +147,8 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const [profileImages, setProfileImages] = useState<any>([]);
   const [permissionStatus, setPermissionStatus] = useState<any>(null);
   const [callingCode, setCallingCode] = useState('+91');
+  const [otp, setOtp] = useState<string[]>(['', '', '', '', '', '']);
+  const [loader, setLoader] = useState<boolean>(false);
 
   const dispatch: any = useAppDispatch();
   const Schemas = (steps: any) => {
@@ -175,7 +178,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     resolver: Schemas(steps),
   });
   // console.log('OnPress handleSubmit', handleSubmit);
-  console.log('errors ', errors);
+  // console.log('errors ', errors);
   const getLocationAndRegister = (data: RegisterForm) => {
     Geolocation.getCurrentPosition(
       (position: any) => {
@@ -206,7 +209,6 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     Geolocation.requestAuthorization();
     getLocationAndRegister(data);
   };
-
   const showPermissionPopup = (data: RegisterForm) => {
     Alert.alert(
       'Location Permission',
@@ -249,37 +251,61 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   };
   console.log('showPermissionPopup', showPermissionPopup);
 
+  const [email, setEmail] = useState('');
+
   const onSubmit: any = (data: RegisterForm) => {
-    dispatch(
-      EmailVerification({
-        email: '',
-      }),
-    );
-    console.log('data:::', data);
+    setLoader(true);
+    setEmail(data.email);
     if (steps === 7) {
       setSteps(prev => prev + 1);
     } else if (steps === 8) {
       showPermissionPopup(data);
-    } else if (steps < 8) {
+    } else if (steps < 8 && steps >= 1) {
       setSteps(prev => prev + 1);
     } else if (steps === 0) {
-      // dispatch(
-      //   EmailVerification({
-      //     email: '',
-      //   }),
-      // );
+      // console.log('Callllleleleel');
+      dispatch(
+        EmailVerification({
+          email: data.email,
+        }),
+      )
+        .unwrap()
+        .then(() => setLoader(false));
+
       data.phone = callingCode + data.phone;
     }
   };
-  console.log('onSubmitbutton ...', onSubmit);
-
+  console.log('------', otp);
+  // console.log('onSubmitbutton ...', onSubmit);
+  const [errorOtp, setErrorOtp] = useState();
+  const otpVerifity = () => {
+    const concatenatedString = otp.join('');
+    console.log(concatenatedString);
+    dispatch(
+      VerifyOtp({
+        email: email,
+        otp: concatenatedString,
+      }),
+    )
+      .unwrap()
+      .then((res: any) =>
+        res.success === true
+          ? setSteps(prev => prev + 1)
+          : dispatch(
+              toggleGlobalModal({
+                visible: true,
+                data: {
+                  text: 'OK',
+                  label: 'huyftijlh tdf',
+                },
+              }),
+            ),
+      );
+  };
+  console.log('otpVerifity', otpVerifity);
   const phone = {
     countryCode: callingCode,
-    // phoneNumber: data?.phone,
   };
-
-  console.log('callll:  ', phone);
-
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar translucent backgroundColor="transparent" />
@@ -289,13 +315,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
           Platform.OS === 'ios' ? StatusBar.currentHeight || 0 : 0
         }
         style={{flex: 1}}>
-        <View
-          style={{flex: 1}}
-          // scrollEnabled={false}
-          // nestedScrollEnabled={true}
-          // showsVerticalScrollIndicator={false}
-          // contentContainerStyle={styles.scrollViewContent}
-        >
+        <View style={{flex: 1}}>
           {steps > 0 ? (
             <Pressable style={styles.backPress}>
               <Ionicons
@@ -376,26 +396,11 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
             buttonStyle={{width: '90%'}}
             ButtonName={steps === 0 ? 'Continue' : steps < 8 ? 'Next' : 'Done'}
             onPress={handleSubmit(onSubmit)}
-            // onPress={() =>
-            //   dispatch(
-            //     EmailVerification({
-            //       email: 'vkarwasra127@gmail.com',
-            //     }),
-            //   )
-            // }
           />
         </View>
       </KeyboardAvoidingView>
-      <OtpModal
-        onPress={() =>
-          dispatch(
-            VerifyOtp({
-              email: 'vkarwasra127@gmail.com',
-              otp: '',
-            }),
-          )
-        }
-      />
+      <OtpModal onPress={otpVerifity} otp={otp} setOtp={setOtp} />
+      {loader ? <Loader /> : null}
     </SafeAreaView>
   );
 };

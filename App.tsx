@@ -22,13 +22,13 @@ import OtpModal from './src/components/OtpModal/OtpModal';
 const App = () => {
   const dispatch = useAppDispatch();
   const [authToken, setAuthToken] = useState(null);
-  // const [loading, setLoading] = useState<boolean>(true);
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setLoading(false);
-  //     SplashScreen.hide();
-  //   }, 2000);
-  // }, []);
+  const [loading, setLoading] = useState<boolean>(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+      SplashScreen.hide();
+    }, 2000);
+  }, []);
   async function requestUserPermission() {
     await requestNotifications(['alert', 'sound']);
     const authStatus = await messaging().requestPermission();
@@ -124,16 +124,13 @@ const App = () => {
         <LoadingSpinner />
       ) : (
         <NavigationContainer>
+          <GlobalModal />
           {tokensss === null || isAuthenticated ? (
             <MainNavigator />
           ) : (
             <AuthNavigator />
           )}
-
           {/* <Root /> */}
-
-          <GlobalModal />
-          {/* <OtpModal /> */}
         </NavigationContainer>
       )}
     </SafeAreaProvider>

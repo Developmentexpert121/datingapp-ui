@@ -76,14 +76,13 @@ export const LoginSignIn = createAsyncThunk(
         throw error;
       }
     } finally {
-      dispatch(activityLoaderFinished());
+      // dispatch(activityLoaderFinished());
     }
   },
 );
 
 export const RegisterSignUp = createAsyncThunk(
   'auth/RegisterSignUp',
-  // (navigation:any)=>
   async (data: any, {dispatch}: any) => {
     try {
       // dispatch(activityLoaderStarted());
@@ -91,8 +90,6 @@ export const RegisterSignUp = createAsyncThunk(
       if (response.status === 200) {
         return response.data;
       }
-      // navigation("LoginHomeScreen")
-      // dispatch(EmailVerification);
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
@@ -109,6 +106,7 @@ export const EmailVerification = createAsyncThunk(
   'auth/EmailVerification',
   // (navigation:any)=>
   async (data: any, {dispatch}: any) => {
+    // dispatch(activityLoaderStarted());
     try {
       const response = await http.post('/user/sendEmailVerification', data);
       if (response.status === 200) {
@@ -126,6 +124,7 @@ export const EmailVerification = createAsyncThunk(
         throw error;
       }
     } finally {
+      // dispatch(activityLoaderFinished());
     }
   },
 );
@@ -135,12 +134,14 @@ export const VerifyOtp = createAsyncThunk(
   async (data: any, {dispatch}: any) => {
     try {
       const response = await http.post('/user/verifyOtp', data);
+      console.log(response.data);
       if (response.status === 200) {
-        dispatch(
-          otpModal({
-            visible: false,
-          }),
-        );
+        response.data.success &&
+          dispatch(
+            otpModal({
+              visible: false,
+            }),
+          );
         return response.data;
       }
     } catch (error: any) {
