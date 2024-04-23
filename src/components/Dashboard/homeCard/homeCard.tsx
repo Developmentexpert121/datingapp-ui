@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.36,
     shadowRadius: 6.68,
-    borderWidth:10
+    borderWidth:0
   },
   image: {
     width: '100%',

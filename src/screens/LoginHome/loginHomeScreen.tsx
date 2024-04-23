@@ -10,15 +10,16 @@ import {
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../types';
-import {useAppSelector} from '../../store/store';
 import {AppleIC, FacebookIC, GoogleIC} from '../../assets/svgs';
 import MainButton from '../../components/ButtonComponent/MainButton';
 import Colors from '../../constants/Colors';
+import {useNavigation} from '@react-navigation/native';
 import {
   GoogleSignin,
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
+import AppleAuthentication from '@invertase/react-native-apple-authentication';
 
 GoogleSignin.configure({
   webClientId:
@@ -26,50 +27,55 @@ GoogleSignin.configure({
   offlineAccess: true,
 });
 
-const images = [
-  require('../../assets/images/screenImage1.jpg'),
-  require('../../assets/images/screenImage2.jpg'),
-];
-
 type Props = NativeStackScreenProps<RootStackParamList, 'Loginhome'>;
 const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
+  const navigation = useNavigation();
   const signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       console.log(userInfo);
+      navigation.navigate('Home');
       // Handle successful sign-in, e.g., store user info in state or navigate to another screen
-    } catch (error) {
+    } catch (error: any) {
       if (error && error.code === statusCodes.SIGN_IN_CANCELLED) {
         // User cancelled the sign-in flow
         console.log('Sign in cancelled');
       } else if (error && error.code === statusCodes.IN_PROGRESS) {
         // Sign-in process is already in progress
         console.log('Sign in in progress');
-      } else if (error && error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+      } else if (
+        error &&
+        error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE
+      ) {
         // Play services not available or outdated
         console.log('Play services not available');
       } else {
         // Some other error occurred
-        console.error('askfhksfi',error);
+        console.error('askfhksfi', error);
       }
     }
   };
+  const handleAppleSignIn = async () => {
+    try {
+      const appleAuthRequestResponse = await AppleAuthentication.signInAsync({
+        requestedScopes: [
+          AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+          AppleAuthentication.AppleAuthenticationScope.EMAIL,
+        ],
+      });
 
-  const signInInfo: any = useAppSelector(
-    (state: any) => state?.Auth?.data?.signInInfo,
-  );
-
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (currentImageIndex < images.length - 1) {
-        setCurrentImageIndex(currentImageIndex + 1);
+      // Use the appleAuthRequestResponse data for authentication and other purposes
+      console.log('User signed in with Apple:', appleAuthRequestResponse);
+    } catch (error: any) {
+      // Handle the error
+      if (error.code === AppleAuthentication.Error.CANCELED) {
+        console.log('Sign in canceled');
+      } else {
+        console.error('Sign in failed', error);
       }
-    }, 6000); // Change the delay time (in milliseconds) as needed
-    return () => clearTimeout(timer);
-  }, [currentImageIndex]);
-
+    }
+  };
   return (
     <SafeAreaView
       style={{
@@ -124,7 +130,7 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
           }}>
           <GoogleIC onPress={signIn} />
           <FacebookIC />
-          <AppleIC />
+          <AppleIC onPress={handleAppleSignIn} />
         </View>
         <View style={styles.loginContainer}>
           <Text style={styles.loginText}>Already a member?</Text>
@@ -132,19 +138,6 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
             <Text style={styles.touchableText}> Log In</Text>
           </TouchableOpacity>
         </View>
-
-        {/* {signInInfo && (
-          <Text
-            style={{
-              fontFamily: 'Sansation_Regular',
-              color: 'red',
-              fontSize: 14,
-              textAlign: 'center',
-            }}>
-            {signInInfo}
-          </Text>
-        )} */}
-
         <View style={{flexDirection: 'row', bottom: 20, position: 'absolute'}}>
           <Text
             style={styles.termsText}

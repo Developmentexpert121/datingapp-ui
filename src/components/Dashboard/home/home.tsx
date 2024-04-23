@@ -30,19 +30,12 @@ const HomeScreen = () => {
   const allUsers: any = useAppSelector(
     (state: any) => state?.Auth?.data?.allUsers,
   );
-  const isAuthenticated = useAppSelector(
-    (state: any) => state?.Auth?.isAuthenticated,
-  );
+
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
 
-  useEffect(()=>
-    {
-      if(isAuthenticated){dispatch(ProfileData());}
-    },[isAuthenticated])
-
-  console.log(profileData)
+  console.log(profileData);
 
   const [showIn, setShowIn] = useState(profileData?.showInDistance);
 
@@ -115,77 +108,81 @@ const HomeScreen = () => {
       />
       {activeScreen === 'HOME' ? (
         <>
-        <ScrollView style={styles.pageContainer2} showsVerticalScrollIndicator={false}>
-          <View style={{marginTop: 40, borderWidth:1}}>
-            <AnimatedStack
-              data={data}
-              renderItem={({item}: any) => <Card user={item} />}
-              currentIndex={currentIndex}
-              setData={setData}
-              setCurrentIndex={setCurrentIndex}
-              profileData={profileData}
-            />
-          </View>
-          <View style={styles.locText}>
-            <Ionicons name="location-sharp" size={20} color="#AC25AC" />
-            <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
-              {
-                profileData.location && allUsers[currentIndex]?.location // Check if both locations are available
-                  ? `${Math.round(
-                      calculateDistance(
-                        profileData.location.latitude,
-                        profileData.location.longitude,
-                        allUsers[currentIndex].location.latitude,
-                        allUsers[currentIndex].location.longitude,
-                      ),
-                    ).toFixed(0)} miles away` // Calculate distance and round off to the nearest whole number
-                  : 'Distance information unavailable' // Display a message if distance information is missing
-              }
-            </Text>
-          </View>
+          <ScrollView
+            style={styles.pageContainer2}
+            showsVerticalScrollIndicator={false}>
+            <View style={{marginTop: 40, borderWidth: 0}}>
+              <AnimatedStack
+                data={data}
+                renderItem={({item}: any) => <Card user={item} />}
+                currentIndex={currentIndex}
+                setData={setData}
+                setCurrentIndex={setCurrentIndex}
+                profileData={profileData}
+              />
+            </View>
+            {/* <View style={styles.locText}>
+              <Ionicons name="location-sharp" size={20} color="#AC25AC" />
+              <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
+                {
+                  profileData.location && allUsers[currentIndex]?.location // Check if both locations are available
+                    ? `${Math.round(
+                        calculateDistance(
+                          profileData.location.latitude,
+                          profileData.location.longitude,
+                          allUsers[currentIndex].location.latitude,
+                          allUsers[currentIndex].location.longitude,
+                        ),
+                      ).toFixed(0)} miles away` // Calculate distance and round off to the nearest whole number
+                    : 'Distance information unavailable' // Display a message if distance information is missing
+                }
+              </Text>
+            </View> */}
 
+            <View style={styles.container}>
+              {allUsers[currentIndex]?.habits1?.map((item: any, index: any) => {
+                let imagePath;
+                switch (item.imagePath) {
+                  case 'src/assets/images/bottleofchampagne.png':
+                    imagePath = require('../../../assets/images/bottleofchampagne.png');
+                    break;
+                  case 'src/assets/images/smoking.png':
+                    imagePath = require('../../../assets/images/smoking.png');
+                    break;
+                  case 'src/assets/images/Mandumbbells.png':
+                    imagePath = require('../../../assets/images/Mandumbbells.png');
+                    break;
+                  case 'src/assets/images/dogheart.png':
+                    imagePath = require('../../../assets/images/dogheart.png');
+                    break;
+                  case 'src/assets/images/datestep.png':
+                    imagePath = require('../../../assets/images/datestep.png');
+                    break;
+                  // Add more cases for other image paths as needed
+                }
+                return (
+                  <View style={styles.item}>
+                    {imagePath && (
+                      <Image
+                        source={imagePath}
+                        style={{height: 20, width: 20}}
+                      />
+                    )}
 
-          <View style={styles.container}>
-            {allUsers[currentIndex]?.habits1?.map((item: any, index: any) => {
-              let imagePath;
-              switch (item.imagePath) {
-                case 'src/assets/images/bottleofchampagne.png':
-                  imagePath = require('../../../assets/images/bottleofchampagne.png');
-                  break;
-                case 'src/assets/images/smoking.png':
-                  imagePath = require('../../../assets/images/smoking.png');
-                  break;
-                case 'src/assets/images/Mandumbbells.png':
-                  imagePath = require('../../../assets/images/Mandumbbells.png');
-                  break;
-                case 'src/assets/images/dogheart.png':
-                  imagePath = require('../../../assets/images/dogheart.png');
-                  break;
-                case 'src/assets/images/datestep.png':
-                  imagePath = require('../../../assets/images/datestep.png');
-                  break;
-                // Add more cases for other image paths as needed
-              }
-              return (
-                <View style={styles.item}>
-                  {imagePath && (
-                    <Image source={imagePath} style={{height: 20, width: 20}} />
-                  )}
-
-                  <Text
-                    key={index.id}
-                    style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
-                    {item.selectedText}
-                  </Text>
-                </View>
-              );
-            })}
-          </View>
+                    <Text
+                      key={index.id}
+                      style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
+                      {item.selectedText}
+                    </Text>
+                  </View>
+                );
+              })}
+            </View>
           </ScrollView>
           <View style={{}}>
             <FooterComponent />
           </View>
-          </>
+        </>
       ) : activeScreen === 'Filters' ? (
         <FilterSection
           showIn={showIn}
@@ -241,8 +238,8 @@ const styles = StyleSheet.create({
     columnGap: 10, // Adjust as needed
     marginHorizontal: 20,
     // marginBottom: 20,
-    marginTop: 70,
-    borderWidth: 1,
+    marginTop: 120,
+    borderWidth: 0,
     // bottom:0,
     // position:"absolute"
   },

@@ -5,31 +5,27 @@ import {
   activityLoaderFinished,
   activityLoaderStarted,
 } from '../Activity/activity';
+import {toggleGlobalModal} from '../reducer/authSliceState';
 interface authData {
   email: string;
   password: string;
   confirmPassword?: string;
 }
 
-export const ProfileData = createAsyncThunk(
-  'auth/ProfileData',
-  async () => {
-    try {
-
-      console.log("called")
-      const response: any = await http.get(`/user/profile`);
-
-      if (response.status === 200) {
-        console.log("respo", response.data)
-        return response.data;
-      }
-    } catch (error: any) {
-      if (error.response && error.response.status === 400) {
-        return {error: 'Bad Request'};
-      }
+export const ProfileData = createAsyncThunk('auth/ProfileData', async () => {
+  try {
+    console.log('called');
+    const response: any = await http.get(`/user/profile`);
+    if (response.status === 200) {
+      console.log('ProfileData', response.data);
+      return response.data;
     }
-  },
-);
+  } catch (error: any) {
+    if (error.response && error.response.status === 400) {
+      return {error: 'Bad Request'};
+    }
+  }
+});
 
 export const LoginSignIn = createAsyncThunk(
   'auth/LoginSignIn',
@@ -37,7 +33,6 @@ export const LoginSignIn = createAsyncThunk(
     try {
       dispatch(activityLoaderStarted());
       const response: any = await http.post('/user/signin', data);
-
       if (response.status === 200) {
         await AsyncStorage.setItem(
           'authToken',
@@ -47,13 +42,32 @@ export const LoginSignIn = createAsyncThunk(
           'userId',
           JSON.stringify(response?.data?._id),
         );
-        console.log("dfjdfhjhjdf",response?.data?.token, response?.data?._id);
-       
+        console.log('dfjdfhjhjdf', response?.data?.token, response?.data?._id);
+        dispatch(ProfileData());
+        dispatch(
+          toggleGlobalModal({
+            visible: true,
+            data: {
+              text: 'OK',
+              label: 'Login Successful',
+            },
+          }),
+        );
         return response.data;
       }
     } catch (error: any) {
-      console.log("first error", error)
+      console.log('first error', error);
       if (error.response && error.response.status === 400) {
+        dispatch(
+          toggleGlobalModal({
+            visible: true,
+            data: {
+              text: 'OK',
+              label:
+                'Invalid credentials, Enter valid credentials or create a new account',
+            },
+          }),
+        );
         return {
           error:
             'Invalid credentials, Enter valid credentials or create a new account',
@@ -78,6 +92,7 @@ export const RegisterSignUp = createAsyncThunk(
         return response.data;
       }
       // navigation("LoginHomeScreen")
+      dispatch(EmailVerification);
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
@@ -86,6 +101,26 @@ export const RegisterSignUp = createAsyncThunk(
       }
     } finally {
       // dispatch(activityLoaderFinished());
+    }
+  },
+);
+
+export const EmailVerification = createAsyncThunk(
+  'auth/EmailVerification',
+  // (navigation:any)=>
+  async (data: any, {dispatch}: any) => {
+    try {
+      const response = await http.post('/user/sendEmailVerification', data);
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        return {error: 'Bad Request'};
+      } else {
+        throw error;
+      }
+    } finally {
     }
   },
 );
@@ -365,6 +400,15 @@ export const videoCallToken = createAsyncThunk(
   },
 );
 
+export interface Iprops {
+  showGlobalModal?: boolean;
+  modalData?: {text?: string; label?: string; cancel: boolean};
+}
+const initialState: Iprops = {
+  showGlobalModal: false,
+  modalData: {text: '', label: '', cancel: false},
+};
+
 const Auth: any = createSlice({
   name: 'auth',
   initialState: {
@@ -382,6 +426,13 @@ const Auth: any = createSlice({
     loading: false,
   },
   reducers: {},
+  // reducers: {
+  //   toggleGlobalModal: (state, action) => {
+  //     state.showGlobalModal = action.payload.visible;
+  //     state.modalData = action?.payload?.data || {text: '', label: ''};
+  //   },
+  // },
+
   extraReducers: builder => {
     builder
       .addCase(LoginSignIn.pending, (state, action) => {
@@ -413,7 +464,7 @@ const Auth: any = createSlice({
 
       .addCase(ProfileData.fulfilled, (state, action) => {
         state.data.profileData = action.payload.data;
-        
+
         state.loading = false;
       })
       .addCase(ProfileData.pending, (state, action) => {
@@ -446,16 +497,21 @@ const Auth: any = createSlice({
       })
 
       .addCase(updateAuthentication.fulfilled, (state, action) => {
-        state.data.status = false;
-        state.data.signin = {};
-        state.data.signup = {};
-        state.data.data = {};
-        state.data.profileData = {};
-        state.data.allUsers = [];
-        state.data.allNotifications = [];
         state.isAuthenticated = false;
+        // state.data.status = false;
+        // state.data.signin = {};
+        // state.data.signup = {};
+        // state.data.data = {};
+        // state.data.profileData = {};
+        // state.data.allUsers = [];
+        // state.data.allNotifications = [];
       });
+    // resetAuth (state) => initialState,
   },
 });
 
+export const {resetAuth} = Auth.actions;
 export default Auth.reducer;
+
+// export const {toggleGlobalModal} = authSice.actions;
+// export default authSice.reducer;

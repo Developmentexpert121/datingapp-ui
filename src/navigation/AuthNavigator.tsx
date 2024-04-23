@@ -8,10 +8,10 @@ import RegisterScreen from '../screens/Registration/registrationScreen';
 import {RootStackParamList} from '../types';
 import OtpScreen from '../screens/OtpScreen/OtpScreen';
 const Stack = createStackNavigator<RootStackParamList>();
-enableScreens();
+// enableScreens();
 const AuthNavigator = () => (
   <Stack.Navigator
-    initialRouteName="Loginhome"
+    // initialRouteName="Loginhome"
     screenOptions={{
       headerShown: false,
       cardStyle: {backgroundColor: '#FFFFFF'},

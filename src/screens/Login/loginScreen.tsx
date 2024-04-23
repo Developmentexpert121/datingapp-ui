@@ -57,31 +57,30 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     resolver: yupResolver(schema),
   });
   const onSubmit: any = (data: LoginForm) => {
-    console.log("data user",data)
+    console.log('data user', data);
     dispatch(LoginSignIn(data));
-    reset();
-
+    // reset();
   };
 
   const signInInfo: any = useAppSelector(
     (state: any) => state?.Auth?.data?.signInInfo,
   );
 
-  useEffect(() => {
-    const fetchToken = async () => {
-      try {
-        const value = await AsyncStorage.getItem('authToken');
-        if (value !== null) {
-          return value;
-        } else {
-          return null;
-        }
-      } catch (error) {
-        console.error('Error getting item from AsyncStorage:', error);
-      }
-    };
-    fetchToken();
-  }, []);
+  // useEffect(() => {
+  //   const fetchToken = async () => {
+  //     try {
+  //       const value = await AsyncStorage.getItem('authToken');
+  //       if (value !== null) {
+  //         return value;
+  //       } else {
+  //         return null;
+  //       }
+  //     } catch (error) {
+  //       console.error('Error getting item from AsyncStorage:', error);
+  //     }
+  //   };
+  //   fetchToken();
+  // }, []);
 
   return (
     // <ImageContainer
@@ -91,133 +90,138 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     // bgImage={require("../../assets/images/login_Image.png")}
     // >
     <>
-    <KeyboardAvoidingView
-      behavior="padding"
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 10 : 0}
-      style={styles.container}>
-      <ScrollView
-        style={{flex: 1, borderWidth: 0}}
-        nestedScrollEnabled={true}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollViewContent}
-        keyboardShouldPersistTaps="always">
-        <View
-          style={{
-            flex: 9 / 10,
-            alignItems: 'center',
-          }}>
-          <ImageBackground
-            source={require('../../assets/images/login_Image.png')}
-            resizeMode="contain"
+      <KeyboardAvoidingView
+        behavior="padding"
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 10 : 0}
+        style={styles.container}>
+        <ScrollView
+          style={{flex: 1, borderWidth: 0}}
+          nestedScrollEnabled={true}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollViewContent}
+          keyboardShouldPersistTaps="always">
+          <View
             style={{
+              flex: 9 / 10,
+              alignItems: 'center',
+            }}>
+            <ImageBackground
+              source={require('../../assets/images/login_Image.png')}
+              resizeMode="contain"
+              style={{
+                width: '100%',
+                height: '100%',
+                marginTop: 20,
+              }}>
+              <TouchableOpacity
+                style={{marginLeft: 20, marginTop: 50}}
+                onPress={() => navigation.goBack()}>
+                <Image
+                  source={require('../../assets/images/chevron-left.png')}
+                  resizeMode="contain"
+                  style={{width: 20, height: 20}}
+                />
+              </TouchableOpacity>
+            </ImageBackground>
+          </View>
+
+          <View
+            style={{
+              flex: 1 / 10,
               width: '100%',
               height: '100%',
-              marginTop: 20,
+              alignItems: 'center',
+              // borderWidth: 1,
             }}>
-            <TouchableOpacity
-              style={{marginLeft: 20, marginTop: 50}}
-              onPress={() => navigation.goBack()}>
-              <Image
-                source={require('../../assets/images/chevron-left.png')}
-                resizeMode="contain"
-                style={{width: 20, height: 20}}
+            <Text style={styles.label}>What's your email?</Text>
+            <Text style={styles.subText}>
+              Don't lose access to your account,{'\n'}verify your email.
+            </Text>
+            <View
+              style={{
+                width: '80%',
+                justifyContent: 'center',
+                alignSelf: 'center',
+              }}>
+              <LoginTextInput
+                placeholder="Enter Your Email"
+                name="email"
+                autoCapitalize="none"
+                control={control}
+                errors={Boolean(errors?.email)}
+                keyboardType="email-address"
               />
-            </TouchableOpacity>
-          </ImageBackground>
-        </View>
+              <View style={{height: 15}}>
+                {errors.email && (
+                  <Text style={{color: 'red', fontFamily: 'Sansation-Regular'}}>
+                    {errors.email.message}
+                  </Text>
+                )}
+              </View>
 
-        <View
-          style={{
-            flex: 1 / 10,
-            width: '100%',
-            height: '100%',
-            alignItems: 'center',
-            // borderWidth: 1,
+              <LoginTextInput
+                placeholder="Enter Your Password"
+                name="password"
+                control={control}
+                errors={Boolean(errors?.password)}
+                secureTextEntry
+              />
+              <View style={{height: 15}}>
+                {errors.password && (
+                  <Text style={{color: 'red', fontFamily: 'Sansation-Regular'}}>
+                    {errors.password.message}
+                  </Text>
+                )}
+              </View>
+              {/* {signInInfo && (
+                <Text
+                  style={{
+                    fontFamily: 'Sansation-Regular',
+                    color: 'red',
+                    fontSize: 14,
+                    textAlign: 'center',
+                  }}>
+                  {signInInfo}
+                </Text>
+              )} */}
+              <MainButton
+                buttonStyle={{
+                  width: '100%',
+                }}
+                onPress={handleSubmit(onSubmit)}
+                ButtonName={'Log In'}
+              />
+            </View>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+      <View
+        style={{
+          width: '100%',
+          flexDirection: 'row',
+          bottom: 20,
+          position: 'absolute',
+          justifyContent: 'center',
+        }}>
+        <Text
+          style={styles.termsText}
+          onPress={() => {
+            Linking.openURL('https://sheikhproperty.com/privacy-policy');
           }}>
-          <Text style={styles.label}>What's your email?</Text>
-          <Text style={styles.subText}>
-            Don't lose access to your account,{'\n'}verify your email.
-          </Text>
-          <View
-            style={{
-              width: '80%',
-              justifyContent: 'center',
-              alignSelf: 'center',
-            }}>
-            <LoginTextInput
-              placeholder="Enter Your Email"
-              name="email"
-              autoCapitalize="none"
-              control={control}
-              errors={Boolean(errors?.email)}
-              keyboardType="email-address"
-            />
-            <View style={{height: 15}}>
-              {errors.email && (
-                <Text style={{color: 'red', fontFamily: 'Sansation-Regular'}}>
-                  {errors.email.message}
-                </Text>
-              )}
-            </View>
-
-            <LoginTextInput
-              placeholder="Enter Your Password"
-              name="password"
-              control={control}
-              errors={Boolean(errors?.password)}
-              secureTextEntry
-            />
-            <View style={{height: 15}}>
-              {errors.password && (
-                <Text style={{color: 'red', fontFamily: 'Sansation-Regular'}}>
-                  {errors.password.message}
-                </Text>
-              )}
-            </View>
-            {/* {signInInfo && ( */}
-              <Text
-                style={{
-                  fontFamily: 'Sansation-Regular',
-                  color: 'red',
-                  fontSize: 14,
-                  textAlign: 'center',
-                }}>
-                ignInInfo
-              </Text>
-           {/* )} */}
-            <MainButton
-              buttonStyle={{
-                width: '100%',
-              }}
-              onPress={handleSubmit(onSubmit)}
-              ButtonName={'Log In'}
-            />
-          </View>
-          <View
-            style={{flexDirection: 'row', bottom: 20, position: 'absolute'}}>
-            <Text
-              style={styles.termsText}
-              onPress={() => {
-                Linking.openURL('https://sheikhproperty.com/privacy-policy');
-              }}>
-              Terms of use
-            </Text>
-            <Text style={styles.termsText1}> and </Text>
-            <Text
-              style={styles.termsText}
-              onPress={() => {
-                Linking.openURL('https://sheikhproperty.com/privacy-policy');
-              }}>
-              privacy policy{' '}
-            </Text>
-          </View>
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
-    {/* {loader ? <Loader /> : null} */}
+          Terms of use
+        </Text>
+        <Text style={styles.termsText1}> and </Text>
+        <Text
+          style={styles.termsText}
+          onPress={() => {
+            Linking.openURL('https://sheikhproperty.com/privacy-policy');
+          }}>
+          privacy policy{' '}
+        </Text>
+      </View>
+      {/* {loader ? <Loader /> : null} */}
     </>
     // </ImageContainer>
-
   );
 };
 

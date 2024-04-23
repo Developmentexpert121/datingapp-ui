@@ -12,8 +12,9 @@
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
   [StreamVideoReactNative setup];
-  [RNSplashScreen show];
-  return [super application:application didFinishLaunchingWithOptions:launchOptions];
+  [super application:application didFinishLaunchingWithOptions:launchOptions];
+  [RNSplashScreen hide];
+  return [super application:application didFinishLaunchingWithOptions:launchOptions]	;
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge

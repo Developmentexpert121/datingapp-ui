@@ -4,7 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 
 import {Platform, useColorScheme} from 'react-native';
 
-import {useSelector , useDispatch} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {AuthNavigator, MainNavigator} from './src/navigation/index';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -14,11 +14,13 @@ import SplashScreenn from 'react-native-splash-screen';
 import messaging from '@react-native-firebase/messaging';
 import {requestNotifications} from 'react-native-permissions';
 import SplashScreen from 'react-native-splash-screen';
-import ProfileData  from './src/store/Auth/auth';
+import ProfileData from './src/store/Auth/auth';
 import Root from './src/navigation/Root';
+import GlobalModal from './src/components/Modals/GlobalModal';
 
 const App = () => {
   const dispatch = useAppDispatch();
+  const [authToken, setAuthToken] = useState(null);
   // const [loading, setLoading] = useState<boolean>(true);
   // useEffect(() => {
   //   setTimeout(() => {
@@ -47,13 +49,11 @@ const App = () => {
   );
   const isDarkMode = useColorScheme() === 'dark';
 
-  // const backgroundStyle = {
-  //   backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  // };
-
   const isAuthenticated = useAppSelector(
     (state: any) => state?.Auth?.isAuthenticated,
   );
+
+  console.log('------isAuthenticated', isAuthenticated);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -66,12 +66,41 @@ const App = () => {
     return () => clearTimeout(timeout); // Cleanup function to clear the timeout
   }, []);
 
-  
+  // const authToken: any = async () => {
+  //   try {
+  //     const token = await AsyncStorage.getItem('authToken');
+  //     console.log('tokennnnnn', token);
+  //     if (token !== null) {
+  //       return JSON.parse(token);
+  //     } else {
+  //       return null;
+  //     }
+  //   } catch (error) {
+  //     return null;
+  //   }
+  // };
 
-  const authToken: any = async () => {
+  useEffect(() => {
+    const fetchAuthToken = async () => {
+      try {
+        const token = await AsyncStorage.getItem('authToken');
+        if (token !== null) {
+          setAuthToken(JSON.parse(token));
+        }
+      } catch (error) {
+        console.error('Error fetching auth token:', error);
+      }
+    };
+
+    fetchAuthToken();
+  }, []);
+
+  const getTokenAuth = async () => {
     try {
       const token = await AsyncStorage.getItem('authToken');
-      if (token !== null) {
+      if (token === '') {
+        return null;
+      } else if (token !== null) {
         return JSON.parse(token);
       } else {
         return null;
@@ -81,9 +110,11 @@ const App = () => {
     }
   };
 
-  // useEffect(()=>{
-  //     dispatch(ProfileData());
-  //   },[]) 
+  const tokensss = getTokenAuth();
+
+  useEffect(() => {
+    isAuthenticated && dispatch(ProfileData());
+  }, []);
 
   // if (loading) return null;
   return (
@@ -92,12 +123,15 @@ const App = () => {
         <LoadingSpinner />
       ) : (
         <NavigationContainer>
-          {isAuthenticated && authToken() ? (
+          {tokensss === null || isAuthenticated ? (
             <MainNavigator />
           ) : (
             <AuthNavigator />
           )}
-          {/* <Root/> */}
+
+          {/* <Root /> */}
+
+          <GlobalModal />
         </NavigationContainer>
       )}
     </SafeAreaProvider>

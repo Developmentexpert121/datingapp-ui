@@ -29,6 +29,7 @@ import SeventhStepScreen from '../../components/Registration/seventhStepScreen';
 import EighthStepScreen from '../../components/Registration/eighthStepScreen';
 import Geolocation from '@react-native-community/geolocation';
 import MainButton from '../../components/ButtonComponent/MainButton';
+import OtpModal from '../../components/OtpModal/OtpModal';
 type Props = NativeStackScreenProps<RootStackParamList, 'Register'>;
 
 interface RegisterForm {
@@ -132,6 +133,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const profileData = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
+  const [modalVisible, setModalVisible] = useState(true);
   const [steps, setSteps] = React.useState(0);
   const [dateStr, setDateStr] = useState<any>(null);
   const [location, setLocation] = useState<any>(null);
@@ -363,6 +365,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
           />
         </View>
       </KeyboardAvoidingView>
+      <OtpModal isVisible={modalVisible} />
     </SafeAreaView>
   );
 };

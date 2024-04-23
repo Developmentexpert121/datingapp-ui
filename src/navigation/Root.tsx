@@ -1,17 +1,6 @@
-// In App.js in a new project
-
 import React, {useEffect, useState} from 'react';
-import {View, Text} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-// import { useAppDispatch, useAppSelector } from "../redux/store";
-// import { IPropertyData } from "../redux/reducer/types/propertiesTypes";
-
-import messaging, {
-  FirebaseMessagingTypes,
-} from '@react-native-firebase/messaging';
-// import PushNotification from "react-native-push-notification";
-// import { setNotificationChannelId } from "../redux/reducer/auth";
+import messaging from '@react-native-firebase/messaging';
 import LoginHomeScreen from '../screens/LoginHome/loginHomeScreen';
 import OtpScreen from '../screens/OtpScreen/OtpScreen';
 import LoginScreen from '../screens/Login/loginScreen';
@@ -26,11 +15,7 @@ import SettingsScreen from '../components/settingsSection/settings';
 import UpdateProfileScreen from '../components/updateProfile/updateProfile';
 import {useAppDispatch, useAppSelector} from '../store/store';
 import SplashScreenn from 'react-native-splash-screen';
-import {useSelector} from 'react-redux';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import ProfileData  from '../store/Auth/auth';
-// import { ITicketProps } from "../redux/reducer/types/authTypes";
-// import { getAllNotifications, getUserDetails } from "../redux/action/authAPI";
+import ProfileData from '../store/Auth/auth';
 export type RegisterType = {};
 export type RootStackParamList = {
   Home: undefined;
@@ -52,39 +37,27 @@ export type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const Root = () => {
- 
-  // const { user, notificationChannelId } = useAppSelector((state) => state.auth);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const dispatch = useAppDispatch();
-  const isAuthenticated = useSelector(
+  // const { isAuthenticated, notificationChannelId } = useAppSelector((state) => state.auth);
+  const isAuthenticated = useAppSelector(
     (state: any) => state?.Auth?.isAuthenticated,
   );
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const dispatch = useAppDispatch();
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
       SplashScreenn.hide();
     }, 500);
   }, []);
- 
-  const authToken: any = async () => {
-    try {
-      const token = await AsyncStorage.getItem('authToken');
-      if (token !== null) {
-        return JSON.parse(token);
-      } else {
-        return null;
-      }
-    } catch (error) {
-      return null;
-    }
-  };
 
-  // useEffect(()=>{
-  //   dispatch(ProfileData());
-  // },[]) 
+  useEffect(() => {
+    isAuthenticated?.token && dispatch(ProfileData());
+  }, []);
+
+  if (isLoading) return null;
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      {isAuthenticated && authToken() ? (
+      {isAuthenticated?.token ? (
         <Stack.Group>
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Liked" component={LikedScreen} />

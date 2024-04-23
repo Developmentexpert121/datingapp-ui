@@ -283,21 +283,22 @@ const SettingsSection = () => {
   const authTokenRemove: any = async () => {
     try {
       const token: any = await AsyncStorage.removeItem('authToken');
-      if (token !== null) {
-        return JSON.parse(token);
-      } else {
-        return null;
-      }
+      // if (token !== null) {
+      //   return JSON.parse(token);
+      // } else {
+      //   return null;
+      // }
     } catch (error) {
       return null;
     }
   };
 
-  const logoutUser = async () => {
-    dispatch(updateAuthentication());
-    await authTokenRemove();
-    // navigation.navigate("Login");
-  };
+  // const logoutUser = async () => {
+  //   console.log('called');
+
+  //   await dispatch(updateAuthentication());
+  //   AsyncStorage.setItem('authToken', '');
+  // };
 
   const [permissionStatus, setPermissionStatus] = useState<any>(null);
 
@@ -400,7 +401,7 @@ const SettingsSection = () => {
         <TouchableOpacity style={styles.boxContainer}>
           <Text
             style={[styles.textName, {color: '#AC25AC'}]}
-            onPress={() => logoutUser()}>
+            onPress={() => {}}>
             Log Out
           </Text>
         </TouchableOpacity>
@@ -468,7 +469,7 @@ const styles = StyleSheet.create({
   },
   slider: {
     marginHorizontal: 20,
-  }, 
+  },
   distance: {
     flexDirection: 'row',
     justifyContent: 'space-between',

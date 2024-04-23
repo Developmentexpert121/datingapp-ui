@@ -1,13 +1,13 @@
-import { View, Text, SafeAreaView } from 'react-native'
-import React from 'react'
-import ProfileSection from '../../components/Profile/profileSection'
+import {View, Text, SafeAreaView} from 'react-native';
+import React from 'react';
+import ProfileSection from '../../components/Profile/profileSection';
 
 const ProfileScreen = () => {
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex: 1}}>
       <ProfileSection />
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default ProfileScreen
+export default ProfileScreen;

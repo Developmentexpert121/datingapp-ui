@@ -9,7 +9,7 @@ const initialState: Iprops = {
   modalData: {text: '', label: '', cancel: false},
 };
 export const authSice = createSlice({
-  name: 'auth',
+  name: 'authSice',
   initialState,
   reducers: {
     toggleGlobalModal: (state, action) => {

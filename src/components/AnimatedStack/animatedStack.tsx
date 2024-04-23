@@ -315,7 +315,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     width: '100%',
-    borderWidth: 1,
+    // borderWidth: 1,
   },
   animatedCard: {
     width: '80%',
@@ -345,7 +345,7 @@ const styles = StyleSheet.create({
     width: '70%',
     // marginVertical: 12,
     marginTop: 30,
-    borderWidth: 1,
+    // borderWidth: 1,
   },
   button: {
     width: 60,
@@ -373,7 +373,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     // marginBottom: 20,
     marginTop: 70,
-    borderWidth: 1,
+    // borderWidth: 1,
     // bottom:0,
     // position:"absolute"
   },

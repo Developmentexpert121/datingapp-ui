@@ -1,179 +1,130 @@
-import React, {useState, useRef} from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
+import React, {useState, useRef, FC} from 'react';
+import {View, Text, TextInput, Button, StyleSheet} from 'react-native';
 
-const CustomOTPInput: React.FC = () => {
-  const [otp, setOtp] = useState<string>('');
-  const inputRefs = useRef<TextInput[]>(
-    Array(6)
-      .fill(null)
-      .map(() => React.createRef<TextInput>()),
-  );
+const OtpComponent: FC = () => {
+  // State for each OTP digit
+  const [otp1, setOtp1] = useState<string>('');
+  const [otp2, setOtp2] = useState<string>('');
+  const [otp3, setOtp3] = useState<string>('');
+  const [otp4, setOtp4] = useState<string>('');
+  const [otp5, setOtp5] = useState<string>('');
+  const [otp6, setOtp6] = useState<string>('');
 
-  const handleInputChange = (index: number, value: string) => {
-    const newOtp = [...otp];
-    newOtp[index] = value;
-    setOtp(newOtp.join(''));
+  // Create refs for each input to manage focus transitions
+  const input1Ref = useRef<TextInput>(null);
+  const input2Ref = useRef<TextInput>(null);
+  const input3Ref = useRef<TextInput>(null);
+  const input4Ref = useRef<TextInput>(null);
+  const input5Ref = useRef<TextInput>(null);
+  const input6Ref = useRef<TextInput>(null);
 
-    // Auto focus to next input
-    if (value !== '' && index < 5 && inputRefs.current[index + 1]) {
-      inputRefs.current[index + 1]?.current?.focus();
+  // Function to handle OTP digit change and manage focus transitions
+  const handleOTPChange = (
+    txt: string,
+    setOtp: React.Dispatch<React.SetStateAction<string>>,
+    nextInputRef: React.RefObject<TextInput> | null,
+    prevInputRef: React.RefObject<TextInput> | null,
+  ) => {
+    setOtp(txt);
+
+    // Move focus forward when input length is equal to or greater than the required length
+    if (txt.length >= 1 && nextInputRef) {
+      nextInputRef.current?.focus();
+    }
+    // Move focus backward when input is empty
+    else if (txt.length <= 1 && prevInputRef) {
+      prevInputRef.current?.focus();
     }
   };
-
-  const handleVerifyOTP = () => {
-    // Implement your logic to verify OTP
-    console.log('Verifying OTP:', otp);
-  };
-
   return (
     <View style={styles.container}>
-      <Text style={{marginBottom: 20}}>Enter OTP</Text>
       <View style={styles.otpContainer}>
-        {[...Array(6)].map((_, index) => (
-          <TextInput
-            key={index}
-            ref={inputRefs.current[index]}
-            style={styles.otpInput}
-            onChangeText={value => handleInputChange(index, value)}
-            value={otp[index] || ''}
-            keyboardType="numeric"
-            maxLength={1}
-          />
-        ))}
+        <TextInput
+          style={styles.input}
+          value={otp1}
+          onChangeText={txt => handleOTPChange(txt, setOtp1, input2Ref, null)}
+          keyboardType="numeric"
+          maxLength={1}
+          ref={input1Ref}
+        />
+        <TextInput
+          style={styles.input}
+          value={otp2}
+          onChangeText={txt =>
+            handleOTPChange(txt, setOtp2, input3Ref, input1Ref)
+          }
+          keyboardType="numeric"
+          maxLength={1}
+          ref={input2Ref}
+        />
+        <TextInput
+          style={styles.input}
+          value={otp3}
+          onChangeText={txt =>
+            handleOTPChange(txt, setOtp3, input4Ref, input2Ref)
+          }
+          keyboardType="numeric"
+          maxLength={1}
+          ref={input3Ref}
+        />
+        <TextInput
+          style={styles.input}
+          value={otp4}
+          onChangeText={txt =>
+            handleOTPChange(txt, setOtp4, input5Ref, input3Ref)
+          }
+          keyboardType="numeric"
+          maxLength={1}
+          ref={input4Ref}
+        />
+        <TextInput
+          style={styles.input}
+          value={otp5}
+          onChangeText={txt =>
+            handleOTPChange(txt, setOtp5, input6Ref, input4Ref)
+          }
+          keyboardType="numeric"
+          maxLength={1}
+          ref={input5Ref}
+        />
+        <TextInput
+          style={styles.input}
+          value={otp6}
+          onChangeText={txt => handleOTPChange(txt, setOtp6, null, input5Ref)}
+          keyboardType="numeric"
+          maxLength={1}
+          ref={input6Ref}
+        />
       </View>
-      <TouchableOpacity style={styles.verifyButton} onPress={handleVerifyOTP}>
-        <Text style={styles.verifyText}>Verify OTP</Text>
-      </TouchableOpacity>
     </View>
   );
 };
-
-export default CustomOTPInput;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    // padding: 16,
+  },
+  title: {
+    fontSize: 24,
+    marginBottom: 20,
   },
   otpContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
+    marginBottom: 20,
   },
-  otpInput: {
-    borderWidth: 1,
-    borderColor: 'black',
-    borderRadius: 5,
-    marginHorizontal: 5,
+  input: {
     width: 40,
     height: 40,
+    borderWidth: 1,
+    borderColor: '#000',
+    marginRight: 10,
     textAlign: 'center',
-    fontSize: 18,
-  },
-  verifyButton: {
-    marginTop: 20,
-    padding: 10,
-    backgroundColor: 'blue',
     borderRadius: 5,
-  },
-  verifyText: {
-    color: 'white',
-    fontSize: 18,
   },
 });
 
-// import { View, Text, StyleSheet } from "react-native";
-// import React from "react";
-// import OTPTextView from "react-native-otp-textinput";
-// import Label from "../Label";
-// import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
-// interface Iprops {
-//   showError?: boolean;
-//   error?: string;
-//   defaultValue?: any;
-//   handleTextChange?: any;
-// }
-// const OtpComponent = ({
-//   showError,
-//   error,
-//   handleTextChange,
-//   defaultValue,
-// }: Iprops) => {
-//   return (
-//     <View>
-//       <OTPTextView
-//         containerStyle={{ marginTop: 15 }}
-//         inputCount={6}
-//         textInputStyle={styles.input}
-//         offTintColor={"#0182FC"}
-//         tintColor={"#0182FC"}
-//         keyboardType="number-pad"
-//         handleTextChange={handleTextChange}
-//         defaultValue={defaultValue}
-//         // placeholder={"0"}
-
-//         // caretHidden
-//         // ref={(input) => (refs.current[index] = input as TextInput)}
-//       />
-//       <View style={{ height: 30 }}>
-//         {showError && error ? (
-//           <Label
-//             text={"* " + error}
-//             style={{ fontSize: 12, marginTop: 5, color: "red" }}
-//           />
-//         ) : null}
-//       </View>
-//     </View>
-//   );
-// };
-
-// export default OtpComponent;
-
-// const styles = StyleSheet.create({
-//   input: {
-//     height: 45,
-//     width: 43,
-//     fontSize: 16,
-//     fontWeight: "500",
-//     color: "#000000",
-//     // fontFamily
-//     // elevation: 5,
-//     // shadowColor: "black",
-//     backgroundColor: "#fff",
-//     borderColor: "#000",
-//     // borderColor: "#000",
-//     borderWidth: 1,
-//     borderBottomWidth: 1,
-//     borderRadius: 16,
-//   },
-//   container: {
-//     flex: 1,
-//     justifyContent: "center",
-//     alignItems: "center",
-//     bottom: 15,
-//   },
-//   verifyTextStyle: {
-//     fontSize: 24,
-//     fontWeight: "600",
-//     fontFamily: "Inter-Normal",
-//     color: "#071731",
-//   },
-//   textstyle: {
-//     fontSize: 14,
-//     fontFamily: "Inter-Normal",
-//     fontWeight: "600",
-//     color: "#8C8994",
-//     width: "70%",
-//     textAlign: "center",
-//     lineHeight: 25,
-//     marginTop: 10,
-//   },
-//   buttonView: { width: "90%", marginVertical: "8%" },
-// });
+export default OtpComponent;
