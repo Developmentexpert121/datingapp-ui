@@ -56,7 +56,7 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
       }
     }
   };
-  const handleAppleSignIn = async () => {
+  const handleAppleSignIn = async (AppleAuthentication: any) => {
     try {
       const appleAuthRequestResponse = await AppleAuthentication.signInAsync({
         requestedScopes: [

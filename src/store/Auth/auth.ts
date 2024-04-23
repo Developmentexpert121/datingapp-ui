@@ -5,7 +5,7 @@ import {
   activityLoaderFinished,
   activityLoaderStarted,
 } from '../Activity/activity';
-import {toggleGlobalModal} from '../reducer/authSliceState';
+import {otpModal, toggleGlobalModal} from '../reducer/authSliceState';
 interface authData {
   email: string;
   password: string;
@@ -92,7 +92,7 @@ export const RegisterSignUp = createAsyncThunk(
         return response.data;
       }
       // navigation("LoginHomeScreen")
-      dispatch(EmailVerification);
+      // dispatch(EmailVerification);
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
@@ -112,6 +112,35 @@ export const EmailVerification = createAsyncThunk(
     try {
       const response = await http.post('/user/sendEmailVerification', data);
       if (response.status === 200) {
+        dispatch(
+          otpModal({
+            visible: true,
+          }),
+        );
+        return response.data;
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        return {error: 'Bad Request'};
+      } else {
+        throw error;
+      }
+    } finally {
+    }
+  },
+);
+export const VerifyOtp = createAsyncThunk(
+  'auth/VerifyOtp',
+  // (navigation:any)=>
+  async (data: any, {dispatch}: any) => {
+    try {
+      const response = await http.post('/user/verifyOtp', data);
+      if (response.status === 200) {
+        dispatch(
+          otpModal({
+            visible: false,
+          }),
+        );
         return response.data;
       }
     } catch (error: any) {
@@ -426,12 +455,6 @@ const Auth: any = createSlice({
     loading: false,
   },
   reducers: {},
-  // reducers: {
-  //   toggleGlobalModal: (state, action) => {
-  //     state.showGlobalModal = action.payload.visible;
-  //     state.modalData = action?.payload?.data || {text: '', label: ''};
-  //   },
-  // },
 
   extraReducers: builder => {
     builder
@@ -512,6 +535,3 @@ const Auth: any = createSlice({
 
 export const {resetAuth} = Auth.actions;
 export default Auth.reducer;
-
-// export const {toggleGlobalModal} = authSice.actions;
-// export default authSice.reducer;

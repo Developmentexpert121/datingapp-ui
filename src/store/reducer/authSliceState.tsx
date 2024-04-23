@@ -3,10 +3,12 @@ import {createSlice} from '@reduxjs/toolkit';
 export interface Iprops {
   showGlobalModal?: boolean;
   modalData?: {text?: string; label?: string; cancel: boolean};
+  showOtpModal?: boolean;
 }
 const initialState: Iprops = {
   showGlobalModal: false,
   modalData: {text: '', label: '', cancel: false},
+  showOtpModal: false,
 };
 export const authSice = createSlice({
   name: 'authSice',
@@ -16,8 +18,11 @@ export const authSice = createSlice({
       state.showGlobalModal = action.payload.visible;
       state.modalData = action?.payload?.data || {text: '', label: ''};
     },
+    otpModal: (state, action) => {
+      state.showOtpModal = action.payload;
+    },
   },
 });
 
-export const {toggleGlobalModal} = authSice.actions;
+export const {toggleGlobalModal, otpModal} = authSice.actions;
 export default authSice.reducer;

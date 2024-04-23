@@ -6,14 +6,16 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Label from '../Label';
 // import { RootState, useAppDispatch, useAppSelector } from "../../redux/store";
 
 import Modal from 'react-native-modal';
 import MainButton from '../ButtonComponent/MainButton';
-import {useAppDispatch} from '../../store/store';
+import {RootState, useAppDispatch, useAppSelector} from '../../store/store';
 import OtpComponent from '../AppTextInput/OtpComponent';
+import {otpModal} from '../../store/reducer/authSliceState';
+import {EmailVerification, VerifyOtp} from '../../store/Auth/auth';
 interface LoginFailModalProps {
   label?: string | undefined;
   onPress?: () => void | undefined;
@@ -22,40 +24,40 @@ interface LoginFailModalProps {
 }
 const OtpModal = ({label, onPress, text, isVisible}: LoginFailModalProps) => {
   const [modalVisible, setModalVisible] = useState(false);
+
+  const {showOtpModal} = useAppSelector(
+    (state: RootState) => state.authSliceState,
+  );
   const dispatch = useAppDispatch();
+  // console.log({modalData});
 
   const [otp, setOtp] = useState<string>('');
   const [resendAllowed, setResendAllowed] = useState<boolean>(true);
   const [timer, setTimer] = useState<number>(30);
   const [feedbackMessage, setFeedbackMessage] = useState<string>('');
 
-  // Function to send a new OTP
+  useEffect(() => {
+    sendNewOTP();
+  }, []);
   const sendNewOTP = async () => {
     if (resendAllowed) {
       setResendAllowed(false);
       setFeedbackMessage('Sending a new OTP...');
-
-      // Simulate sending an OTP (replace with actual API call)
+      // dispatch(
+      //   EmailVerification({
+      //     email: 'vkarwasra127@gmail.com',
+      //   })
+      // )
       try {
-        // Simulate API call to send OTP
-        // const response = await fetch('/api/send-otp');
-        // const data = await response.json();
-
-        // Assume OTP sent successfully
         setFeedbackMessage('A new OTP has been sent to your phone.');
       } catch (error) {
-        // Handle error (e.g., display an error message)
         setFeedbackMessage(
           'There was an error sending the OTP. Please try again later.',
         );
       }
-
-      // Start the timer for the resend button (e.g., 30 seconds)
       startResendTimer(30);
     }
   };
-
-  // Function to start the resend timer
   const startResendTimer = (seconds: number) => {
     setTimer(seconds);
     const timerInterval = setInterval(() => {
@@ -70,17 +72,15 @@ const OtpModal = ({label, onPress, text, isVisible}: LoginFailModalProps) => {
       });
     }, 1000);
   };
-
   // Handle OTP input changes
   const handleOtpChange = (text: string) => {
     setOtp(text);
   };
-
   return (
     <Modal
       animationIn={'slideInDown'}
-      isVisible={isVisible}
-      // isVisible={modalVisible}
+      // isVisible={isVisible}
+      isVisible={showOtpModal}
       style={{backgroundColor: 'transparent', margin: 0}}>
       <View style={styles.modal}>
         <View style={styles.modalstyle}>
@@ -91,9 +91,8 @@ const OtpModal = ({label, onPress, text, isVisible}: LoginFailModalProps) => {
           <OtpComponent />
           <View style={styles.loginContainer}>
             <Text style={styles.loginText}>Didn’t receive a OTP? </Text>
-            <TouchableOpacity onPress={sendNewOTP}>
+            <TouchableOpacity onPress={sendNewOTP} disabled={!resendAllowed}>
               <Text style={styles.touchableText}>
-                {' '}
                 {resendAllowed ? 'Resend' : `${timer} seconds`}
               </Text>
             </TouchableOpacity>
@@ -138,32 +137,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  otpContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: 20,
-  },
-  otpInput: {
-    borderWidth: 1,
-    borderColor: 'black',
-    borderRadius: 5,
-    marginHorizontal: 5,
-    width: 40,
-    height: 40,
-    textAlign: 'center',
-    fontSize: 18,
-  },
-  verifyButton: {
-    marginTop: 20,
-    padding: 10,
-    backgroundColor: 'blue',
-    borderRadius: 5,
-  },
-  verifyText: {
-    color: '#FFC7FF',
-    fontSize: 18,
   },
   loginContainer: {
     flexDirection: 'row',

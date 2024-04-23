@@ -16,7 +16,11 @@ import {RootStackParamList} from '../../types';
 import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useAppDispatch, useAppSelector} from '../../store/store';
-import {RegisterSignUp} from '../../store/Auth/auth';
+import {
+  EmailVerification,
+  RegisterSignUp,
+  VerifyOtp,
+} from '../../store/Auth/auth';
 import ZeroStepScreen from '../../components/Registration/zeroStepScreen';
 import FirstStepScreen from '../../components/Registration/firstStepScreen';
 import SecondStepScreen from '../../components/Registration/secondStepScreen';
@@ -170,7 +174,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     defaultValues,
     resolver: Schemas(steps),
   });
-  console.log('OnPress handleSubmit', handleSubmit);
+  // console.log('OnPress handleSubmit', handleSubmit);
   console.log('errors ', errors);
   const getLocationAndRegister = (data: RegisterForm) => {
     Geolocation.getCurrentPosition(
@@ -246,7 +250,12 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   console.log('showPermissionPopup', showPermissionPopup);
 
   const onSubmit: any = (data: RegisterForm) => {
-    console.log('dataaaaa:::', data);
+    dispatch(
+      EmailVerification({
+        email: '',
+      }),
+    );
+    console.log('data:::', data);
     if (steps === 7) {
       setSteps(prev => prev + 1);
     } else if (steps === 8) {
@@ -254,6 +263,11 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     } else if (steps < 8) {
       setSteps(prev => prev + 1);
     } else if (steps === 0) {
+      // dispatch(
+      //   EmailVerification({
+      //     email: '',
+      //   }),
+      // );
       data.phone = callingCode + data.phone;
     }
   };
@@ -264,7 +278,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     // phoneNumber: data?.phone,
   };
 
-  console.log('callllllllll:  ', phone);
+  console.log('callll:  ', phone);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -362,10 +376,26 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
             buttonStyle={{width: '90%'}}
             ButtonName={steps === 0 ? 'Continue' : steps < 8 ? 'Next' : 'Done'}
             onPress={handleSubmit(onSubmit)}
+            // onPress={() =>
+            //   dispatch(
+            //     EmailVerification({
+            //       email: 'vkarwasra127@gmail.com',
+            //     }),
+            //   )
+            // }
           />
         </View>
       </KeyboardAvoidingView>
-      <OtpModal isVisible={modalVisible} />
+      <OtpModal
+        onPress={() =>
+          dispatch(
+            VerifyOtp({
+              email: 'vkarwasra127@gmail.com',
+              otp: '',
+            }),
+          )
+        }
+      />
     </SafeAreaView>
   );
 };

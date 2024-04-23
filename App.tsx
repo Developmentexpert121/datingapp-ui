@@ -17,6 +17,7 @@ import SplashScreen from 'react-native-splash-screen';
 import ProfileData from './src/store/Auth/auth';
 import Root from './src/navigation/Root';
 import GlobalModal from './src/components/Modals/GlobalModal';
+import OtpModal from './src/components/OtpModal/OtpModal';
 
 const App = () => {
   const dispatch = useAppDispatch();
@@ -132,6 +133,7 @@ const App = () => {
           {/* <Root /> */}
 
           <GlobalModal />
+          {/* <OtpModal /> */}
         </NavigationContainer>
       )}
     </SafeAreaProvider>
