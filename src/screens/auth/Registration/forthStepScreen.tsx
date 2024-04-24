@@ -27,7 +27,7 @@ const ForthStepScreen = ({habits1, control, errors}: any) => {
         'Socially on weekends',
         'Most Nights',
       ],
-      image: require('../../assets/images/bottleofchampagne.png'),
+      image: require('../../../assets/images/bottleofchampagne.png'),
       imagePath: 'src/assets/images/bottleofchampagne.png',
     },
     {
@@ -40,14 +40,14 @@ const ForthStepScreen = ({habits1, control, errors}: any) => {
         'Smoker',
         'Trying to quit',
       ],
-      image: require('../../assets/images/smoking.png'),
+      image: require('../../../assets/images/smoking.png'),
       imagePath: 'src/assets/images/smoking.png',
     },
     {
       id: '3',
       title: 'Do you workout?',
       texts: ['Everyday', 'Often', 'Sometimes', 'Never'],
-      image: require('../../assets/images/Mandumbbells.png'),
+      image: require('../../../assets/images/Mandumbbells.png'),
       imagePath: 'src/assets/images/Mandumbbells.png',
     },
     {
@@ -66,7 +66,7 @@ const ForthStepScreen = ({habits1, control, errors}: any) => {
         'All the pets',
         'Want a pet',
       ],
-      image: require('../../assets/images/dogheart.png'),
+      image: require('../../../assets/images/dogheart.png'),
       imagePath: 'src/assets/images/dogheart.png',
     },
     {
@@ -80,7 +80,7 @@ const ForthStepScreen = ({habits1, control, errors}: any) => {
         'Being Watcher',
         'Music Lover',
       ],
-      image: require('../../assets/images/datestep.png'),
+      image: require('../../../assets/images/datestep.png'),
       imagePath: 'src/assets/images/datestep.png',
     },
   ];

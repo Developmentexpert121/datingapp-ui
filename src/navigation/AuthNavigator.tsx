@@ -2,16 +2,15 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {enableScreens} from 'react-native-screens';
-import LoginScreen from '../screens/Login/loginScreen';
-import LoginHomeScreen from '../screens/LoginHome/loginHomeScreen';
-import RegisterScreen from '../screens/Registration/registrationScreen';
+import LoginScreen from '../screens/auth/loginScreen';
+import LoginHomeScreen from '../screens/auth/loginHomeScreen';
+import RegisterScreen from '../screens/auth/registrationScreen';
 import {RootStackParamList} from '../types';
-import OtpScreen from '../screens/OtpScreen/OtpScreen';
+import OtpScreen from '../screens/auth/OtpScreen';
 const Stack = createStackNavigator<RootStackParamList>();
 // enableScreens();
 const AuthNavigator = () => (
   <Stack.Navigator
-    // initialRouteName="Loginhome"
     screenOptions={{
       headerShown: false,
       cardStyle: {backgroundColor: '#FFFFFF'},

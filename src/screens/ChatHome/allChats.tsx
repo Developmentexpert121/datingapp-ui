@@ -12,10 +12,10 @@ import {
   SafeAreaView,
 } from 'react-native';
 import {ListItem, Avatar, SearchBar} from 'react-native-elements';
-import CommonBackbutton from '../commonBackbutton/backButton';
+import CommonBackbutton from '../../components/commonBackbutton/backButton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
-import FooterComponent from '../Dashboard/footer/footer';
+import FooterComponent from '../../components/Dashboard/footer/footer';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {getReceivers} from '../../store/Auth/auth';
 import {videoCallUser} from '../../store/Activity/activity';
@@ -262,7 +262,7 @@ const ChatSection = () => {
         />
       </View>
       <UsersDrawer isOpen={isDrawerOpen} onClose={closeDrawer} />
-      <FooterComponent />
+      {/* <FooterComponent /> */}
     </SafeAreaView>
   );
 };

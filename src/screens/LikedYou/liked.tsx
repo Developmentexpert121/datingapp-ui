@@ -6,14 +6,11 @@ import {
   ImageBackground,
   FlatList,
   StyleSheet,
-  Pressable,
   Dimensions,
   SafeAreaView,
 } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import FooterComponent from '../footer/footer';
-import CommonBackbutton from '../../commonBackbutton/backButton';
-import {useAppDispatch, useAppSelector} from '../../../store/store';
+import CommonBackbutton from '../../components/commonBackbutton/backButton';
+import {useAppDispatch, useAppSelector} from '../../store/store';
 import LinearGradient from 'react-native-linear-gradient';
 const LikedScreen = () => {
   const allUsers: any = useAppSelector(
@@ -73,7 +70,7 @@ const LikedScreen = () => {
         </View>
       )}
 
-      <FooterComponent />
+      {/* <FooterComponent /> */}
     </SafeAreaView>
   );
 };

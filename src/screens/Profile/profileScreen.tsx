@@ -1,6 +1,6 @@
 import {View, Text, SafeAreaView} from 'react-native';
 import React from 'react';
-import ProfileSection from '../../components/Profile/profileSection';
+import ProfileSection from './profileSection';
 
 const ProfileScreen = () => {
   return (

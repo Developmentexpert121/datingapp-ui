@@ -43,7 +43,7 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import DrawerScreen from '../home/home';
+import DrawerScreen from '../../../screens/Home/home';
 import {
   TouchableOpacity,
   View,

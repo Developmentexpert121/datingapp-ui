@@ -14,32 +14,32 @@ const SecondStepScreen = ({partnerType, control, errors}: any) => {
     {
       id: '1',
       name: 'Long term partner',
-      image: require('../../assets/images/kiss.png'),
+      image: require('../../../assets/images/kiss.png'),
     },
     {
       id: '2',
       name: 'Long term open to short',
-      image: require('../../assets/images/date.png'),
+      image: require('../../../assets/images/date.png'),
     },
     {
       id: '3',
       name: 'Short term open to long',
-      image: require('../../assets/images/love-you.png'),
+      image: require('../../../assets/images/love-you.png'),
     },
     {
       id: '4',
       name: 'Short term fun',
-      image: require('../../assets/images/hug.png'),
+      image: require('../../../assets/images/hug.png'),
     },
     {
       id: '5',
       name: 'New friends',
-      image: require('../../assets/images/people.png'),
+      image: require('../../../assets/images/people.png'),
     },
     {
       id: '6',
       name: 'Still figuring it out',
-      image: require('../../assets/images/thinking.png'),
+      image: require('../../../assets/images/thinking.png'),
     },
     // Add more avatars as needed
   ];
@@ -111,8 +111,8 @@ const styles = StyleSheet.create({
     marginBottom: 25,
     backgroundColor: '#E8E8E8',
     borderRadius: 45,
-    borderWidth:2,
-    borderColor:"transparent"
+    borderWidth: 2,
+    borderColor: 'transparent',
   },
   avatarImageContainer: {},
   avatarImage: {

@@ -1,11 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  Pressable,
-  SafeAreaView,
-  Text,
-} from 'react-native';
+import {View, StyleSheet, Pressable, SafeAreaView, Text} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../../store/store';
 import {footerStatus} from '../../../store/Activity/activity';
@@ -20,7 +14,8 @@ import {
   LoveIC,
   LovepressIC,
   ProfileIC,
-  ProfilepressIC, } from '../../../assets/svgs';
+  ProfilepressIC,
+} from '../../../assets/svgs';
 interface Receiver {
   senderMessages: any[]; // Assuming senderMessages is an array of any type
   // Define other properties if they exist in your receiver data
@@ -58,8 +53,7 @@ const FooterComponent = () => {
     };
 
     const calculateTotalSenderMessages = () => {
-      let total: any = 
-      receiverData.forEach(receiver => {
+      let total: any = receiverData.forEach(receiver => {
         total += receiver.senderMessages?.length;
       });
       setTotalSenderMessages(total);
@@ -133,8 +127,7 @@ const styles = StyleSheet.create({
     height: 80,
     // borderWidth: 1,
   },
-  pageContainer: {
-  },
+  pageContainer: {},
   topNavigation: {
     flexDirection: 'row',
     justifyContent: 'space-around',

@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, Text, Image, ScrollView} from 'react-native';
-import Card from '../homeCard/homeCard';
-import AnimatedStack from '../../AnimatedStack/animatedStack';
+import Card from '../../components/Dashboard/homeCard/homeCard';
+import AnimatedStack from '../../components/AnimatedStack/animatedStack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import HeaderComponent from '../header/header';
-import FooterComponent from '../footer/footer';
-import {useAppDispatch, useAppSelector} from '../../../store/store';
-import {ProfileData, getAllUsers} from '../../../store/Auth/auth';
+import HeaderComponent from '../../components/Dashboard/header/header';
+import FooterComponent from '../../components/Dashboard/footer/footer';
+import {useAppDispatch, useAppSelector} from '../../store/store';
+import {ProfileData, getAllUsers} from '../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import FilterSection from '../FilterSection/filterSection';
-import NotificationScreen from '../Notification/notification';
+import FilterSection from './FilterSection/filterSection';
+import NotificationScreen from './Notification/notification';
 
 const getUserId = async () => {
   try {
@@ -144,19 +144,19 @@ const HomeScreen = () => {
                 let imagePath;
                 switch (item.imagePath) {
                   case 'src/assets/images/bottleofchampagne.png':
-                    imagePath = require('../../../assets/images/bottleofchampagne.png');
+                    imagePath = require('../../assets/images/bottleofchampagne.png');
                     break;
                   case 'src/assets/images/smoking.png':
-                    imagePath = require('../../../assets/images/smoking.png');
+                    imagePath = require('../../assets/images/smoking.png');
                     break;
                   case 'src/assets/images/Mandumbbells.png':
-                    imagePath = require('../../../assets/images/Mandumbbells.png');
+                    imagePath = require('../../assets/images/Mandumbbells.png');
                     break;
                   case 'src/assets/images/dogheart.png':
-                    imagePath = require('../../../assets/images/dogheart.png');
+                    imagePath = require('../../assets/images/dogheart.png');
                     break;
                   case 'src/assets/images/datestep.png':
-                    imagePath = require('../../../assets/images/datestep.png');
+                    imagePath = require('../../assets/images/datestep.png');
                     break;
                   // Add more cases for other image paths as needed
                 }
@@ -179,9 +179,7 @@ const HomeScreen = () => {
               })}
             </View>
           </ScrollView>
-          <View style={{}}>
-            <FooterComponent />
-          </View>
+          <View style={{}}>{/* <FooterComponent /> */}</View>
         </>
       ) : activeScreen === 'Filters' ? (
         <FilterSection

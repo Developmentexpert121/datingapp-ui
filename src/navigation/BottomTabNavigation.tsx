@@ -1,140 +1,123 @@
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {Platform} from 'react-native';
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {ChatIC, FindIC, FireIC, LoveIC, ProfileIC} from '../assets/svgs';
-// import { IPropertyData } from "../redux/reducer/types/propertiesTypes";
-// import { INewsProps } from "../redux/reducer/types/newsTypes";
-// import { ITicketProps } from "../redux/reducer/types/authTypes";
+import {
+  ChatIC,
+  ChatpressIC,
+  FindIC,
+  FindpressIc,
+  FireIC,
+  FirepressIC,
+  LoveIC,
+  LovepressIC,
+  ProfileIC,
+  ProfilepressIC,
+} from '../assets/svgs';
+import HomeScreen from '../screens/Home/homeScreen';
+import ExploredScreen from '../screens/Explore/explored';
+import LikedScreen from '../screens/LikedYou/liked';
+import ChatSection from '../screens/ChatHome/allChats';
+import ProfileScreen from '../screens/Profile/profileScreen';
 
 export type HomeStackParamList = {
-  // HomeScreen: undefined;
-  // Properties: undefined;
-  // PropertiesOverview: { propertyId: string; screen?: string | undefined };
-  // InvestmentHistory: undefined;
-  // Notifications: undefined;
-  // Support: undefined;
-  // SupportHistory: undefined;
-  // SupportDetails: ITicketProps;
+  HomeScreen: undefined;
+};
+export type ChatStackParamList = {
+  ChatSection: undefined;
 };
 export type ProfileStackParamList = {
   ProfileScreen: undefined;
-  ChangePassword: undefined;
-  EditProfile: undefined;
-};
-export type ReferralStackParamList = {
-  ReferralScreen: undefined;
-  RefarralList: undefined;
-};
-export type NewsStackParamList = {
-  // NewsScreen: undefined;
-  // NewsDetails: { item: INewsProps };
 };
 export type BottomTabParamList = {
   Home: undefined;
-  Deposit: undefined;
-  Referral: undefined;
-  News: undefined;
-  Profile: undefined;
+  ExploredScreen: undefined;
+  LikedScreen: undefined;
+  ChatSection: undefined;
+  HomeScreen: undefined;
+  ProfileScreen: undefined;
 };
-
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 const Stack = createNativeStackNavigator<ProfileStackParamList>();
 const HStack = createNativeStackNavigator<HomeStackParamList>();
-const ReferStack = createNativeStackNavigator<ReferralStackParamList>();
-const NStack = createNativeStackNavigator<NewsStackParamList>();
+const NStack = createNativeStackNavigator<ChatStackParamList>();
 const HomeStack = () => {
   return (
     <HStack.Navigator screenOptions={{headerShown: false}}>
-      <HStack.Screen name="HomeScreen" component={Home} />
-      <HStack.Screen name="Properties" component={Properties} />
-      <HStack.Screen name="PropertiesOverview" component={PropertiesOverview} />
-      <HStack.Screen name="InvestmentHistory" component={InvestmentHistory} />
+      <HStack.Screen name="HomeScreen" component={HomeScreen} />
     </HStack.Navigator>
+  );
+};
+const ChatStack = () => {
+  return (
+    <NStack.Navigator screenOptions={{headerShown: false}}>
+      <NStack.Screen name="ChatSection" component={ChatSection} />
+    </NStack.Navigator>
   );
 };
 const ProfileStack = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="ProfileScreen" component={Profile} />
+      <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
     </Stack.Navigator>
-  );
-};
-const ReferralStack = () => {
-  return (
-    <ReferStack.Navigator screenOptions={{headerShown: false}}>
-      <ReferStack.Screen name="ReferralScreen" component={Referral} />
-      <ReferStack.Screen name="RefarralList" component={ReferralList} />
-    </ReferStack.Navigator>
-  );
-};
-const NewsStack = () => {
-  return (
-    <NStack.Navigator screenOptions={{headerShown: false}}>
-      <NStack.Screen name="NewsScreen" component={News} />
-      <NStack.Screen name="NewsDetails" component={NewsDetail} />
-    </NStack.Navigator>
   );
 };
 const BottomTabNavigation = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: '#0182FC',
-        tabBarInactiveTintColor: '#7D848D',
         headerShown: false,
         tabBarHideOnKeyboard: Platform.OS === 'android',
         tabBarStyle: {
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
-          height: 65,
+          height: 90,
+          borderTopWidth: 2,
+          borderTopColor: '#AC25AC',
         },
-        tabBarLabelStyle: {marginBottom: 8},
-        tabBarIconStyle: {marginTop: 8},
+        tabBarIconStyle: {marginTop: 30},
       }}>
       <Tab.Screen
         name="Home"
         component={HomeStack}
         options={{
-          tabBarIcon: ({focused, color, size}) => {
-            return <FireIC color={color} />;
-          },
+          tabBarIcon: ({focused, color, size}) =>
+            focused ? <FirepressIC /> : <FireIC />,
+          title: '',
         }}
       />
       <Tab.Screen
-        name="Deposit"
-        component={Deposit}
+        name="ExploredScreen"
+        component={ExploredScreen}
         options={{
-          tabBarIcon: ({focused, color, size}) => {
-            return <FindIC color={color} />;
-          },
+          tabBarIcon: ({focused, color, size}) =>
+            focused ? <FindpressIc /> : <FindIC />,
+          title: '',
         }}
       />
       <Tab.Screen
-        name="Referral"
-        component={ReferralStack}
+        name="LikedScreen"
+        component={LikedScreen}
         options={{
-          tabBarIcon: ({focused, color, size}) => {
-            return <LoveIC color={color} />;
-          },
+          tabBarIcon: ({focused, color, size}) =>
+            focused ? <LovepressIC /> : <LoveIC />,
+          title: '',
         }}
       />
       <Tab.Screen
-        name="News"
-        component={NewsStack}
+        name="ChatSection"
+        component={ChatStack}
         options={{
-          tabBarIcon: ({focused, color, size}) => {
-            return <ChatIC color={color} />;
-          },
+          tabBarIcon: ({focused, color, size}) =>
+            focused ? <ChatpressIC /> : <ChatIC />,
+          title: '',
         }}
       />
       <Tab.Screen
-        name="Profile"
+        name="ProfileScreen"
         component={ProfileStack}
         options={{
-          tabBarIcon: ({focused, color, size}) => {
-            return <ProfileIC color={color} />;
-          },
+          tabBarIcon: ({focused, color, size}) =>
+            focused ? <ProfilepressIC /> : <ProfileIC />,
+          title: '',
         }}
       />
     </Tab.Navigator>
@@ -142,5 +125,3 @@ const BottomTabNavigation = () => {
 };
 
 export default BottomTabNavigation;
-
-const styles = StyleSheet.create({});

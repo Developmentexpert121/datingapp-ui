@@ -10,25 +10,25 @@ import {
   SafeAreaView,
 } from 'react-native';
 import React, {useState, useCallback, useEffect} from 'react';
-import CommonBackbutton from '../commonBackbutton/backButton';
+import CommonBackbutton from '../../../components/commonBackbutton/backButton';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useForm, Controller} from 'react-hook-form';
 import Icon1 from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon3 from 'react-native-vector-icons/Entypo';
 import * as yup from 'yup';
-import AppTextInput from '../AppTextInput/AppTextInput';
+import AppTextInput from '../../../components/AppTextInput/AppTextInput';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
-import {useAppDispatch, useAppSelector} from '../../store/store';
+import {useAppDispatch, useAppSelector} from '../../../store/store';
 import {
   deleteUser,
   updateAuthentication,
   updateProfileData,
-} from '../../store/Auth/auth';
+} from '../../../store/Auth/auth';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Geolocation from '@react-native-community/geolocation';
-import {activityLoaderStarted} from '../../store/Activity/activity';
+import {activityLoaderStarted} from '../../../store/Activity/activity';
 
 interface UpdateForm {
   name: string;

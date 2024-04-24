@@ -3,8 +3,13 @@ import React from 'react';
 import HeaderComponent from '../../components/Dashboard/header/header';
 import {Image} from 'react-native';
 import Label from '../../components/Label';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {RootStackParamList} from '../../types';
 
-const OtpScreen = () => {
+type Props = NativeStackScreenProps<RootStackParamList, 'OtpScreen'>;
+const OtpScreen = ({navigation: {}}) => {
+  const navigation = useNavigation;
   return (
     <View style={{flex: 1, alignItems: 'center'}}>
       <HeaderComponent label={'Enter your verification code'} />
@@ -17,7 +22,9 @@ const OtpScreen = () => {
 
       <View style={styles.loginContainer}>
         <Text style={styles.loginText}>Already a member?</Text>
-        <TouchableOpacity onPress={() => navigate('Login')}>
+        <TouchableOpacity
+        // onPress={() => navigate('Login')}
+        >
           <Text style={styles.touchableText}> Log In</Text>
         </TouchableOpacity>
       </View>

@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import HeaderComponent from '../header/header';
+import HeaderComponent from '../../../components/Dashboard/header/header';
 import {useAppDispatch, useAppSelector} from '../../../store/store';
 import {
   getNotifications,

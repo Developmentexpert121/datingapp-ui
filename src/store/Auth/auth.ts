@@ -56,7 +56,7 @@ export const LoginSignIn = createAsyncThunk(
         return response.data;
       }
     } catch (error: any) {
-      console.log('first error', error);
+      // console.log('first error', error);
       if (error.response && error.response.status === 400) {
         dispatch(
           toggleGlobalModal({
@@ -76,7 +76,7 @@ export const LoginSignIn = createAsyncThunk(
         throw error;
       }
     } finally {
-      // dispatch(activityLoaderFinished());
+      dispatch(activityLoaderFinished());
     }
   },
 );
@@ -88,10 +88,28 @@ export const RegisterSignUp = createAsyncThunk(
       // dispatch(activityLoaderStarted());
       const response = await http.post('/user/signup', data);
       if (response.status === 200) {
+        dispatch(
+          toggleGlobalModal({
+            visible: true,
+            data: {
+              text: 'OK',
+              label: 'Registration Successful, Please Login now.',
+            },
+          }),
+        );
         return response.data;
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
+        dispatch(
+          toggleGlobalModal({
+            visible: true,
+            data: {
+              text: 'OK',
+              label: 'Invalid credentials',
+            },
+          }),
+        );
         return {error: 'Bad Request'};
       } else {
         throw error;

@@ -1,7 +1,7 @@
 import {View, Text, SafeAreaView} from 'react-native';
 import React, {useEffect} from 'react';
 // import HomeComponent from "../../components/Dashboard/drawer/drawer"
-import HomeComponent from '../../components/Dashboard/home/home';
+import HomeComponent from './home';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const HomeScreen = () => {
   useEffect(() => {
@@ -20,7 +20,7 @@ const HomeScreen = () => {
     fetchToken();
   }, []);
   return (
-    <View style={{flex:1}}>
+    <View style={{flex: 1}}>
       <HomeComponent />
     </View>
   );

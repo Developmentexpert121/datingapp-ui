@@ -5,8 +5,8 @@ import {
   CallingState,
   StreamCall,
 } from '@stream-io/video-react-native-sdk';
-import MyIncomingCallUI from '../Chat/myIncomingCallUI';
-import MyOutgoingCallUI from '../Chat/myOutgoingCallUI';
+import MyIncomingCallUI from '../../screens/ChatHome/myIncomingCallUI';
+import MyOutgoingCallUI from '../../screens/ChatHome/myOutgoingCallUI';
 
 export const CallScreen = ({call, goToHomeScreen}: any) => {
   return <MyOutgoingCallUI call={call} goToHomeScreen={goToHomeScreen} />;

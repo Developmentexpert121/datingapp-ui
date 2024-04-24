@@ -18,6 +18,7 @@ import ProfileData from './src/store/Auth/auth';
 import Root from './src/navigation/Root';
 import GlobalModal from './src/components/Modals/GlobalModal';
 import OtpModal from './src/components/OtpModal/OtpModal';
+import BottomTabNavigation from './src/navigation/BottomTabNavigation';
 
 const App = () => {
   const dispatch = useAppDispatch();
@@ -113,9 +114,9 @@ const App = () => {
 
   const tokensss = getTokenAuth();
 
-  useEffect(() => {
-    isAuthenticated && dispatch(ProfileData());
-  }, []);
+  // useEffect(() => {
+  //   isAuthenticated && dispatch(ProfileData());
+  // }, []);
 
   // if (loading) return null;
   return (
@@ -124,13 +125,14 @@ const App = () => {
         <LoadingSpinner />
       ) : (
         <NavigationContainer>
-          <GlobalModal />
-          {tokensss === null || isAuthenticated ? (
-            <MainNavigator />
+          {/* {tokensss === null || isAuthenticated ? (
+            // <MainNavigator />
+            <BottomTabNavigation />
           ) : (
             <AuthNavigator />
-          )}
-          {/* <Root /> */}
+          )} */}
+          <Root />
+          <GlobalModal />
         </NavigationContainer>
       )}
     </SafeAreaProvider>

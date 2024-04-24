@@ -203,7 +203,7 @@ const AnimatedStack = (props: any) => {
         </View>
       )}
       {currentProfile ? (
-        <View style={{width: '100%', alignItems: 'center', }}>
+        <View style={{width: '100%', alignItems: 'center'}}>
           <PanGestureHandler onGestureEvent={gestureHandler}>
             <Animated.View style={[styles.animatedCard, cardStyle]}>
               <Animated.Image
@@ -292,7 +292,6 @@ const AnimatedStack = (props: any) => {
             })}
           </View> */}
         </View>
-        
       ) : (
         <Text
           style={{
@@ -364,7 +363,7 @@ const styles = StyleSheet.create({
     // marginBottom: 16,
     columnGap: 2,
     // borderWidth: 2,
-    alignSelf:"flex-start"
+    alignSelf: 'flex-start',
   },
   container: {
     flexDirection: 'row',

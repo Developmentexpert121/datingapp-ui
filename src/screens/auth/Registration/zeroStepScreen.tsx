@@ -1,15 +1,15 @@
 import {StyleSheet, Text, View, Platform, ScrollView} from 'react-native';
 import React, {useEffect, useMemo, useState} from 'react';
 import {RadioButton} from 'react-native-paper';
-import AppTextInput from '../AppTextInput/AppTextInput';
+import AppTextInput from '../../../components/AppTextInput/AppTextInput';
 import {Controller} from 'react-hook-form';
-import Colors from '../../constants/Colors';
-import Spacing from '../../constants/Spacing';
+import Colors from '../../../constants/Colors';
+import Spacing from '../../../constants/Spacing';
 import {useNavigation} from '@react-navigation/native';
-import PhoneInput from '../AppTextInput/PhoneInput';
-import {ChevronLeftIC} from '../../assets/svgs';
-import CustomDatePicker from '../AppTextInput/CustomDatePicker';
-import PasswodTextInput from '../AppTextInput/PasswodTextInput';
+import PhoneInput from '../../../components/AppTextInput/PhoneInput';
+import {ChevronLeftIC} from '../../../assets/svgs';
+import CustomDatePicker from '../../../components/AppTextInput/CustomDatePicker';
+import PasswodTextInput from '../../../components/AppTextInput/PasswodTextInput';
 
 interface RegForm0 {
   name: string;

@@ -10,52 +10,52 @@ import {
   SafeAreaView,
 } from 'react-native';
 
-import FooterComponent from '../footer/footer';
-import CommonBackbutton from '../../commonBackbutton/backButton';
+import FooterComponent from '../../components/Dashboard/footer/footer';
+import CommonBackbutton from '../../components/commonBackbutton/backButton';
 import LinearGradient from 'react-native-linear-gradient';
-import CustomHeader from '../../Headers/CustomHeader';
-import Container from '../../container';
+import CustomHeader from '../../components/Headers/CustomHeader';
+import Container from '../../components/container';
 const ExploredScreen = () => {
   const likedData = [
     {
       id: '1',
       name: "Let's be Friends",
-      imageUrl: require('../../../assets/images/friends.png'),
+      imageUrl: require('../../assets/images/friends.png'),
     },
     {
       id: '2',
       name: 'Coffee date',
-      imageUrl: require('../../../assets/images/coffee.png'),
+      imageUrl: require('../../assets/images/coffee.png'),
     },
     {
       id: '3',
       name: 'Date Night',
-      imageUrl: require('../../../assets/images/exploreDate.png'),
+      imageUrl: require('../../assets/images/exploreDate.png'),
     },
     {
       id: '4',
       name: 'Binge Watcher',
-      imageUrl: require('../../../assets/images/movies.png'),
+      imageUrl: require('../../assets/images/movies.png'),
     },
     {
       id: '5',
       name: 'Creatives',
-      imageUrl: require('../../../assets/images/art.png'),
+      imageUrl: require('../../assets/images/art.png'),
     },
     {
       id: '6',
       name: 'Sporty',
-      imageUrl: require('../../../assets/images/sporty.png'),
+      imageUrl: require('../../assets/images/sporty.png'),
     },
     {
       id: '7',
       name: 'Music Lover',
-      imageUrl: require('../../../assets/images/musical.png'),
+      imageUrl: require('../../assets/images/musical.png'),
     },
     {
       id: '8',
       name: 'Travel',
-      imageUrl: require('../../../assets/images/travel.png'),
+      imageUrl: require('../../assets/images/travel.png'),
     },
 
     // Add more data as needed
@@ -94,7 +94,7 @@ const ExploredScreen = () => {
           numColumns={2}
         />
       </View>
-      <FooterComponent />
+      {/* <FooterComponent /> */}
       {/* </Container> */}
     </SafeAreaView>
   );

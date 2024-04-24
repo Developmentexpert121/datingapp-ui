@@ -12,7 +12,7 @@ import {
 import React, {useEffect, useState} from 'react';
 import CommonBackbutton from '../commonBackbutton/backButton';
 import {Slider} from 'react-native-elements';
-import SeventhStepScreen from '../Registration/seventhStepScreen';
+import SeventhStepScreen from '../../screens/auth/Registration/seventhStepScreen';
 import AppTextInput from '../AppTextInput/AppTextInput';
 import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';

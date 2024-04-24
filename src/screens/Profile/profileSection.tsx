@@ -20,13 +20,13 @@ import Feather from 'react-native-vector-icons/Feather';
 import Svg, {Circle, Text as SvgText} from 'react-native-svg';
 import {useNavigation} from '@react-navigation/native';
 import {ListItem} from 'react-native-elements';
-import CommonBackbutton from '../commonBackbutton/backButton';
+import CommonBackbutton from '../../components/commonBackbutton/backButton';
 import LinearGradient from 'react-native-linear-gradient';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {updateProfileData} from '../../store/Auth/auth';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import FooterComponent from '../Dashboard/footer/footer';
+import FooterComponent from '../../components/Dashboard/footer/footer';
 
 const {width} = Dimensions.get('window');
 const eightyPercentWidth: number = width * 0.84;
@@ -199,8 +199,6 @@ const ProfileSection = () => {
     <SafeAreaView style={{flex: 1}}>
       <CommonBackbutton title="Profile" />
       <ScrollView
-        // onScroll={handleScroll}
-        // scrollEnabled={isScrollEnabled}
         showsVerticalScrollIndicator={false}
         style={{width: '100%', height: '100%'}}>
         <View style={styles.containerTop}>
@@ -296,7 +294,7 @@ const ProfileSection = () => {
           </View>
         </View>
 
-        <View style={{marginTop:20,}}>
+        <View style={{marginTop: 20}}>
           <FlatList
             ref={flatListRef}
             horizontal
@@ -336,9 +334,7 @@ const ProfileSection = () => {
           />
         </View>
       </ScrollView>
-      <View style={{}}>
-        <FooterComponent />
-      </View>
+      <View style={{}}>{/* <FooterComponent /> */}</View>
     </SafeAreaView>
   );
 };
@@ -347,7 +343,7 @@ const styles = StyleSheet.create({
   containerTop: {
     backgroundColor: '#FFFFFF',
     paddingVertical: 22,
-    marginTop:10,
+    marginTop: 10,
     shadowColor: '#AC25AC',
     shadowOffset: {
       width: 0,
@@ -407,12 +403,6 @@ const styles = StyleSheet.create({
     width: 132,
     height: 132,
     borderRadius: 66,
-  },
-  backPress: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-    marginTop: 15,
   },
   boxContainer: {
     borderRadius: 6,

@@ -12,8 +12,8 @@ import {
 import {launchImageLibrary} from 'react-native-image-picker';
 import {request, PERMISSIONS} from 'react-native-permissions';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import {useAppDispatch, useAppSelector} from '../../store/store';
-import {updateProfileData, uploadImages} from '../../store/Auth/auth';
+import {useAppDispatch, useAppSelector} from '../../../store/store';
+import {updateProfileData, uploadImages} from '../../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Controller} from 'react-hook-form';
 

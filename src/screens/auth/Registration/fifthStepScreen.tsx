@@ -26,20 +26,20 @@ const FifthStepScreen = ({habits2, control, errors}: any) => {
         'Bad Texter',
         'Better in person',
       ],
-      image: require('../../assets/images/chat-balloon.png'),
+      image: require('../../../assets/images/chat-balloon.png'),
     },
     {
       id: '2',
       title: 'How do you receive love?',
       texts: ['Thoughtful Gestures', 'Touch', 'Compliments', 'Time together'],
-      image: require('../../assets/images/love.png'),
+      image: require('../../../assets/images/love.png'),
     },
 
     {
       id: '3',
       title: 'What is your education level?',
       texts: ['Bachelors', 'In college', 'High school', 'PHD', 'Masters'],
-      image: require('../../assets/images/abroad.png'),
+      image: require('../../../assets/images/abroad.png'),
     },
     {
       id: '4',
@@ -58,7 +58,7 @@ const FifthStepScreen = ({habits2, control, errors}: any) => {
         'Cancer',
         'Sagittarius',
       ],
-      image: require('../../assets/images/moon.png'),
+      image: require('../../../assets/images/moon.png'),
     },
 
     // Add more items as needed

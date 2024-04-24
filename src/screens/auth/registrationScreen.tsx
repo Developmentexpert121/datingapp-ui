@@ -21,16 +21,16 @@ import {
   RegisterSignUp,
   VerifyOtp,
 } from '../../store/Auth/auth';
-import ZeroStepScreen from '../../components/Registration/zeroStepScreen';
-import FirstStepScreen from '../../components/Registration/firstStepScreen';
-import SecondStepScreen from '../../components/Registration/secondStepScreen';
-import ThirdStepScreen from '../../components/Registration/thirdStepScreen';
+import ZeroStepScreen from './Registration/zeroStepScreen';
+import FirstStepScreen from './Registration/firstStepScreen';
+import SecondStepScreen from './Registration/secondStepScreen';
+import ThirdStepScreen from './Registration/thirdStepScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import ForthStepScreen from '../../components/Registration/forthStepScreen';
-import FifthStepScreen from '../../components/Registration/fifthStepScreen';
-import SixthStepScreen from '../../components/Registration/sixthStepScreen';
-import SeventhStepScreen from '../../components/Registration/seventhStepScreen';
-import EighthStepScreen from '../../components/Registration/eighthStepScreen';
+import ForthStepScreen from './Registration/forthStepScreen';
+import FifthStepScreen from './Registration/fifthStepScreen';
+import SixthStepScreen from './Registration/sixthStepScreen';
+import SeventhStepScreen from './Registration/seventhStepScreen';
+import EighthStepScreen from './Registration/eighthStepScreen';
 import Geolocation from '@react-native-community/geolocation';
 import MainButton from '../../components/ButtonComponent/MainButton';
 import OtpModal from '../../components/OtpModal/OtpModal';

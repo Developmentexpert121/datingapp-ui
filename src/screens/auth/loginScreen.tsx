@@ -59,28 +59,28 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const onSubmit: any = (data: LoginForm) => {
     console.log('data user', data);
     dispatch(LoginSignIn(data));
-    // reset();
+    reset();
   };
 
   const signInInfo: any = useAppSelector(
     (state: any) => state?.Auth?.data?.signInInfo,
   );
 
-  // useEffect(() => {
-  //   const fetchToken = async () => {
-  //     try {
-  //       const value = await AsyncStorage.getItem('authToken');
-  //       if (value !== null) {
-  //         return value;
-  //       } else {
-  //         return null;
-  //       }
-  //     } catch (error) {
-  //       console.error('Error getting item from AsyncStorage:', error);
-  //     }
-  //   };
-  //   fetchToken();
-  // }, []);
+  useEffect(() => {
+    const fetchToken = async () => {
+      try {
+        const value = await AsyncStorage.getItem('authToken');
+        if (value !== null) {
+          return value;
+        } else {
+          return null;
+        }
+      } catch (error) {
+        console.error('Error getting item from AsyncStorage:', error);
+      }
+    };
+    fetchToken();
+  }, []);
 
   return (
     // <ImageContainer

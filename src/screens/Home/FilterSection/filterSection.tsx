@@ -13,11 +13,11 @@ import {Controller, useForm} from 'react-hook-form';
 import {useAppDispatch, useAppSelector} from '../../../store/store';
 import {updateProfileData} from '../../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Thumb from '../../settingsSection/Thumb';
-import Rail from '../../settingsSection/Rail';
-import RailSelected from '../../settingsSection/RailSelected';
-import Label from '../../settingsSection/Label';
-import Notch from '../../settingsSection/Notch';
+import Thumb from '../../Profile/settingsSection/Thumb';
+import Rail from '../../Profile/settingsSection/Rail';
+import RailSelected from '../../Profile/settingsSection/RailSelected';
+import Label from '../../Profile/settingsSection/Label';
+import Notch from '../../Profile/settingsSection/Notch';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
@@ -134,7 +134,7 @@ const FilterSection = ({
   };
 
   return (
-    <ScrollView style={{marginTop: 10,}}>
+    <ScrollView style={{marginTop: 10}}>
       <View style={styles.boxContainer}>
         <View style={styles.distance}>
           <Text style={styles.textName}>Distance Preference</Text>
@@ -283,56 +283,56 @@ const FilterSection = ({
         <Text style={styles.textName}>Gender</Text>
         <View style={styles.line} />
         {/* <View> */}
-          {options.map(item => (
-            <View key={item.value} style={styles.radio}>
-              <Controller
-                name={'gender'}
-                control={control}
-                defaultValue="Male"
-                render={() => (
-                  <View
-                    style={{
-                      flex: 1,
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
+        {options.map(item => (
+          <View key={item.value} style={styles.radio}>
+            <Controller
+              name={'gender'}
+              control={control}
+              defaultValue="Male"
+              render={() => (
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}>
+                  <Text
+                    style={[
+                      {
+                        color: errors?.gender ? 'red' : 'black',
+                        fontFamily: 'Sansation-Regular',
+                        paddingBottom: 8,
+                      },
+                    ]}>
+                    {item.label}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setChecked(item.label);
+                      dispatch(
+                        updateProfileData({
+                          field: 'gender',
+                          value: item.label,
+                          id: getUserId(),
+                        }),
+                      );
                     }}>
-                    <Text
-                      style={[
-                        {
-                          color: errors?.gender ? 'red' : 'black',
-                          fontFamily: 'Sansation-Regular',
-                          paddingBottom: 8,
-                        },
-                      ]}>
-                      {item.label}
-                    </Text>
-                    <TouchableOpacity
-                      onPress={() => {
-                        setChecked(item.label);
-                        dispatch(
-                          updateProfileData({
-                            field: 'gender',
-                            value: item.label,
-                            id: getUserId(),
-                          }),
-                        );
-                      }}>
-                      <Ionicons
-                        name={
-                          checked === item.label
-                            ? 'radio-button-on'
-                            : 'radio-button-off'
-                        }
-                        size={16}
-                        color="#AC25AC"
-                      />
-                    </TouchableOpacity>
-                  </View>
-                )}
-              />
-            </View>
-          ))}
+                    <Ionicons
+                      name={
+                        checked === item.label
+                          ? 'radio-button-on'
+                          : 'radio-button-off'
+                      }
+                      size={16}
+                      color="#AC25AC"
+                    />
+                  </TouchableOpacity>
+                </View>
+              )}
+            />
+          </View>
+        ))}
         {/* </View> */}
       </View>
     </ScrollView>
