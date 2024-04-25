@@ -9,12 +9,8 @@ import {
   Dimensions,
   SafeAreaView,
 } from 'react-native';
-
-import FooterComponent from '../../components/Dashboard/footer/footer';
-import CommonBackbutton from '../../components/commonBackbutton/backButton';
+import CommonBackbutton from '../../components/commonBackbutton/CommonBackbutton';
 import LinearGradient from 'react-native-linear-gradient';
-import CustomHeader from '../../components/Headers/CustomHeader';
-import Container from '../../components/container';
 const ExploredScreen = () => {
   const likedData = [
     {
@@ -78,9 +74,7 @@ const ExploredScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <Container color="#fff"> */}
       <CommonBackbutton title="Explore" />
-      {/* <CustomHeader label={"Explore"}/> */}
       <View
         style={{
           flex: 1,
@@ -94,8 +88,6 @@ const ExploredScreen = () => {
           numColumns={2}
         />
       </View>
-      {/* <FooterComponent /> */}
-      {/* </Container> */}
     </SafeAreaView>
   );
 };
@@ -116,7 +108,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginHorizontal: 10,
   },
-
   image: {
     flex: 1,
     borderRadius: 10,
@@ -143,28 +134,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Sansation-Bold',
     color: '#fff',
-  },
-  bio: {
-    fontSize: 16,
-    color: '#fff',
-    fontFamily: 'Sansation-Regular',
-  },
-  backPress: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-    marginTop: 15,
-  },
-  backPressIcon: {
-    marginRight: 8,
-    color: '#AC25AC',
-  },
-  stepsText: {
-    color: 'grey',
-    fontSize: 20,
-    paddingHorizontal: 20,
-    borderRadius: 15,
-    marginLeft: 80,
   },
 });
 

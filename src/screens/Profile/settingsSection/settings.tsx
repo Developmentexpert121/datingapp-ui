@@ -10,7 +10,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import React, {useState, useCallback, useEffect} from 'react';
-import CommonBackbutton from '../../../components/commonBackbutton/backButton';
+import CommonBackbutton from '../../../components/commonBackbutton/CommonBackbutton';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useForm, Controller} from 'react-hook-form';
 import Icon1 from 'react-native-vector-icons/FontAwesome';
@@ -199,7 +199,7 @@ const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
             <TouchableOpacity
               onPress={handleSubmit(onSubmit)}
               style={styles.button}>
-              <Text style={styles.buttonText}>Save</Text>
+              <Text style={styles.buttonText}>Sav</Text>
             </TouchableOpacity>
           </View>
         </View>

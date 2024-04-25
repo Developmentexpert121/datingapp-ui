@@ -5,14 +5,10 @@ import LoginHomeScreen from '../screens/auth/loginHomeScreen';
 import OtpScreen from '../screens/auth/OtpScreen';
 import LoginScreen from '../screens/auth/loginScreen';
 import RegisterScreen from '../screens/auth/registrationScreen';
-import HomeScreen from '../screens/Home/homeScreen';
-import LikedScreen from '../screens/LikedYou/liked';
-import ExploredScreen from '../screens/Explore/explored';
-import ProfileScreen from '../screens/Profile/profileScreen';
 import ChatSection from '../screens/ChatHome/allChats';
 import VideoCallRedirect from '../screens/ChatHome/chatVideoRedirect';
 import SettingsScreen from '../screens/Profile/settingsSection/settings';
-import UpdateProfileScreen from '../components/updateProfile/updateProfile';
+import UpdateProfileScreen from '../screens/Profile/updateProfile/updateProfile';
 import {useAppDispatch, useAppSelector} from '../store/store';
 import SplashScreenn from 'react-native-splash-screen';
 import ProfileData from '../store/Auth/auth';
@@ -21,6 +17,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Platform} from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import {requestNotifications} from 'react-native-permissions';
+import FilterSection from '../screens/Home/FilterSection/filterSection';
 export type RegisterType = {};
 export type RootStackParamList = {
   Home: undefined;
@@ -39,6 +36,7 @@ export type RootStackParamList = {
   VideoCallRedirect: undefined;
   OtpScreen: undefined;
   BottomTabNavigation: undefined;
+  FilterSection: undefined;
 };
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -98,7 +96,7 @@ const Root = () => {
     (state: any) => state?.Auth?.isAuthenticated,
   );
 
-  console.log('------isAuthenticated', isAuthenticated);
+  // console.log('------isAuthenticated', isAuthenticated);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -166,13 +164,11 @@ const Root = () => {
             name="BottomTabNavigation"
             component={BottomTabNavigation}
           />
-          {/* <Stack.Screen name="Home" component={HomeScreen} /> */}
-          {/* <Stack.Screen name="Liked" component={LikedScreen} /> */}
-          {/* <Stack.Screen name="Explore" component={ExploredScreen} /> */}
-          {/* <Stack.Screen name="Profile" component={ProfileScreen} /> */}
           <Stack.Screen name="Settings" component={SettingsScreen} />
           <Stack.Screen name="UpdateProfile" component={UpdateProfileScreen} />
           <Stack.Screen name="ChatScreen" component={ChatSection} />
+          <Stack.Screen name="FilterSection" component={FilterSection} />
+
           <Stack.Screen
             name="VideoCallRedirect"
             component={VideoCallRedirect}

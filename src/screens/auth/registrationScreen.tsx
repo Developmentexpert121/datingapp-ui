@@ -149,6 +149,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const [callingCode, setCallingCode] = useState('+91');
   const [otp, setOtp] = useState<string[]>(['', '', '', '', '', '']);
   const [loader, setLoader] = useState<boolean>(false);
+  const [phone, setPhone] = useState<object>({});
 
   const dispatch: any = useAppDispatch();
   const Schemas = (steps: any) => {
@@ -221,6 +222,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
             dispatch(
               RegisterSignUp({
                 ...data,
+                phoneNumber: phone,
                 distance: `${distance}mi`,
                 profilePic: profileImages?.join(','),
                 dob: dateStr,
@@ -238,6 +240,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
             dispatch(
               RegisterSignUp({
                 ...data,
+                phoneNumber: phone,
                 distance: `${distance}mi`,
                 profilePic: profileImages?.join(','),
                 dob: dateStr,
@@ -254,7 +257,6 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const [email, setEmail] = useState('');
 
   const onSubmit: any = (data: RegisterForm) => {
-    setLoader(true);
     setEmail(data.email);
     if (steps === 7) {
       setSteps(prev => prev + 1);
@@ -264,6 +266,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
       setSteps(prev => prev + 1);
     } else if (steps === 0) {
       // console.log('Callllleleleel');
+      setLoader(true);
       dispatch(
         EmailVerification({
           email: data.email,
@@ -271,11 +274,13 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
       )
         .unwrap()
         .then(() => setLoader(false));
-
-      data.phone = callingCode + data.phone;
+      setPhone({
+        countryCode: callingCode,
+        number: data.phone,
+      });
     }
   };
-  console.log('------', otp);
+  // console.log('------', otp);
   // console.log('onSubmitbutton ...', onSubmit);
   const [errorOtp, setErrorOtp] = useState();
   const otpVerifity = () => {
@@ -303,9 +308,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
       );
   };
   console.log('otpVerifity', otpVerifity);
-  const phone = {
-    countryCode: callingCode,
-  };
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar translucent backgroundColor="transparent" />

@@ -9,7 +9,7 @@ import {
   Dimensions,
   SafeAreaView,
 } from 'react-native';
-import CommonBackbutton from '../../components/commonBackbutton/backButton';
+import CommonBackbutton from '../../components/commonBackbutton/CommonBackbutton';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import LinearGradient from 'react-native-linear-gradient';
 const LikedScreen = () => {

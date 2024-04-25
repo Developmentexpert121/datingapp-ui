@@ -135,6 +135,7 @@ const FilterSection = ({
 
   return (
     <ScrollView style={{marginTop: 10}}>
+      {/* Distance Preference */}
       <View style={styles.boxContainer}>
         <View style={styles.distance}>
           <Text style={styles.textName}>Distance Preference</Text>
@@ -196,7 +197,7 @@ const FilterSection = ({
           )}
         />
       </View>
-
+      {/* Show Me */}
       <View style={styles.boxContainer}>
         <Text style={styles.textName}>Show Me</Text>
         <View style={styles.line} />
@@ -253,7 +254,7 @@ const FilterSection = ({
           ))}
         </View>
       </View>
-
+      {/* Age Range */}
       <View style={styles.boxContainer}>
         <View style={styles.distance}>
           <Text style={styles.textName}>Age Range</Text>
@@ -278,11 +279,10 @@ const FilterSection = ({
           onSliderTouchEnd={handleValueChange}
         />
       </View>
-
+      {/* Gender */}
       <View style={styles.boxContainer}>
         <Text style={styles.textName}>Gender</Text>
         <View style={styles.line} />
-        {/* <View> */}
         {options.map(item => (
           <View key={item.value} style={styles.radio}>
             <Controller
@@ -333,7 +333,6 @@ const FilterSection = ({
             />
           </View>
         ))}
-        {/* </View> */}
       </View>
     </ScrollView>
   );
@@ -355,7 +354,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
-
     elevation: 2,
   },
   slider: {
@@ -372,7 +370,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.34,
     shadowRadius: 6.27,
-
     elevation: 10,
   },
   line: {

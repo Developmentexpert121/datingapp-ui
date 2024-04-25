@@ -100,13 +100,14 @@ export const RegisterSignUp = createAsyncThunk(
         return response.data;
       }
     } catch (error: any) {
+      console.log('RegisterSignUp', error);
       if (error.response && error.response.status === 400) {
         dispatch(
           toggleGlobalModal({
             visible: true,
             data: {
               text: 'OK',
-              label: 'Invalid credentials',
+              label: 'Something went Worng Please try again ',
             },
           }),
         );
@@ -136,7 +137,17 @@ export const EmailVerification = createAsyncThunk(
         return response.data;
       }
     } catch (error: any) {
+      console.log('EmailVerification', error);
       if (error.response && error.response.status === 400) {
+        dispatch(
+          toggleGlobalModal({
+            visible: true,
+            data: {
+              text: 'OK',
+              label: 'User already exists',
+            },
+          }),
+        );
         return {error: 'Bad Request'};
       } else {
         throw error;
@@ -152,7 +163,7 @@ export const VerifyOtp = createAsyncThunk(
   async (data: any, {dispatch}: any) => {
     try {
       const response = await http.post('/user/verifyOtp', data);
-      console.log(response.data);
+      // console.log(response.data);
       if (response.status === 200) {
         response.data.success &&
           dispatch(
@@ -163,6 +174,25 @@ export const VerifyOtp = createAsyncThunk(
         return response.data;
       }
     } catch (error: any) {
+      console.log('VerifyOtp sdhy', error);
+      // dispatch(
+      //   otpModal({
+      //     visible: false,
+      //   }),
+      // )
+      //   .unwrap()
+      //   .then(() =>
+      //     dispatch(
+      //       toggleGlobalModal({
+      //         visible: true,
+      //         data: {
+      //           text: 'OK',
+      //           label: 'Invalid OTP',
+      //         },
+      //       }),
+      //     ),
+      //   );
+
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
       } else {

@@ -5,21 +5,20 @@ import {
   TouchableOpacity,
   ScrollView,
   Modal,
-  TextInput,
-  FlatList,
   SafeAreaView,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import CommonBackbutton from '../commonBackbutton/backButton';
+import CommonBackbutton from '../../../components/commonBackbutton/CommonBackbutton';
 import {Slider} from 'react-native-elements';
-import SeventhStepScreen from '../../screens/auth/Registration/seventhStepScreen';
-import AppTextInput from '../AppTextInput/AppTextInput';
+import SeventhStepScreen from '../../auth/Registration/seventhStepScreen';
+import AppTextInput from '../../../components/AppTextInput/AppTextInput';
 import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import {useAppDispatch, useAppSelector} from '../../store/store';
-import {updateProfileData} from '../../store/Auth/auth';
+import {useAppDispatch, useAppSelector} from '../../../store/store';
+import {updateProfileData} from '../../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import MainButton from '../../../components/ButtonComponent/MainButton';
 interface UpdateForm {
   work: string;
   education: string;
@@ -38,7 +37,6 @@ const defaultValues = {
   email: '',
   password: '',
 };
-
 const getUserId = async () => {
   try {
     const userId: any = await AsyncStorage.getItem('userId');
@@ -62,7 +60,6 @@ const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
   const profileData = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-
   const Data = [
     {text: 'Lodo'},
     {text: 'Cricket'},
@@ -77,7 +74,6 @@ const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
     {text: 'Swimming'},
     {text: 'Travel'},
   ];
-
   const avatars = [
     {id: '1', text: 'Long term partner'},
     {id: '2', text: 'Long term open to short'},
@@ -267,14 +263,11 @@ const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
               />
             </View>
           )}
-
-          <View style={styles.containerBtn}>
-            <TouchableOpacity
-              onPress={handleSubmit(onSubmit)}
-              style={styles.button}>
-              <Text style={styles.buttonText}>Save</Text>
-            </TouchableOpacity>
-          </View>
+          <MainButton
+            buttonStyle={{width: '80%'}}
+            onPress={handleSubmit(onSubmit)}
+            ButtonName={'Save'}
+          />
         </View>
       </TouchableOpacity>
     </Modal>
@@ -390,7 +383,6 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     paddingVertical: 10,
     marginHorizontal: 24,
-
     marginBottom: 16,
     shadowColor: '#000',
     shadowOffset: {
@@ -399,7 +391,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
-
     elevation: 2,
   },
   title: {
@@ -419,7 +410,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     marginVertical: 10,
   },
-
   textField: {
     flex: 0,
     flexDirection: 'row',
@@ -427,7 +417,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     columnGap: 4,
   },
-
   slider: {
     marginHorizontal: 20,
   },
@@ -442,7 +431,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.34,
     shadowRadius: 6.27,
-
     elevation: 10,
   },
   distance: {
@@ -450,7 +438,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: 20,
   },
-
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -474,48 +461,6 @@ const styles = StyleSheet.create({
     marginLeft: 40,
     color: 'black',
     fontFamily: 'Sansation-Bold',
-  },
-
-  closeButton: {
-    alignSelf: 'flex-end',
-  },
-  closeButtonText: {
-    color: 'blue',
-    fontSize: 16,
-  },
-  openButton: {
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 5,
-  },
-  openButtonText: {
-    color: '#fff',
-    fontSize: 16,
-  },
-
-  containerBtn: {
-    marginVertical: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  button: {
-    width: '80%',
-    backgroundColor: '#AC25AC',
-    padding: 12,
-    borderRadius: 36,
-  },
-
-  buttonText: {
-    color: 'white',
-    fontSize: 20,
-    textAlign: 'center',
-    fontFamily: 'Sansation-Bold',
-  },
-
-  containerModal: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
   },
   listItem: {
     backgroundColor: '#AC25AC',

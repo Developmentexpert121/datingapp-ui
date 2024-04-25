@@ -61,5 +61,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    // position: 'absolute',
+    zIndex: 4,
   },
 });

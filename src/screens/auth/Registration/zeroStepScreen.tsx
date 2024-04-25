@@ -82,6 +82,7 @@ const ZeroStepScreen = ({
       <ScrollView
         style={{borderWidth: 0, flex: 1}}
         showsVerticalScrollIndicator={false}>
+        {/* Name */}
         <View style={styles.container}>
           <Text style={styles.label}>My name is</Text>
           <AppTextInput
@@ -99,7 +100,6 @@ const ZeroStepScreen = ({
         </View>
 
         <View style={styles.container}>
-          {/* <Text style={styles.label}>Date Of Birth </Text> */}
           {/* <Controller
           name={dateDisplay}
           control={control}
@@ -154,14 +154,14 @@ const ZeroStepScreen = ({
         /> */}
           <Controller
             control={control}
-            name={dob} // You can specify the name for the field
-            rules={{required: true}} // Add any validation rules here
-            defaultValue="" // Set the default value
+            name={dob}
+            rules={{required: true}}
+            defaultValue=""
             render={({field: {onChange, onBlur, value}}) => (
               <CustomDatePicker
                 label="Date Of Birth"
                 placeholder="Date of birth"
-                value={value}
+                value={value.dob}
                 onChangeText={onChange}
                 showError={Boolean(errors?.phone)}
                 errors={Boolean(errors?.dob)}
@@ -175,9 +175,8 @@ const ZeroStepScreen = ({
           )}
           <Text style={styles.label2}>Your age will be public</Text>
         </View>
+        {/* Phone Number */}
         <View style={styles.container}>
-          {/* <Text style={styles.label}>Phone number</Text> */}
-          {/* <TextInput style={styles.input} placeholder="Enter your name" /> */}
           {/* <AppTextInput
           placeholder="Enter Your Phone"
           name={phone}
@@ -202,7 +201,7 @@ const ZeroStepScreen = ({
 
           <Text style={styles.label2}>Your phone will be public</Text>
         </View>
-
+        {/* Gender */}
         <View style={[styles.container1]}>
           <Text style={styles.label1}>Gender</Text>
           {options.map(item => (
@@ -273,7 +272,7 @@ const ZeroStepScreen = ({
             <Text style={styles.errorText}>{errors.city.message}</Text>
           )}
         </View>
-
+        {/* Mail */}
         <View style={styles.container}>
           <Text style={styles.label}>Email</Text>
           <AppTextInput
@@ -288,6 +287,7 @@ const ZeroStepScreen = ({
             <Text style={styles.errorText}>{errors.email.message}</Text>
           )}
         </View>
+        {/* Password */}
         <View style={styles.container}>
           <Text style={styles.label}>Password</Text>
           <PasswodTextInput
@@ -308,19 +308,6 @@ const ZeroStepScreen = ({
 };
 
 const styles = StyleSheet.create({
-  scrollViewContent: {
-    flexGrow: 1,
-  },
-  flatList: {
-    width: '100%',
-  },
-  maindiv: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    backgroundColor: '#F5F5F5', // Set a background color for the entire screen
-  },
   container: {
     width: '90%',
     //padding: 5,
@@ -378,9 +365,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     //borderRadius: 5,
   },
-  buttonPressed: {
-    backgroundColor: '#AC25AC',
-  },
   radio: {
     flexGrow: 1,
     alignContent: 'flex-start',
@@ -388,11 +372,6 @@ const styles = StyleSheet.create({
   radioLabel: {
     fontSize: 16,
     fontFamily: 'Sansation-Regular',
-  },
-  radioContainer: {
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    marginTop: 2,
   },
   dateBtn: {
     padding: 12,

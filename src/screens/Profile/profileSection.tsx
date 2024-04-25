@@ -20,7 +20,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import Svg, {Circle, Text as SvgText} from 'react-native-svg';
 import {useNavigation} from '@react-navigation/native';
 import {ListItem} from 'react-native-elements';
-import CommonBackbutton from '../../components/commonBackbutton/backButton';
+import CommonBackbutton from '../../components/commonBackbutton/CommonBackbutton';
 import LinearGradient from 'react-native-linear-gradient';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {updateProfileData} from '../../store/Auth/auth';

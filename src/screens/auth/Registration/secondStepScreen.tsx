@@ -8,38 +8,52 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
+import {
+  InrestFriendsIC,
+  InrestFunIC,
+  InrestLongIC,
+  InrestOutIC,
+  InrestPartnerIC,
+  InrestShortIC,
+} from '../../../assets/svgs';
+import IconButton from '../../../components/ButtonComponent/IconButton';
 
 const SecondStepScreen = ({partnerType, control, errors}: any) => {
   const avatars = [
     {
       id: '1',
       name: 'Long term partner',
-      image: require('../../../assets/images/kiss.png'),
+      image: <InrestPartnerIC />,
     },
     {
       id: '2',
       name: 'Long term open to short',
-      image: require('../../../assets/images/date.png'),
+      // image: require('../../../assets/images/date.png'),
+      image: <InrestShortIC />,
     },
     {
       id: '3',
       name: 'Short term open to long',
-      image: require('../../../assets/images/love-you.png'),
+      // image: require('../../../assets/images/love-you.png'),
+      image: <InrestLongIC />,
     },
     {
       id: '4',
       name: 'Short term fun',
-      image: require('../../../assets/images/hug.png'),
+      // image: require('../../../assets/images/hug.png'),
+      image: <InrestFunIC />,
     },
     {
       id: '5',
       name: 'New friends',
-      image: require('../../../assets/images/people.png'),
+      // image: require('../../../assets/images/people.png'),
+      image: <InrestFriendsIC />,
     },
     {
       id: '6',
       name: 'Still figuring it out',
-      image: require('../../../assets/images/thinking.png'),
+      // image: require('../../../assets/images/thinking.png'),
+      image: <InrestOutIC />,
     },
     // Add more avatars as needed
   ];
@@ -68,8 +82,8 @@ const SecondStepScreen = ({partnerType, control, errors}: any) => {
                     value === item.name && styles.selectedAvatar, // Add selected style if the avatar is selected
                   ]}
                   onPress={() => onChange(item.name)}>
-                  <Image source={item.image} style={styles.avatarImage} />
-
+                  {/* <Image source={item.image} style={styles.avatarImage} /> */}
+                  <Text>{item.image}</Text>
                   <Text style={styles.avatarLabel}>{item.name}</Text>
                 </TouchableOpacity>
               )}
@@ -114,7 +128,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: 'transparent',
   },
-  avatarImageContainer: {},
   avatarImage: {
     width: 32,
     height: 32,

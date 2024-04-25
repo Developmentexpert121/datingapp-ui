@@ -84,22 +84,26 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
         justifyContent: 'center',
         alignItems: 'center',
         //paddingHorizontal: 20,
-        width: '100%',
-        height: '100%',
+        // width: '100%',
+        // height: '100%',
       }}>
       <View
         style={{
           flex: 3 / 5,
-          borderWidth: 0,
           width: '100%',
           height: '100%',
-          justifyContent: 'center',
+          // justifyContent: 'center',
           alignItems: 'center',
         }}>
         <Image
-          source={require('../../assets/images/login_Image.png')}
+          source={require('../../assets/images/LoginTop.png')}
+          // resizeMode="contain"
+          style={{width: 160, height: 160}}
+        />
+        <Image
+          source={require('../../assets/images/LoginBottom.png')}
           resizeMode="contain"
-          style={{width: '100%', height: '100%'}}
+          style={{width: '100%', height: '70%'}}
         />
       </View>
       <View

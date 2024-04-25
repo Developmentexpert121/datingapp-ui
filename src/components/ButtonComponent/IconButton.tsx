@@ -1,13 +1,5 @@
-import {
-  Pressable,
-  StyleProp,
-  StyleSheet,
-  Text,
-  View,
-  ViewProps,
-  ViewStyle,
-} from "react-native";
-import React, { useState } from "react";
+import {Pressable, StyleProp, StyleSheet, ViewStyle} from 'react-native';
+import React, {useState} from 'react';
 // import { light } from "../../Theme";
 
 interface Iprops {
@@ -37,8 +29,7 @@ const IconButton = ({
     <Pressable
       disabled={disabled || disable}
       onPress={_onPress}
-      style={[styles.container, style]}
-    >
+      style={[styles.container, style]}>
       {icon}
     </Pressable>
   );
@@ -50,8 +41,8 @@ const styles = StyleSheet.create({
   container: {
     height: 40,
     width: 40,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 12,
   },
 });

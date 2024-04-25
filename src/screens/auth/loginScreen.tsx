@@ -24,6 +24,7 @@ import LoginTextInput from '../../components/AppTextInput/LoginTextInput';
 import {LoginSignIn} from '../../store/Auth/auth';
 import Colors from '../../constants/Colors';
 import Loader from '../../components/Loader/Loader';
+import {ChevronLeftIC} from '../../assets/svgs';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 interface LoginForm {
@@ -95,7 +96,7 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
         keyboardVerticalOffset={Platform.OS === 'ios' ? 10 : 0}
         style={styles.container}>
         <ScrollView
-          style={{flex: 1, borderWidth: 0}}
+          style={{flex: 1}}
           nestedScrollEnabled={true}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollViewContent}
@@ -105,22 +106,28 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
               flex: 9 / 10,
               alignItems: 'center',
             }}>
+            {/* <Image
+              source={require('../../assets/images/LoginTop.png')}
+              // resizeMode="contain"
+              style={{width: 160, height: 160}}
+            />
+            <Image
+              source={require('../../assets/images/LoginBottom.png')}
+              resizeMode="contain"
+              style={{width: '100%', height: '70%'}}
+            /> */}
             <ImageBackground
               source={require('../../assets/images/login_Image.png')}
               resizeMode="contain"
               style={{
                 width: '100%',
-                height: '100%',
-                marginTop: 20,
+                height: '102%',
+                // marginTop: 20,
               }}>
               <TouchableOpacity
-                style={{marginLeft: 20, marginTop: 50}}
+                style={{marginLeft: 20, marginTop: 80}}
                 onPress={() => navigation.goBack()}>
-                <Image
-                  source={require('../../assets/images/chevron-left.png')}
-                  resizeMode="contain"
-                  style={{width: 20, height: 20}}
-                />
+                <ChevronLeftIC />
               </TouchableOpacity>
             </ImageBackground>
           </View>

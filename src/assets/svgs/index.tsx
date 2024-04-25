@@ -15,6 +15,12 @@ import EyeslashIC from './eyeslash.svg';
 import AppleIC from './apple.svg';
 import FacebookIC from './facebook.svg';
 import GoogleIC from './google.svg';
+import InrestFriendsIC from './InrestFriends.svg';
+import InrestFunIC from './InrestFun.svg';
+import InrestLongIC from './InrestLong.svg';
+import InrestOutIC from './InrestOut.svg';
+import InrestPartnerIC from './InrestPartner.svg';
+import InrestShortIC from './InrestShort.svg';
 
 export {
   FireIC,
@@ -34,4 +40,10 @@ export {
   AppleIC,
   FacebookIC,
   GoogleIC,
+  InrestFriendsIC,
+  InrestFunIC,
+  InrestLongIC,
+  InrestOutIC,
+  InrestPartnerIC,
+  InrestShortIC,
 };

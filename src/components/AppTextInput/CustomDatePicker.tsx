@@ -3,7 +3,6 @@ import {
   StyleProp,
   StyleSheet,
   Text,
-  TextInput,
   View,
   ViewStyle,
 } from 'react-native';
@@ -13,14 +12,12 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import Spacing from '../../constants/Spacing';
 import Colors from '../../constants/Colors';
-
 interface Iprops {
   label?: string;
   placeholder?: string;
   containerStyle?: StyleProp<ViewStyle>;
   InputContainerStyle?: StyleProp<ViewStyle>;
   inputStyle?: StyleProp<ViewStyle>;
-  rightIcon?: any;
   secureTextEntry?: boolean;
   error?: string;
   onChangeText?: ((text: string) => void) | undefined;
@@ -41,11 +38,9 @@ interface Iprops {
   errors?: boolean;
 }
 const CustomDatePicker = ({
-  rightIcon,
   label,
   containerStyle,
   InputContainerStyle,
-  secureTextEntry = false,
   error,
   value,
   showError,
@@ -53,18 +48,14 @@ const CustomDatePicker = ({
   disabled,
   errors,
 }: Iprops) => {
-  const [showPassword, setShowPassword] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState<string>('');
-
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
-
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
   };
-
   const handleConfirm = (date: any) => {
     setDate(date);
     onChangeText && onChangeText(date.toString());
@@ -100,7 +91,6 @@ const CustomDatePicker = ({
             mode="date"
             onConfirm={handleConfirm}
             onCancel={hideDatePicker}
-            // maximumDate={new Date()}
             minimumDate={minDate}
             maximumDate={maxDate}
           />
@@ -116,14 +106,6 @@ const CustomDatePicker = ({
             text={date == '' ? 'DD-MM-YYYY' : moment(date).format('DD-MM-YYYY')}
           />
         </Pressable>
-        {rightIcon}
-        {secureTextEntry && (
-          <Pressable
-            onPress={() => setShowPassword(!showPassword)}
-            style={styles.icon}>
-            {/* {showPassword ? <EyeSlashIC /> : <EyeSlashIC />} */}
-          </Pressable>
-        )}
       </View>
       {showError && error ? (
         <Text style={styles.error}>{'* ' + error}</Text>
@@ -135,21 +117,13 @@ const CustomDatePicker = ({
 export default CustomDatePicker;
 
 const styles = StyleSheet.create({
-  icon: {
-    height: 45,
-    width: 45,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   container: {
     marginVertical: 5,
     borderWidth: 0,
     width: '100%',
   },
   label: {
-    // marginBottom: 5,
     fontSize: 20,
-    //marginBottom: 0,
     textAlign: 'center',
     fontFamily: 'Sansation-Bold',
     color: 'black',
@@ -162,7 +136,6 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flexDirection: 'row',
-    // paddingRight: 5,
     backgroundColor: Colors.onPrimary,
     marginVertical: Spacing,
     width: '80%',

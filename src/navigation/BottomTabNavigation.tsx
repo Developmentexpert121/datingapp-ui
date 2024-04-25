@@ -19,9 +19,11 @@ import ExploredScreen from '../screens/Explore/explored';
 import LikedScreen from '../screens/LikedYou/liked';
 import ChatSection from '../screens/ChatHome/allChats';
 import ProfileScreen from '../screens/Profile/profileScreen';
+import FilterSection from '../screens/Home/FilterSection/filterSection';
 
 export type HomeStackParamList = {
   HomeScreen: undefined;
+  FilterSection: undefined;
 };
 export type ChatStackParamList = {
   ChatSection: undefined;
@@ -45,6 +47,7 @@ const HomeStack = () => {
   return (
     <HStack.Navigator screenOptions={{headerShown: false}}>
       <HStack.Screen name="HomeScreen" component={HomeScreen} />
+      <HStack.Screen name="FilterSection" component={FilterSection} />
     </HStack.Navigator>
   );
 };
@@ -123,5 +126,4 @@ const BottomTabNavigation = () => {
     </Tab.Navigator>
   );
 };
-
 export default BottomTabNavigation;

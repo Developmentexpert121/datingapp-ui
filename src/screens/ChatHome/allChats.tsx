@@ -12,7 +12,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import {ListItem, Avatar, SearchBar} from 'react-native-elements';
-import CommonBackbutton from '../../components/commonBackbutton/backButton';
+import CommonBackbutton from '../../components/commonBackbutton/CommonBackbutton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import FooterComponent from '../../components/Dashboard/footer/footer';

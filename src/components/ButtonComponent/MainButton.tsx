@@ -1,12 +1,28 @@
-import {View, Text, StyleSheet} from 'react-native';
-import React from 'react';
-import {TouchableOpacity} from 'react-native';
+import {Text, StyleSheet, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
+import Loader from '../Loader/Loader';
 
 const MainButton = (props: any) => {
-  const {onPress, ButtonName, buttonStyle} = props;
+  const {onPress, ButtonName, buttonStyle, loading} = props;
+  const [disable, setdisable] = useState<boolean>(false);
+
+  const _onPress = () => {
+    setdisable(true);
+    onPress && onPress();
+    setTimeout(() => {
+      setdisable(false);
+    }, 500);
+  };
   return (
-    <TouchableOpacity style={[styles.button, buttonStyle]} onPress={onPress}>
-      <Text style={styles.buttonText}>{ButtonName}</Text>
+    <TouchableOpacity
+      style={[styles.button, buttonStyle]}
+      onPress={_onPress}
+      disabled={loading || disable}>
+      {loading ? (
+        <Loader />
+      ) : (
+        <Text style={styles.buttonText}>{ButtonName}</Text>
+      )}
     </TouchableOpacity>
   );
 };

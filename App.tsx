@@ -55,7 +55,7 @@ const App = () => {
     (state: any) => state?.Auth?.isAuthenticated,
   );
 
-  console.log('------isAuthenticated', isAuthenticated);
+  // console.log('------isAuthenticated', isAuthenticated);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -140,3 +140,17 @@ const App = () => {
 };
 
 export default App;
+
+// import {View, Text} from 'react-native';
+// import React from 'react';
+// import SecondStepScreen from './src/screens/auth/Registration/secondStepScreen';
+
+// const App = () => {
+//   return (
+//     <View>
+//       <SecondStepScreen />
+//     </View>
+//   );
+// };
+
+// export default App;

@@ -13,9 +13,6 @@ import Label from '../Label';
 import Modal from 'react-native-modal';
 import MainButton from '../ButtonComponent/MainButton';
 import {RootState, useAppDispatch, useAppSelector} from '../../store/store';
-import OtpComponent from '../AppTextInput/OtpComponent';
-import {otpModal} from '../../store/reducer/authSliceState';
-import {EmailVerification, VerifyOtp} from '../../store/Auth/auth';
 interface LoginFailModalProps {
   label?: string | undefined;
   onPress?: () => void | undefined;
@@ -44,6 +41,7 @@ const OtpModal = ({
   const [resendAllowed, setResendAllowed] = useState<boolean>(true);
   const [timer, setTimer] = useState<number>(30);
   const [feedbackMessage, setFeedbackMessage] = useState<string>('');
+  const [isOtpComplete, setIsOtpComplete] = useState<boolean>(false);
 
   const inputRefs = [
     useRef<TextInput>(null),
@@ -62,6 +60,8 @@ const OtpModal = ({
     } else if (txt.length === 0 && index > 0) {
       inputRefs[index - 1].current?.focus();
     }
+    const isAllFieldsFilled = newOtp.every(field => field !== '');
+    setIsOtpComplete(isAllFieldsFilled);
   };
 
   useEffect(() => {
@@ -101,13 +101,16 @@ const OtpModal = ({
       });
     }, 1000);
   };
-  // Handle OTP input changes
+  const handleCloseModal = () => {
+    dispatch({type: 'HIDE_OTP_MODAL'});
+  };
   const handleOtpChange = (text: string) => {
     setOtp1(text);
   };
   return (
     <Modal
       animationIn={'slideInDown'}
+      onBackdropPress={handleCloseModal}
       // isVisible={isVisible}
       isVisible={showOtpModal}
       style={{backgroundColor: 'transparent', margin: 0}}>
@@ -145,6 +148,7 @@ const OtpModal = ({
             buttonStyle={{width: '85%', marginTop: 20}}
             ButtonName={'Verify OTP'}
             onPress={onPress}
+            disabled={isOtpComplete}
           />
         </View>
       </View>
@@ -176,6 +180,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#00000066',
+    // position: 'absolute',
+    // zIndex: 0,
   },
   container: {
     flex: 1,
