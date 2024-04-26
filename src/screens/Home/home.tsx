@@ -8,8 +8,8 @@ import FooterComponent from '../../components/Dashboard/footer/footer';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {ProfileData, getAllUsers} from '../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import FilterSection from './FilterSection/filterSection';
-import NotificationScreen from './Notification/notification';
+import FilterSection from '../FilterSection/filterSection';
+import NotificationScreen from '../Notification/notification';
 
 const getUserId = async () => {
   try {
@@ -121,24 +121,6 @@ const HomeScreen = () => {
                 profileData={profileData}
               />
             </View>
-            {/* <View style={styles.locText}>
-              <Ionicons name="location-sharp" size={20} color="#AC25AC" />
-              <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
-                {
-                  profileData.location && allUsers[currentIndex]?.location // Check if both locations are available
-                    ? `${Math.round(
-                        calculateDistance(
-                          profileData.location.latitude,
-                          profileData.location.longitude,
-                          allUsers[currentIndex].location.latitude,
-                          allUsers[currentIndex].location.longitude,
-                        ),
-                      ).toFixed(0)} miles away` // Calculate distance and round off to the nearest whole number
-                    : 'Distance information unavailable' // Display a message if distance information is missing
-                }
-              </Text>
-            </View> */}
-
             <View style={styles.container}>
               {allUsers[currentIndex]?.habits1?.map((item: any, index: any) => {
                 let imagePath;
@@ -179,7 +161,6 @@ const HomeScreen = () => {
               })}
             </View>
           </ScrollView>
-          <View style={{}}>{/* <FooterComponent /> */}</View>
         </>
       ) : activeScreen === 'Filters' ? (
         <FilterSection
@@ -235,11 +216,8 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     columnGap: 10, // Adjust as needed
     marginHorizontal: 20,
-    // marginBottom: 20,
     marginTop: 120,
     borderWidth: 0,
-    // bottom:0,
-    // position:"absolute"
   },
   item: {
     borderWidth: 1.4,

@@ -19,7 +19,7 @@ import ExploredScreen from '../screens/Explore/explored';
 import LikedScreen from '../screens/LikedYou/liked';
 import ChatSection from '../screens/ChatHome/allChats';
 import ProfileScreen from '../screens/Profile/profileScreen';
-import FilterSection from '../screens/Home/FilterSection/filterSection';
+import FilterSection from '../screens/FilterSection/filterSection';
 
 export type HomeStackParamList = {
   HomeScreen: undefined;

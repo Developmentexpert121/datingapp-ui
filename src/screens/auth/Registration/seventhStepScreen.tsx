@@ -182,7 +182,7 @@ const SeventhStepScreen = ({
   };
   return (
     <View style={styles.container}>
-      <Text style={styles.headerText}>Add photos</Text>
+      <Text style={styles.headerText}>Add Photos</Text>
       <Text style={styles.paragraphText}>
         Pick Some photos for your profile
       </Text>

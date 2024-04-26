@@ -18,7 +18,7 @@ const BackButton = ({title, iconName, setIsDrawerOpen}: any) => {
     }
   };
   return (
-    <View style={{borderWidth:0}}>
+    <View style={{borderWidth: 0}}>
       <Pressable style={styles.backPress}>
         <Ionicons
           onPress={() => handleBack()}

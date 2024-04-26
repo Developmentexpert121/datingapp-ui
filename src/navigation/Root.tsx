@@ -6,15 +6,15 @@ import LoginScreen from '../screens/auth/loginScreen';
 import RegisterScreen from '../screens/auth/registrationScreen';
 import ChatSection from '../screens/ChatHome/allChats';
 import VideoCallRedirect from '../screens/ChatHome/chatVideoRedirect';
-import SettingsScreen from '../screens/Profile/settingsSection/settings';
-import UpdateProfileScreen from '../screens/Profile/updateProfile/updateProfile';
+import SettingsScreen from '../screens/SettingsSection/settings';
+import UpdateProfileScreen from '../screens/UpdateProfile/updateProfile';
 import {useAppDispatch, useAppSelector} from '../store/store';
 import ProfileData from '../store/Auth/auth';
 import BottomTabNavigation from './BottomTabNavigation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from 'react-native-splash-screen';
 import {requestNotifications} from 'react-native-permissions';
-import FilterSection from '../screens/Home/FilterSection/filterSection';
+import FilterSection from '../screens/FilterSection/filterSection';
 export type RegisterType = {};
 export type RootStackParamList = {
   Home: undefined;

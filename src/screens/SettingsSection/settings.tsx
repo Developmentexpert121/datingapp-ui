@@ -10,24 +10,20 @@ import {
   SafeAreaView,
 } from 'react-native';
 import React, {useState, useCallback, useEffect} from 'react';
-import CommonBackbutton from '../../../components/commonBackbutton/CommonBackbutton';
+import CommonBackbutton from '../../components/commonBackbutton/CommonBackbutton';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useForm, Controller} from 'react-hook-form';
 import Icon1 from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon3 from 'react-native-vector-icons/Entypo';
 import * as yup from 'yup';
-import AppTextInput from '../../../components/AppTextInput/AppTextInput';
+import AppTextInput from '../../components/AppTextInput/AppTextInput';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
-import {useAppDispatch, useAppSelector} from '../../../store/store';
-import {
-  deleteUser,
-  resetAuth,
-  updateProfileData,
-} from '../../../store/Auth/auth';
+import {useAppDispatch, useAppSelector} from '../../store/store';
+import {deleteUser, resetAuth, updateProfileData} from '../../store/Auth/auth';
 import Geolocation from '@react-native-community/geolocation';
-import MainButton from '../../../components/ButtonComponent/MainButton';
+import MainButton from '../../components/ButtonComponent/MainButton';
 // import { logoutAction } from '../store/Auth/authActions';
 
 interface UpdateForm {

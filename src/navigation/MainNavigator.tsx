@@ -6,12 +6,12 @@ import HomeScreen from '../screens/Home/homeScreen';
 import ChatSection from '../screens/ChatHome/allChats';
 import {RootStackParamList} from '../types';
 import LikedScreen from '../screens/LikedYou/liked';
-import NotificationScreen from '../screens/Home/Notification/notification';
-import FilterScreen from '../screens/Home/FilterSection/filterSection';
+import NotificationScreen from '../screens/Notification/notification';
+import FilterScreen from '../screens/FilterSection/filterSection';
 import ExploredScreen from '../screens/Explore/explored';
 import ProfileScreen from '../screens/Profile/profileSection';
-import SettingsScreen from '../screens/Profile/settingsSection/settings';
-import UpdateProfileScreen from '../screens/Profile/updateProfile/updateProfile';
+import SettingsScreen from '../screens/SettingsSection/settings';
+import UpdateProfileScreen from '../screens/UpdateProfile/updateProfile';
 import ChatPage from '../screens/ChatHome/chatPage';
 import VideoCallRedirect from '../screens/ChatHome/chatVideoRedirect';
 

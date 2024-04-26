@@ -8,17 +8,17 @@ import {
   SafeAreaView,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import CommonBackbutton from '../../../components/commonBackbutton/CommonBackbutton';
+import CommonBackbutton from '../../components/commonBackbutton/CommonBackbutton';
 import {Slider} from 'react-native-elements';
-import SeventhStepScreen from '../../auth/Registration/seventhStepScreen';
-import AppTextInput from '../../../components/AppTextInput/AppTextInput';
+import SeventhStepScreen from '../auth/Registration/seventhStepScreen';
+import AppTextInput from '../../components/AppTextInput/AppTextInput';
 import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import {useAppDispatch, useAppSelector} from '../../../store/store';
-import {updateProfileData} from '../../../store/Auth/auth';
+import {useAppDispatch, useAppSelector} from '../../store/store';
+import {updateProfileData} from '../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import MainButton from '../../../components/ButtonComponent/MainButton';
+import MainButton from '../../components/ButtonComponent/MainButton';
 interface UpdateForm {
   work: string;
   education: string;
@@ -323,7 +323,7 @@ const UpdateProfile = () => {
   };
   return (
     <SafeAreaView style={{flex: 1}}>
-      <CommonBackbutton title="Edit Profile" />
+      <CommonBackbutton title="Edit Pro" />
       <ScrollView showsVerticalScrollIndicator={false}>
         <SeventhStepScreen
           profileImages={profileImages}

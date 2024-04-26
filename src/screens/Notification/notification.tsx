@@ -7,12 +7,9 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import HeaderComponent from '../../../components/Dashboard/header/header';
-import {useAppDispatch, useAppSelector} from '../../../store/store';
-import {
-  getNotifications,
-  handleNotificationRead,
-} from '../../../store/Auth/auth';
+import HeaderComponent from '../../components/Dashboard/header/header';
+import {useAppDispatch, useAppSelector} from '../../store/store';
+import {getNotifications, handleNotificationRead} from '../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const getUserId = async () => {
