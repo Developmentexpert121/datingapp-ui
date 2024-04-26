@@ -5,7 +5,6 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  Pressable,
   SafeAreaView,
   FlatList,
   ScrollView,
@@ -19,14 +18,11 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import Svg, {Circle, Text as SvgText} from 'react-native-svg';
 import {useNavigation} from '@react-navigation/native';
-import {ListItem} from 'react-native-elements';
 import CommonBackbutton from '../../components/commonBackbutton/CommonBackbutton';
 import LinearGradient from 'react-native-linear-gradient';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {updateProfileData} from '../../store/Auth/auth';
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import FooterComponent from '../../components/Dashboard/footer/footer';
 
 const {width} = Dimensions.get('window');
 const eightyPercentWidth: number = width * 0.84;
@@ -234,15 +230,6 @@ const ProfileSection = () => {
                     )}
                     transform="rotate(-90, 75, 75)"
                   />
-                  {/* <SvgText
-            x="50%"
-            y="50%"
-            dy=".3em"
-            textAnchor="middle"
-            fontSize="24"
-            fill="#3498db">
-            {`${profileCompletion}%`}
-          </SvgText> */}
                 </Svg>
                 <Image
                   source={{uri: profileImage}}
@@ -351,7 +338,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.48,
     shadowRadius: 11.95,
     elevation: 18,
-    // borderWidth: 1,
   },
   container: {
     flexDirection: 'row',

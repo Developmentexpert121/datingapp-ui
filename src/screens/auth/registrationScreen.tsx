@@ -75,7 +75,6 @@ const defaultValues = {
   location: '',
   profilePic: '',
   dob: '',
-  dateDisplay: '',
   profilePercentage: '60',
 };
 
@@ -188,14 +187,14 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
         dispatch(
           RegisterSignUp({
             ...data,
+            phoneNumber: phone,
             location: {latitude, longitude},
             distance: `${distance}mi`,
             profilePic: profileImages?.join(','),
-            dob: dateStr,
+            dob: dob,
           }),
         );
         reset();
-        // navigate('Login');
       },
       (err: any) => {
         setError(err.message);
@@ -217,17 +216,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
           text: 'Cancel',
           onPress: () => {
             setPermissionStatus('denied');
-            dispatch(
-              RegisterSignUp({
-                ...data,
-                phoneNumber: phone,
-                distance: `${distance}mi`,
-                profilePic: profileImages?.join(','),
-                dob: dateStr,
-              }),
-            );
             reset();
-            // navigate('Login');s
           },
           style: 'cancel',
         },
@@ -241,7 +230,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
                 phoneNumber: phone,
                 distance: `${distance}mi`,
                 profilePic: profileImages?.join(','),
-                dob: dateStr,
+                dob: dob,
               }),
             );
             navigate('Loginhome');
@@ -253,9 +242,10 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   console.log('showPermissionPopup', showPermissionPopup);
 
   const [email, setEmail] = useState('');
+  const [dob, setDob] = useState('');
 
   const onSubmit: any = (data: RegisterForm) => {
-    console.log('Calllasfadslleleleedsfsadfl', data);
+    setDob(data.dob);
     setEmail(data.email);
     if (steps === 7) {
       setSteps(prev => prev + 1);
@@ -264,7 +254,6 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     } else if (steps < 8 && steps >= 1) {
       setSteps(prev => prev + 1);
     } else if (steps === 0) {
-      console.log('Callllleleleel');
       setLoader(true);
       dispatch(
         EmailVerification({
@@ -315,7 +304,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar translucent backgroundColor="transparent" />
+      {/* <StatusBar translucent backgroundColor="transparent" /> */}
       <KeyboardAvoidingView
         behavior="padding"
         keyboardVerticalOffset={

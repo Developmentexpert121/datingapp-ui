@@ -5,6 +5,7 @@ import {
   Platform,
   ScrollView,
   TouchableOpacity,
+  SafeAreaView,
 } from 'react-native';
 import React, {useEffect, useMemo, useState} from 'react';
 import {RadioButton} from 'react-native-paper';
@@ -76,7 +77,7 @@ const ZeroStepScreen = ({
   // };
 
   return (
-    <View style={{borderWidth: 0, flex: 1}}>
+    <SafeAreaView style={{borderWidth: 0, flex: 1}}>
       <View style={styles.topView}>
         <ChevronLeftIC onPress={() => navigation.goBack()} />
         <Text style={styles.headerLabel}>Personal</Text>
@@ -244,7 +245,7 @@ const ZeroStepScreen = ({
           )}
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

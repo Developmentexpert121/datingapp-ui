@@ -140,7 +140,11 @@ const OtpModal = ({
               />
             ))}
           </View>
-          {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
+          <View style={{height: 15}}>
+            {errorMessage && (
+              <Text style={styles.errorText}>{errorMessage}</Text>
+            )}
+          </View>
           <View style={styles.loginContainer}>
             <Text style={styles.loginText}>Didn’t receive a OTP? </Text>
             <TouchableOpacity onPress={sendNewOTP} disabled={!resendAllowed}>
@@ -172,7 +176,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   modalstyle: {
-    height: '30%',
+    height: '50%',
     width: '90%',
     backgroundColor: '#FFC7FF',
     borderRadius: 10,
@@ -220,6 +224,7 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     fontSize: 12,
+    height: 15,
     // marginTop: 10,
   },
 });

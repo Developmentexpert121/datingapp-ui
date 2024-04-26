@@ -92,7 +92,7 @@ android {
         release {
             storeFile file('playKeystore.keystore')
             storePassword 'android'
-            keyAlias 'my-alias'
+            keyAlias 'my-key-alias'
             keyPassword 'android'
         }
         debug {
