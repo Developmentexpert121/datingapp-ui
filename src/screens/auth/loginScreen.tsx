@@ -58,9 +58,11 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     resolver: yupResolver(schema),
   });
   const onSubmit: any = (data: LoginForm) => {
+    setLoader(true);
     console.log('data user', data);
     dispatch(LoginSignIn(data));
     reset();
+    setLoader(false);
   };
 
   const signInInfo: any = useAppSelector(
@@ -204,11 +206,10 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
       </KeyboardAvoidingView>
       <View
         style={{
-          width: '100%',
           flexDirection: 'row',
           bottom: 20,
           position: 'absolute',
-          justifyContent: 'center',
+          alignSelf: 'center',
         }}>
         <Text
           style={styles.termsText}
@@ -226,18 +227,13 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
           privacy policy{' '}
         </Text>
       </View>
-      {/* {loader ? <Loader /> : null} */}
+      {loader ? <Loader /> : null}
     </>
     // </ImageContainer>
   );
 };
 
 const styles = StyleSheet.create({
-  container1: {
-    flex: 1,
-    backgroundColor: '#FFC7FF',
-    borderWidth: 0,
-  },
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -247,17 +243,6 @@ const styles = StyleSheet.create({
   scrollViewContent: {
     flexGrow: 1,
   },
-  circle: {
-    width: 180,
-    height: 180,
-    borderRadius: 90,
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
-    padding: 20,
-    marginTop: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    // borderWidth:1
-  },
   label: {
     fontSize: 22,
     marginTop: 20,
@@ -266,17 +251,10 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   subText: {
-    marginTop: 6,
     fontFamily: 'Sansation-Regular',
-
     textAlign: 'center',
     color: 'black',
-    marginBottom: 8,
-  },
-  loginText: {
-    color: 'blue',
-    marginBottom: 10,
-    textAlign: 'center',
+    marginVertical: 7,
   },
   termsText1: {
     color: 'gray',
@@ -287,12 +265,6 @@ const styles = StyleSheet.create({
     color: Colors.pinkDark,
     textAlign: 'center',
     fontFamily: 'Sansation-Bold',
-  },
-  blankview: {
-    width: 20,
-    height: 20,
-    borderWidth: 0,
-    margin: 20,
   },
 });
 

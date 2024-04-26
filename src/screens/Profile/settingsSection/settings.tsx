@@ -23,12 +23,12 @@ import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../../store/store';
 import {
   deleteUser,
-  updateAuthentication,
+  resetAuth,
   updateProfileData,
 } from '../../../store/Auth/auth';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import Geolocation from '@react-native-community/geolocation';
-import {activityLoaderStarted} from '../../../store/Activity/activity';
+import MainButton from '../../../components/ButtonComponent/MainButton';
+// import { logoutAction } from '../store/Auth/authActions';
 
 interface UpdateForm {
   name: string;
@@ -194,14 +194,11 @@ const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
               />
             </View>
           )}
-
-          <View style={styles.containerBtn}>
-            <TouchableOpacity
-              onPress={handleSubmit(onSubmit)}
-              style={styles.button}>
-              <Text style={styles.buttonText}>Sav</Text>
-            </TouchableOpacity>
-          </View>
+          <MainButton
+            buttonStyle={{width: '80%'}}
+            onPress={handleSubmit(onSubmit)}
+            ButtonName={'Save'}
+          />
         </View>
       </TouchableOpacity>
     </Modal>
@@ -213,10 +210,8 @@ const SettingsSection = () => {
   );
   const dispatch: any = useAppDispatch();
   const navigation: any = useNavigation();
-
   const [title, setTitle] = useState<string>('');
   const [values, setValues] = useState<string>('');
-
   const {
     control,
     handleSubmit,
@@ -226,16 +221,31 @@ const SettingsSection = () => {
     defaultValues,
     resolver: yupResolver<any>(schema),
   });
-
   //   const handleSliderChange = (value:any) => {
   //     setDistance(value);
   //   };
-
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [address, setAddress] = useState('');
-
   const [location, setLocation] = useState<any>(null);
 
+  //
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem('authToken');
+      dispatch(resetAuth());
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'LoginHomeScreen'}],
+      });
+      navigation.navigate();
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
+  };
+
+  //
+
+  //
   useEffect(() => {
     const getAddressFromCoordinates = async (latitude: any, longitude: any) => {
       try {
@@ -292,16 +302,7 @@ const SettingsSection = () => {
       return null;
     }
   };
-
-  // const logoutUser = async () => {
-  //   console.log('called');
-
-  //   await dispatch(updateAuthentication());
-  //   AsyncStorage.setItem('authToken', '');
-  // };
-
   const [permissionStatus, setPermissionStatus] = useState<any>(null);
-
   const [error, setError] = useState<any>(null);
 
   const getLocationAndRegister = () => {
@@ -401,7 +402,7 @@ const SettingsSection = () => {
         <TouchableOpacity style={styles.boxContainer}>
           <Text
             style={[styles.textName, {color: '#AC25AC'}]}
-            onPress={() => {}}>
+            onPress={handleLogout}>
             Log Out
           </Text>
         </TouchableOpacity>
@@ -481,26 +482,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
   },
-  containerBtn: {
-    marginVertical: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  button: {
-    width: '80%',
-    backgroundColor: '#AC25AC',
-    padding: 12,
-    borderRadius: 36,
-  },
-
-  buttonText: {
-    color: 'white',
-    fontSize: 20,
-    textAlign: 'center',
-    fontFamily: 'Sansation-Bold',
-  },
-
   overlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -519,7 +500,6 @@ const styles = StyleSheet.create({
     color: 'black',
     fontFamily: 'Sansation-Bold',
   },
-
   listItem: {
     width: '32%', // Each list item takes one-third of the width
     // height: 100,
@@ -533,7 +513,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
-
   listItem2: {
     width: '24%',
     borderWidth: 1,

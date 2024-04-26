@@ -1,16 +1,6 @@
-import {
-  NativeSyntheticEvent,
-  StyleSheet,
-  Text,
-  TextInput,
-  TextInputFocusEventData,
-  TextInputProps,
-  View,
-} from 'react-native';
+import {StyleSheet, TextInput} from 'react-native';
 import React, {useState} from 'react';
 import Colors from '../../constants/Colors';
-import Font from '../../constants/Fonts';
-import FontSize from '../../constants/FontSize';
 import Spacing from '../../constants/Spacing';
 import {Controller} from 'react-hook-form';
 
@@ -28,7 +18,6 @@ const AppTextInput = (Props: any) => {
   } = Props;
   const [focused, setFocused] = useState<boolean>(false);
   const hasError = errors;
-
   return (
     <Controller
       name={name}
@@ -46,7 +35,6 @@ const AppTextInput = (Props: any) => {
             {
               width: '80%',
             },
-            ,
             textstyle,
           ]}
           keyboardType={Props.keyboardType}
@@ -64,7 +52,6 @@ const AppTextInput = (Props: any) => {
 };
 
 export default AppTextInput;
-
 const styles = StyleSheet.create({
   textInput1: {
     height: 45,
@@ -77,7 +64,6 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     textAlign: 'center',
   },
-
   errorBorder: {
     borderWidth: 2,
     borderColor: 'red',

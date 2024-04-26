@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  SafeAreaView,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {
   InrestFriendsIC,
@@ -16,7 +9,6 @@ import {
   InrestPartnerIC,
   InrestShortIC,
 } from '../../../assets/svgs';
-import IconButton from '../../../components/ButtonComponent/IconButton';
 
 const SecondStepScreen = ({partnerType, control, errors}: any) => {
   const avatars = [

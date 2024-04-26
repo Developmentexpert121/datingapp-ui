@@ -188,26 +188,12 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
-
     elevation: 4,
   },
   title: {
     color: 'black',
     fontSize: 14,
     fontFamily: 'Sansation-Bold',
-  },
-  itemContainer: {
-    padding: 16,
-    borderBottomColor: '#ccc',
-    //borderWidth: 1,
-    marginBottom: 10,
-    borderRadius: 10,
-    elevation: 1,
-    // Add shadow for iOS
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
   },
   textsContainer: {
     marginLeft: 4,

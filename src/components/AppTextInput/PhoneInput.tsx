@@ -50,11 +50,9 @@ const PhoneInput = ({
   setCallingCode,
 }: Iprops) => {
   const [show, setShow] = useState<boolean>(false);
-
   const [countryFlag, setCountryFlag] = useState(
     findFlagByDialCode(code || '+91'),
   );
-
   const hasError = errors;
   return (
     <Controller
@@ -65,7 +63,6 @@ const PhoneInput = ({
       render={({field: {onChange, onBlur, value}}) => (
         <View style={styles.container}>
           <Label text={label} style={[styles.label]} />
-
           <View
             style={[
               // {
@@ -84,7 +81,7 @@ const PhoneInput = ({
               <Label text={countryFlag || ''} />
               <Label
                 text={callingCode}
-                style={{marginHorizontal: 8, fontSize: 16}}
+                style={{marginHorizontal: 8, fontSize: 16, color: 'black'}}
               />
               <Down1IC />
             </Pressable>

@@ -1,4 +1,11 @@
-import {StyleSheet, Text, View, Platform, ScrollView} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Platform,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import React, {useEffect, useMemo, useState} from 'react';
 import {RadioButton} from 'react-native-paper';
 import AppTextInput from '../../../components/AppTextInput/AppTextInput';
@@ -35,7 +42,6 @@ const ZeroStepScreen = ({
   city,
   dateStr,
   setDateStr,
-  code,
   callingCode,
   setCallingCode,
 }: any) => {
@@ -45,32 +51,29 @@ const ZeroStepScreen = ({
     {label: 'Non-Binary', value: 'third'},
     {label: 'Transgender', value: 'fourth'},
   ];
-
-  const [date, setDate] = useState(new Date(1598051730000));
-  const [mode, setMode] = useState<any>('date');
-  const [show, setShow] = useState<any>(false);
+  // const [date, setDate] = useState(new Date());
+  // const [mode, setMode] = useState<any>('date');
+  // const [show, setShow] = useState<any>(false);
   const navigation = useNavigation();
+  // const onChange = (event: any, selectedDate: any) => {
+  //   const currentDate = selectedDate;
+  //   setShow(false);
+  //   setDate(currentDate);
+  //   setDateStr(currentDate);
+  // };
+  // console.log(dateStr);
+  // const showMode = (currentMode: any) => {
+  //   setShow(true);
+  //   setMode(currentMode);
+  // };
 
-  const onChange = (event: any, selectedDate: any) => {
-    const currentDate = selectedDate;
-    setShow(false);
-    setDate(currentDate);
+  // const showDatepicker = () => {
+  //   showMode('date');
+  // };
 
-    setDateStr(currentDate);
-  };
-  console.log(dateStr);
-  const showMode = (currentMode: any) => {
-    setShow(true);
-    setMode(currentMode);
-  };
-
-  const showDatepicker = () => {
-    showMode('date');
-  };
-
-  const showTimepicker = () => {
-    showMode('time');
-  };
+  // const showTimepicker = () => {
+  //   showMode('time');
+  // };
 
   return (
     <View style={{borderWidth: 0, flex: 1}}>
@@ -98,72 +101,20 @@ const ZeroStepScreen = ({
             This is how it will appear in dating
           </Text>
         </View>
-
+        {/* DOB */}
         <View style={styles.container}>
-          {/* <Controller
-          name={dateDisplay}
-          control={control}
-          render={() => (
-            <TouchableOpacity
-              onPress={showDatepicker}
-              style={[
-                styles.dateBtn,
-                {
-                  borderWidth: errors?.[dateDisplay] ? 2 : 1,
-                  borderColor: errors?.[dateDisplay]
-                    ? 'red'
-                    : 'rgba(0, 0, 0, 0.2)',
-                },
-              ]}>
-              <Text
-                style={{
-                  color: 'grey',
-                  textAlign: 'center',
-                  fontFamily: 'Sansation-Regular',
-                }}>
-                {dateStr === null
-                  ? 'Select DOB'
-                  : dateStr.getDate() +
-                    '-' +
-                    (dateStr.getMonth() + 1) +
-                    '-' +
-                    dateStr.getFullYear()}
-              </Text>
-            </TouchableOpacity>
-          )}
-        /> */}
-          {/* {show && (
-          <DateTimePicker
-            style={{alignSelf: 'center'}}
-            testID="dateTimePicker"
-            value={date}
-            mode={mode}
-            is24Hour={true}
-            onChange={onChange}
-          />
-        )} */}
-          {/*  */}
-          {/* <CustomDatePicker
-          // disabled={user?.profileKyc !== "unverified"}
-          // editable={!(user?.profileKyc !== "unverified")}
-          // onChangeText={handleChange('dateOfBirth')}
-          // value={values.dateOfBirth}
-          // containerStyle={{marginBottom: 20}}
-          label="Date Of Birth"
-          placeholder="Date of birth"
-        /> */}
           <Controller
             control={control}
             name={dob}
             rules={{required: true}}
             defaultValue=""
-            render={({field: {onChange, onBlur, value}}) => (
+            render={({field: {onChange, value}}) => (
               <CustomDatePicker
                 label="Date Of Birth"
                 placeholder="Date of birth"
                 value={value.dob}
                 onChangeText={onChange}
-                showError={Boolean(errors?.phone)}
+                // showError={Boolean(errors?.phone)}
                 errors={Boolean(errors?.dob)}
                 // onBlur={field.onBlur}
                 // You can pass any additional props required by CustomDatePicker
@@ -177,18 +128,10 @@ const ZeroStepScreen = ({
         </View>
         {/* Phone Number */}
         <View style={styles.container}>
-          {/* <AppTextInput
-          placeholder="Enter Your Phone"
-          name={phone}
-          control={control}
-          errors={Boolean(errors?.phone)}
-          keyboardType="numeric"
-        /> */}
           <PhoneInput
             name={phone}
             control={control}
             label="Phone Number"
-            // code={code}
             showError={Boolean(errors?.phone)}
             errors={Boolean(errors?.phone)}
             callingCode={callingCode}
@@ -248,11 +191,9 @@ const ZeroStepScreen = ({
             <Text style={styles.errorText}>{errors.gender.message}</Text>
           )}
         </View>
-
+        {/* Country And  City */}
         <View style={styles.container}>
           <Text style={styles.label}>Location</Text>
-          {/* <TextInput style={styles.input} placeholder="Country" />
-          <TextInput style={styles.input} placeholder="City" /> */}
           <AppTextInput
             placeholder="Enter Your Country"
             name={country}

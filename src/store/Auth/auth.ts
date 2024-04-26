@@ -174,24 +174,40 @@ export const VerifyOtp = createAsyncThunk(
         return response.data;
       }
     } catch (error: any) {
-      console.log('VerifyOtp sdhy', error);
+      console.log('VerifyOtp error', error);
       // dispatch(
       //   otpModal({
       //     visible: false,
       //   }),
-      // )
-      //   .unwrap()
-      //   .then(() =>
-      //     dispatch(
-      //       toggleGlobalModal({
-      //         visible: true,
-      //         data: {
-      //           text: 'OK',
-      //           label: 'Invalid OTP',
-      //         },
-      //       }),
-      //     ),
+      // );
+      // .unwrap()
+      // .then(() =>
+      // dispatch(
+      //   toggleGlobalModal({
+      //     visible: true,
+      //     data: {
+      //       text: 'OK',
+      //       label: 'Invalid OTP',
+      //     },
+      //   }),
+      // ),
+      // );
+      // if (error.response && error.response.status === 503) {
+      //   dispatch(
+      //     toggleGlobalModal({
+      //       visible: true,
+      //       data: {
+      //         text: 'OK',
+      //         label: 'Invalid OTP',
+      //       },
+      //     }),
       //   );
+      //   return {error: 'Bad Request'};
+      // } else if (error.response && error.response.status === 400) {
+      //   return {error: 'Bad Request'};
+      // } else {
+      //   throw error;
+      // }
 
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
@@ -478,33 +494,29 @@ export const videoCallToken = createAsyncThunk(
   },
 );
 
-export interface Iprops {
-  showGlobalModal?: boolean;
-  modalData?: {text?: string; label?: string; cancel: boolean};
-}
-const initialState: Iprops = {
-  showGlobalModal: false,
-  modalData: {text: '', label: '', cancel: false},
+const initialState = {
+  data: {
+    status: false,
+    signin: {},
+    signup: {},
+    data: {},
+    profileData: {},
+    allUsers: [],
+    allNotifications: [],
+    signInInfo: '',
+  },
+  isAuthenticated: false,
+  loading: false,
 };
-
 const Auth: any = createSlice({
   name: 'auth',
-  initialState: {
-    data: {
-      status: false,
-      signin: {},
-      signup: {},
-      data: {},
-      profileData: {},
-      allUsers: [],
-      allNotifications: [],
-      signInInfo: '',
+  initialState,
+  // reducers: {},
+  reducers: {
+    resetAuth(state) {
+      return initialState;
     },
-    isAuthenticated: false,
-    loading: false,
   },
-  reducers: {},
-
   extraReducers: builder => {
     builder
       .addCase(LoginSignIn.pending, (state, action) => {
@@ -578,7 +590,6 @@ const Auth: any = createSlice({
         // state.data.allUsers = [];
         // state.data.allNotifications = [];
       });
-    // resetAuth (state) => initialState,
   },
 });
 

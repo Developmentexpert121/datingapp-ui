@@ -20,7 +20,6 @@ import {Controller} from 'react-hook-form';
 const getUserId = async () => {
   try {
     const userId: any = await AsyncStorage.getItem('userId');
-
     if (userId !== null) {
       return JSON.parse(userId);
     } else {
@@ -30,26 +29,23 @@ const getUserId = async () => {
     return null;
   }
 };
-
 const SeventhStepScreen = ({
   profileImages,
   setProfileImages,
   title,
   images,
   control,
-  error,
+  errors,
 }: {
   profileImages: any;
   setProfileImages: any;
   title?: any;
   images?: any;
   control?: any;
-  error?: any;
+  errors?: any;
 }) => {
   const [uploadError, setUploadError] = useState<boolean>(false);
-
   const dispatch: any = useAppDispatch();
-
   const requestPermissions = async () => {
     if (Platform.OS === 'android') {
       await requestAndroidPermissions();
@@ -57,7 +53,6 @@ const SeventhStepScreen = ({
       await requestIOSPermissions();
     }
   };
-
   useEffect(() => {
     requestPermissions();
   }, []);
@@ -68,7 +63,6 @@ const SeventhStepScreen = ({
         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
         PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
       ]);
-
       if (
         granted['android.permission.CAMERA'] === 'granted' &&
         granted['android.permission.WRITE_EXTERNAL_STORAGE'] === 'granted' &&
@@ -177,9 +171,7 @@ const SeventhStepScreen = ({
             }
           }
         });
-      } catch (error) {
-        // User cancelled image selection, do nothing
-      }
+      } catch (error) {}
     } else {
       // If there are multiple images, remove the selected image
       const updatedImages = [...profileImages];
@@ -188,7 +180,6 @@ const SeventhStepScreen = ({
       setUploadError(false);
     }
   };
-
   return (
     <View style={styles.container}>
       <Text style={styles.headerText}>Add photos</Text>
@@ -228,7 +219,7 @@ const SeventhStepScreen = ({
           </TouchableOpacity>
         ))}
       </View>
-      {error && (
+      {errors && (
         <Text
           style={{
             color: 'red',

@@ -35,7 +35,7 @@ import Geolocation from '@react-native-community/geolocation';
 import MainButton from '../../components/ButtonComponent/MainButton';
 import OtpModal from '../../components/OtpModal/OtpModal';
 import Loader from '../../components/Loader/Loader';
-import {toggleGlobalModal} from '../../store/reducer/authSliceState';
+import {otpModal, toggleGlobalModal} from '../../store/reducer/authSliceState';
 type Props = NativeStackScreenProps<RootStackParamList, 'Register'>;
 
 interface RegisterForm {
@@ -178,8 +178,6 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     defaultValues,
     resolver: Schemas(steps),
   });
-  // console.log('OnPress handleSubmit', handleSubmit);
-  // console.log('errors ', errors);
   const getLocationAndRegister = (data: RegisterForm) => {
     Geolocation.getCurrentPosition(
       (position: any) => {
@@ -257,6 +255,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const [email, setEmail] = useState('');
 
   const onSubmit: any = (data: RegisterForm) => {
+    console.log('Calllasfadslleleleedsfsadfl', data);
     setEmail(data.email);
     if (steps === 7) {
       setSteps(prev => prev + 1);
@@ -265,7 +264,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     } else if (steps < 8 && steps >= 1) {
       setSteps(prev => prev + 1);
     } else if (steps === 0) {
-      // console.log('Callllleleleel');
+      console.log('Callllleleleel');
       setLoader(true);
       dispatch(
         EmailVerification({
@@ -285,7 +284,12 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const [errorOtp, setErrorOtp] = useState();
   const otpVerifity = () => {
     const concatenatedString = otp.join('');
-    console.log(concatenatedString);
+    // console.log(concatenatedString);
+    dispatch(
+      otpModal({
+        visible: false,
+      }),
+    );
     dispatch(
       VerifyOtp({
         email: email,
@@ -301,13 +305,13 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
                 visible: true,
                 data: {
                   text: 'OK',
-                  label: 'huyftijlh tdf',
+                  label: 'Invalid OTP',
                 },
               }),
             ),
       );
   };
-  console.log('otpVerifity', otpVerifity);
+  // console.log('otpVerifity', otpVerifity);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -387,7 +391,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
                 profileImages={profileImages}
                 setProfileImages={setProfileImages}
                 title="Registeration"
-                // errors={errors}
+                errors={errors}
               />
             ) : steps === 8 ? (
               <EighthStepScreen />

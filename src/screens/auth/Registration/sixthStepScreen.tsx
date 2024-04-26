@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, TextInput, StyleSheet} from 'react-native';
-import {useForm, Controller} from 'react-hook-form';
+import {Controller} from 'react-hook-form';
 
 const SixthStepScreen = ({hobbies, control, errors}: any) => {
   return (

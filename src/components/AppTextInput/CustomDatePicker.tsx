@@ -97,11 +97,9 @@ const CustomDatePicker = ({
           <Label
             style={{
               fontSize: 16,
-              color: 'grey',
+              color: '#434343',
               textAlign: 'center',
               fontFamily: 'Sansation-Regular',
-              //   color:
-              //     date == "" ? light.colors.titaltext + "99" : light.colors.black,
             }}
             text={date == '' ? 'DD-MM-YYYY' : moment(date).format('DD-MM-YYYY')}
           />
@@ -113,9 +111,7 @@ const CustomDatePicker = ({
     </View>
   );
 };
-
 export default CustomDatePicker;
-
 const styles = StyleSheet.create({
   container: {
     marginVertical: 5,

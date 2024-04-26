@@ -1,16 +1,14 @@
 import {
   View,
   Text,
-  Alert,
   StyleSheet,
-  TouchableOpacity,
   TextInput,
+  TouchableOpacity,
+  Modal,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import Label from '../Label';
-// import { RootState, useAppDispatch, useAppSelector } from "../../redux/store";
-
-import Modal from 'react-native-modal';
+// import Modal from 'react-native-modal';
 import MainButton from '../ButtonComponent/MainButton';
 import {RootState, useAppDispatch, useAppSelector} from '../../store/store';
 interface LoginFailModalProps {
@@ -42,6 +40,7 @@ const OtpModal = ({
   const [timer, setTimer] = useState<number>(30);
   const [feedbackMessage, setFeedbackMessage] = useState<string>('');
   const [isOtpComplete, setIsOtpComplete] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const inputRefs = [
     useRef<TextInput>(null),
@@ -55,28 +54,33 @@ const OtpModal = ({
     const newOtp = [...otp];
     newOtp[index] = txt;
     setOtp(newOtp);
+
+    // Move focus based on input
     if (txt.length >= 1 && index < otp.length - 1) {
       inputRefs[index + 1].current?.focus();
     } else if (txt.length === 0 && index > 0) {
       inputRefs[index - 1].current?.focus();
     }
+
+    // Check if all fields are filled
     const isAllFieldsFilled = newOtp.every(field => field !== '');
     setIsOtpComplete(isAllFieldsFilled);
+
+    // Set error message if any field is empty
+    if (!isAllFieldsFilled) {
+      setErrorMessage('Please fill in all OTP fields.');
+    } else {
+      setErrorMessage('');
+    }
   };
 
   useEffect(() => {
     sendNewOTP();
   }, []);
-
   const sendNewOTP = async () => {
     if (resendAllowed) {
       setResendAllowed(false);
       setFeedbackMessage('Sending a new OTP...');
-      // dispatch(
-      //   EmailVerification({
-      //     email: 'vkarwasra127@gmail.com',
-      //   })
-      // )
       try {
         setFeedbackMessage('A new OTP has been sent to your phone.');
       } catch (error) {
@@ -109,10 +113,13 @@ const OtpModal = ({
   };
   return (
     <Modal
-      animationIn={'slideInDown'}
-      onBackdropPress={handleCloseModal}
-      // isVisible={isVisible}
-      isVisible={showOtpModal}
+      animationType={'slide'}
+      // animationIn={'slideInDown'}
+      // onBackdropPress={handleCloseModal}
+      visible={showOtpModal}
+      // isVisible={showOtpModal}
+      transparent={true}
+      // onRequestClose={}
       style={{backgroundColor: 'transparent', margin: 0}}>
       <View style={styles.modal}>
         <View style={styles.modalstyle}>
@@ -120,8 +127,6 @@ const OtpModal = ({
             text={'Enter your verification code'}
             style={styles.textstyle}
           />
-          {/* <OtpComponent />   */}
-
           <View style={styles.otpContainer}>
             {otp.map((value: any, index: any) => (
               <TextInput
@@ -135,7 +140,7 @@ const OtpModal = ({
               />
             ))}
           </View>
-
+          {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
           <View style={styles.loginContainer}>
             <Text style={styles.loginText}>Didn’t receive a OTP? </Text>
             <TouchableOpacity onPress={sendNewOTP} disabled={!resendAllowed}>
@@ -148,7 +153,7 @@ const OtpModal = ({
             buttonStyle={{width: '85%', marginTop: 20}}
             ButtonName={'Verify OTP'}
             onPress={onPress}
-            disabled={isOtpComplete}
+            disabled={!isOtpComplete}
           />
         </View>
       </View>
@@ -167,7 +172,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   modalstyle: {
-    height: '40%',
+    height: '30%',
     width: '90%',
     backgroundColor: '#FFC7FF',
     borderRadius: 10,
@@ -180,13 +185,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#00000066',
-    // position: 'absolute',
-    // zIndex: 0,
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   loginContainer: {
     flexDirection: 'row',
@@ -218,5 +216,10 @@ const styles = StyleSheet.create({
     marginRight: 10,
     textAlign: 'center',
     borderRadius: 5,
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    // marginTop: 10,
   },
 });

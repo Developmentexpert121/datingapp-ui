@@ -12,8 +12,25 @@ import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.react.flipper.ReactNativeFlipper
 import com.facebook.soloader.SoLoader
 import com.streamvideo.reactnative.StreamVideoReactNative;
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
 
 class MainApplication : Application(), ReactApplication {
+
+  
+  private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+        @Override
+        public boolean getUseDeveloperSupport() {
+            return BuildConfig.DEBUG;
+        }
+
+        @Override
+        protected List<ReactPackage> getPackages() {
+            return Arrays.<ReactPackage>asList(
+                    new MainReactPackage(),
+            new SplashScreenReactPackage()  //here
+            );
+        }
+    };
 
   override val reactNativeHost: ReactNativeHost =
       object : DefaultReactNativeHost(this) {

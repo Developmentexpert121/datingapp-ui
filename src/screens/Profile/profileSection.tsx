@@ -334,7 +334,6 @@ const ProfileSection = () => {
           />
         </View>
       </ScrollView>
-      <View style={{}}>{/* <FooterComponent /> */}</View>
     </SafeAreaView>
   );
 };

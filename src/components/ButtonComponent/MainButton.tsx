@@ -3,9 +3,8 @@ import React, {useState} from 'react';
 import Loader from '../Loader/Loader';
 
 const MainButton = (props: any) => {
-  const {onPress, ButtonName, buttonStyle, loading} = props;
+  const {onPress, ButtonName, buttonStyle, loading, disabled} = props;
   const [disable, setdisable] = useState<boolean>(false);
-
   const _onPress = () => {
     setdisable(true);
     onPress && onPress();
@@ -17,7 +16,8 @@ const MainButton = (props: any) => {
     <TouchableOpacity
       style={[styles.button, buttonStyle]}
       onPress={_onPress}
-      disabled={loading || disable}>
+      // disabled={loading || disable}
+      disabled={disabled}>
       {loading ? (
         <Loader />
       ) : (
