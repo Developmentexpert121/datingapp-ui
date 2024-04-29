@@ -15,9 +15,9 @@ import Colors from '../../../constants/Colors';
 import Spacing from '../../../constants/Spacing';
 import {useNavigation} from '@react-navigation/native';
 import PhoneInput from '../../../components/AppTextInput/PhoneInput';
-import {ChevronLeftIC} from '../../../assets/svgs';
 import CustomDatePicker from '../../../components/AppTextInput/CustomDatePicker';
 import PasswodTextInput from '../../../components/AppTextInput/PasswodTextInput';
+import {BackIC} from '../../../assets/svgs';
 
 interface RegForm0 {
   name: string;
@@ -79,7 +79,7 @@ const ZeroStepScreen = ({
   return (
     <SafeAreaView style={{borderWidth: 0, flex: 1}}>
       <View style={styles.topView}>
-        <ChevronLeftIC onPress={() => navigation.goBack()} />
+        <BackIC onPress={() => navigation.goBack()} />
         <Text style={styles.headerLabel}>Personal</Text>
         <View style={styles.blankview}></View>
       </View>

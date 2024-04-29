@@ -11,11 +11,11 @@ import {
 } from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {request, PERMISSIONS} from 'react-native-permissions';
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import {useAppDispatch, useAppSelector} from '../../../store/store';
 import {updateProfileData, uploadImages} from '../../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Controller} from 'react-hook-form';
+import {PlusIC} from '../../../assets/svgs';
 
 const getUserId = async () => {
   try {
@@ -208,13 +208,11 @@ const SeventhStepScreen = ({
                 styles.addRemoveButton,
                 item && {transform: [{rotate: '45deg'}]},
               ]}>
-              <FontAwesome6
-                name="plus"
-                size={20}
-                style={{
-                  color: 'white',
-                }}
+              <Image
+                source={require('../../../assets/images/Plus.png')}
+                style={{width: 24, height: 24}}
               />
+              {/* <PlusIC /> */}
             </View>
           </TouchableOpacity>
         ))}

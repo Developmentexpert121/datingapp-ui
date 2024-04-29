@@ -19,11 +19,10 @@ import Animated, {
   ReduceMotion,
 } from 'react-native-reanimated';
 import {PanGestureHandler} from 'react-native-gesture-handler';
-import Entypo from 'react-native-vector-icons/Entypo';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {likedAUser} from '../../store/Auth/auth';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {CrossIC, HeartIC, StarIC} from '../../assets/svgs';
 
 const ROTATION = 60;
 const SWIPE_VELOCITY = 800;
@@ -239,19 +238,20 @@ const AnimatedStack = (props: any) => {
           <View style={styles.icons}>
             <TouchableOpacity onPress={onSwipeLeft}>
               <View style={styles.button}>
-                <Entypo name="cross" size={40} color="#FF2222" />
+                {/* <Entypo name="cross" size={40} color="#FF2222" /> */}
+                <CrossIC />
               </View>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={onSwipeRight}>
               <View style={styles.button}>
-                <FontAwesome name="heart" size={40} color="#4FCC94" />
+                <HeartIC />
               </View>
             </TouchableOpacity>
 
             <TouchableOpacity>
               <View style={styles.button}>
-                <FontAwesome name="star" size={40} color="#3AB4CC" />
+                <StarIC />
               </View>
             </TouchableOpacity>
           </View>

@@ -69,8 +69,6 @@ const LikedScreen = () => {
           />
         </View>
       )}
-
-      {/* <FooterComponent /> */}
     </SafeAreaView>
   );
 };

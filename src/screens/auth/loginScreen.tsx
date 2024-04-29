@@ -24,7 +24,7 @@ import LoginTextInput from '../../components/AppTextInput/LoginTextInput';
 import {LoginSignIn} from '../../store/Auth/auth';
 import Colors from '../../constants/Colors';
 import Loader from '../../components/Loader/Loader';
-import {ChevronLeftIC} from '../../assets/svgs';
+import {BackIC} from '../../assets/svgs';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 interface LoginForm {
@@ -129,7 +129,7 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
               <TouchableOpacity
                 style={{marginLeft: 20, marginTop: 80}}
                 onPress={() => navigation.goBack()}>
-                <ChevronLeftIC />
+                <BackIC />
               </TouchableOpacity>
             </ImageBackground>
           </View>

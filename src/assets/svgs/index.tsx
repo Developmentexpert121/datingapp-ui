@@ -10,7 +10,7 @@ import ProfileIC from './Profile.svg';
 import ProfilepressIC from './Profilepress.svg';
 import SendIC from './Send.svg';
 import Down1IC from './down1.svg';
-import ChevronLeftIC from './ChevronLeft.svg';
+import BackIC from './Back.svg';
 import EyeslashIC from './eyeslash.svg';
 import AppleIC from './apple.svg';
 import FacebookIC from './facebook.svg';
@@ -21,6 +21,19 @@ import InrestLongIC from './InrestLong.svg';
 import InrestOutIC from './InrestOut.svg';
 import InrestPartnerIC from './InrestPartner.svg';
 import InrestShortIC from './InrestShort.svg';
+import CrossIC from './Cross.svg';
+import HeartIC from './Heart.svg';
+import StarIC from './Star.svg';
+import LocationIC from './Location.svg';
+import SettingIC from './Setting.svg';
+import EditIC from './Edit.svg';
+import PlusIC from './Plus.svg';
+import PhoneIC from './Phone.svg';
+import EmailIC from './Email.svg';
+import VideoIC from './Video.svg';
+import PhoneCallIC from './PhoneCall.svg';
+import NotificationIC from './Notification.svg';
+import FilterIC from './Filter.svg';
 
 export {
   FireIC,
@@ -35,7 +48,7 @@ export {
   ProfilepressIC,
   SendIC,
   Down1IC,
-  ChevronLeftIC,
+  BackIC,
   EyeslashIC,
   AppleIC,
   FacebookIC,
@@ -46,4 +59,17 @@ export {
   InrestOutIC,
   InrestPartnerIC,
   InrestShortIC,
+  CrossIC,
+  HeartIC,
+  StarIC,
+  LocationIC,
+  SettingIC,
+  EditIC,
+  PlusIC,
+  PhoneIC,
+  EmailIC,
+  VideoIC,
+  PhoneCallIC,
+  NotificationIC,
+  FilterIC,
 };

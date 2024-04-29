@@ -13,9 +13,6 @@ import React, {useState, useCallback, useEffect} from 'react';
 import CommonBackbutton from '../../components/commonBackbutton/CommonBackbutton';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useForm, Controller} from 'react-hook-form';
-import Icon1 from 'react-native-vector-icons/FontAwesome';
-import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
-import Icon3 from 'react-native-vector-icons/Entypo';
 import * as yup from 'yup';
 import AppTextInput from '../../components/AppTextInput/AppTextInput';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -24,6 +21,7 @@ import {useAppDispatch, useAppSelector} from '../../store/store';
 import {deleteUser, resetAuth, updateProfileData} from '../../store/Auth/auth';
 import Geolocation from '@react-native-community/geolocation';
 import MainButton from '../../components/ButtonComponent/MainButton';
+import {EmailIC, LocationIC, PhoneIC} from '../../assets/svgs';
 // import { logoutAction } from '../store/Auth/authActions';
 
 interface UpdateForm {
@@ -375,11 +373,13 @@ const SettingsSection = () => {
                     }
                   }}>
                   {index === 0 ? (
-                    <Icon1 name="phone" size={20} color="grey" />
+                    // <Icon1 name="phone" size={20} color="grey" />
+                    <PhoneIC />
                   ) : index === 1 ? (
-                    <Icon2 name="email" size={20} color="grey" />
+                    // <Icon2 name="email" size={20} color="grey" />
+                    <EmailIC />
                   ) : index === 2 ? (
-                    <Icon3 name="location" size={20} color="grey" />
+                    <LocationIC />
                   ) : (
                     ''
                   )}

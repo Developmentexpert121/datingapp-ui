@@ -1,19 +1,13 @@
-import {
-  StyleSheet,
-  View,
-  ViewStyle,
-  StyleProp,
-  Platform,
-} from "react-native";
-import React from "react";
+import {StyleSheet, View, ViewStyle, StyleProp, Platform} from 'react-native';
+import React from 'react';
 // import { Back1Ic, BackIc, BackWhiteIc, BoxBackIc } from "../../assets/svgs";
-import Label from "../Label";
+import Label from '../Label';
 // import { light } from "../../Theme";
-import { useNavigation } from "@react-navigation/native";
+import {useNavigation} from '@react-navigation/native';
 // import IconButton from "../customBotton/IconButton";
-import { scale, verticalScale, moderateScale } from "react-native-size-matters";
-import IconButton from "../ButtonComponent/IconButton";
-import { ChevronLeftIC } from "../../assets/svgs";
+import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
+import IconButton from '../ButtonComponent/IconButton';
+import {BackIC} from '../../assets/svgs';
 type Iprops = {
   label?: string;
   onPress?: () => void;
@@ -33,7 +27,7 @@ const CustomHeader = ({
     <View style={[styles.container, containerStyle]}>
       <IconButton
         onPress={() => navigation.goBack()}
-        icon={<ChevronLeftIC />}
+        icon={<BackIC />}
         backgroundColor={leftIconBGColor}
       />
       <Label text={label} style={styles.text} />
@@ -41,10 +35,9 @@ const CustomHeader = ({
         style={{
           height: 40,
           width: 40,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
         {RightIcon && <RightIcon />}
       </View>
     </View>
@@ -55,20 +48,20 @@ export default CustomHeader;
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    marginTop: Platform.OS == "android" ? 45 : 10,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    width: '100%',
+    marginTop: Platform.OS == 'android' ? 45 : 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     // borderWidth: 1,
   },
-  label: { flex: 1, alignItems: "center" },
+  label: {flex: 1, alignItems: 'center'},
   button: {
     height: 40,
     width: 40,
     // backgroundColor: light.colors.background,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: 10,
   },
   text: {

@@ -12,18 +12,16 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   ActivityIndicator,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Avatar} from 'react-native-elements';
-import Icon1 from 'react-native-vector-icons/FontAwesome';
-import Icon2 from 'react-native-vector-icons/FontAwesome6';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {reciveMessages, sendAMessage} from '../../store/Auth/auth';
 import io from 'socket.io-client';
-import {SendIC} from '../../assets/svgs';
+import {PhoneCallIC, SendIC, VideoIC} from '../../assets/svgs';
 
 const socket = io('https://datingapp-api.onrender.com');
 
@@ -224,7 +222,8 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
                     goToCallScreen();
                   }}>
                   <View style={styles.editIcon}>
-                    <Icon1 name="phone" size={26} color="#AC25AC" />
+                    {/* <Icon1 name="phone" size={26} color="#AC25AC" /> */}
+                    <PhoneCallIC />
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -233,7 +232,8 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
                     goToCallScreen();
                   }}>
                   <View style={styles.editIcon}>
-                    <Icon2 name="video" size={24} color="#AC25AC" />
+                    {/* <Icon2 name="video" size={24} color="#AC25AC" /> */}
+                    <VideoIC />
                   </View>
                 </TouchableOpacity>
               </View>

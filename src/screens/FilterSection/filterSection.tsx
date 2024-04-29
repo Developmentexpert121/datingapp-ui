@@ -71,11 +71,8 @@ const FilterSection = ({
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-
   const {
     control,
-    handleSubmit,
-    reset,
     formState: {errors},
   } = useForm<UpdateForm>({
     defaultValues,

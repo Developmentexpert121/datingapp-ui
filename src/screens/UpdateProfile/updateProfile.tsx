@@ -323,7 +323,7 @@ const UpdateProfile = () => {
   };
   return (
     <SafeAreaView style={{flex: 1}}>
-      <CommonBackbutton title="Edit Pro" />
+      <CommonBackbutton title="Edit Profile" />
       <ScrollView showsVerticalScrollIndicator={false}>
         <SeventhStepScreen
           profileImages={profileImages}

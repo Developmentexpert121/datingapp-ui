@@ -12,10 +12,8 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent,
 } from 'react-native';
-import Icons from 'react-native-vector-icons/MaterialIcons';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Feather from 'react-native-vector-icons/Feather';
 import Svg, {Circle, Text as SvgText} from 'react-native-svg';
 import {useNavigation} from '@react-navigation/native';
 import CommonBackbutton from '../../components/commonBackbutton/CommonBackbutton';
@@ -23,6 +21,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {updateProfileData} from '../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {EditIC, SettingIC} from '../../assets/svgs';
 
 const {width} = Dimensions.get('window');
 const eightyPercentWidth: number = width * 0.84;
@@ -200,12 +199,11 @@ const ProfileSection = () => {
         <View style={styles.containerTop}>
           <View style={styles.container}>
             <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
-              <Feather
-                name="settings"
-                size={24}
-                color="#AC25AC"
+              <Image
+                source={require('../../assets/images/Setting.png')}
                 style={styles.settingIcon}
               />
+              {/* <SettingIC /> */}
             </TouchableOpacity>
             <View style={styles.profileImageContainer}>
               <View>
@@ -244,12 +242,11 @@ const ProfileSection = () => {
             </View>
             <TouchableOpacity
               onPress={() => navigation.navigate('UpdateProfile')}>
-              <Icons
-                name="mode-edit"
-                size={24}
-                color="#AC25AC"
-                style={styles.editIcon}
+              <Image
+                source={require('../../assets/images/Edit.png')}
+                style={styles.settingIcon}
               />
+              {/* <EditIC /> */}
             </TouchableOpacity>
           </View>
           <View style={{alignItems: 'center'}}>
@@ -342,8 +339,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
+    justifyContent: 'center',
   },
   profileImageContainer: {
     position: 'relative',
@@ -374,11 +370,14 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   settingIcon: {
-    marginLeft: 30,
-    borderRadius: 20,
-    backgroundColor: '#FFE1FF',
-    color: '#AC25AC',
-    padding: 8,
+    // marginLeft: 30,
+    // borderRadius: 20,
+    // backgroundColor: '#FFE1FF',
+    // color: '#AC25AC',
+    // padding: 18,
+    marginHorizontal: 20,
+    width: 40,
+    height: 40,
   },
   progressCircle: {
     position: 'absolute',

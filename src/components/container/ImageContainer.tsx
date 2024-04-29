@@ -21,7 +21,7 @@ import React from 'react';
 import Label from '../Label';
 // import { Back1WhiteIC } from "../../assets/svgs";
 import {useNavigation} from '@react-navigation/native';
-import {ChevronLeftIC} from '../../assets/svgs';
+import {BackIC} from '../../assets/svgs';
 
 interface Iprops {
   children?: any;
@@ -54,7 +54,7 @@ function ImageContainer({
           <Pressable
             style={{marginTop: 40, marginLeft: 10}}
             onPress={() => navigation.goBack()}>
-            <ChevronLeftIC style={{height: 20, width: 20}} />
+            <BackIC style={{height: 20, width: 20}} />
           </Pressable>
         </View>
         <View style={styles.innerContainer}>
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     opacity: 0.7,
     // width:350,
-    width: Dimensions.get("screen").width,
+    width: Dimensions.get('screen').width,
     height: 450,
     // top:-Dimensions.get("screen").height+200,
     // bottom:100

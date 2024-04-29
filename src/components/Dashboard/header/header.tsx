@@ -9,8 +9,8 @@ import {
 } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {BackIC, FilterIC, NotificationIC} from '../../../assets/svgs';
+import BackButton from '../../commonBackbutton/CommonBackbutton';
 
 const HeaderComponent = (props: any) => {
   const handleFilter = () => {
@@ -32,6 +32,10 @@ const HeaderComponent = (props: any) => {
                 size={30}
               />
             ) : (
+              // <BackIC
+              //   onPress={() => props?.setActiveScreen('HOME')}
+              //   style={styles.backPressIcon}
+              // />
               <Image
                 source={require('../../../assets/images/logIcon.png')}
                 style={styles.icon}
@@ -49,18 +53,11 @@ const HeaderComponent = (props: any) => {
           {props.activeScreen === 'HOME' ? (
             <View style={{flexDirection: 'row', gap: 20, marginRight: 10}}>
               <Pressable onPress={() => handleNotification()}>
-                <MaterialIcons
-                  name="notifications-on"
-                  size={30}
-                  style={{color: 'black'}}
-                />
+                <NotificationIC />
               </Pressable>
 
               <Pressable onPress={() => handleFilter()}>
-                <Image
-                  source={require('../../../assets/images/filter.png')}
-                  style={{height: 30, width: 30}}
-                />
+                <FilterIC />
               </Pressable>
             </View>
           ) : (

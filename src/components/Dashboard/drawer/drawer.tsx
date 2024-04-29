@@ -1,6 +1,5 @@
 // import React from "react";
 // import { View, Text, StyleSheet, Button } from "react-native";
-// import Icon from 'react-native-vector-icons/FontAwesome';
 // {/* <Button title="Toggle drawer" onPress={() => navigation.toggleDrawer()} />
 // <Button title="Settings" onPress={() => navigation.jumpTo("Settings")} /> */}
 // const Drawer= ({ navigation }:any) => {
@@ -52,7 +51,6 @@ import {
   StyleSheet,
   Button,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import ProfileScreen from '../../../screens/Profile/profileScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {updateAuthentication} from '../../../store/Auth/auth';
@@ -98,7 +96,7 @@ const CustomDrawerContent = (props: any) => {
       <TouchableOpacity
         style={styles.xicon}
         onPress={() => navigation.closeDrawer()}>
-        <Icon name="close" size={30} color="#333" />
+        {/* <Icon name="close" size={30} color="#333" /> */}
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.logoutButton}
