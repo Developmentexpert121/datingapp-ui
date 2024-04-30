@@ -16,10 +16,10 @@ import Colors from '../../constants/Colors';
 import {useNavigation} from '@react-navigation/native';
 import {
   GoogleSignin,
-  GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import AppleAuthentication from '@invertase/react-native-apple-authentication';
+import {_googleLogin} from '../../store/Auth/socialLogin';
 
 GoogleSignin.configure({
   webClientId:
@@ -30,10 +30,11 @@ GoogleSignin.configure({
 type Props = NativeStackScreenProps<RootStackParamList, 'Loginhome'>;
 const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const navigation = useNavigation();
-  const signIn = async () => {
+  const googleLogin = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
+      const {idToken, user} = await GoogleSignin.signIn();
       console.log(userInfo);
       navigation.navigate('Home');
       // Handle successful sign-in, e.g., store user info in state or navigate to another screen
@@ -56,26 +57,25 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
       }
     }
   };
-  const handleAppleSignIn = async (AppleAuthentication: any) => {
-    try {
-      const appleAuthRequestResponse = await AppleAuthentication.signInAsync({
-        requestedScopes: [
-          AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
-          AppleAuthentication.AppleAuthenticationScope.EMAIL,
-        ],
-      });
-
-      // Use the appleAuthRequestResponse data for authentication and other purposes
-      console.log('User signed in with Apple:', appleAuthRequestResponse);
-    } catch (error: any) {
-      // Handle the error
-      if (error.code === AppleAuthentication.Error.CANCELED) {
-        console.log('Sign in canceled');
-      } else {
-        console.error('Sign in failed', error);
-      }
-    }
-  };
+  // const handleAppleSignIn = async (AppleAuthentication: any) => {
+  //   try {
+  //     const appleAuthRequestResponse = await AppleAuthentication.signInAsync({
+  //       requestedScopes: [
+  //         AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+  //         AppleAuthentication.AppleAuthenticationScope.EMAIL,
+  //       ],
+  //     });
+  //     // Use the appleAuthRequestResponse data for authentication and other purposes
+  //     console.log('User signed in with Apple:', appleAuthRequestResponse);
+  //   } catch (error: any) {
+  //     // Handle the error
+  //     if (error.code === AppleAuthentication.Error.CANCELED) {
+  //       console.log('Sign in canceled');
+  //     } else {
+  //       console.error('Sign in failed', error);
+  //     }
+  //   }
+  // };
   return (
     <SafeAreaView
       style={{
@@ -83,16 +83,12 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        //paddingHorizontal: 20,
-        // width: '100%',
-        // height: '100%',
       }}>
       <View
         style={{
           flex: 3 / 5,
           width: '100%',
           height: '100%',
-          // justifyContent: 'center',
           alignItems: 'center',
         }}>
         <Image
@@ -127,14 +123,26 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
         <View
           style={{
             flexDirection: 'row',
-            marginVertical: 10,
+            marginVertical: 15,
             alignItems: 'center',
             width: '50%',
             justifyContent: 'space-evenly',
           }}>
-          <GoogleIC onPress={signIn} />
-          <FacebookIC />
-          <AppleIC onPress={handleAppleSignIn} />
+          <TouchableOpacity
+            onPress={googleLogin}
+            // onPress={_googleLogin}
+          >
+            <GoogleIC />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <FacebookIC />
+          </TouchableOpacity>
+          <TouchableOpacity
+          // onPress={onAppleButtonPress}
+          // onPress={handleAppleSignIn}
+          >
+            <AppleIC />
+          </TouchableOpacity>
         </View>
         <View style={styles.loginContainer}>
           <Text style={styles.loginText}>Already a member?</Text>

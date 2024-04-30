@@ -1,16 +1,10 @@
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
-import React from "react";
-import LottieView from "lottie-react-native";
+import {StyleSheet, TouchableOpacity} from 'react-native';
+import React from 'react';
+import LottieView from 'lottie-react-native';
 interface LoaderProps {
   color?: string | undefined;
 }
-const Loader = ({ color }: LoaderProps) => {
+const Loader = ({color}: LoaderProps) => {
   return (
     <TouchableOpacity
       disabled
@@ -18,16 +12,15 @@ const Loader = ({ color }: LoaderProps) => {
       style={{
         ...StyleSheet.absoluteFillObject,
         flex: 1,
-        justifyContent: "center",
-        backgroundColor: color ?? "#FFFFFF22",
-      }}
-    >
+        justifyContent: 'center',
+        backgroundColor: color ?? '#FFFFFF22',
+      }}>
       <LottieView
-        source={require("../../assets/loaderFile/loaderGif.json")}
+        source={require('../../assets/loaderFile/loaderGif.json')}
         style={{
           width: 50,
           height: 50,
-          alignSelf: "center",
+          alignSelf: 'center',
         }}
         autoPlay
       />

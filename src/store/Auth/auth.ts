@@ -448,16 +448,43 @@ export const getReceivers = createAsyncThunk(
 export const deleteUser = createAsyncThunk(
   'auth/deleteUser',
   async (data: any, {dispatch}: any) => {
+    console.log('data', data.senderId);
     try {
       dispatch(activityLoaderStarted());
+      console.log('Reachedddddddd');
       const response = await http.delete(
         `/user/delete-account?userId=${data.senderId}`,
       );
-
+      console.log('response', response);
       if (response.status === 200) {
         dispatch(updateAuthentication());
         return response.data;
       }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        return {error: 'Bad Request'};
+      } else {
+        throw error;
+      }
+    } finally {
+      dispatch(activityLoaderFinished());
+    }
+  },
+);
+export const logoutUser = createAsyncThunk(
+  'auth/deleteUser',
+  async (data: any, {dispatch}: any) => {
+    console.log('data', data.senderId);
+    try {
+      dispatch(activityLoaderStarted());
+      // const response = await http.delete(
+      //   `/user/delete-account?userId=${data.senderId}`,
+      // );
+      // console.log('response', response);
+      // if (response.status === 200) {
+      //   dispatch(updateAuthentication());
+      //   return response.data;
+      // }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};

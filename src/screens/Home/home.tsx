@@ -22,13 +22,11 @@ const getUserId = async () => {
     return null;
   }
 };
-
 const HomeScreen = () => {
   const dispatch: any = useAppDispatch();
   const allUsers: any = useAppSelector(
     (state: any) => state?.Auth?.data?.allUsers,
   );
-
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
@@ -40,18 +38,22 @@ const HomeScreen = () => {
   const [distance, setDistance] = useState(
     parseInt(profileData?.distance) || 0,
   );
+  const isAuthenticated = useAppSelector(
+    (state: any) => state?.Auth?.isAuthenticated,
+  );
+  useEffect(() => {
+    dispatch(ProfileData());
+  }, []);
+  console.log('---isAuthenticated', isAuthenticated);
+  console.log('---ProfileData', ProfileData);
 
   const [currentIndex, setCurrentIndex] = useState(0);
-
   const [data, setData] = useState([]);
-
   const [checkedInterests, setCheckedInterests] = React.useState(
     profileData?.interests,
   );
-
   const [low, setLow] = useState<number>(18);
   const [high, setHigh] = useState<number>(56);
-
   useEffect(() => {
     const getId = async () => {
       const userId = await getUserId();
@@ -94,9 +96,7 @@ const HomeScreen = () => {
   const toRadians = (degrees: any) => {
     return (degrees * Math.PI) / 180;
   };
-
   const [activeScreen, setActiveScreen] = useState('HOME');
-
   return (
     <View style={styles.pageContainer}>
       <HeaderComponent
@@ -148,7 +148,6 @@ const HomeScreen = () => {
                         style={{height: 20, width: 20}}
                       />
                     )}
-
                     <Text
                       key={index.id}
                       style={{fontFamily: 'Sansation-Regular', color: 'black'}}>

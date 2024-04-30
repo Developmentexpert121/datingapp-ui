@@ -72,6 +72,7 @@ const OtpModal = ({
     } else {
       setErrorMessage('');
     }
+    setOtp(['', '', '', '', '', '']);
   };
 
   useEffect(() => {

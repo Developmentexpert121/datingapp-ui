@@ -20,12 +20,14 @@ import LikedScreen from '../screens/LikedYou/liked';
 import ChatSection from '../screens/ChatHome/allChats';
 import ProfileScreen from '../screens/Profile/profileScreen';
 import FilterSection from '../screens/FilterSection/filterSection';
+import ChatHome from '../screens/ChatHome/chatHome';
 
 export type HomeStackParamList = {
   HomeScreen: undefined;
   FilterSection: undefined;
 };
 export type ChatStackParamList = {
+  ChatHome: undefined;
   ChatSection: undefined;
 };
 export type ProfileStackParamList = {
@@ -38,6 +40,7 @@ export type BottomTabParamList = {
   ChatSection: undefined;
   HomeScreen: undefined;
   ProfileScreen: undefined;
+  ChatHome: undefined;
 };
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 const Stack = createNativeStackNavigator<ProfileStackParamList>();
@@ -55,6 +58,7 @@ const ChatStack = () => {
   return (
     <NStack.Navigator screenOptions={{headerShown: false}}>
       <NStack.Screen name="ChatSection" component={ChatSection} />
+      <NStack.Screen name="ChatHome" component={ChatHome} />
     </NStack.Navigator>
   );
 };

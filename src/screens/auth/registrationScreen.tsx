@@ -254,7 +254,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     } else if (steps < 8 && steps >= 1) {
       setSteps(prev => prev + 1);
     } else if (steps === 0) {
-      setLoader(true);
+      // setLoader(true);
       dispatch(
         EmailVerification({
           email: data.email,
@@ -274,11 +274,12 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const otpVerifity = () => {
     const concatenatedString = otp.join('');
     // console.log(concatenatedString);
-    dispatch(
-      otpModal({
-        visible: false,
-      }),
-    );
+    // setLoader(false);
+    // dispatch(
+    //   otpModal({
+    //     visible: false,
+    //   }),
+    // );
     dispatch(
       VerifyOtp({
         email: email,

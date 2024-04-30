@@ -18,7 +18,12 @@ import AppTextInput from '../../components/AppTextInput/AppTextInput';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../store/store';
-import {deleteUser, resetAuth, updateProfileData} from '../../store/Auth/auth';
+import {
+  deleteUser,
+  logoutUser,
+  resetAuth,
+  updateProfileData,
+} from '../../store/Auth/auth';
 import Geolocation from '@react-native-community/geolocation';
 import MainButton from '../../components/ButtonComponent/MainButton';
 import {EmailIC, LocationIC, PhoneIC} from '../../assets/svgs';
@@ -226,12 +231,14 @@ const SettingsSection = () => {
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem('authToken');
+
       dispatch(resetAuth());
+      console.log('handleLogout', resetAuth);
+      // Reset navigation stack and navigate to the root screen (LoginHomeScreen)
       navigation.reset({
         index: 0,
         routes: [{name: 'LoginHomeScreen'}],
       });
-      navigation.navigate();
     } catch (error) {
       console.error('Error during logout:', error);
     }
@@ -351,6 +358,10 @@ const SettingsSection = () => {
     dispatch(deleteUser({senderId: profileData._id}));
     await authTokenRemove();
   };
+  const logoutUserButton = async () => {
+    dispatch(logoutUser({senderId: profileData._id}));
+    await authTokenRemove();
+  };
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -398,7 +409,8 @@ const SettingsSection = () => {
         <TouchableOpacity style={styles.boxContainer}>
           <Text
             style={[styles.textName, {color: '#AC25AC'}]}
-            onPress={handleLogout}>
+            // onPress={handleLogout}
+            onPress={logoutUserButton}>
             Log Out
           </Text>
         </TouchableOpacity>

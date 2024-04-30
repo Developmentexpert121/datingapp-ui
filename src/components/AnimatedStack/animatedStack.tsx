@@ -5,7 +5,6 @@ import {
   useWindowDimensions,
   Text,
   TouchableOpacity,
-  Image,
 } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -14,7 +13,6 @@ import Animated, {
   useAnimatedGestureHandler,
   interpolate,
   withSpring,
-  withTiming,
   runOnJS,
   ReduceMotion,
 } from 'react-native-reanimated';
@@ -28,14 +26,7 @@ const ROTATION = 60;
 const SWIPE_VELOCITY = 800;
 
 const AnimatedStack = (props: any) => {
-  const {
-    data,
-    renderItem,
-    currentIndex,
-    setData,
-    setCurrentIndex,
-    profileData,
-  } = props;
+  const {data, renderItem, currentIndex, setCurrentIndex, profileData} = props;
 
   const dispatch: any = useAppDispatch();
 
@@ -187,11 +178,9 @@ const AnimatedStack = (props: any) => {
     if (currentIndex === data.length) {
       setCurrentIndex(0);
     }
-
     translateX.value = 0;
     setNextIndex(currentIndex + 1);
   }, [currentIndex, translateX, data.length]);
-
   return (
     <View style={styles.root}>
       {nextProfile && (
@@ -237,60 +226,15 @@ const AnimatedStack = (props: any) => {
           </View>
           <View style={styles.icons}>
             <TouchableOpacity onPress={onSwipeLeft}>
-              <View style={styles.button}>
-                {/* <Entypo name="cross" size={40} color="#FF2222" /> */}
-                <CrossIC />
-              </View>
+              <CrossIC />
             </TouchableOpacity>
-
             <TouchableOpacity onPress={onSwipeRight}>
-              <View style={styles.button}>
-                <HeartIC />
-              </View>
+              <HeartIC />
             </TouchableOpacity>
-
             <TouchableOpacity>
-              <View style={styles.button}>
-                <StarIC />
-              </View>
+              <StarIC />
             </TouchableOpacity>
           </View>
-          {/* <View style={styles.container}>
-            {allUsers[currentIndex]?.habits1?.map((item: any, index: any) => {
-              let imagePath;
-              switch (item.imagePath) {
-                case 'src/assets/images/bottleofchampagne.png':
-                  imagePath = require('../../assets/images/bottleofchampagne.png');
-                  break;
-                case 'src/assets/images/smoking.png':
-                  imagePath = require('../../assets/images/smoking.png');
-                  break;
-                case 'src/assets/images/Mandumbbells.png':
-                  imagePath = require('../../assets/images/Mandumbbells.png');
-                  break;
-                case 'src/assets/images/dogheart.png':
-                  imagePath = require('../../assets/images/dogheart.png');
-                  break;
-                case 'src/assets/images/datestep.png':
-                  imagePath = require('../../assets/images/datestep.png');
-                  break;
-                // Add more cases for other image paths as needed
-              }
-              return (
-                <View style={styles.item}>
-                  {imagePath && (
-                    <Image source={imagePath} style={{height: 20, width: 20}} />
-                  )}
-
-                  <Text
-                    key={index.id}
-                    style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
-                    {item.selectedText}
-                  </Text>
-                </View>
-              );
-            })}
-          </View> */}
         </View>
       ) : (
         <Text
@@ -307,6 +251,8 @@ const AnimatedStack = (props: any) => {
     </View>
   );
 };
+
+export default AnimatedStack;
 
 const styles = StyleSheet.create({
   root: {
@@ -326,7 +272,6 @@ const styles = StyleSheet.create({
   },
   nextCardContainer: {
     ...StyleSheet.absoluteFillObject,
-    // marginBottom: 68,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -342,51 +287,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     width: '70%',
-    // marginVertical: 12,
     marginTop: 30,
-    // borderWidth: 1,
   },
-  button: {
-    width: 60,
-    height: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    borderRadius: 60,
-    borderWidth: 2,
-    borderColor: '#AC25AC',
-  },
+  button: {},
   locText: {
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 20,
-    // marginBottom: 16,
     columnGap: 2,
-    // borderWidth: 2,
     alignSelf: 'flex-start',
   },
-  container: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    columnGap: 10, // Adjust as needed
-    marginHorizontal: 20,
-    // marginBottom: 20,
-    marginTop: 70,
-    // borderWidth: 1,
-    // bottom:0,
-    // position:"absolute"
-  },
-  item: {
-    borderWidth: 1.4,
-    borderRadius: 52,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-    columnGap: 4,
-    backgroundColor: '#FFFFFF',
-  },
 });
-
-export default AnimatedStack;

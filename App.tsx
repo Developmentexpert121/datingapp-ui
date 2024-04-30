@@ -11,6 +11,8 @@ import SplashScreen from 'react-native-splash-screen';
 import ProfileData from './src/store/Auth/auth';
 import Root from './src/navigation/Root';
 import GlobalModal from './src/components/Modals/GlobalModal';
+import {AuthNavigator} from './src/navigation';
+import BottomTabNavigation from './src/navigation/BottomTabNavigation';
 
 const App = () => {
   // const dispatch = useAppDispatch();
@@ -36,7 +38,6 @@ const App = () => {
   const isLoading = useAppSelector(
     (state: any) => state.ActivityLoader.loading,
   );
-  // const isDarkMode = useColorScheme() === 'dark';
 
   // const isAuthenticated = useAppSelector(
   //   (state: any) => state?.Auth?.isAuthenticated,

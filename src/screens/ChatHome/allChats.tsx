@@ -15,7 +15,6 @@ import {ListItem, Avatar, SearchBar} from 'react-native-elements';
 import CommonBackbutton from '../../components/commonBackbutton/CommonBackbutton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
-import FooterComponent from '../../components/Dashboard/footer/footer';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {getReceivers} from '../../store/Auth/auth';
 import {videoCallUser} from '../../store/Activity/activity';
@@ -102,9 +101,7 @@ const ChatSection = () => {
   );
 
   const [receiverData, setReceiverData] = useState<any>([]);
-
   console.log('--------------Array', receiverData);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -116,40 +113,22 @@ const ChatSection = () => {
         console.error('Error fetching data:', error);
       }
     };
-
     // const intervalId = setInterval(fetchData, 5000); // Poll every 5 seconds
     fetchData(); // Fetch data immediately on component mount
     // return () => clearInterval(intervalId);
   }, []);
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  // Seacrh
 
   const [search, setSearch] = useState<any>('');
-  const [username, setUserName] = useState<any>([]);
-  const [username2, setUserName2] = useState<any>([]);
 
-  // setUserName2((data)=>[...data, username])
-  const receiverIds = receiverData.map((receiver: any) => receiver.receiverId);
-
-  const receiverMainInfo2 = allUsers.filter((user: any) =>
-    receiverIds.includes(user._id),
-  );
-
-  const filteredReceiverData = receiverMainInfo2.filter(
-    (
-      item: any,
-      recieverMainInfo: any,
-      user: any,
-      receiverData: any,
-      receiverMainInfo2: any,
-    ) => item?.name.toLowerCase().includes(search.toLowerCase()),
-  );
-
-  const updateSearch = (text: string) => {
+  const handleSearchChange = (text: any) => {
     setSearch(text);
-    filteredReceiverData;
   };
-
+  const filteredReceiverData = receiverData.filter((item: any) =>
+    item?.userInfo?.name?.toLowerCase().includes(search.toLowerCase()),
+  );
   ///?`,
   const closeDrawer = () => {
     setIsDrawerOpen(false);
@@ -202,14 +181,14 @@ const ChatSection = () => {
           <Ionicons name="search-outline" size={20} style={styles.icon} />
           <TextInput
             placeholder="Search"
-            onChangeText={updateSearch}
+            onChangeText={handleSearchChange}
             value={search}
             style={styles.input}
           />
         </View>
         <Text style={styles.msgs}>Messages</Text>
         <FlatList
-          data={receiverData}
+          data={filteredReceiverData}
           keyExtractor={item => item.id}
           renderItem={({item}) => {
             return (
@@ -262,7 +241,6 @@ const ChatSection = () => {
         />
       </View>
       <UsersDrawer isOpen={isDrawerOpen} onClose={closeDrawer} />
-      {/* <FooterComponent /> */}
     </SafeAreaView>
   );
 };

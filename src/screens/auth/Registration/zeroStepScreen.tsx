@@ -18,6 +18,7 @@ import PhoneInput from '../../../components/AppTextInput/PhoneInput';
 import CustomDatePicker from '../../../components/AppTextInput/CustomDatePicker';
 import PasswodTextInput from '../../../components/AppTextInput/PasswodTextInput';
 import {BackIC} from '../../../assets/svgs';
+import CountryCity from '../../../DropDwon/CountryCity';
 
 interface RegForm0 {
   name: string;
@@ -29,7 +30,6 @@ const defaultValues = {
   email: '',
   password: '',
 };
-
 const ZeroStepScreen = ({
   name,
   phone,
@@ -41,8 +41,6 @@ const ZeroStepScreen = ({
   gender,
   country,
   city,
-  dateStr,
-  setDateStr,
   callingCode,
   setCallingCode,
 }: any) => {
@@ -52,30 +50,7 @@ const ZeroStepScreen = ({
     {label: 'Non-Binary', value: 'third'},
     {label: 'Transgender', value: 'fourth'},
   ];
-  // const [date, setDate] = useState(new Date());
-  // const [mode, setMode] = useState<any>('date');
-  // const [show, setShow] = useState<any>(false);
   const navigation = useNavigation();
-  // const onChange = (event: any, selectedDate: any) => {
-  //   const currentDate = selectedDate;
-  //   setShow(false);
-  //   setDate(currentDate);
-  //   setDateStr(currentDate);
-  // };
-  // console.log(dateStr);
-  // const showMode = (currentMode: any) => {
-  //   setShow(true);
-  //   setMode(currentMode);
-  // };
-
-  // const showDatepicker = () => {
-  //   showMode('date');
-  // };
-
-  // const showTimepicker = () => {
-  //   showMode('time');
-  // };
-
   return (
     <SafeAreaView style={{borderWidth: 0, flex: 1}}>
       <View style={styles.topView}>
@@ -115,10 +90,7 @@ const ZeroStepScreen = ({
                 placeholder="Date of birth"
                 value={value.dob}
                 onChangeText={onChange}
-                // showError={Boolean(errors?.phone)}
                 errors={Boolean(errors?.dob)}
-                // onBlur={field.onBlur}
-                // You can pass any additional props required by CustomDatePicker
               />
             )}
           />
@@ -213,6 +185,7 @@ const ZeroStepScreen = ({
           {errors.city && (
             <Text style={styles.errorText}>{errors.city.message}</Text>
           )}
+          <CountryCity />
         </View>
         {/* Mail */}
         <View style={styles.container}>
@@ -256,25 +229,23 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: '#AA22AA',
-    marginTop: 20,
-    marginBottom: 10,
     backgroundColor: '#E1D1E1',
     marginHorizontal: 20,
-    flex: 1,
     justifyContent: 'center', // Center items vertically
     alignItems: 'center',
     paddingVertical: 12,
+    marginVertical: 15,
+    // zIndex: 0,
   },
   container1: {
     width: '90%',
     borderRadius: 5,
     borderWidth: 1,
     borderColor: '#AA22AA',
-    marginTop: 20,
-    marginBottom: 10,
     backgroundColor: '#E1D1E1',
     marginHorizontal: 20,
     paddingVertical: 12,
+    marginVertical: 15,
   },
   headerLabel: {
     fontSize: 22,

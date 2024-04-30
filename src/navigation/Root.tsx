@@ -15,6 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from 'react-native-splash-screen';
 import {requestNotifications} from 'react-native-permissions';
 import FilterSection from '../screens/FilterSection/filterSection';
+import {useNavigation} from '@react-navigation/native';
 export type RegisterType = {};
 export type RootStackParamList = {
   Home: undefined;
@@ -40,13 +41,15 @@ const Root = () => {
   const dispatch = useAppDispatch();
   const [authToken, setAuthToken] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
+
+  const navigation: any = useNavigation();
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
       SplashScreen.hide();
       requestUserPermission();
       getToken();
-    }, 4000);
+    }, 3000);
   }, []);
 
   async function requestUserPermission() {
@@ -80,10 +83,40 @@ const Root = () => {
     fetchAuthToken();
   }, []);
   const [isAuthenticated, setIsAuthenticated] = useState<any>('');
+
+  // const isAuthenticated = useAppSelector(
+  //     (state: any) => state?.Auth?.isAuthenticated,
+  //   );
+
   useEffect(() => {
     setIsAuthenticated(Boolean(authToken));
   }, [authToken]);
 
+  // useEffect(() => {
+  //   isAuthenticated && dispatch(ProfileData());
+  // }, []);
+
+  // useEffect(() => {
+  //   setIsAuthenticated(Boolean(authToken));
+  //   if (!authToken) {
+  //     // When authToken is removed, navigate to LoginHomeScreen
+  //     navigation.reset({
+  //       index: 0,
+  //       routes: [{name: 'Loginhome'}],
+  //     });
+  //   }
+  // }, [authToken]);
+
+  useEffect(() => {
+    if (authToken === null) {
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'Loginhome'}],
+      });
+    } else {
+      setIsAuthenticated(true);
+    }
+  }, [authToken]);
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       {isAuthenticated ? (
@@ -102,10 +135,8 @@ const Root = () => {
           />
         </Stack.Group>
       ) : (
-        // Unauthenticated screens
         <Stack.Group>
           <Stack.Screen name="Loginhome" component={LoginHomeScreen} />
-          {/* <Stack.Screen name="OtpScreen" component={OtpScreen} /> */}
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Register" component={RegisterScreen} />
         </Stack.Group>
