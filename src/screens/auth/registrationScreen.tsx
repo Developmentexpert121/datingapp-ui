@@ -13,7 +13,7 @@ import * as yup from 'yup';
 import React, {useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../types';
-import {useForm, Controller} from 'react-hook-form';
+import {useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {
@@ -83,6 +83,7 @@ const schema = yup.object().shape({
   phone: yup
     .string()
     .matches(/^[0-9]+$/, 'Phone must contain only digits')
+    .min(8, 'Phone must be at least 8 digits long')
     .required('Phone is required'),
   email: yup.string().email('Invalid email').required('Email is required'),
   country: yup.string().trim().required('Country is required'),
@@ -305,7 +306,6 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <StatusBar translucent backgroundColor="transparent" /> */}
       <KeyboardAvoidingView
         behavior="padding"
         keyboardVerticalOffset={

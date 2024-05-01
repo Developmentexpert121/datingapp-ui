@@ -4,7 +4,6 @@ import {
   View,
   Platform,
   ScrollView,
-  TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
 import React, {useEffect, useMemo, useState} from 'react';
@@ -167,7 +166,7 @@ const ZeroStepScreen = ({
         {/* Country And  City */}
         <View style={styles.container}>
           <Text style={styles.label}>Location</Text>
-          <AppTextInput
+          {/* <AppTextInput
             placeholder="Enter Your Country"
             name={country}
             control={control}
@@ -181,11 +180,17 @@ const ZeroStepScreen = ({
             name={city}
             control={control}
             errors={Boolean(errors?.city)}
-          />
+          /> */}
           {errors.city && (
             <Text style={styles.errorText}>{errors.city.message}</Text>
           )}
-          <CountryCity />
+          <Controller
+            control={control}
+            name={dob}
+            rules={{required: true}}
+            defaultValue=""
+            render={({field: {onChange, value}}) => <CountryCity />}
+          />
         </View>
         {/* Mail */}
         <View style={styles.container}>
