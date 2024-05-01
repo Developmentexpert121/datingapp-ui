@@ -40,9 +40,6 @@ const PhoneInput = ({
   control,
   label,
   code,
-  showError,
-  error,
-  onChangeText,
   editable,
   countryDisable,
   errors,
@@ -114,14 +111,14 @@ const PhoneInput = ({
               />
             </View>
           </View>
-          <View style={{height: 15, marginTop: 4}}>
-            {/* {showError && error ? (
+          {/* <View style={{height: 15, marginTop: 4}}> */}
+          {/* {showError && error ? (
           <Label
             text={'* ' + error}
             style={{color: '#FD4755', fontSize: 10, textAlign: 'right'}}
           />
         ) : null} */}
-          </View>
+          {/* </View> */}
         </View>
       )}
     />
@@ -153,7 +150,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   container: {
-    marginVertical: 5,
+    marginVertical: 10,
   },
   flagStyle: {
     marginRight: 10,

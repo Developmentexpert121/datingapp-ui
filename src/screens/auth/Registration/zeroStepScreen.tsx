@@ -17,7 +17,7 @@ import PhoneInput from '../../../components/AppTextInput/PhoneInput';
 import CustomDatePicker from '../../../components/AppTextInput/CustomDatePicker';
 import PasswodTextInput from '../../../components/AppTextInput/PasswodTextInput';
 import {BackIC} from '../../../assets/svgs';
-import CountryCity from '../../../DropDwon/CountryCity';
+import CountryCity from '../../../components/DropDwon/CountryCity';
 
 interface RegForm0 {
   name: string;
@@ -50,6 +50,8 @@ const ZeroStepScreen = ({
     {label: 'Transgender', value: 'fourth'},
   ];
   const navigation = useNavigation();
+
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   return (
     <SafeAreaView style={{borderWidth: 0, flex: 1}}>
       <View style={styles.topView}>
@@ -181,16 +183,12 @@ const ZeroStepScreen = ({
             control={control}
             errors={Boolean(errors?.city)}
           /> */}
+
+          <CountryCity setSelectedCountry={setSelectedCountry} />
+
           {errors.city && (
             <Text style={styles.errorText}>{errors.city.message}</Text>
           )}
-          <Controller
-            control={control}
-            name={dob}
-            rules={{required: true}}
-            defaultValue=""
-            render={({field: {onChange, value}}) => <CountryCity />}
-          />
         </View>
         {/* Mail */}
         <View style={styles.container}>

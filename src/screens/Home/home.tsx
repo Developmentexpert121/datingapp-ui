@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, Text, Image, ScrollView} from 'react-native';
 import Card from '../../components/Dashboard/homeCard/homeCard';
-import AnimatedStack from '../../components/AnimatedStack/animatedStack';
+import AnimatedStack from './AnimatedStack/animatedStack';
 import HeaderComponent from '../../components/Dashboard/header/header';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {ProfileData, getAllUsers} from '../../store/Auth/auth';

@@ -9,27 +9,29 @@ import {
   IState,
   ICity,
 } from 'country-state-city';
-import Spacing from '../constants/Spacing';
-import Colors from '../constants/Colors';
+import Spacing from '../../constants/Spacing';
+import Colors from '../../constants/Colors';
 import {Controller} from 'react-hook-form';
 
-const CountryCity: React.FC = (Props: any) => {
-  const {
-    name,
-    control,
-    errors,
-    borderColor,
-    borderWidth,
-    marginLeft,
-    textstyle,
-    autoCapitalize,
-    ...textInputProps
-  } = Props;
+interface Iprops {
+  setSelectedCountry?: string;
+  errors?: string;
+  value1?: string;
+}
+
+const CountryCity: React.FC = ({
+  errors,
+  setSelectedCountry,
+  value1,
+}: Iprops) => {
   const [focused, setFocused] = useState<boolean>(false);
+
   const hasError = errors;
 
   const [countries, setCountries] = useState<ICountry[]>([]);
-  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+  const [selectedCountry, setSelectedCountryState] = useState<string | null>(
+    null,
+  );
 
   const [states, setStates] = useState<IState[]>([]);
   const [selectedState, setSelectedState] = useState<string | null>(null);
@@ -40,7 +42,16 @@ const CountryCity: React.FC = (Props: any) => {
   const [countryOpen, setCountryOpen] = useState(false);
   const [stateOpen, setStateOpen] = useState(false);
   const [cityOpen, setCityOpen] = useState(false);
+  //
+  //
 
+  // Function to handle country change
+  const handleCountryChange = (value: any) => {
+    setSelectedCountryState(value);
+    setSelectedCountry(value);
+  };
+
+  //
   useEffect(() => {
     const allCountries = Country.getAllCountries();
     setCountries(allCountries ?? '');
@@ -65,6 +76,9 @@ const CountryCity: React.FC = (Props: any) => {
       setSelectedCity(null);
     }
   }, [selectedState, selectedCountry]);
+  // useEffect(() => {
+  //   setSelectedCountry(value1 ?? '');
+  // }, [value1]);
 
   return (
     // <Controller
@@ -76,7 +90,7 @@ const CountryCity: React.FC = (Props: any) => {
     <View style={styles.container}>
       {/* country */}
       <DropDownPicker
-        zIndex={5}
+        // zIndex={5}
         open={countryOpen}
         value={selectedCountry}
         items={countries.map(country => ({
@@ -84,23 +98,25 @@ const CountryCity: React.FC = (Props: any) => {
           value: country.isoCode,
         }))}
         setOpen={setCountryOpen}
-        setValue={setSelectedCountry}
-        onChangeValue={setSelectedCountry}
+        setValue={setSelectedCountryState}
+        // onChangeValue={value => setSelectedCountry(value)}
+        onChangeValue={handleCountryChange}
         style={[
           styles.dropdown,
           hasError
             ? styles.errorBorder
             : {borderWidth: 1, borderColor: 'rgba(0, 0, 0, 0.2)'},
         ]}
-        maxHeight={400}
+        // maxHeight={400}
         dropDownDirection="TOP"
         searchable={true}
         autoScroll={true}
         dropDownContainerStyle={{
           ...styles.dropdownContainer,
-          maxHeight: 200,
+          // maxHeight: 200,
           overflow: 'hidden',
         }}
+        scrollViewProps={{}}
         //
         placeholder={'Country'}
         placeholderStyle={styles.placeholderStyle}
@@ -108,7 +124,7 @@ const CountryCity: React.FC = (Props: any) => {
       />
       {/* State */}
       <DropDownPicker
-        zIndex={4}
+        // zIndex={4}
         open={stateOpen}
         value={selectedState}
         items={states.map(state => ({
@@ -117,7 +133,7 @@ const CountryCity: React.FC = (Props: any) => {
         }))}
         setOpen={setStateOpen}
         setValue={setSelectedState}
-        onChangeValue={setSelectedState}
+        onChangeValue={value => setSelectedState(value)}
         style={[
           styles.dropdown,
           hasError
@@ -140,7 +156,7 @@ const CountryCity: React.FC = (Props: any) => {
       />
       {/* City */}
       <DropDownPicker
-        zIndex={3}
+        // zIndex={3}
         open={cityOpen}
         value={selectedCity}
         items={cities.map(city => ({
@@ -149,7 +165,7 @@ const CountryCity: React.FC = (Props: any) => {
         }))}
         setOpen={setCityOpen}
         setValue={setSelectedCity}
-        onChangeValue={setSelectedCity}
+        onChangeValue={value => setSelectedCity(value)}
         style={[
           styles.dropdown,
           hasError
@@ -159,7 +175,7 @@ const CountryCity: React.FC = (Props: any) => {
         disabled={!selectedState}
         dropDownContainerStyle={{
           ...styles.dropdownContainer,
-          maxHeight: 300,
+          // maxHeight: 300,
           overflow: 'scroll',
         }}
         // maxHeight={400}
@@ -174,6 +190,8 @@ const CountryCity: React.FC = (Props: any) => {
     // />
   );
 };
+
+export default CountryCity;
 
 const styles = StyleSheet.create({
   container: {
@@ -190,6 +208,7 @@ const styles = StyleSheet.create({
     height: 400,
     position: 'absolute',
     width: '80%',
+    borderColor: 'rgba(0, 0, 0, 0.2)',
   },
   placeholderStyle: {color: Colors.darkText},
   textStyle: {
@@ -203,4 +222,3 @@ const styles = StyleSheet.create({
     borderColor: 'red',
   },
 });
-export default CountryCity;

@@ -17,10 +17,10 @@ import Animated, {
   ReduceMotion,
 } from 'react-native-reanimated';
 import {PanGestureHandler} from 'react-native-gesture-handler';
-import {useAppDispatch, useAppSelector} from '../../store/store';
-import {likedAUser} from '../../store/Auth/auth';
+import {useAppDispatch, useAppSelector} from '../../../store/store';
+import {likedAUser} from '../../../store/Auth/auth';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {CrossIC, HeartIC, StarIC} from '../../assets/svgs';
+import {CrossIC, HeartIC, StarIC} from '../../../assets/svgs';
 
 const ROTATION = 60;
 const SWIPE_VELOCITY = 800;
@@ -185,9 +185,9 @@ const AnimatedStack = (props: any) => {
     <View style={styles.root}>
       {nextProfile && (
         <View style={styles.nextCardContainer}>
-          <Animated.View style={[styles.animatedCard, nextCardStyle]}>
+          {/* <Animated.View style={[styles.animatedCard, nextCardStyle]}>
             {renderItem({item: nextProfile})}
-          </Animated.View>
+          </Animated.View> */}
         </View>
       )}
       {currentProfile ? (
@@ -195,12 +195,12 @@ const AnimatedStack = (props: any) => {
           <PanGestureHandler onGestureEvent={gestureHandler}>
             <Animated.View style={[styles.animatedCard, cardStyle]}>
               <Animated.Image
-                source={require('../../assets/images/LIKE.png')}
+                source={require('../../../assets/images/LIKE.png')}
                 style={[styles.like, {left: 1}, likeStyle]}
                 resizeMode="contain"
               />
               <Animated.Image
-                source={require('../../assets/images/nope.png')}
+                source={require('../../../assets/images/nope.png')}
                 style={[styles.like, {right: 1}, nopeStyle]}
                 resizeMode="contain"
               />
