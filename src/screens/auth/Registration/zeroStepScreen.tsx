@@ -39,9 +39,16 @@ const ZeroStepScreen = ({
   password,
   gender,
   country,
+  state,
   city,
   callingCode,
   setCallingCode,
+  selectedCountry,
+  setSelectedCountry,
+  selectedState,
+  setSelectedState,
+  selectedCity,
+  setSelectedCity,
 }: any) => {
   const options = [
     {label: 'Male', value: 'first'},
@@ -51,7 +58,17 @@ const ZeroStepScreen = ({
   ];
   const navigation = useNavigation();
 
-  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+  // Callback function to handle the change of the selected country
+  const handleSelectedCountryChange = (country: string) => {
+    setSelectedCountry(country);
+  };
+  const handleSelectedStateChange = (state: string) => {
+    setSelectedState(state);
+  };
+  const handleSelectedCityChange = (city: string) => {
+    setSelectedCity(city);
+  };
+
   return (
     <SafeAreaView style={{borderWidth: 0, flex: 1}}>
       <View style={styles.topView}>
@@ -184,7 +201,13 @@ const ZeroStepScreen = ({
             errors={Boolean(errors?.city)}
           /> */}
 
-          <CountryCity setSelectedCountry={setSelectedCountry} />
+          <CountryCity
+            valueCountry={handleSelectedCountryChange}
+            valueState={handleSelectedStateChange}
+            valueCity={handleSelectedCityChange}
+            errors={errors?.country}
+            //  valueCount={country}
+          />
 
           {errors.city && (
             <Text style={styles.errorText}>{errors.city.message}</Text>
@@ -225,6 +248,7 @@ const ZeroStepScreen = ({
   );
 };
 
+export default ZeroStepScreen;
 const styles = StyleSheet.create({
   container: {
     width: '90%',
@@ -324,5 +348,3 @@ const styles = StyleSheet.create({
     borderColor: '#AC25AC',
   },
 });
-
-export default ZeroStepScreen;

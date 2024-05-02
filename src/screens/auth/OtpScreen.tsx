@@ -1,6 +1,5 @@
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
-import HeaderComponent from '../../components/Dashboard/header/header';
 import {Image} from 'react-native';
 import Label from '../../components/Label';
 import {useNavigation} from '@react-navigation/native';
@@ -12,7 +11,6 @@ const OtpScreen = ({navigation: {}}) => {
   const navigation = useNavigation;
   return (
     <View style={{flex: 1, alignItems: 'center'}}>
-      <HeaderComponent label={'Enter your verification code'} />
       <Image
         source={require('../../assets/images/login_Image.png')}
         resizeMode="contain"

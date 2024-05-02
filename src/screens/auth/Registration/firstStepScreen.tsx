@@ -47,7 +47,6 @@ const FirstStepScreen = ({interests, control, errors}: any) => {
           />
         </View>
       ))}
-      {/* <Text>dfhiue</Text> */}
     </View>
   );
 };

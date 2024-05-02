@@ -43,7 +43,11 @@ interface RegisterForm {
   phone: string;
   email: string;
   country: string;
+  state: string;
   city: string;
+  selectedCountry: string;
+  selectedState: string;
+  selectedCity: string;
   gender: string;
   interests: string;
   partnerType: string;
@@ -63,7 +67,11 @@ const defaultValues = {
   phone: '',
   email: '',
   country: '',
+  state: '',
   city: '',
+  selectedCountry: '',
+  selectedState: '',
+  selectedCity: '',
   gender: '',
   interests: '',
   partnerType: '',
@@ -86,8 +94,9 @@ const schema = yup.object().shape({
     .min(8, 'Phone must be at least 8 digits long')
     .required('Phone is required'),
   email: yup.string().email('Invalid email').required('Email is required'),
-  country: yup.string().trim().required('Country is required'),
-  city: yup.string().trim().required('City is required'),
+  // country: yup.string().trim().required('Country is required'),
+  // state: yup.string().trim().required('Country is required'),
+  // city: yup.string().trim().required('Country,State and City is required'),
   gender: yup.string().trim().required('Gender is required'),
   password: yup
     .string()
@@ -133,7 +142,11 @@ const schema6 = yup.object().shape({
   hobbies: yup.string().trim().required('Hobbies are required'),
 });
 const schema7 = yup.object().shape({
-  hobbies: yup.string().trim().required('Photos are required'),
+  hobbies: yup
+    .string()
+    .trim()
+    // .min(1, 'At least one item of any box must be selected')
+    .required('Photos are required'),
 });
 const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const profileData = useAppSelector(
@@ -150,6 +163,11 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const [otp, setOtp] = useState<string[]>(['', '', '', '', '', '']);
   const [loader, setLoader] = useState<boolean>(false);
   const [phone, setPhone] = useState<object>({});
+
+  const [country, setSelectedCountry] = useState<string | null>(null);
+  const [state, setSelectedState] = useState<string | null>(null);
+  const [city, setSelectedCity] = useState<string | null>(null);
+  console.log('.....firstselectedCountry', country);
 
   const dispatch: any = useAppDispatch();
   const Schemas = (steps: any) => {
@@ -179,6 +197,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     resolver: Schemas(steps),
   });
   const getLocationAndRegister = (data: RegisterForm) => {
+    console.log('firstdatadata', data);
     Geolocation.getCurrentPosition(
       (position: any) => {
         const {latitude, longitude} = position.coords;
@@ -193,6 +212,12 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
             distance: `${distance}mi`,
             profilePic: profileImages?.join(','),
             dob: dob,
+            // selectedCountry: country,
+            // selectedState: state,
+            // selectedCity: city,
+            country: country,
+            state: state,
+            city: city,
           }),
         );
         reset();
@@ -232,6 +257,12 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
                 distance: `${distance}mi`,
                 profilePic: profileImages?.join(','),
                 dob: dob,
+                // selectedCountry: country,
+                // selectedState: state,
+                // selectedCity: city,
+                country: country,
+                state: state,
+                city: city,
               }),
             );
             navigate('Loginhome');
@@ -246,16 +277,22 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const [dob, setDob] = useState('');
 
   const onSubmit: any = (data: RegisterForm) => {
+    console.log('onSubmitfirst', data);
     setDob(data.dob);
     setEmail(data.email);
+    // setSelectedCountry(data.country);
+    // setSelectedState(data.state);
+    // setSelectedCity(data.city);
     if (steps === 7) {
-      setSteps(prev => prev + 1);
+      if (profileImages.length > 0) {
+        return setSteps(prev => prev + 1);
+      }
     } else if (steps === 8) {
       showPermissionPopup(data);
     } else if (steps < 8 && steps >= 1) {
       setSteps(prev => prev + 1);
     } else if (steps === 0) {
-      // setLoader(true);
+      setLoader(true);
       dispatch(
         EmailVerification({
           email: data.email,
@@ -270,12 +307,11 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     }
   };
   // console.log('------', otp);
-  // console.log('onSubmitbutton ...', onSubmit);
   const [errorOtp, setErrorOtp] = useState();
   const otpVerifity = () => {
     const concatenatedString = otp.join('');
-    // console.log(concatenatedString);
-    // setLoader(false);
+    console.log(concatenatedString);
+    setLoader(false);
     // dispatch(
     //   otpModal({
     //     visible: false,
@@ -343,6 +379,12 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
                 errors={errors}
                 callingCode={callingCode}
                 setCallingCode={setCallingCode}
+                selectedCountry={country}
+                setSelectedCountry={setSelectedCountry}
+                selectedState={state}
+                setSelectedState={setSelectedState}
+                selectedCity={city}
+                setSelectedCity={setSelectedCity}
               />
             ) : steps === 1 ? (
               <FirstStepScreen
@@ -401,6 +443,8 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     </SafeAreaView>
   );
 };
+
+export default RegisterScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -441,5 +485,3 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
 });
-
-export default RegisterScreen;

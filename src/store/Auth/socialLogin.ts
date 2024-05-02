@@ -30,35 +30,35 @@ export const _googleLogin = async () => {
 };
 
 /////   Apple Login //
-// export async function onAppleButtonPress() {
-//   try {
-//     // performs login request
-//     const appleAuthRequestResponse = await appleAuth.performRequest({
-//       requestedOperation: appleAuth.Operation.LOGIN,
-//       // Note: it appears putting FULL_NAME first is important, see issue #293
-//       requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
-//     });
+export async function onAppleButtonPress() {
+  try {
+    // performs login request
+    const appleAuthRequestResponse = await appleAuth.performRequest({
+      requestedOperation: appleAuth.Operation.LOGIN,
+      // Note: it appears putting FULL_NAME first is important, see issue #293
+      requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
+    });
 
-//     // other fields are available, but full name is not
-//     if (appleAuthRequestResponse?.identityToken) {
-//       const userInfo = await jwt_decode(
-//         appleAuthRequestResponse?.identityToken,
-//       );
-//       return userInfo;
-//     }
+    // other fields are available, but full name is not
+    if (appleAuthRequestResponse?.identityToken) {
+      const userInfo = await jwt_decode(
+        appleAuthRequestResponse?.identityToken,
+      );
+      return userInfo;
+    }
 
-//     // get current authentication state for user
-//     // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
-//     const credentialState = await appleAuth.getCredentialStateForUser(
-//       appleAuthRequestResponse.user,
-//     );
+    // get current authentication state for user
+    // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
+    const credentialState = await appleAuth.getCredentialStateForUser(
+      appleAuthRequestResponse.user,
+    );
 
-//     // use credentialState response to ensure the user is authenticated
-//     if (credentialState === appleAuth.State.AUTHORIZED) {
-//       // user is authenticated
-//     }
-//   } catch (error) {
-//     console.log('Apple Authentication Error:', error);
-//     // handle error
-//   }
-// }
+    // use credentialState response to ensure the user is authenticated
+    if (credentialState === appleAuth.State.AUTHORIZED) {
+      // user is authenticated
+    }
+  } catch (error) {
+    console.log('Apple Authentication Error:', error);
+    // handle error
+  }
+}

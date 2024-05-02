@@ -18,15 +18,22 @@ import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import AppleAuthentication from '@invertase/react-native-apple-authentication';
-import {_googleLogin} from '../../store/Auth/socialLogin';
+// import AppleAuthentication from '@invertase/react-native-apple-authentication';
+import * as AppleAuthentication from '@invertase/react-native-apple-authentication';
+import {_googleLogin, onAppleButtonPress} from '../../store/Auth/socialLogin';
 
 GoogleSignin.configure({
   webClientId:
     '1074716618334-m6trdmrc4b3tojpaaufbslg616vt1al7.apps.googleusercontent.com',
   offlineAccess: true,
 });
-
+interface AppleAuthResponse {
+  user: string;
+  email: string | null;
+  fullName: AppleAuthentication.AppleIDFullName | null;
+  identityToken: string | null;
+  authorizationCode: string | null;
+}
 type Props = NativeStackScreenProps<RootStackParamList, 'Loginhome'>;
 const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const navigation = useNavigation();
@@ -57,25 +64,31 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
       }
     }
   };
-  // const handleAppleSignIn = async (AppleAuthentication: any) => {
-  //   try {
-  //     const appleAuthRequestResponse = await AppleAuthentication.signInAsync({
-  //       requestedScopes: [
-  //         AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
-  //         AppleAuthentication.AppleAuthenticationScope.EMAIL,
-  //       ],
-  //     });
-  //     // Use the appleAuthRequestResponse data for authentication and other purposes
-  //     console.log('User signed in with Apple:', appleAuthRequestResponse);
-  //   } catch (error: any) {
-  //     // Handle the error
-  //     if (error.code === AppleAuthentication.Error.CANCELED) {
-  //       console.log('Sign in canceled');
-  //     } else {
-  //       console.error('Sign in failed', error);
-  //     }
-  //   }
-  // };
+
+  const handleAppleSignIn = async (): Promise<void> => {
+    try {
+      const appleAuthRequestResponse: AppleAuthResponse =
+        await AppleAuthentication.performRequest({
+          requestedScopes: [
+            AppleAuthentication.AppleIDRequestScope.FULL_NAME,
+            AppleAuthentication.AppleIDRequestScope.EMAIL,
+          ],
+        });
+
+      // appleAuthRequestResponse contains the user's information
+      console.log('Apple Auth Response:', appleAuthRequestResponse);
+
+      // Use the response to handle the sign-in and the user information
+      const {user, email, fullName, identityToken, authorizationCode} =
+        appleAuthRequestResponse;
+
+      // Handle the Apple Authentication response as needed
+      // For example, use user, email, fullName, identityToken, and authorizationCode
+    } catch (error) {
+      console.error('Apple sign-in error:', error);
+    }
+  };
+
   return (
     <SafeAreaView
       style={{
@@ -138,9 +151,8 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
             <FacebookIC />
           </TouchableOpacity>
           <TouchableOpacity
-          // onPress={onAppleButtonPress}
-          // onPress={handleAppleSignIn}
-          >
+            // onPress={onAppleButtonPress}
+            onPress={handleAppleSignIn}>
             <AppleIC />
           </TouchableOpacity>
         </View>

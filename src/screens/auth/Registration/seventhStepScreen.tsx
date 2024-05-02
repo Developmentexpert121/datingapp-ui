@@ -14,8 +14,6 @@ import {request, PERMISSIONS} from 'react-native-permissions';
 import {useAppDispatch, useAppSelector} from '../../../store/store';
 import {updateProfileData, uploadImages} from '../../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Controller} from 'react-hook-form';
-import {PlusIC} from '../../../assets/svgs';
 
 const getUserId = async () => {
   try {
@@ -33,8 +31,6 @@ const SeventhStepScreen = ({
   profileImages,
   setProfileImages,
   title,
-  images,
-  control,
   errors,
 }: {
   profileImages: any;
@@ -141,7 +137,7 @@ const SeventhStepScreen = ({
   };
   const handleRemoveImage = async (index: number) => {
     // If there's only one image left, open the image picker for replacement
-    if (profileImages.length === 1) {
+    if (profileImages.length === 0) {
       try {
         launchImageLibrary({mediaType: 'photo'}, async response => {
           if (!response?.didCancel && !response?.errorMessage) {
@@ -210,13 +206,18 @@ const SeventhStepScreen = ({
               ]}>
               <Image
                 source={require('../../../assets/images/Plus.png')}
-                style={{width: 24, height: 24}}
+                style={{width: 28, height: 28}}
               />
               {/* <PlusIC /> */}
             </View>
           </TouchableOpacity>
         ))}
       </View>
+      {errors.profileImages && (
+        <Text style={{color: 'red', alignSelf: 'center', marginTop: 30}}>
+          {errors.profileImages.message}
+        </Text>
+      )}
       {errors && (
         <Text
           style={{
@@ -235,15 +236,13 @@ const SeventhStepScreen = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 24,
-    // borderWidth:1
   },
   containerdm: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between', // Adjust as needed
+    justifyContent: 'space-between',
     rowGap: 20,
   },
   imageContainerdm: {

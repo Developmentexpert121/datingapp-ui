@@ -209,7 +209,7 @@ const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
           {title === 'Interests' ? (
             <View
               style={{
-                marginHorizontal: 40,
+                marginHorizontal: 35,
                 rowGap: 10,
               }}>
               <View>

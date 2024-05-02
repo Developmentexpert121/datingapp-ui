@@ -1,9 +1,7 @@
 import {
-  SafeAreaView,
   StyleSheet,
   Text,
   View,
-  FlatList,
   TouchableOpacity,
   Image,
   ScrollView,
@@ -19,8 +17,8 @@ const FifthStepScreen = ({habits2, control, errors}: any) => {
       id: '1',
       title: 'What is your communication style?',
       texts: [
-        'I stay on whatsAap allday',
-        'big time texter',
+        'I stay on WhatsAap allday',
+        'Big time texter',
         'Phone caller',
         'Video chatter',
         'Bad Texter',
@@ -98,7 +96,12 @@ const FifthStepScreen = ({habits2, control, errors}: any) => {
           render={({field: {onChange, value}}) => (
             <>
               {dataArray.map(item => (
-                <View key={item.id} style={styles.boxContainer}>
+                <View
+                  key={item.id}
+                  style={[
+                    styles.boxContainer,
+                    errors.habits2 && styles.errorBorder,
+                  ]}>
                   <View
                     style={{
                       flexDirection: 'row',
@@ -116,17 +119,50 @@ const FifthStepScreen = ({habits2, control, errors}: any) => {
                     {item.texts.map((text, index) => (
                       <TouchableOpacity
                         key={index}
-                        onPress={() =>
-                          onChange([
-                            ...value.filter(
-                              (habit: any) => habit.id !== item.id,
-                            ),
-                            {id: item.id, selectedText: text},
-                          ])
-                        }>
+                        onPress={() => {
+                          // Check if the current category supports multiple selections
+                          const isMultipleSelection =
+                            item.id === '1' || item.id === '2';
+
+                          if (isMultipleSelection) {
+                            // Handle multiple selections for categories 1 and 2
+                            const existingIndex = value.findIndex(
+                              (habit: any) =>
+                                habit.id === item.id &&
+                                habit.selectedText === text,
+                            );
+
+                            if (existingIndex !== -1) {
+                              // If the option is already selected, remove it
+                              const updatedValue = value.filter(
+                                (habit: any, idx: number) =>
+                                  idx !== existingIndex,
+                              );
+                              onChange(updatedValue);
+                            } else {
+                              // If the option is not selected, add it
+                              onChange([
+                                ...value,
+                                {
+                                  id: item.id,
+                                  selectedText: text,
+                                },
+                              ]);
+                            }
+                          } else {
+                            // Handle single-choice selection for other categories
+                            onChange([
+                              {
+                                id: item.id,
+                                selectedText: text,
+                              },
+                            ]);
+                          }
+                        }}>
                         <Text
                           style={[
                             styles.textItem,
+                            // Apply styling if the text is selected
                             value.find(
                               (habit: any) =>
                                 habit.id === item.id &&
@@ -136,6 +172,29 @@ const FifthStepScreen = ({habits2, control, errors}: any) => {
                           {text}
                         </Text>
                       </TouchableOpacity>
+
+                      // <TouchableOpacity
+                      //   key={index}
+                      //   onPress={() =>
+                      //     onChange([
+                      //       ...value.filter(
+                      //         (habit: any) => habit.id !== item.id,
+                      //       ),
+                      //       {id: item.id, selectedText: text},
+                      //     ])
+                      //   }>
+                      //   <Text
+                      //     style={[
+                      //       styles.textItem,
+                      //       value.find(
+                      //         (habit: any) =>
+                      //           habit.id === item.id &&
+                      //           habit.selectedText === text,
+                      //       ) && {color: '#AC25AC', borderColor: '#AC25AC'},
+                      //     ]}>
+                      //     {text}
+                      //   </Text>
+                      // </TouchableOpacity>
                     ))}
                   </View>
                 </View>
@@ -211,5 +270,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingVertical: 4,
     paddingHorizontal: 8,
+  },
+  errorBorder: {
+    borderColor: 'red',
+    borderWidth: 2,
   },
 });

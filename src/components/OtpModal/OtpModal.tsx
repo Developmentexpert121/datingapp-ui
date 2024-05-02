@@ -11,6 +11,7 @@ import Label from '../Label';
 // import Modal from 'react-native-modal';
 import MainButton from '../ButtonComponent/MainButton';
 import {RootState, useAppDispatch, useAppSelector} from '../../store/store';
+import GlobalModal from '../Modals/GlobalModal';
 interface LoginFailModalProps {
   label?: string | undefined;
   onPress?: () => void | undefined;
@@ -72,7 +73,7 @@ const OtpModal = ({
     } else {
       setErrorMessage('');
     }
-    setOtp(['', '', '', '', '', '']);
+    // setOtp(['', '', '', '', '', '']);
   };
 
   useEffect(() => {
@@ -89,7 +90,7 @@ const OtpModal = ({
           'There was an error sending the OTP. Please try again later.',
         );
       }
-      startResendTimer(30);
+      startResendTimer(59);
     }
   };
   const startResendTimer = (seconds: number) => {
@@ -161,6 +162,7 @@ const OtpModal = ({
             disabled={!isOtpComplete}
           />
         </View>
+        <GlobalModal />
       </View>
     </Modal>
   );

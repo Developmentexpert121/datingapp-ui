@@ -50,7 +50,6 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     color: '#575757',
   },
-
   textArea: {
     fontSize: 16,
     textAlignVertical: 'top',
@@ -58,7 +57,6 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingTop: 10,
   },
-
   errorBorder: {
     borderColor: 'red',
     borderWidth: 2,
@@ -75,7 +73,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
-
     elevation: 4,
   },
 });

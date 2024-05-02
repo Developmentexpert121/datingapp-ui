@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {
   Country,
@@ -11,52 +11,37 @@ import {
 } from 'country-state-city';
 import Spacing from '../../constants/Spacing';
 import Colors from '../../constants/Colors';
-import {Controller} from 'react-hook-form';
 
-interface Iprops {
-  setSelectedCountry?: string;
+interface IProps {
+  valueCountry: (country: string) => void;
+  valueState: (state: string) => void;
+  valueCity: (city: string) => void;
   errors?: string;
-  value1?: string;
 }
 
-const CountryCity: React.FC = ({
+const CountryCity: React.FC<IProps> = ({
   errors,
-  setSelectedCountry,
-  value1,
-}: Iprops) => {
-  const [focused, setFocused] = useState<boolean>(false);
-
-  const hasError = errors;
-
+  valueCountry,
+  valueState,
+  valueCity,
+}) => {
   const [countries, setCountries] = useState<ICountry[]>([]);
-  const [selectedCountry, setSelectedCountryState] = useState<string | null>(
-    null,
-  );
-
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [states, setStates] = useState<IState[]>([]);
   const [selectedState, setSelectedState] = useState<string | null>(null);
-
   const [cities, setCities] = useState<ICity[]>([]);
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
-
   const [countryOpen, setCountryOpen] = useState(false);
   const [stateOpen, setStateOpen] = useState(false);
   const [cityOpen, setCityOpen] = useState(false);
-  //
-  //
-
-  // Function to handle country change
-  const handleCountryChange = (value: any) => {
-    setSelectedCountryState(value);
-    setSelectedCountry(value);
-  };
-
-  //
+  console.log('selectedCountry', selectedCountry);
+  // Fetch all countries when the component mounts
   useEffect(() => {
     const allCountries = Country.getAllCountries();
     setCountries(allCountries ?? '');
   }, []);
 
+  // Fetch states of selected country
   useEffect(() => {
     if (selectedCountry) {
       const countryStates = State.getStatesOfCountry(selectedCountry);
@@ -66,6 +51,7 @@ const CountryCity: React.FC = ({
     }
   }, [selectedCountry]);
 
+  // Fetch cities of selected state
   useEffect(() => {
     if (selectedState) {
       const stateCities = City.getCitiesOfState(
@@ -76,21 +62,28 @@ const CountryCity: React.FC = ({
       setSelectedCity(null);
     }
   }, [selectedState, selectedCountry]);
-  // useEffect(() => {
-  //   setSelectedCountry(value1 ?? '');
-  // }, [value1]);
 
+  // Pass selected country value to parent component
+  useEffect(() => {
+    if (selectedCountry) {
+      valueCountry(selectedCountry);
+    }
+  }, [selectedCountry, valueCountry]);
+  useEffect(() => {
+    if (selectedState) {
+      valueState(selectedState);
+    }
+  }, [selectedState, valueState]);
+
+  useEffect(() => {
+    if (selectedCity) {
+      valueCity(selectedCity);
+    }
+  }, [selectedCity, valueCity]);
   return (
-    // <Controller
-    //   name={name}
-    //   control={control}
-    //   rules={{required: true}}
-    //   defaultValue=""
-    //   render={({field: {onChange, onBlur, value}}) => (
     <View style={styles.container}>
-      {/* country */}
+      {/* Country Dropdown */}
       <DropDownPicker
-        // zIndex={5}
         open={countryOpen}
         value={selectedCountry}
         items={countries.map(country => ({
@@ -98,33 +91,27 @@ const CountryCity: React.FC = ({
           value: country.isoCode,
         }))}
         setOpen={setCountryOpen}
-        setValue={setSelectedCountryState}
-        // onChangeValue={value => setSelectedCountry(value)}
-        onChangeValue={handleCountryChange}
+        setValue={setSelectedCountry}
         style={[
           styles.dropdown,
-          hasError
+          errors
             ? styles.errorBorder
             : {borderWidth: 1, borderColor: 'rgba(0, 0, 0, 0.2)'},
         ]}
-        // maxHeight={400}
         dropDownDirection="TOP"
-        searchable={true}
-        autoScroll={true}
+        searchable
+        placeholder="Country"
+        placeholderStyle={styles.placeholderStyle}
+        textStyle={styles.textStyle}
         dropDownContainerStyle={{
           ...styles.dropdownContainer,
           // maxHeight: 200,
           overflow: 'hidden',
         }}
-        scrollViewProps={{}}
-        //
-        placeholder={'Country'}
-        placeholderStyle={styles.placeholderStyle}
-        textStyle={styles.textStyle}
       />
-      {/* State */}
+
+      {/* State Dropdown */}
       <DropDownPicker
-        // zIndex={4}
         open={stateOpen}
         value={selectedState}
         items={states.map(state => ({
@@ -136,27 +123,25 @@ const CountryCity: React.FC = ({
         onChangeValue={value => setSelectedState(value)}
         style={[
           styles.dropdown,
-          hasError
+          errors
             ? styles.errorBorder
             : {borderWidth: 1, borderColor: 'rgba(0, 0, 0, 0.2)'},
         ]}
         disabled={!selectedCountry}
-        // maxHeight={400}
         dropDownDirection="TOP"
-        searchable={true}
-        // autoScroll={true}
-        dropDownContainerStyle={{
-          ...styles.dropdownContainer,
-          // maxHeight: 300,
-          overflow: 'scroll',
-        }}
-        placeholder={'State'}
+        searchable
+        placeholder="State"
         placeholderStyle={styles.placeholderStyle}
         textStyle={styles.textStyle}
+        dropDownContainerStyle={{
+          ...styles.dropdownContainer,
+          // maxHeight: 200,
+          overflow: 'hidden',
+        }}
       />
-      {/* City */}
+
+      {/* City Dropdown */}
       <DropDownPicker
-        // zIndex={3}
         open={cityOpen}
         value={selectedCity}
         items={cities.map(city => ({
@@ -168,26 +153,23 @@ const CountryCity: React.FC = ({
         onChangeValue={value => setSelectedCity(value)}
         style={[
           styles.dropdown,
-          hasError
+          errors
             ? styles.errorBorder
             : {borderWidth: 1, borderColor: 'rgba(0, 0, 0, 0.2)'},
         ]}
         disabled={!selectedState}
-        dropDownContainerStyle={{
-          ...styles.dropdownContainer,
-          // maxHeight: 300,
-          overflow: 'scroll',
-        }}
-        // maxHeight={400}
         dropDownDirection="TOP"
-        searchable={true}
-        placeholder={'City'}
+        searchable
+        placeholder="City"
         placeholderStyle={styles.placeholderStyle}
         textStyle={styles.textStyle}
+        dropDownContainerStyle={{
+          ...styles.dropdownContainer,
+          // maxHeight: 200,
+          overflow: 'hidden',
+        }}
       />
     </View>
-    //   )}
-    // />
   );
 };
 
@@ -195,22 +177,23 @@ export default CountryCity;
 
 const styles = StyleSheet.create({
   container: {
-    // padding: 20,
-    // borderWidth: 1,
+    flex: 1,
+    padding: 10,
   },
   dropdown: {
     marginVertical: 10,
     width: '80%',
     height: 45,
-    // backgroundColor: 'red',
+    borderRadius: 12,
   },
   dropdownContainer: {
-    height: 400,
     position: 'absolute',
     width: '80%',
     borderColor: 'rgba(0, 0, 0, 0.2)',
   },
-  placeholderStyle: {color: Colors.darkText},
+  placeholderStyle: {
+    color: Colors.darkText,
+  },
   textStyle: {
     fontFamily: 'Sansation-Regular',
     fontSize: 16,

@@ -32,7 +32,6 @@ export type RootStackParamList = {
   UpdateProfile: undefined;
   ChatPage: undefined;
   VideoCallRedirect: undefined;
-  OtpScreen: undefined;
   BottomTabNavigation: undefined;
   FilterSection: undefined;
 };
@@ -95,18 +94,6 @@ const Root = () => {
   // useEffect(() => {
   //   isAuthenticated && dispatch(ProfileData());
   // }, []);
-
-  // useEffect(() => {
-  //   setIsAuthenticated(Boolean(authToken));
-  //   if (!authToken) {
-  //     // When authToken is removed, navigate to LoginHomeScreen
-  //     navigation.reset({
-  //       index: 0,
-  //       routes: [{name: 'Loginhome'}],
-  //     });
-  //   }
-  // }, [authToken]);
-
   useEffect(() => {
     if (authToken === null) {
       navigation.reset({

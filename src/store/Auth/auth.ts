@@ -6,6 +6,7 @@ import {
   activityLoaderStarted,
 } from '../Activity/activity';
 import {otpModal, toggleGlobalModal} from '../reducer/authSliceState';
+import {Alert} from 'react-native';
 interface authData {
   email: string;
   password: string;
@@ -86,6 +87,7 @@ export const RegisterSignUp = createAsyncThunk(
   async (data: any, {dispatch}: any) => {
     try {
       // dispatch(activityLoaderStarted());
+      console.log('firstdatadata', data);
       const response = await http.post('/user/signup', data);
       if (response.status === 200) {
         dispatch(
@@ -127,8 +129,10 @@ export const EmailVerification = createAsyncThunk(
   async (data: any, {dispatch}: any) => {
     // dispatch(activityLoaderStarted());
     try {
+      // dispatch(activityLoaderStarted());
       const response = await http.post('/user/sendEmailVerification', data);
       if (response.status === 200) {
+        // dispatch(activityLoaderFinished());
         dispatch(
           otpModal({
             visible: true,
@@ -163,14 +167,24 @@ export const VerifyOtp = createAsyncThunk(
   async (data: any, {dispatch}: any) => {
     try {
       const response = await http.post('/user/verifyOtp', data);
-      // console.log(response.data);
+      console.log(response.data);
       if (response.status === 200) {
         response.data.success &&
+          // ?
           dispatch(
             otpModal({
               visible: false,
             }),
           );
+        // : dispatch(
+        //     toggleGlobalModal({
+        //       visible: true,
+        //       data: {
+        //         text: 'OK',
+        //         label: 'User already exists',
+        //       },
+        //     }),
+        //   );
         return response.data;
       }
     } catch (error: any) {
@@ -182,6 +196,7 @@ export const VerifyOtp = createAsyncThunk(
       // );
       // .unwrap()
       // .then(() =>
+
       // dispatch(
       //   toggleGlobalModal({
       //     visible: true,
@@ -190,7 +205,8 @@ export const VerifyOtp = createAsyncThunk(
       //       label: 'Invalid OTP',
       //     },
       //   }),
-      // ),
+      // );
+      // vikas@devexhub.in
       // );
       // if (error.response && error.response.status === 503) {
       //   dispatch(
