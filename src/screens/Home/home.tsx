@@ -31,13 +31,16 @@ const HomeScreen = () => {
     (state: any) => state?.Auth?.data?.profileData,
   );
 
-  console.log(profileData);
+  console.log('profileData0', profileData);
 
   const [showIn, setShowIn] = useState(profileData?.showInDistance);
+  console.log('showIn Me', showIn);
 
   const [distance, setDistance] = useState(
-    parseInt(profileData?.distance) || 0,
+    parseInt(profileData?.distance) || 50,
   );
+  console.log('distance', distance);
+
   const isAuthenticated = useAppSelector(
     (state: any) => state?.Auth?.isAuthenticated,
   );
@@ -52,6 +55,7 @@ const HomeScreen = () => {
   const [checkedInterests, setCheckedInterests] = React.useState(
     profileData?.interests,
   );
+  console.log('checkedInterests', checkedInterests);
   const [low, setLow] = useState<number>(18);
   const [high, setHigh] = useState<number>(56);
   useEffect(() => {
@@ -72,7 +76,6 @@ const HomeScreen = () => {
           setData(response.users);
         });
     };
-
     getId();
     setCurrentIndex(0);
   }, [showIn, checkedInterests, distance, low, high]);
@@ -109,7 +112,7 @@ const HomeScreen = () => {
           <ScrollView
             style={styles.pageContainer2}
             showsVerticalScrollIndicator={false}>
-            <View style={{marginTop: 40, borderWidth: 0}}>
+            <View style={{marginTop: 20}}>
               <AnimatedStack
                 data={data}
                 renderItem={({item}: any) => <Card user={item} />}
@@ -118,44 +121,6 @@ const HomeScreen = () => {
                 setCurrentIndex={setCurrentIndex}
                 profileData={profileData}
               />
-            </View>
-            <View style={styles.container}>
-              {allUsers[currentIndex]?.habits1?.map((item: any, index: any) => {
-                let imagePath;
-                switch (item.imagePath) {
-                  case 'src/assets/images/bottleofchampagne.png':
-                    imagePath = require('../../assets/images/bottleofchampagne.png');
-                    break;
-                  case 'src/assets/images/smoking.png':
-                    imagePath = require('../../assets/images/smoking.png');
-                    break;
-                  case 'src/assets/images/Mandumbbells.png':
-                    imagePath = require('../../assets/images/Mandumbbells.png');
-                    break;
-                  case 'src/assets/images/dogheart.png':
-                    imagePath = require('../../assets/images/dogheart.png');
-                    break;
-                  case 'src/assets/images/datestep.png':
-                    imagePath = require('../../assets/images/datestep.png');
-                    break;
-                  // Add more cases for other image paths as needed
-                }
-                return (
-                  <View style={styles.item}>
-                    {imagePath && (
-                      <Image
-                        source={imagePath}
-                        style={{height: 20, width: 20}}
-                      />
-                    )}
-                    <Text
-                      key={index.id}
-                      style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
-                      {item.selectedText}
-                    </Text>
-                  </View>
-                );
-              })}
             </View>
           </ScrollView>
         </>
@@ -184,13 +149,11 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     backgroundColor: '#ededed',
-    // borderWidth: 2,
   },
   pageContainer2: {
     flex: 1,
     width: '100%',
     backgroundColor: '#ededed',
-    // borderWidth: 2,
   },
   icons: {
     flexDirection: 'row',
@@ -198,34 +161,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '70%',
     marginVertical: 12,
-    // borderWidth:2
-  },
-  locText: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: 20,
-    marginBottom: 16,
-    columnGap: 2,
-    borderWidth: 0,
-  },
-  container: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    columnGap: 10, // Adjust as needed
-    marginHorizontal: 20,
-    marginTop: 120,
-    borderWidth: 0,
-  },
-  item: {
-    borderWidth: 1.4,
-    borderRadius: 52,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-    columnGap: 4,
-    backgroundColor: '#FFFFFF',
+    borderWidth: 5,
+    borderColor: 'red',
   },
 });
 

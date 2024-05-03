@@ -12,7 +12,7 @@ import {
 import React, {useState, useCallback, useEffect} from 'react';
 import CommonBackbutton from '../../components/commonBackbutton/CommonBackbutton';
 import {yupResolver} from '@hookform/resolvers/yup';
-import {useForm, Controller} from 'react-hook-form';
+import {useForm} from 'react-hook-form';
 import * as yup from 'yup';
 import AppTextInput from '../../components/AppTextInput/AppTextInput';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -269,7 +269,12 @@ const SettingsSection = () => {
   }, [profileData?.location?.latitude, profileData?.location?.longitude]);
 
   const dataArr = [
-    {title: 'Phone Number', name: profileData?.phone},
+    {
+      title: 'Phone Number',
+      name: `${profileData?.phone?.countryCode || ''}${
+        profileData?.phone?.number || ''
+      }`,
+    },
     {title: 'Email Address', name: profileData?.email},
     {
       title: 'Location',
@@ -384,10 +389,8 @@ const SettingsSection = () => {
                     }
                   }}>
                   {index === 0 ? (
-                    // <Icon1 name="phone" size={20} color="grey" />
                     <PhoneIC />
                   ) : index === 1 ? (
-                    // <Icon2 name="email" size={20} color="grey" />
                     <EmailIC />
                   ) : index === 2 ? (
                     <LocationIC />

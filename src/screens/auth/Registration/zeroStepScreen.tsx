@@ -17,7 +17,7 @@ import PhoneInput from '../../../components/AppTextInput/PhoneInput';
 import CustomDatePicker from '../../../components/AppTextInput/CustomDatePicker';
 import PasswodTextInput from '../../../components/AppTextInput/PasswodTextInput';
 import {BackIC} from '../../../assets/svgs';
-import CountryCity from '../../../components/DropDwon/CountryCity';
+import CountryCity from '../../../components/AppTextInput/CountryCity';
 
 interface RegForm0 {
   name: string;

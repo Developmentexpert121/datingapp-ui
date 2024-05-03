@@ -133,7 +133,7 @@ const FifthStepScreen = ({habits2, control, errors}: any) => {
                             );
 
                             if (existingIndex !== -1) {
-                              // If the option is already selected, remove it
+                              // If the option is already selected, remove it (deselect)
                               const updatedValue = value.filter(
                                 (habit: any, idx: number) =>
                                   idx !== existingIndex,
@@ -150,13 +150,20 @@ const FifthStepScreen = ({habits2, control, errors}: any) => {
                               ]);
                             }
                           } else {
-                            // Handle single-choice selection for other categories
-                            onChange([
-                              {
-                                id: item.id,
-                                selectedText: text,
-                              },
-                            ]);
+                            // Handle single-choice selection for categories 3, 4, and 5
+                            // Filter out any existing selection in the current category
+                            const updatedValue = value.filter(
+                              (habit: any) => habit.id !== item.id,
+                            );
+
+                            // Add the newly selected option for the current category
+                            updatedValue.push({
+                              id: item.id,
+                              selectedText: text,
+                            });
+
+                            // Update the state with the new selection
+                            onChange(updatedValue);
                           }
                         }}>
                         <Text

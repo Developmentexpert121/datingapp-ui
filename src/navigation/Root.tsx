@@ -91,22 +91,26 @@ const Root = () => {
     setIsAuthenticated(Boolean(authToken));
   }, [authToken]);
 
-  // useEffect(() => {
-  //   isAuthenticated && dispatch(ProfileData());
-  // }, []);
   useEffect(() => {
-    if (authToken === null) {
-      navigation.reset({
-        index: 0,
-        routes: [{name: 'Loginhome'}],
-      });
-    } else {
-      setIsAuthenticated(true);
-    }
-  }, [authToken]);
+    isAuthenticated?.authToken &&
+      dispatch(ProfileData({userId: isAuthenticated?.id}));
+    // user?.token && dispatch(getUserDetails({userId: isAuthenticated?.id}));
+    return;
+  }, []);
+  // useEffect(() => {
+  //   if (authToken === null) {
+  //     navigation.reset({
+  //       index: 0,
+  //       routes: [{name: 'Loginhome'}],
+  //     });
+  //   } else {
+  //     setIsAuthenticated(true);
+  //   }
+  // }, [authToken]);
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       {isAuthenticated ? (
+        // {!isAuthenticated?.authToken ? (
         <Stack.Group>
           <Stack.Screen
             name="BottomTabNavigation"

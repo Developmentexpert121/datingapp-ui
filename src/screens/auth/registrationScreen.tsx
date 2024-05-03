@@ -94,9 +94,9 @@ const schema = yup.object().shape({
     .min(8, 'Phone must be at least 8 digits long')
     .required('Phone is required'),
   email: yup.string().email('Invalid email').required('Email is required'),
-  // country: yup.string().trim().required('Country is required'),
+  // country: yup.string().trim().required('Country,State and City is required'),
   // state: yup.string().trim().required('Country is required'),
-  // city: yup.string().trim().required('Country,State and City is required'),
+  // city: yup.string().trim().required('City is required'),
   gender: yup.string().trim().required('Gender is required'),
   password: yup
     .string()
@@ -167,7 +167,6 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const [country, setSelectedCountry] = useState<string | null>(null);
   const [state, setSelectedState] = useState<string | null>(null);
   const [city, setSelectedCity] = useState<string | null>(null);
-  console.log('.....firstselectedCountry', country);
 
   const dispatch: any = useAppDispatch();
   const Schemas = (steps: any) => {
@@ -306,17 +305,11 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
       });
     }
   };
-  // console.log('------', otp);
   const [errorOtp, setErrorOtp] = useState();
   const otpVerifity = () => {
     const concatenatedString = otp.join('');
     console.log(concatenatedString);
     setLoader(false);
-    // dispatch(
-    //   otpModal({
-    //     visible: false,
-    //   }),
-    // );
     dispatch(
       VerifyOtp({
         email: email,
@@ -338,7 +331,6 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
             ),
       );
   };
-  // console.log('otpVerifity', otpVerifity);
 
   return (
     <SafeAreaView style={styles.container}>

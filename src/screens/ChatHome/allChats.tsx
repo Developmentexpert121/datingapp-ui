@@ -173,7 +173,7 @@ const ChatSection = () => {
     <SafeAreaView style={styles.container}>
       <CommonBackbutton
         title="Chat"
-        iconName="person-add-sharp"
+        // iconName="person-add-sharp"
         setIsDrawerOpen={setIsDrawerOpen}
       />
       <View style={{flex: 1}}>

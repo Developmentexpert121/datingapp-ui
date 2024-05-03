@@ -7,8 +7,6 @@ import {
   TouchableOpacity,
   TextInput,
   KeyboardAvoidingView,
-  Platform,
-  Button,
   TouchableWithoutFeedback,
   Keyboard,
   ActivityIndicator,
@@ -223,7 +221,11 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
                   }}>
                   <View style={styles.editIcon}>
                     {/* <Icon1 name="phone" size={26} color="#AC25AC" /> */}
-                    <PhoneCallIC />
+                    {/* <PhoneCallIC /> */}
+                    <Image
+                      source={require('../../assets/images/Phone.png/')}
+                      style={{height: 40, width: 40}}
+                    />
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -233,7 +235,11 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
                   }}>
                   <View style={styles.editIcon}>
                     {/* <Icon2 name="video" size={24} color="#AC25AC" /> */}
-                    <VideoIC />
+                    {/* <VideoIC /> */}
+                    <Image
+                      source={require('../../assets/images/Video.png/')}
+                      style={{height: 40, width: 40}}
+                    />
                   </View>
                 </TouchableOpacity>
               </View>

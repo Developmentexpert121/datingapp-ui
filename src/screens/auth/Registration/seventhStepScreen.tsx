@@ -64,9 +64,9 @@ const SeventhStepScreen = ({
         granted['android.permission.WRITE_EXTERNAL_STORAGE'] === 'granted' &&
         granted['android.permission.READ_EXTERNAL_STORAGE'] === 'granted'
       ) {
-        console.log('Permissions granted ......');
+        // console.log('Permissions granted ......');
       } else {
-        console.log('Permissions denied.....0');
+        // console.log('Permissions denied.....0');
       }
     } catch (err) {
       console.warn(err);
@@ -79,9 +79,9 @@ const SeventhStepScreen = ({
       const photoPermission = await request(PERMISSIONS.IOS.PHOTO_LIBRARY);
 
       if (cameraPermission === 'granted' && photoPermission === 'granted') {
-        console.log('Permissions granted');
+        // console.log('Permissions granted');
       } else {
-        console.log('Permissions denied');
+        // console.log('Permissions denied');
       }
     } catch (err) {
       console.warn(err);
@@ -213,11 +213,11 @@ const SeventhStepScreen = ({
           </TouchableOpacity>
         ))}
       </View>
-      {errors.profileImages && (
+      {/* {errors.profileImages && (
         <Text style={{color: 'red', alignSelf: 'center', marginTop: 30}}>
           {errors.profileImages.message}
         </Text>
-      )}
+      )} */}
       {errors && (
         <Text
           style={{

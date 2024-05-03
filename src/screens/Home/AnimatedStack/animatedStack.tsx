@@ -5,6 +5,7 @@ import {
   useWindowDimensions,
   Text,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -16,7 +17,10 @@ import Animated, {
   runOnJS,
   ReduceMotion,
 } from 'react-native-reanimated';
-import {PanGestureHandler} from 'react-native-gesture-handler';
+import {
+  GestureHandlerRootView,
+  PanGestureHandler,
+} from 'react-native-gesture-handler';
 import {useAppDispatch, useAppSelector} from '../../../store/store';
 import {likedAUser} from '../../../store/Auth/auth';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -33,6 +37,8 @@ const AnimatedStack = (props: any) => {
   const [nextIndex, setNextIndex] = useState(currentIndex + 1);
 
   const currentProfile = data[currentIndex];
+  console.log('first currentProfile', currentProfile);
+  console.log('first currentIndex', currentIndex);
   const nextProfile = data[nextIndex];
 
   const {width: screenWidth} = useWindowDimensions();
@@ -144,7 +150,7 @@ const AnimatedStack = (props: any) => {
       props.setData(updatedUsers);
     }, 10);
   };
-
+  //
   const gestureHandler = useAnimatedGestureHandler({
     onStart: (_, context) => {
       context.startX = translateX.value;
@@ -173,7 +179,7 @@ const AnimatedStack = (props: any) => {
       translateX.value = withSpring(0);
     },
   });
-
+  //
   useEffect(() => {
     if (currentIndex === data.length) {
       setCurrentIndex(0);
@@ -183,30 +189,63 @@ const AnimatedStack = (props: any) => {
   }, [currentIndex, translateX, data.length]);
   return (
     <View style={styles.root}>
-      {nextProfile && (
+      {/* {nextProfile && (
         <View style={styles.nextCardContainer}>
-          {/* <Animated.View style={[styles.animatedCard, nextCardStyle]}>
+          <Animated.View style={[styles.animatedCard, nextCardStyle]}>
             {renderItem({item: nextProfile})}
-          </Animated.View> */}
+          </Animated.View>
         </View>
-      )}
+      )} */}
       {currentProfile ? (
-        <View style={{width: '100%', alignItems: 'center'}}>
-          <PanGestureHandler onGestureEvent={gestureHandler}>
-            <Animated.View style={[styles.animatedCard, cardStyle]}>
-              <Animated.Image
-                source={require('../../../assets/images/LIKE.png')}
-                style={[styles.like, {left: 1}, likeStyle]}
-                resizeMode="contain"
+        <View style={{alignItems: 'center', flex: 1}}>
+          <View
+            style={{height: 250, width: screenWidth, paddingHorizontal: 20}}>
+            <GestureHandlerRootView
+            //  {/* <PanGestureHandler */}
+            // style={{flex: 1, borderWidth: 1, borderColor: 'red'}}
+            // onGestureEvent={gestureHandler}
+            //
+            >
+              <Animated.View style={[styles.animatedCard]}>
+                <Animated.Image
+                  source={require('../../../assets/images/LIKE.png')}
+                  style={[styles.like, {left: 1}, likeStyle]}
+                  resizeMode="contain"
+                />
+                <Animated.Image
+                  source={require('../../../assets/images/nope.png')}
+                  style={[styles.like, {right: 1}, nopeStyle]}
+                  resizeMode="contain"
+                />
+                {renderItem({item: currentProfile})}
+              </Animated.View>
+              {/* </PanGestureHandler> */}
+            </GestureHandlerRootView>
+          </View>
+          {/*  */}
+          <View style={styles.icons}>
+            <TouchableOpacity onPress={onSwipeLeft}>
+              {/* <CrossIC /> */}
+              <Image
+                source={require('../../../assets/images/Cross.png')}
+                style={styles.icons3}
               />
-              <Animated.Image
-                source={require('../../../assets/images/nope.png')}
-                style={[styles.like, {right: 1}, nopeStyle]}
-                resizeMode="contain"
+            </TouchableOpacity>
+            <TouchableOpacity onPress={onSwipeRight}>
+              {/* <HeartIC /> */}
+              <Image
+                source={require('../../../assets/images/Heart.png')}
+                style={styles.icons3}
               />
-              {renderItem({item: currentProfile})}
-            </Animated.View>
-          </PanGestureHandler>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              {/* <StarIC /> */}
+              <Image
+                source={require('../../../assets/images/Star.png')}
+                style={styles.icons3}
+              />
+            </TouchableOpacity>
+          </View>
           <View style={styles.locText}>
             <Ionicons name="location-sharp" size={20} color="#AC25AC" />
             <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
@@ -224,16 +263,40 @@ const AnimatedStack = (props: any) => {
               }
             </Text>
           </View>
-          <View style={styles.icons}>
-            <TouchableOpacity onPress={onSwipeLeft}>
-              <CrossIC />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={onSwipeRight}>
-              <HeartIC />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <StarIC />
-            </TouchableOpacity>
+
+          <View style={styles.container}>
+            {allUsers[currentIndex]?.habits1?.map((item: any, index: any) => {
+              let imagePath;
+              switch (item.imagePath) {
+                case 'src/assets/images/bottleofchampagne.png':
+                  imagePath = require('../../../assets/images/bottleofchampagne.png');
+                  break;
+                case 'src/assets/images/smoking.png':
+                  imagePath = require('../../../assets/images/smoking.png');
+                  break;
+                case 'src/assets/images/Mandumbbells.png':
+                  imagePath = require('../../../assets/images/Mandumbbells.png');
+                  break;
+                case 'src/assets/images/dogheart.png':
+                  imagePath = require('../../../assets/images/dogheart.png');
+                  break;
+                case 'src/assets/images/datestep.png':
+                  imagePath = require('../../../assets/images/datestep.png');
+                  break;
+              }
+              return (
+                <View style={styles.item}>
+                  {imagePath && (
+                    <Image source={imagePath} style={{height: 20, width: 20}} />
+                  )}
+                  <Text
+                    key={index.id}
+                    style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
+                    {item.selectedText}
+                  </Text>
+                </View>
+              );
+            })}
           </View>
         </View>
       ) : (
@@ -243,6 +306,7 @@ const AnimatedStack = (props: any) => {
             fontSize: 26,
             textAlign: 'center',
             paddingHorizontal: 20,
+            marginTop: 100,
           }}>
           You have viewed all profiles! Or no profile matches your applied
           filters!
@@ -260,15 +324,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     width: '100%',
-    // borderWidth: 1,
   },
   animatedCard: {
-    width: '80%',
-    height: '62%',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 24,
-    marginBottom: 68,
   },
   nextCardContainer: {
     ...StyleSheet.absoluteFillObject,
@@ -279,22 +338,35 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     position: 'absolute',
-    top: 10,
-    zIndex: 1,
   },
   icons: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
     width: '70%',
-    marginTop: 30,
+    marginTop: 60,
   },
-  button: {},
   locText: {
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 20,
-    columnGap: 2,
     alignSelf: 'flex-start',
+    marginTop: 15,
   },
+  container: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    margin: 10,
+  },
+  item: {
+    borderWidth: 1.5,
+    borderRadius: 20,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: 4,
+    margin: 5,
+  },
+  icons3: {height: 50, width: 50},
 });

@@ -34,7 +34,8 @@ const CountryCity: React.FC<IProps> = ({
   const [countryOpen, setCountryOpen] = useState(false);
   const [stateOpen, setStateOpen] = useState(false);
   const [cityOpen, setCityOpen] = useState(false);
-  console.log('selectedCountry', selectedCountry);
+  // console.log('selectedCountry', selectedCountry);
+  // console.log('selectedState', selectedState);
   // Fetch all countries when the component mounts
   useEffect(() => {
     const allCountries = Country.getAllCountries();
@@ -50,7 +51,8 @@ const CountryCity: React.FC<IProps> = ({
       setCities([]);
     }
   }, [selectedCountry]);
-
+  //
+  //
   // Fetch cities of selected state
   useEffect(() => {
     if (selectedState) {
@@ -63,6 +65,8 @@ const CountryCity: React.FC<IProps> = ({
     }
   }, [selectedState, selectedCountry]);
 
+  //
+  //
   // Pass selected country value to parent component
   useEffect(() => {
     if (selectedCountry) {
@@ -157,7 +161,7 @@ const CountryCity: React.FC<IProps> = ({
             ? styles.errorBorder
             : {borderWidth: 1, borderColor: 'rgba(0, 0, 0, 0.2)'},
         ]}
-        disabled={!selectedState}
+        // disabled={!selectedState}
         dropDownDirection="TOP"
         searchable
         placeholder="City"

@@ -137,7 +137,7 @@ const FilterSection = ({
         <View style={styles.distance}>
           <Text style={styles.textName}>Distance Preference</Text>
           <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
-            {distance} Mi
+            {distance} MT
           </Text>
         </View>
         <View style={styles.line} />
@@ -204,7 +204,7 @@ const FilterSection = ({
               <Controller
                 name={'interests'}
                 control={control}
-                defaultValue="female"
+                defaultValue="everyone"
                 render={() => (
                   <View
                     style={{

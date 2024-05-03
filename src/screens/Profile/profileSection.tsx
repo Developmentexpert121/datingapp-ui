@@ -136,8 +136,8 @@ const ProfileSection = () => {
       profileData?.partnerType || '',
     ];
 
-    fields?.forEach(field => {
-      if (field?.trim() !== '') {
+    fields.forEach(field => {
+      if (typeof field === 'string' && field.trim() !== '') {
         filledFieldsCount++;
       }
     });

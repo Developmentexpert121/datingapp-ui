@@ -14,8 +14,6 @@
     </array>
     <key>NSAppleMusicUsageDescription</key>
 	<string>YOUR TEXT</string>
-	<key>GIDClientID</key>
-	<string>1074716618334-m6trdmrc4b3tojpaaufbslg616vt1al7.apps.googleusercontent.com</string>
 	<key>CFBundleDisplayName</key>
 	<string>DatingApp</string>
 	<key>CFBundleExecutable</key>
@@ -34,6 +32,8 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>GIDClientID</key>
+	<string>1074716618334-m6trdmrc4b3tojpaaufbslg616vt1al7.apps.googleusercontent.com</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

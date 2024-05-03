@@ -87,7 +87,7 @@ export const RegisterSignUp = createAsyncThunk(
   async (data: any, {dispatch}: any) => {
     try {
       // dispatch(activityLoaderStarted());
-      console.log('firstdatadata', data);
+      console.log('RegisterSignUp Data', data);
       const response = await http.post('/user/signup', data);
       if (response.status === 200) {
         dispatch(
