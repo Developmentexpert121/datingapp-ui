@@ -17,7 +17,7 @@ const FifthStepScreen = ({habits2, control, errors}: any) => {
       id: '1',
       title: 'What is your communication style?',
       texts: [
-        'I stay on WhatsAap allday',
+        'I stay on WhatsApp allday',
         'Big time texter',
         'Phone caller',
         'Video chatter',

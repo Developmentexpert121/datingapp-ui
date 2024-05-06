@@ -34,6 +34,7 @@ import VideoIC from './Video.svg';
 import PhoneCallIC from './PhoneCall.svg';
 import NotificationIC from './Notification.svg';
 import FilterIC from './Filter.svg';
+import EyeslashOpenIC from './eyeslashopen.svg';
 
 export {
   FireIC,
@@ -72,4 +73,5 @@ export {
   PhoneCallIC,
   NotificationIC,
   FilterIC,
+  EyeslashOpenIC,
 };

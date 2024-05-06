@@ -1,9 +1,8 @@
 import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
 import Colors from '../../constants/Colors';
-import Spacing from '../../constants/Spacing';
 import {Controller} from 'react-hook-form';
-import {EyeslashIC} from '../../assets/svgs';
+import {EyeslashIC, EyeslashOpenIC} from '../../assets/svgs';
 
 const LoginTextInput = (Props: any) => {
   const {
@@ -58,7 +57,7 @@ const LoginTextInput = (Props: any) => {
             <TouchableOpacity
               onPress={() => setShowPassword(!showPassword)}
               style={styles.icon}>
-              {showPassword ? <EyeslashIC /> : <EyeslashIC />}
+              {showPassword ? <EyeslashOpenIC /> : <EyeslashIC />}
             </TouchableOpacity>
           )}
         </View>

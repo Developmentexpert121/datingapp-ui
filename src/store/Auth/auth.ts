@@ -6,7 +6,6 @@ import {
   activityLoaderStarted,
 } from '../Activity/activity';
 import {otpModal, toggleGlobalModal} from '../reducer/authSliceState';
-import {Alert} from 'react-native';
 interface authData {
   email: string;
   password: string;
@@ -15,7 +14,6 @@ interface authData {
 
 export const ProfileData = createAsyncThunk('auth/ProfileData', async () => {
   try {
-    console.log('called');
     const response: any = await http.get(`/user/profile`);
     if (response.status === 200) {
       console.log('ProfileData', response.data);
@@ -43,7 +41,7 @@ export const LoginSignIn = createAsyncThunk(
           'userId',
           JSON.stringify(response?.data?._id),
         );
-        console.log('dfjdfhjhjdf', response?.data?.token, response?.data?._id);
+        console.log('dfjdfhjhjdf', response?.data, response?.data?._id);
         dispatch(ProfileData());
         dispatch(
           toggleGlobalModal({
@@ -69,10 +67,7 @@ export const LoginSignIn = createAsyncThunk(
             },
           }),
         );
-        return {
-          error:
-            'Invalid credentials, Enter valid credentials or create a new account',
-        };
+        return {};
       } else {
         throw error;
       }
@@ -86,7 +81,6 @@ export const RegisterSignUp = createAsyncThunk(
   'auth/RegisterSignUp',
   async (data: any, {dispatch}: any) => {
     try {
-      // dispatch(activityLoaderStarted());
       console.log('RegisterSignUp Data', data);
       const response = await http.post('/user/signup', data);
       if (response.status === 200) {
@@ -103,22 +97,21 @@ export const RegisterSignUp = createAsyncThunk(
       }
     } catch (error: any) {
       console.log('RegisterSignUp', error);
+      dispatch(
+        toggleGlobalModal({
+          visible: true,
+          data: {
+            text: 'OK',
+            label: 'Something went Worng Please try again ',
+          },
+        }),
+      );
       if (error.response && error.response.status === 400) {
-        dispatch(
-          toggleGlobalModal({
-            visible: true,
-            data: {
-              text: 'OK',
-              label: 'Something went Worng Please try again ',
-            },
-          }),
-        );
         return {error: 'Bad Request'};
       } else {
         throw error;
       }
     } finally {
-      // dispatch(activityLoaderFinished());
     }
   },
 );
@@ -176,55 +169,10 @@ export const VerifyOtp = createAsyncThunk(
               visible: false,
             }),
           );
-        // : dispatch(
-        //     toggleGlobalModal({
-        //       visible: true,
-        //       data: {
-        //         text: 'OK',
-        //         label: 'User already exists',
-        //       },
-        //     }),
-        //   );
         return response.data;
       }
     } catch (error: any) {
       console.log('VerifyOtp error', error);
-      // dispatch(
-      //   otpModal({
-      //     visible: false,
-      //   }),
-      // );
-      // .unwrap()
-      // .then(() =>
-
-      // dispatch(
-      //   toggleGlobalModal({
-      //     visible: true,
-      //     data: {
-      //       text: 'OK',
-      //       label: 'Invalid OTP',
-      //     },
-      //   }),
-      // );
-      // vikas@devexhub.in
-      // );
-      // if (error.response && error.response.status === 503) {
-      //   dispatch(
-      //     toggleGlobalModal({
-      //       visible: true,
-      //       data: {
-      //         text: 'OK',
-      //         label: 'Invalid OTP',
-      //       },
-      //     }),
-      //   );
-      //   return {error: 'Bad Request'};
-      // } else if (error.response && error.response.status === 400) {
-      //   return {error: 'Bad Request'};
-      // } else {
-      //   throw error;
-      // }
-
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
       } else {
@@ -467,7 +415,7 @@ export const deleteUser = createAsyncThunk(
     console.log('data', data.senderId);
     try {
       dispatch(activityLoaderStarted());
-      console.log('Reachedddddddd');
+      console.log('Reachedddddddd', data);
       const response = await http.delete(
         `/user/delete-account?userId=${data.senderId}`,
       );

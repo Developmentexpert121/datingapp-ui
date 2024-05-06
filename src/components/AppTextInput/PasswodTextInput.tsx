@@ -11,7 +11,7 @@ import {
 import React, {useState} from 'react';
 import Colors from '../../constants/Colors';
 import {Controller} from 'react-hook-form';
-import {EyeslashIC} from '../../assets/svgs';
+import {EyeslashIC, EyeslashOpenIC} from '../../assets/svgs';
 
 const PasswodTextInput = (Props: any) => {
   const {
@@ -58,14 +58,14 @@ const PasswodTextInput = (Props: any) => {
             onChangeText={onChange}
             value={value}
             error={Boolean(errors)}
-            secureTextEntry={secureTextEntry && !showPassword}
+            secureTextEntry={!showPassword}
           />
-          {rightIcon}
+          {/* {rightIcon} */}
           {secureTextEntry && (
             <TouchableOpacity
               onPress={() => setShowPassword(!showPassword)}
               style={styles.icon}>
-              {showPassword ? <EyeslashIC /> : <EyeslashIC />}
+              {showPassword ? <EyeslashOpenIC /> : <EyeslashIC />}
             </TouchableOpacity>
           )}
         </View>

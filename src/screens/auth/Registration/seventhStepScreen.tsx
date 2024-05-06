@@ -14,6 +14,7 @@ import {request, PERMISSIONS} from 'react-native-permissions';
 import {useAppDispatch, useAppSelector} from '../../../store/store';
 import {updateProfileData, uploadImages} from '../../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loader from '../../../components/Loader/Loader';
 
 const getUserId = async () => {
   try {
@@ -41,6 +42,7 @@ const SeventhStepScreen = ({
   errors?: any;
 }) => {
   const [uploadError, setUploadError] = useState<boolean>(false);
+  const [loader, setLoader] = useState<boolean>(false);
   const dispatch: any = useAppDispatch();
   const requestPermissions = async () => {
     if (Platform.OS === 'android') {
@@ -105,6 +107,7 @@ const SeventhStepScreen = ({
     launchImageLibrary({mediaType: 'photo'}, async response => {
       if (!response?.didCancel && !response?.errorMessage) {
         if (response?.assets && response.assets.length > 0) {
+          setLoader(true);
           try {
             const asset = response.assets[0]; // Assuming you want to upload only the first selected image
 
@@ -125,6 +128,7 @@ const SeventhStepScreen = ({
               uploadedImageUrl,
             ]);
             setUploadError(false);
+            setLoader(false);
           } catch (error) {
             console.error('Error uploading image:', error);
             setUploadError(true);
@@ -229,6 +233,7 @@ const SeventhStepScreen = ({
           Please select any picture or select from gallery.
         </Text>
       )}
+      {loader ? <Loader /> : null}
     </View>
   );
 };

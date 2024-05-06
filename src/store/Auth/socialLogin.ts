@@ -9,7 +9,7 @@ export const configureGoogleSignIn = async () => {
   await GoogleSignin.configure({
     // scopes: googleScopes, // what API you want to access on behalf of the user, default is email and profile
     webClientId:
-      '1074716618334-m6trdmrc4b3tojpaaufbslg616vt1al7.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+      '1097775841702-5l4cg4rsng9hhjnjlmah7n75et0eqj4l.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
     offlineAccess: false,
     hostedDomain: '',
     accountName: '',

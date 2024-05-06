@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {useAppSelector, useAppDispatch} from './src/store/store';
-import LoadingSpinner from './src/services/spinner/spinner';
+import {useAppSelector} from './src/store/store';
 import messaging from '@react-native-firebase/messaging';
 import {requestNotifications} from 'react-native-permissions';
 import Root from './src/navigation/Root';
 import GlobalModal from './src/components/Modals/GlobalModal';
+import Loader from './src/components/Loader/Loader';
 
 const App = () => {
   async function requestUserPermission() {
@@ -28,7 +28,7 @@ const App = () => {
   return (
     <SafeAreaProvider>
       {isLoading ? (
-        <LoadingSpinner />
+        <Loader />
       ) : (
         <NavigationContainer>
           <Root />

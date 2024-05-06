@@ -7,6 +7,7 @@ import {
   StyleSheet,
   SafeAreaView,
   Linking,
+  Platform,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../types';
@@ -24,7 +25,7 @@ import {_googleLogin, onAppleButtonPress} from '../../store/Auth/socialLogin';
 
 GoogleSignin.configure({
   webClientId:
-    '1074716618334-m6trdmrc4b3tojpaaufbslg616vt1al7.apps.googleusercontent.com',
+    '1097775841702-5l4cg4rsng9hhjnjlmah7n75et0eqj4l.apps.googleusercontent.com',
   offlineAccess: true,
 });
 interface AppleAuthResponse {
@@ -150,11 +151,13 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
           <TouchableOpacity>
             <FacebookIC />
           </TouchableOpacity>
-          <TouchableOpacity
-            // onPress={onAppleButtonPress}
-            onPress={handleAppleSignIn}>
-            <AppleIC />
-          </TouchableOpacity>
+          {Platform.OS === 'ios' && (
+            <TouchableOpacity
+              // onPress={onAppleButtonPress}
+              onPress={handleAppleSignIn}>
+              <AppleIC />
+            </TouchableOpacity>
+          )}
         </View>
         <View style={styles.loginContainer}>
           <Text style={styles.loginText}>Already a member?</Text>

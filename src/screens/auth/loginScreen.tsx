@@ -3,7 +3,6 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Image,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -61,7 +60,7 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     setLoader(true);
     console.log('data user', data);
     dispatch(LoginSignIn(data));
-    reset();
+    // reset();
     setLoader(false);
   };
 
@@ -140,7 +139,6 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
               width: '100%',
               height: '100%',
               alignItems: 'center',
-              // borderWidth: 1,
             }}>
             <Text style={styles.label}>What's your email?</Text>
             <Text style={styles.subText}>
@@ -182,17 +180,6 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
                   </Text>
                 )}
               </View>
-              {/* {signInInfo && (
-                <Text
-                  style={{
-                    fontFamily: 'Sansation-Regular',
-                    color: 'red',
-                    fontSize: 14,
-                    textAlign: 'center',
-                  }}>
-                  {signInInfo}
-                </Text>
-              )} */}
               <MainButton
                 buttonStyle={{
                   width: '100%',

@@ -27,7 +27,6 @@ import {
 import Geolocation from '@react-native-community/geolocation';
 import MainButton from '../../components/ButtonComponent/MainButton';
 import {EmailIC, LocationIC, PhoneIC} from '../../assets/svgs';
-// import { logoutAction } from '../store/Auth/authActions';
 
 interface UpdateForm {
   name: string;

@@ -45,9 +45,6 @@ interface RegisterForm {
   country: string;
   state: string;
   city: string;
-  selectedCountry: string;
-  selectedState: string;
-  selectedCity: string;
   gender: string;
   interests: string;
   partnerType: string;
@@ -69,9 +66,6 @@ const defaultValues = {
   country: '',
   state: '',
   city: '',
-  selectedCountry: '',
-  selectedState: '',
-  selectedCity: '',
   gender: '',
   interests: '',
   partnerType: '',
@@ -87,25 +81,26 @@ const defaultValues = {
 };
 
 const schema = yup.object().shape({
-  name: yup.string().trim().required('Name is required'),
-  phone: yup
-    .string()
-    .matches(/^[0-9]+$/, 'Phone must contain only digits')
-    .min(8, 'Phone must be at least 8 digits long')
-    .required('Phone is required'),
+  // name: yup.string().trim().required('Name is required'),
+  // phone: yup
+  //   .string()
+  //   .matches(/^[0-9]+$/, 'Phone must contain only digits')
+  //   .min(8, 'Phone must be at least 8 digits long')
+  //   .required('Phone is required'),
   email: yup.string().email('Invalid email').required('Email is required'),
   // country: yup.string().trim().required('Country,State and City is required'),
   // state: yup.string().trim().required('Country is required'),
   // city: yup.string().trim().required('City is required'),
-  gender: yup.string().trim().required('Gender is required'),
-  password: yup
-    .string()
-    .required('Please Enter your password')
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})/,
-      'Must Contain 6 Characters, One Uppercase, One Lowercase, One Number and one special case Character',
-    ),
-  dob: yup.string().trim().required('DOB is required'),
+  //
+  // gender: yup.string().trim().required('Gender is required'),
+  // password: yup
+  //   .string()
+  //   .required('Please Enter your password')
+  //   .matches(
+  //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})/,
+  //     'Must Contain 6 Characters, One Uppercase, One Lowercase, One Number and one special case Character',
+  //   ),
+  // dob: yup.string().trim().required('DOB is required'),
 });
 
 const schema1 = yup.object().shape({
@@ -139,7 +134,7 @@ const schema5 = yup.object().shape({
     .min(1, 'At least one item of any box must be selected'),
 });
 const schema6 = yup.object().shape({
-  hobbies: yup.string().trim().required('Hobbies are required'),
+  // hobbies: yup.string().trim().required('Hobbies are required'),
 });
 const schema7 = yup.object().shape({
   hobbies: yup
@@ -202,6 +197,8 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
         const {latitude, longitude} = position.coords;
         setLocation({latitude, longitude});
         setPermissionStatus('granted');
+        console.log('latitude', latitude);
+        console.log('longitude', longitude);
         // Call registration API here
         dispatch(
           RegisterSignUp({
@@ -211,9 +208,6 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
             distance: `${distance}mi`,
             profilePic: profileImages?.join(','),
             dob: dob,
-            // selectedCountry: country,
-            // selectedState: state,
-            // selectedCity: city,
             country: country,
             state: state,
             city: city,
@@ -249,6 +243,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
           text: 'Allow',
           onPress: () => {
             requestLocationPermission(data);
+            console.log('requestLocationPermission data', data);
             dispatch(
               RegisterSignUp({
                 ...data,
@@ -256,9 +251,6 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
                 distance: `${distance}mi`,
                 profilePic: profileImages?.join(','),
                 dob: dob,
-                // selectedCountry: country,
-                // selectedState: state,
-                // selectedCity: city,
                 country: country,
                 state: state,
                 city: city,
@@ -270,7 +262,6 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
       ],
     );
   };
-  console.log('showPermissionPopup', showPermissionPopup);
 
   const [email, setEmail] = useState('');
   const [dob, setDob] = useState('');
@@ -279,9 +270,6 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     console.log('onSubmitfirst', data);
     setDob(data.dob);
     setEmail(data.email);
-    // setSelectedCountry(data.country);
-    // setSelectedState(data.state);
-    // setSelectedCity(data.city);
     if (steps === 7) {
       if (profileImages.length > 0) {
         return setSteps(prev => prev + 1);

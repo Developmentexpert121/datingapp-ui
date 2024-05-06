@@ -93,7 +93,7 @@ const Root = () => {
 
   useEffect(() => {
     isAuthenticated?.authToken &&
-      dispatch(ProfileData({userId: isAuthenticated?.id}));
+      dispatch(ProfileData({userId: isAuthenticated?._id}));
     // user?.token && dispatch(getUserDetails({userId: isAuthenticated?.id}));
     return;
   }, []);

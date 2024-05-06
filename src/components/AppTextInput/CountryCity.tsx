@@ -161,7 +161,7 @@ const CountryCity: React.FC<IProps> = ({
             ? styles.errorBorder
             : {borderWidth: 1, borderColor: 'rgba(0, 0, 0, 0.2)'},
         ]}
-        // disabled={!selectedState}
+        disabled={!selectedState}
         dropDownDirection="TOP"
         searchable
         placeholder="City"

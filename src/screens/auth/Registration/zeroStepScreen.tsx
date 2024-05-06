@@ -233,7 +233,6 @@ const ZeroStepScreen = ({
           <Text style={styles.label}>Password</Text>
           <PasswodTextInput
             placeholder="Enter Your Password"
-            keyboardType="visible-password"
             name={password}
             control={control}
             errors={Boolean(errors?.password)}
