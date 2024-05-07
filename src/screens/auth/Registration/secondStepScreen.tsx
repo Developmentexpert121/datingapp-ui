@@ -20,31 +20,26 @@ const SecondStepScreen = ({partnerType, control, errors}: any) => {
     {
       id: '2',
       name: 'Long term open to short',
-      // image: require('../../../assets/images/date.png'),
       image: <InrestShortIC />,
     },
     {
       id: '3',
       name: 'Short term open to long',
-      // image: require('../../../assets/images/love-you.png'),
       image: <InrestLongIC />,
     },
     {
       id: '4',
       name: 'Short term fun',
-      // image: require('../../../assets/images/hug.png'),
       image: <InrestFunIC />,
     },
     {
       id: '5',
       name: 'New friends',
-      // image: require('../../../assets/images/people.png'),
       image: <InrestFriendsIC />,
     },
     {
       id: '6',
       name: 'Still figuring it out',
-      // image: require('../../../assets/images/thinking.png'),
       image: <InrestOutIC />,
     },
     // Add more avatars as needed

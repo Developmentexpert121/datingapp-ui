@@ -38,30 +38,53 @@ interface AppleAuthResponse {
 type Props = NativeStackScreenProps<RootStackParamList, 'Loginhome'>;
 const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const navigation = useNavigation();
+  // const googleLogin = async () => {
+  //   try {
+  //     await GoogleSignin.hasPlayServices();
+  //     const userInfo = await GoogleSignin.signIn();
+  //     const {idToken, user} = await GoogleSignin.signIn();
+  //     console.log(userInfo);
+  //     navigation.navigate('Home');
+  //     // Handle successful sign-in, e.g., store user info in state or navigate to another screen
+  //   } catch (error: any) {
+  //     if (error && error.code === statusCodes.SIGN_IN_CANCELLED) {
+  //       // User cancelled the sign-in flow
+  //       console.log('Sign in cancelled');
+  //     } else if (error && error.code === statusCodes.IN_PROGRESS) {
+  //       // Sign-in process is already in progress
+  //       console.log('Sign in in progress');
+  //     } else if (
+  //       error &&
+  //       error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE
+  //     ) {
+  //       // Play services not available or outdated
+  //       console.log('Play services not available');
+  //     } else {
+  //       // Some other error occurred
+  //       console.error('askfhksfi', error);
+  //     }
+  //   }
+  // };
   const googleLogin = async () => {
     try {
+      console.log('Checking Google Play Services...');
       await GoogleSignin.hasPlayServices();
+
+      console.log('Signing in...');
       const userInfo = await GoogleSignin.signIn();
-      const {idToken, user} = await GoogleSignin.signIn();
-      console.log(userInfo);
+      console.log('User Info:', userInfo);
+
+      console.log('Navigating to Home...');
       navigation.navigate('Home');
-      // Handle successful sign-in, e.g., store user info in state or navigate to another screen
     } catch (error: any) {
-      if (error && error.code === statusCodes.SIGN_IN_CANCELLED) {
-        // User cancelled the sign-in flow
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         console.log('Sign in cancelled');
-      } else if (error && error.code === statusCodes.IN_PROGRESS) {
-        // Sign-in process is already in progress
+      } else if (error.code === statusCodes.IN_PROGRESS) {
         console.log('Sign in in progress');
-      } else if (
-        error &&
-        error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE
-      ) {
-        // Play services not available or outdated
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
         console.log('Play services not available');
       } else {
-        // Some other error occurred
-        console.error('askfhksfi', error);
+        console.error('Unexpected error during sign-in:', error);
       }
     }
   };

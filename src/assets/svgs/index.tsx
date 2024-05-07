@@ -35,6 +35,8 @@ import PhoneCallIC from './PhoneCall.svg';
 import NotificationIC from './Notification.svg';
 import FilterIC from './Filter.svg';
 import EyeslashOpenIC from './eyeslashopen.svg';
+import LockIC from './Lock.svg';
+import UnlockIC from './Unlock.svg';
 
 export {
   FireIC,
@@ -74,4 +76,6 @@ export {
   NotificationIC,
   FilterIC,
   EyeslashOpenIC,
+  LockIC,
+  UnlockIC,
 };
