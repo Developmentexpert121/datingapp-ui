@@ -9,8 +9,6 @@ PODS:
   - BVLinearGradient (2.8.3):
     - React-Core
   - DoubleConversion (1.1.6)
-  - FBAEMKit (17.0.1):
-    - FBSDKCoreKit_Basics (= 17.0.1)
   - FBLazyVector (0.73.1)
   - FBReactNativeSpec (0.73.1):
     - RCT-Folly (= 2022.05.16.00)
@@ -19,18 +17,6 @@ PODS:
     - React-Core (= 0.73.1)
     - React-jsi (= 0.73.1)
     - ReactCommon/turbomodule/core (= 0.73.1)
-  - FBSDKCoreKit (17.0.1):
-    - FBAEMKit (= 17.0.1)
-    - FBSDKCoreKit_Basics (= 17.0.1)
-  - FBSDKCoreKit_Basics (17.0.1)
-  - FBSDKGamingServicesKit (17.0.1):
-    - FBSDKCoreKit (= 17.0.1)
-    - FBSDKCoreKit_Basics (= 17.0.1)
-    - FBSDKShareKit (= 17.0.1)
-  - FBSDKLoginKit (17.0.1):
-    - FBSDKCoreKit (= 17.0.1)
-  - FBSDKShareKit (17.0.1):
-    - FBSDKCoreKit (= 17.0.1)
   - Firebase/AnalyticsWithoutAdIdSupport (10.24.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics/WithoutAdIdSupport (~> 10.24.0)
@@ -1010,21 +996,6 @@ PODS:
   - React-Mapbuffer (0.73.1):
     - glog
     - React-debug
-  - react-native-fbsdk-next (13.0.0):
-    - React-Core
-    - react-native-fbsdk-next/Core (= 13.0.0)
-    - react-native-fbsdk-next/Login (= 13.0.0)
-    - react-native-fbsdk-next/Share (= 13.0.0)
-  - react-native-fbsdk-next/Core (13.0.0):
-    - FBSDKCoreKit (~> 17.0.0)
-    - React-Core
-  - react-native-fbsdk-next/Login (13.0.0):
-    - FBSDKLoginKit (~> 17.0.0)
-    - React-Core
-  - react-native-fbsdk-next/Share (13.0.0):
-    - FBSDKGamingServicesKit (~> 17.0.0)
-    - FBSDKShareKit (~> 17.0.0)
-    - React-Core
   - react-native-geolocation (3.2.1):
     - glog
     - RCT-Folly (= 2022.05.16.00)
@@ -1033,7 +1004,7 @@ PODS:
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
-  - react-native-maps (1.14.0):
+  - react-native-maps (1.15.1):
     - React-Core
   - react-native-netinfo (9.5.0):
     - React-Core
@@ -1247,7 +1218,7 @@ PODS:
     - React-Core
   - RNPermissions (4.1.5):
     - React-Core
-  - RNReanimated (3.10.0):
+  - RNReanimated (3.11.0):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1310,7 +1281,6 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector-modern`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
-  - react-native-fbsdk-next (from `../node_modules/react-native-fbsdk-next`)
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-maps (from `../node_modules/react-native-maps`)
@@ -1363,12 +1333,6 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - AppAuth
-    - FBAEMKit
-    - FBSDKCoreKit
-    - FBSDKCoreKit_Basics
-    - FBSDKGamingServicesKit
-    - FBSDKLoginKit
-    - FBSDKShareKit
     - Firebase
     - FirebaseAnalytics
     - FirebaseCore
@@ -1447,8 +1411,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   React-Mapbuffer:
     :path: "../node_modules/react-native/ReactCommon"
-  react-native-fbsdk-next:
-    :path: "../node_modules/react-native-fbsdk-next"
   react-native-geolocation:
     :path: "../node_modules/@react-native-community/geolocation"
   react-native-image-picker:
@@ -1551,14 +1513,8 @@ SPEC CHECKSUMS:
   boost: 26fad476bfa736552bbfa698a06cc530475c1505
   BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
   DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953
-  FBAEMKit: 97eaf41451b49691447df831f7f425229ae64b66
   FBLazyVector: 2296bacb2fa157a43991048b0a9d71c1c8b65083
   FBReactNativeSpec: df0ebe69acd14ce0be0269cf75b6e338a727259b
-  FBSDKCoreKit: e34084567d11cfdd4787ace2b1a0255bedf34ade
-  FBSDKCoreKit_Basics: 3d78e5fe00504e5c1aed1c48de0654c3a1565d15
-  FBSDKGamingServicesKit: da5ffcbe3a9e369db8c235641500ea18e576c40c
-  FBSDKLoginKit: 9a581053879a1e6fc3fab8ead341c78c6a318255
-  FBSDKShareKit: c3b14e2aa947fc6dc8d3ccdd52bfe5ddc88049cf
   Firebase: 91fefd38712feb9186ea8996af6cbdef41473442
   FirebaseAnalytics: b5efc493eb0f40ec560b04a472e3e1a15d39ca13
   FirebaseCore: 11dc8a16dfb7c5e3c3f45ba0e191a33ac4f50894
@@ -1599,10 +1555,9 @@ SPEC CHECKSUMS:
   React-jsinspector: 369048694e39942063c5d08e9580b43e2edd379a
   React-logger: e0c1e918d9588a9f39c9bc62d9d6bfe9ca238d9d
   React-Mapbuffer: babe0bb3746937775f8a3a89b861cea3c077162d
-  react-native-fbsdk-next: 84746ea062dc3b1a422154d7674ba4c5836b6d82
   react-native-geolocation: 1a28156c0c562c894460e1b359e12fe4c13d0240
   react-native-image-picker: fefff630cfa3ee6a809f6ac6569981f4a34e0050
-  react-native-maps: cbf2f03bfeebfd7ec45966b066db13a075fd2af3
+  react-native-maps: 4c07b21deac3ac3579558956b63e288efb8725bb
   react-native-netinfo: 48c5f79a84fbc3ba1d28a8b0d04adeda72885fa8
   react-native-safe-area-context: dcab599c527c2d7de2d76507a523d20a0b83823d
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
@@ -1640,7 +1595,7 @@ SPEC CHECKSUMS:
   RNGoogleSignin: 24d3b3261f78b0fae0aa013f8ab6f8d25e369b0c
   RNNotifee: 8e2d3df3f0e9ce8f5d1fe4c967431138190b6175
   RNPermissions: 294531ede5a64d1528463e88fffef05675842042
-  RNReanimated: cec884efa5381ba8df9aff34bc5861d74e8fed78
+  RNReanimated: 974a111de8e7b1dc7dbfee3412309c2d7922f1be
   RNScreens: 35f3344904f6bba888c0e61532278436e275de3c
   RNSVG: ba3e7232f45e34b7b47e74472386cf4e1a676d0a
   RNVectorIcons: 9282eb0aef2f7d4747f621aa6c586ce910de23b1

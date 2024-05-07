@@ -26,6 +26,22 @@ export const ProfileData = createAsyncThunk('auth/ProfileData', async () => {
   }
 });
 
+export const GoogleLogin = createAsyncThunk('auth/Google', async () => {
+  try {
+    console.log('GoogleLogin');
+    const response: any = await http.get(`/user/google`);
+    // console.log('GoogleLogin');
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error: any) {
+    console.log('first', error);
+    if (error.response && error.response.status === 400) {
+      return {error: 'Bad Request'};
+    }
+  }
+});
+
 export const LoginSignIn = createAsyncThunk(
   'auth/LoginSignIn',
   async (data: any, {dispatch}: any) => {
@@ -122,15 +138,14 @@ export const EmailVerification = createAsyncThunk(
   async (data: any, {dispatch}: any) => {
     // dispatch(activityLoaderStarted());
     try {
-      // dispatch(activityLoaderStarted());
       const response = await http.post('/user/sendEmailVerification', data);
       if (response.status === 200) {
-        // dispatch(activityLoaderFinished());
-        dispatch(
-          otpModal({
-            visible: true,
-          }),
-        );
+        response.data.success &&
+          dispatch(
+            otpModal({
+              visible: true,
+            }),
+          );
         return response.data;
       }
     } catch (error: any) {
@@ -163,7 +178,6 @@ export const VerifyOtp = createAsyncThunk(
       console.log(response.data);
       if (response.status === 200) {
         response.data.success &&
-          // ?
           dispatch(
             otpModal({
               visible: false,
@@ -495,6 +509,7 @@ const initialState = {
     allUsers: [],
     allNotifications: [],
     signInInfo: '',
+    otpVerified: false,
   },
   isAuthenticated: false,
   loading: false,
@@ -570,7 +585,9 @@ const Auth: any = createSlice({
       .addCase(getNotifications.rejected, (state, action) => {
         state.loading = false;
       })
-
+      .addCase(VerifyOtp.fulfilled, (state, action) => {
+        state.data.otpVerified = true;
+      })
       .addCase(updateAuthentication.fulfilled, (state, action) => {
         state.isAuthenticated = false;
         // state.data.status = false;

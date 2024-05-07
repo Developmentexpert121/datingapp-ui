@@ -293,7 +293,16 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
       });
     }
   };
-  const [errorOtp, setErrorOtp] = useState();
+  const resendOTP: any = (data: RegisterForm) => {
+    console.log('fsfsass', data);
+    dispatch(
+      EmailVerification({
+        email: email,
+      }),
+      console.log('first'),
+    );
+  };
+
   const otpVerifity = () => {
     const concatenatedString = otp.join('');
     console.log(concatenatedString);
@@ -418,7 +427,12 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
           />
         </View>
       </KeyboardAvoidingView>
-      <OtpModal onPress={otpVerifity} otp={otp} setOtp={setOtp} />
+      <OtpModal
+        onPress={otpVerifity}
+        otp={otp}
+        setOtp={setOtp}
+        handleResendOTP={resendOTP}
+      />
       {loader ? <Loader /> : null}
     </SafeAreaView>
   );

@@ -22,6 +22,11 @@ import {
 // import AppleAuthentication from '@invertase/react-native-apple-authentication';
 import * as AppleAuthentication from '@invertase/react-native-apple-authentication';
 import {_googleLogin, onAppleButtonPress} from '../../store/Auth/socialLogin';
+import {GoogleLogin} from '../../store/Auth/auth';
+import {useDispatch} from 'react-redux';
+import {useAppDispatch} from '../../store/store';
+
+// import {LoginButton, AccessToken} from 'react-native-fbsdk-next';
 
 GoogleSignin.configure({
   webClientId:
@@ -31,12 +36,13 @@ GoogleSignin.configure({
 interface AppleAuthResponse {
   user: string;
   email: string | null;
-  fullName: AppleAuthentication.AppleIDFullName | null;
+  // fullName: AppleAuthentication.AppleIDFullName | null;
   identityToken: string | null;
   authorizationCode: string | null;
 }
 type Props = NativeStackScreenProps<RootStackParamList, 'Loginhome'>;
 const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
+  const dispatch: any = useAppDispatch();
   const navigation = useNavigation();
   // const googleLogin = async () => {
   //   try {
@@ -45,73 +51,64 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   //     const {idToken, user} = await GoogleSignin.signIn();
   //     console.log(userInfo);
   //     navigation.navigate('Home');
-  //     // Handle successful sign-in, e.g., store user info in state or navigate to another screen
   //   } catch (error: any) {
   //     if (error && error.code === statusCodes.SIGN_IN_CANCELLED) {
-  //       // User cancelled the sign-in flow
   //       console.log('Sign in cancelled');
   //     } else if (error && error.code === statusCodes.IN_PROGRESS) {
-  //       // Sign-in process is already in progress
   //       console.log('Sign in in progress');
   //     } else if (
   //       error &&
   //       error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE
   //     ) {
-  //       // Play services not available or outdated
   //       console.log('Play services not available');
   //     } else {
-  //       // Some other error occurred
   //       console.error('askfhksfi', error);
   //     }
   //   }
   // };
-  const googleLogin = async () => {
-    try {
-      console.log('Checking Google Play Services...');
-      await GoogleSignin.hasPlayServices();
 
-      console.log('Signing in...');
-      const userInfo = await GoogleSignin.signIn();
-      console.log('User Info:', userInfo);
-
-      console.log('Navigating to Home...');
-      navigation.navigate('Home');
-    } catch (error: any) {
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        console.log('Sign in cancelled');
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        console.log('Sign in in progress');
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        console.log('Play services not available');
-      } else {
-        console.error('Unexpected error during sign-in:', error);
-      }
-    }
+  const onSubmit: any = () => {
+    dispatch(GoogleLogin());
   };
 
-  const handleAppleSignIn = async (): Promise<void> => {
-    try {
-      const appleAuthRequestResponse: AppleAuthResponse =
-        await AppleAuthentication.performRequest({
-          requestedScopes: [
-            AppleAuthentication.AppleIDRequestScope.FULL_NAME,
-            AppleAuthentication.AppleIDRequestScope.EMAIL,
-          ],
-        });
+  //
 
-      // appleAuthRequestResponse contains the user's information
-      console.log('Apple Auth Response:', appleAuthRequestResponse);
+  // const handleAppleSignIn = async (): Promise<void> => {
+  //   try {
+  //     const appleAuthRequestResponse: AppleAuthResponse =
+  //       await AppleAuthentication.performRequest({
+  //         requestedScopes: [
+  //           AppleAuthentication.AppleIDRequestScope.FULL_NAME,
+  //           AppleAuthentication.AppleIDRequestScope.EMAIL,
+  //         ],
+  //       });
 
-      // Use the response to handle the sign-in and the user information
-      const {user, email, fullName, identityToken, authorizationCode} =
-        appleAuthRequestResponse;
+  //     // appleAuthRequestResponse contains the user's information
+  //     console.log('Apple Auth Response:', appleAuthRequestResponse);
 
-      // Handle the Apple Authentication response as needed
-      // For example, use user, email, fullName, identityToken, and authorizationCode
-    } catch (error) {
-      console.error('Apple sign-in error:', error);
-    }
-  };
+  //     // Use the response to handle the sign-in and the user information
+  //     const {user, email, fullName, identityToken, authorizationCode} =
+  //       appleAuthRequestResponse;
+
+  //     // Handle the Apple Authentication response as needed
+  //     // For example, use user, email, fullName, identityToken, and authorizationCode
+  //   } catch (error) {
+  //     console.error('Apple sign-in error:', error);
+  //   }
+  // };
+
+  // const handleFacebookLogin = () => {
+  //   AccessToken.getCurrentAccessToken()
+  //     .then(data => {
+  //       if (data) {
+  //         console.log('Logged in with Facebook:', data.accessToken);
+  //         // You can now use the token to fetch user data or perform other tasks.
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.error('Facebook login failed:', error);
+  //     });
+  // };
 
   return (
     <SafeAreaView
@@ -166,18 +163,33 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
             justifyContent: 'space-evenly',
           }}>
           <TouchableOpacity
-            onPress={googleLogin}
-            // onPress={_googleLogin}
+            // onPress={googleLogin}
+            // onPress={signIn}
+            onPress={onSubmit}
+            //
           >
             <GoogleIC />
           </TouchableOpacity>
+          {/* <LoginButton
+            onLoginFinished={(error, result) => {
+              if (error) {
+                console.error('Login failed:', error);
+              } else if (result.isCancelled) {
+                console.log('Login cancelled');
+              } else {
+                handleFacebookLogin();
+              }
+            }}
+          /> */}
           <TouchableOpacity>
             <FacebookIC />
           </TouchableOpacity>
           {Platform.OS === 'ios' && (
             <TouchableOpacity
-              // onPress={onAppleButtonPress}
-              onPress={handleAppleSignIn}>
+            // onPress={onAppleButtonPress}
+            // onPress={handleAppleSignIn}
+            //
+            >
               <AppleIC />
             </TouchableOpacity>
           )}

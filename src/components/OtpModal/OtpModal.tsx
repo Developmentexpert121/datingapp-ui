@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import Label from '../Label';
-// import Modal from 'react-native-modal';
 import MainButton from '../ButtonComponent/MainButton';
 import {RootState, useAppDispatch, useAppSelector} from '../../store/store';
 import GlobalModal from '../Modals/GlobalModal';
@@ -20,26 +19,21 @@ interface LoginFailModalProps {
   setOtp: any;
   otp: any;
   value?: any;
+  handleResendOTP?: any;
 }
 const OtpModal = ({
   label,
   onPress,
-  text,
-  isVisible,
   setOtp,
   otp,
-  value,
+  handleResendOTP,
 }: LoginFailModalProps) => {
-  const [modalVisible, setModalVisible] = useState(false);
-
   const {showOtpModal} = useAppSelector(
     (state: RootState) => state.authSliceState,
   );
   const dispatch = useAppDispatch();
-  const [otp1, setOtp1] = useState<string>('');
   const [resendAllowed, setResendAllowed] = useState<boolean>(true);
   const [timer, setTimer] = useState<number>(30);
-  const [feedbackMessage, setFeedbackMessage] = useState<string>('');
   const [isOtpComplete, setIsOtpComplete] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
 
@@ -55,41 +49,24 @@ const OtpModal = ({
     const newOtp = [...otp];
     newOtp[index] = txt;
     setOtp(newOtp);
-
-    // Move focus based on input
     if (txt.length >= 1 && index < otp.length - 1) {
       inputRefs[index + 1].current?.focus();
     } else if (txt.length === 0 && index > 0) {
       inputRefs[index - 1].current?.focus();
     }
-
-    // Check if all fields are filled
     const isAllFieldsFilled = newOtp.every(field => field !== '');
     setIsOtpComplete(isAllFieldsFilled);
-
-    // Set error message if any field is empty
     if (!isAllFieldsFilled) {
       setErrorMessage('Please fill in all OTP fields.');
     } else {
       setErrorMessage('');
     }
-    // setOtp(['', '', '', '', '', '']);
   };
 
-  useEffect(() => {
-    sendNewOTP();
-  }, []);
   const sendNewOTP = async () => {
     if (resendAllowed) {
+      handleResendOTP();
       setResendAllowed(false);
-      setFeedbackMessage('Sending a new OTP...');
-      try {
-        setFeedbackMessage('A new OTP has been sent to your phone.');
-      } catch (error) {
-        setFeedbackMessage(
-          'There was an error sending the OTP. Please try again later.',
-        );
-      }
       startResendTimer(59);
     }
   };
@@ -107,21 +84,12 @@ const OtpModal = ({
       });
     }, 1000);
   };
-  const handleCloseModal = () => {
-    dispatch({type: 'HIDE_OTP_MODAL'});
-  };
-  const handleOtpChange = (text: string) => {
-    setOtp1(text);
-  };
   return (
     <Modal
       animationType={'slide'}
-      // animationIn={'slideInDown'}
       // onBackdropPress={handleCloseModal}
       visible={showOtpModal}
-      // isVisible={showOtpModal}
       transparent={true}
-      // onRequestClose={}
       style={{backgroundColor: 'transparent', margin: 0}}>
       <View style={styles.modal}>
         <View style={styles.modalstyle}>
@@ -143,9 +111,9 @@ const OtpModal = ({
             ))}
           </View>
           <View style={{height: 15}}>
-            {errorMessage && (
+            {/* {errorMessage && (
               <Text style={styles.errorText}>{errorMessage}</Text>
-            )}
+            )} */}
           </View>
           <View style={styles.loginContainer}>
             <Text style={styles.loginText}>Didn’t receive a OTP? </Text>
@@ -228,6 +196,5 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 12,
     height: 15,
-    // marginTop: 10,
   },
 });

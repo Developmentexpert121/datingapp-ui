@@ -8,12 +8,6 @@
 	<array>
 		<string></string>
 	</array>
-	<key>CFBundleURLSchemes</key>
-    <array>
-       <string>apps.googleusercontent.com.1074716618334-m6trdmrc4b3tojpaaufbslg616vt1al7</string>
-    </array>
-    <key>NSAppleMusicUsageDescription</key>
-	<string>YOUR TEXT</string>
 	<key>CFBundleDisplayName</key>
 	<string>DatingApp</string>
 	<key>CFBundleExecutable</key>
@@ -30,10 +24,14 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLSchemes</key>
+	<array>
+		<string>1097775841702-3616366houm9b5durv1ndpnv3779f07p.apps.googleusercontent.com</string>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>GIDClientID</key>
-	<string>1074716618334-m6trdmrc4b3tojpaaufbslg616vt1al7.apps.googleusercontent.com</string>
+	<string>1097775841702-3616366houm9b5durv1ndpnv3779f07p.apps.googleusercontent.com</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -43,6 +41,8 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>YOUR TEXT</string>
 	<key>NSCameraUsageDescription</key>
 	<string>TopTier Dating App use camera for a click photo.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
