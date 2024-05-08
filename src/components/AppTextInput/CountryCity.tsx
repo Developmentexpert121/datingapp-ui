@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, FC} from 'react';
 import {View, StyleSheet} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {
@@ -12,19 +12,24 @@ import {
 import Spacing from '../../constants/Spacing';
 import Colors from '../../constants/Colors';
 
-interface IProps {
+// Define an interface for the props
+interface CountryCityProps {
   valueCountry: (country: string) => void;
   valueState: (state: string) => void;
   valueCity: (city: string) => void;
   errors?: string;
+  onSetScrollEnabled?: (enabled: boolean) => void;
 }
 
-const CountryCity: React.FC<IProps> = ({
+// Define the CountryCity component using TypeScript
+const CountryCity: FC<CountryCityProps> = ({
   errors,
   valueCountry,
   valueState,
   valueCity,
+  onSetScrollEnabled,
 }) => {
+  // Define state variables and their types
   const [countries, setCountries] = useState<ICountry[]>([]);
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [states, setStates] = useState<IState[]>([]);
@@ -34,12 +39,11 @@ const CountryCity: React.FC<IProps> = ({
   const [countryOpen, setCountryOpen] = useState(false);
   const [stateOpen, setStateOpen] = useState(false);
   const [cityOpen, setCityOpen] = useState(false);
-  // console.log('selectedCountry', selectedCountry);
-  // console.log('selectedState', selectedState);
+
   // Fetch all countries when the component mounts
   useEffect(() => {
     const allCountries = Country.getAllCountries();
-    setCountries(allCountries ?? '');
+    setCountries(allCountries ?? []);
   }, []);
 
   // Fetch states of selected country
@@ -51,13 +55,12 @@ const CountryCity: React.FC<IProps> = ({
       setCities([]);
     }
   }, [selectedCountry]);
-  //
-  //
+
   // Fetch cities of selected state
   useEffect(() => {
     if (selectedState) {
       const stateCities = City.getCitiesOfState(
-        selectedCountry as string,
+        selectedCountry!,
         selectedState,
       );
       setCities(stateCities);
@@ -65,14 +68,13 @@ const CountryCity: React.FC<IProps> = ({
     }
   }, [selectedState, selectedCountry]);
 
-  //
-  //
-  // Pass selected country value to parent component
+  // Pass selected country, state, and city values to the parent component
   useEffect(() => {
     if (selectedCountry) {
       valueCountry(selectedCountry);
     }
   }, [selectedCountry, valueCountry]);
+
   useEffect(() => {
     if (selectedState) {
       valueState(selectedState);
@@ -84,6 +86,37 @@ const CountryCity: React.FC<IProps> = ({
       valueCity(selectedCity);
     }
   }, [selectedCity, valueCity]);
+
+  // Handle the opening of the country dropdown
+  const handleCountryOpen = (isOpen: any) => {
+    setCountryOpen(isOpen);
+    setStateOpen(false); // Close state dropdown
+    setCityOpen(false); // Close city dropdown
+    if (onSetScrollEnabled) {
+      onSetScrollEnabled(!isOpen);
+    }
+  };
+
+  // Handle the opening of the state dropdown
+  const handleStateOpen = (isOpen: any) => {
+    setStateOpen(isOpen);
+    setCountryOpen(false); // Close country dropdown
+    setCityOpen(false); // Close city dropdown
+    if (onSetScrollEnabled) {
+      onSetScrollEnabled(!isOpen);
+    }
+  };
+
+  // Handle the opening of the city dropdown
+  const handleCityOpen = (isOpen: any) => {
+    setCityOpen(isOpen);
+    setCountryOpen(false); // Close country dropdown
+    setStateOpen(false); // Close state dropdown
+    if (onSetScrollEnabled) {
+      onSetScrollEnabled(!isOpen);
+    }
+  };
+
   return (
     <View style={styles.container}>
       {/* Country Dropdown */}
@@ -94,7 +127,7 @@ const CountryCity: React.FC<IProps> = ({
           label: country.name,
           value: country.isoCode,
         }))}
-        setOpen={setCountryOpen}
+        setOpen={handleCountryOpen}
         setValue={setSelectedCountry}
         style={[
           styles.dropdown,
@@ -109,7 +142,6 @@ const CountryCity: React.FC<IProps> = ({
         textStyle={styles.textStyle}
         dropDownContainerStyle={{
           ...styles.dropdownContainer,
-          // maxHeight: 200,
           overflow: 'hidden',
         }}
       />
@@ -122,9 +154,8 @@ const CountryCity: React.FC<IProps> = ({
           label: state.name,
           value: state.isoCode,
         }))}
-        setOpen={setStateOpen}
+        setOpen={handleStateOpen}
         setValue={setSelectedState}
-        onChangeValue={value => setSelectedState(value)}
         style={[
           styles.dropdown,
           errors
@@ -139,7 +170,6 @@ const CountryCity: React.FC<IProps> = ({
         textStyle={styles.textStyle}
         dropDownContainerStyle={{
           ...styles.dropdownContainer,
-          // maxHeight: 200,
           overflow: 'hidden',
         }}
       />
@@ -152,9 +182,8 @@ const CountryCity: React.FC<IProps> = ({
           label: city.name,
           value: city.name,
         }))}
-        setOpen={setCityOpen}
+        setOpen={handleCityOpen}
         setValue={setSelectedCity}
-        onChangeValue={value => setSelectedCity(value)}
         style={[
           styles.dropdown,
           errors
@@ -169,7 +198,6 @@ const CountryCity: React.FC<IProps> = ({
         textStyle={styles.textStyle}
         dropDownContainerStyle={{
           ...styles.dropdownContainer,
-          // maxHeight: 200,
           overflow: 'hidden',
         }}
       />
@@ -209,3 +237,231 @@ const styles = StyleSheet.create({
     borderColor: 'red',
   },
 });
+
+//
+
+// import React, {useEffect, useState} from 'react';
+// import {View, StyleSheet, ScrollView} from 'react-native';
+// import DropDownPicker from 'react-native-dropdown-picker';
+// import {
+//   Country,
+//   State,
+//   City,
+//   ICountry,
+//   IState,
+//   ICity,
+// } from 'country-state-city';
+// import Spacing from '../../constants/Spacing';
+// import Colors from '../../constants/Colors';
+
+// interface IProps {
+//   valueCountry: (country: string) => void;
+//   valueState: (state: string) => void;
+//   valueCity: (city: string) => void;
+//   errors?: string;
+//   onSetScrollEnabled?: any;
+// }
+
+// const CountryCity: React.FC<IProps> = ({
+//   errors,
+//   valueCountry,
+//   valueState,
+//   valueCity,
+//   onSetScrollEnabled,
+// }) => {
+//   const [countries, setCountries] = useState<ICountry[]>([]);
+//   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+//   const [states, setStates] = useState<IState[]>([]);
+//   const [selectedState, setSelectedState] = useState<string | null>(null);
+//   const [cities, setCities] = useState<ICity[]>([]);
+//   const [selectedCity, setSelectedCity] = useState<string | null>(null);
+//   const [countryOpen, setCountryOpen] = useState(false);
+//   const [stateOpen, setStateOpen] = useState(false);
+//   const [cityOpen, setCityOpen] = useState(false);
+
+//   useEffect(() => {
+//     const allCountries = Country.getAllCountries();
+//     setCountries(allCountries ?? '');
+//   }, []);
+
+//   // Fetch states of selected country
+//   useEffect(() => {
+//     if (selectedCountry) {
+//       const countryStates = State.getStatesOfCountry(selectedCountry);
+//       setStates(countryStates);
+//       setSelectedState(null);
+//       setCities([]);
+//     }
+//   }, [selectedCountry]);
+//   // Fetch cities of selected state
+//   useEffect(() => {
+//     if (selectedState) {
+//       const stateCities = City.getCitiesOfState(
+//         selectedCountry as string,
+//         selectedState,
+//       );
+//       setCities(stateCities);
+//       setSelectedCity(null);
+//     }
+//   }, [selectedState, selectedCountry]);
+
+//   //
+//   //
+//   // Pass selected country value to parent component
+//   useEffect(() => {
+//     if (selectedCountry) {
+//       valueCountry(selectedCountry);
+//     }
+//   }, [selectedCountry, valueCountry]);
+//   useEffect(() => {
+//     if (selectedState) {
+//       valueState(selectedState);
+//     }
+//   }, [selectedState, valueState]);
+
+//   useEffect(() => {
+//     if (selectedCity) {
+//       valueCity(selectedCity);
+//     }
+//   }, [selectedCity, valueCity]);
+
+//   //
+//   const handleCountryOpen = (isOpen: any) => {
+//     setCountryOpen(isOpen);
+//     onSetScrollEnabled(!isOpen);
+//   };
+
+//   const handleStateOpen = (isOpen: any) => {
+//     setStateOpen(isOpen);
+//     onSetScrollEnabled(!isOpen);
+//   };
+
+//   const handleCityOpen = (isOpen: any) => {
+//     setCityOpen(isOpen);
+//     onSetScrollEnabled(!isOpen);
+//   };
+//   return (
+//     <View style={styles.container}>
+//       {/* Country Dropdown */}
+//       <DropDownPicker
+//         open={countryOpen}
+//         value={selectedCountry}
+//         items={countries.map(country => ({
+//           label: country.name,
+//           value: country.isoCode,
+//         }))}
+//         setOpen={handleCountryOpen}
+//         setValue={setSelectedCountry}
+//         style={[
+//           styles.dropdown,
+//           errors
+//             ? styles.errorBorder
+//             : {borderWidth: 1, borderColor: 'rgba(0, 0, 0, 0.2)'},
+//         ]}
+//         dropDownDirection="TOP"
+//         searchable
+//         placeholder="Country"
+//         placeholderStyle={styles.placeholderStyle}
+//         textStyle={styles.textStyle}
+//         dropDownContainerStyle={{
+//           ...styles.dropdownContainer,
+//           // maxHeight: 300,
+//           overflow: 'hidden',
+//         }}
+//       />
+
+//       {/* State Dropdown */}
+//       <DropDownPicker
+//         open={stateOpen}
+//         value={selectedState}
+//         items={states.map(state => ({
+//           label: state.name,
+//           value: state.isoCode,
+//         }))}
+//         setOpen={handleStateOpen}
+//         setValue={setSelectedState}
+//         onChangeValue={value => setSelectedState(value)}
+//         style={[
+//           styles.dropdown,
+//           errors
+//             ? styles.errorBorder
+//             : {borderWidth: 1, borderColor: 'rgba(0, 0, 0, 0.2)'},
+//         ]}
+//         disabled={!selectedCountry}
+//         dropDownDirection="TOP"
+//         searchable
+//         placeholder="State"
+//         placeholderStyle={styles.placeholderStyle}
+//         textStyle={styles.textStyle}
+//         dropDownContainerStyle={{
+//           ...styles.dropdownContainer,
+//           // maxHeight: 200,
+//           overflow: 'hidden',
+//         }}
+//       />
+
+//       {/* City Dropdown */}
+//       <DropDownPicker
+//         open={cityOpen}
+//         value={selectedCity}
+//         items={cities.map(city => ({
+//           label: city.name,
+//           value: city.name,
+//         }))}
+//         setOpen={handleCityOpen}
+//         setValue={setSelectedCity}
+//         onChangeValue={value => setSelectedCity(value)}
+//         style={[
+//           styles.dropdown,
+//           errors
+//             ? styles.errorBorder
+//             : {borderWidth: 1, borderColor: 'rgba(0, 0, 0, 0.2)'},
+//         ]}
+//         disabled={!selectedState}
+//         dropDownDirection="TOP"
+//         searchable
+//         placeholder="City"
+//         placeholderStyle={styles.placeholderStyle}
+//         textStyle={styles.textStyle}
+//         dropDownContainerStyle={{
+//           ...styles.dropdownContainer,
+//           // maxHeight: 200,
+//           overflow: 'hidden',
+//         }}
+//       />
+//     </View>
+//   );
+// };
+
+// export default CountryCity;
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     padding: 10,
+//   },
+//   dropdown: {
+//     marginVertical: 10,
+//     width: '80%',
+//     height: 45,
+//     borderRadius: 12,
+//   },
+//   dropdownContainer: {
+//     position: 'absolute',
+//     width: '80%',
+//     borderColor: 'rgba(0, 0, 0, 0.2)',
+//   },
+//   placeholderStyle: {
+//     color: Colors.darkText,
+//   },
+//   textStyle: {
+//     fontFamily: 'Sansation-Regular',
+//     fontSize: 16,
+//     padding: Spacing,
+//     backgroundColor: Colors.onPrimary,
+//   },
+//   errorBorder: {
+//     borderWidth: 2,
+//     borderColor: 'red',
+//   },
+// });

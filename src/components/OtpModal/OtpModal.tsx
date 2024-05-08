@@ -12,7 +12,6 @@ import MainButton from '../ButtonComponent/MainButton';
 import {RootState, useAppDispatch, useAppSelector} from '../../store/store';
 import GlobalModal from '../Modals/GlobalModal';
 interface LoginFailModalProps {
-  label?: string | undefined;
   onPress?: () => void | undefined;
   text?: string | undefined;
   isVisible?: boolean | undefined;
@@ -20,9 +19,9 @@ interface LoginFailModalProps {
   otp: any;
   value?: any;
   handleResendOTP?: any;
+  resetOTP?: () => void | undefined;
 }
 const OtpModal = ({
-  label,
   onPress,
   setOtp,
   otp,
@@ -33,7 +32,7 @@ const OtpModal = ({
   );
   const dispatch = useAppDispatch();
   const [resendAllowed, setResendAllowed] = useState<boolean>(true);
-  const [timer, setTimer] = useState<number>(30);
+  const [timer, setTimer] = useState<number>(59);
   const [isOtpComplete, setIsOtpComplete] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
 
@@ -45,6 +44,11 @@ const OtpModal = ({
     useRef<TextInput>(null),
     useRef<TextInput>(null),
   ];
+
+  const resetOTP = () => {
+    setOtp(['', '', '', '', '', '']);
+    inputRefs[0].current?.focus();
+  };
   const handleOTPChange = (txt: string, index: number) => {
     const newOtp = [...otp];
     newOtp[index] = txt;

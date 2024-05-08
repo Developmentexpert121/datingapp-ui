@@ -14,6 +14,7 @@ const AppTextInput = (Props: any) => {
     marginLeft,
     textstyle,
     autoCapitalize,
+    editable,
     ...textInputProps
   } = Props;
   const [focused, setFocused] = useState<boolean>(false);
@@ -45,6 +46,7 @@ const AppTextInput = (Props: any) => {
           value={value}
           error={Boolean(errors)}
           autoCapitalize={autoCapitalize}
+          editable={editable}
         />
       )}
     />

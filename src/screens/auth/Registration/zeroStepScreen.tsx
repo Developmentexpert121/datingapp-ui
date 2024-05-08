@@ -18,6 +18,7 @@ import CustomDatePicker from '../../../components/AppTextInput/CustomDatePicker'
 import PasswodTextInput from '../../../components/AppTextInput/PasswodTextInput';
 import {BackIC} from '../../../assets/svgs';
 import CountryCity from '../../../components/AppTextInput/CountryCity';
+import {useAppSelector} from '../../../store/store';
 
 interface RegForm0 {
   name: string;
@@ -57,8 +58,21 @@ const ZeroStepScreen = ({
     {label: 'Transgender', value: 'fourth'},
   ];
   const navigation = useNavigation();
+  const [isEmailEditable, setIsEmailEditable] = useState(true);
+  const [isPasswordEditable, setIsPasswordEditable] = useState(true);
 
-  // Callback function to handle the change of the selected country
+  // Check otpVerified state
+  const otpVerified = useAppSelector(
+    (state: any) => state?.Auth?.data?.otpVerified,
+  );
+  useEffect(() => {
+    if (otpVerified) {
+      setIsEmailEditable(false);
+      setIsPasswordEditable(false);
+    }
+  }, [otpVerified]);
+
+  const [scrollEnabled, setScrollEnabled] = useState(true);
   const handleSelectedCountryChange = (country: string) => {
     setSelectedCountry(country);
   };
@@ -77,6 +91,7 @@ const ZeroStepScreen = ({
         <View style={styles.blankview}></View>
       </View>
       <ScrollView
+        scrollEnabled={Platform.OS === 'android' ? scrollEnabled : true}
         style={{borderWidth: 0, flex: 1}}
         showsVerticalScrollIndicator={false}>
         {/* Name */}
@@ -185,32 +200,18 @@ const ZeroStepScreen = ({
         {/* Country And  City */}
         <View style={styles.container}>
           <Text style={styles.label}>Location</Text>
-          {/* <AppTextInput
-            placeholder="Enter Your Country"
-            name={country}
-            control={control}
-            errors={Boolean(errors?.country)}
-          />
-          {errors.country && (
-            <Text style={styles.errorText}>{errors.country.message}</Text>
-          )}
-          <AppTextInput
-            placeholder="Enter Your City"
-            name={city}
-            control={control}
-            errors={Boolean(errors?.city)}
-          /> */}
-
           <CountryCity
             valueCountry={handleSelectedCountryChange}
             valueState={handleSelectedStateChange}
             valueCity={handleSelectedCityChange}
             errors={errors?.country}
-            //  valueCount={country}
+            onSetScrollEnabled={setScrollEnabled}
           />
 
-          {errors.city && (
-            <Text style={styles.errorText}>{errors.city.message}</Text>
+          {errors.setSelectedCountry && (
+            <Text style={styles.errorText}>
+              {errors.setSelectedCountry.message}
+            </Text>
           )}
         </View>
         {/* Mail */}
@@ -223,6 +224,7 @@ const ZeroStepScreen = ({
             errors={Boolean(errors?.email)}
             autoCapitalize="none"
             keyboardType="email-address"
+            // editable={isEmailEditable}
           />
           {errors.email && (
             <Text style={styles.errorText}>{errors.email.message}</Text>

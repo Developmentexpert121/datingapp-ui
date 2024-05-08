@@ -90,6 +90,7 @@ const FilterSection = ({
     {value: 'everyone', label: 'Everyone'},
   ];
   const [checked, setChecked] = React.useState(profileData?.gender);
+
   const handleSliderChange = (value: any) => {
     setDistance(value);
     dispatch(
@@ -204,7 +205,7 @@ const FilterSection = ({
               <Controller
                 name={'interests'}
                 control={control}
-                defaultValue="female"
+                // defaultValue="female"
                 render={() => (
                   <View
                     style={{
