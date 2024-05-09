@@ -1,5 +1,6 @@
 import {Image, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
+import {BlurView} from '@react-native-community/blur';
 interface LoaderProps {
   color?: string | undefined;
 }
@@ -12,12 +13,21 @@ const Loader = ({color}: LoaderProps) => {
         ...StyleSheet.absoluteFillObject,
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: color ?? '#FFFFFF22',
+        backgroundColor: color ?? '#FFFFFF99',
       }}>
+      {/* <BlurView
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          backgroundColor: color ?? 'rgba(0, 0, 0, 0.3)',
+        }}
+        blurType="light"
+        blurAmount={10}> */}
       <Image
         source={require('../../assets/git/lodaerIcon.gif')}
         style={styles.image}
       />
+      {/* </BlurView> */}
     </TouchableOpacity>
   );
 };

@@ -412,17 +412,17 @@ const SettingsSection = () => {
           <Text
             style={[styles.textName, {color: '#AC25AC'}]}
             // onPress={handleLogout}
-            onPress={logoutUserButton}>
+            onPress={deleteUserButton}>
             Log Out
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.boxContainer}>
+        {/* <TouchableOpacity style={styles.boxContainer}>
           <Text
             style={[styles.textName, {color: '#AC25AC'}]}
             onPress={deleteUserButton}>
             Delete Account
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <BottomDrawer
           isOpen={isDrawerOpen}
           onClose={closeDrawer}

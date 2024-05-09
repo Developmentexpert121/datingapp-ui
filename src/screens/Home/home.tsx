@@ -52,6 +52,7 @@ const HomeScreen = () => {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [data, setData] = useState([]);
+  console.log('first data', data);
   const [checkedInterests, setCheckedInterests] = React.useState(
     profileData?.interests,
   );

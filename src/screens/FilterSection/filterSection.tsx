@@ -205,7 +205,7 @@ const FilterSection = ({
               <Controller
                 name={'interests'}
                 control={control}
-                // defaultValue="female"
+                defaultValue="everyone"
                 render={() => (
                   <View
                     style={{
@@ -286,7 +286,7 @@ const FilterSection = ({
             <Controller
               name={'gender'}
               control={control}
-              defaultValue="Male"
+              defaultValue="Everyone"
               render={() => (
                 <View
                   style={{

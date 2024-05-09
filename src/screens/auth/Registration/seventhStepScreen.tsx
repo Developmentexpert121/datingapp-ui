@@ -106,39 +106,43 @@ const SeventhStepScreen = ({
   const handleImageSelection = async () => {
     launchImageLibrary({mediaType: 'photo'}, async response => {
       if (!response?.didCancel && !response?.errorMessage) {
-        if (response?.assets && response.assets.length > 0) {
-          setLoader(true);
-          try {
-            const asset = response.assets[0]; // Assuming you want to upload only the first selected image
+        setLoader(true);
 
-            const formData = new FormData();
-            formData.append('image', {
-              name: asset.fileName,
-              fileName: asset.fileName,
-              type: asset.type,
-              uri: asset.uri,
-            });
+        // Simulating longer loading time using setTimeout
+        setTimeout(async () => {
+          if (response?.assets && response.assets.length > 0) {
+            try {
+              const asset = response.assets[0];
+              const formData = new FormData();
+              formData.append('image', {
+                name: asset.fileName,
+                fileName: asset.fileName,
+                type: asset.type,
+                uri: asset.uri,
+              });
 
-            const uploadedImageUrl = await dispatch(uploadImages(formData))
-              .unwrap()
-              .then((response: any) => response.secureUrl);
+              const uploadedImageUrl = await dispatch(uploadImages(formData))
+                .unwrap()
+                .then((response: any) => response.secureUrl);
 
-            setProfileImages((prevImages: any) => [
-              ...prevImages,
-              uploadedImageUrl,
-            ]);
-            setUploadError(false);
-            setLoader(false);
-          } catch (error) {
-            console.error('Error uploading image:', error);
+              setProfileImages((prevImages: any) => [
+                ...prevImages,
+                uploadedImageUrl,
+              ]);
+              setUploadError(false);
+            } catch (error) {
+              console.error('Error uploading image:', error);
+              setUploadError(true);
+            }
+          } else {
             setUploadError(true);
           }
-        } else {
-          setUploadError(true); // Set error if no images are selected
-        }
+          setLoader(false);
+        }, 2000);
       }
     });
   };
+
   const handleRemoveImage = async (index: number) => {
     // If there's only one image left, open the image picker for replacement
     if (profileImages.length === 0) {

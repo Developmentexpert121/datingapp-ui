@@ -19,6 +19,7 @@ import PasswodTextInput from '../../../components/AppTextInput/PasswodTextInput'
 import {BackIC} from '../../../assets/svgs';
 import CountryCity from '../../../components/AppTextInput/CountryCity';
 import {useAppSelector} from '../../../store/store';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 interface RegForm0 {
   name: string;
@@ -60,6 +61,7 @@ const ZeroStepScreen = ({
   const navigation = useNavigation();
   const [isEmailEditable, setIsEmailEditable] = useState(true);
   const [isPasswordEditable, setIsPasswordEditable] = useState(true);
+  const [checked, setChecked] = React.useState();
 
   // Check otpVerified state
   const otpVerified = useAppSelector(
@@ -187,6 +189,16 @@ const ZeroStepScreen = ({
                         color={errors?.[gender] ? 'red' : '#AC25AC'}
                         uncheckedColor={errors?.[gender] ? 'red' : '#AC25AC'}
                       />
+                      {/* <Ionicons
+                        name={
+                          checked === item.label
+                            ? 'radio-button-on'
+                            : 'radio-button-off'
+                        }
+                        onPress={() => onChange(item.label)}
+                        size={16}
+                        color="#AC25AC"
+                      /> */}
                     </View>
                   </View>
                 )}
