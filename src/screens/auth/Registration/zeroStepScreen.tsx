@@ -61,7 +61,7 @@ const ZeroStepScreen = ({
   const navigation = useNavigation();
   const [isEmailEditable, setIsEmailEditable] = useState(true);
   const [isPasswordEditable, setIsPasswordEditable] = useState(true);
-  const [checked, setChecked] = React.useState();
+  const [checked, setChecked] = useState<boolean>(true);
 
   // Check otpVerified state
   const otpVerified = useAppSelector(
@@ -153,54 +153,28 @@ const ZeroStepScreen = ({
           <Text style={styles.label2}>Your phone will be public</Text>
         </View>
         {/* Gender */}
-        <View style={[styles.container1]}>
+        <View style={styles.container1}>
           <Text style={styles.label1}>Gender</Text>
-          {options.map(item => (
-            <View key={item.value} style={styles.radio}>
+          {options.map(option => (
+            <View key={option.value} style={styles.radioOption}>
               <Controller
-                name={gender}
                 control={control}
+                name={gender}
                 defaultValue=""
                 render={({field: {onChange, value}}) => (
-                  <View
-                    style={{
-                      marginTop: 4,
-                      marginHorizontal: 24,
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                    }}>
-                    <Text
-                      style={[
-                        styles.radioLabel,
-                        {color: errors?.[gender] ? 'red' : 'black'},
-                      ]}>
-                      {item.label}
-                    </Text>
-                    <View
-                      style={[
-                        styles.cricleView,
-                        Platform.OS === 'ios' && styles.iosBorder,
-                      ]}>
-                      <RadioButton
-                        value={item.label}
-                        status={value === item.label ? 'checked' : 'unchecked'}
-                        onPress={() => onChange(item.label)}
-                        color={errors?.[gender] ? 'red' : '#AC25AC'}
-                        uncheckedColor={errors?.[gender] ? 'red' : '#AC25AC'}
-                      />
-                      {/* <Ionicons
-                        name={
-                          checked === item.label
-                            ? 'radio-button-on'
-                            : 'radio-button-off'
-                        }
-                        onPress={() => onChange(item.label)}
-                        size={16}
-                        color="#AC25AC"
-                      /> */}
-                    </View>
-                  </View>
+                  <>
+                    <Text style={styles.radioLabel}>{option.label}</Text>
+                    <Ionicons
+                      name={
+                        value === option.label
+                          ? 'radio-button-on'
+                          : 'radio-button-off'
+                      }
+                      onPress={() => onChange(option.label)}
+                      size={29}
+                      color="#AC25AC"
+                    />
+                  </>
                 )}
               />
             </View>
@@ -209,6 +183,7 @@ const ZeroStepScreen = ({
             <Text style={styles.errorText}>{errors.gender.message}</Text>
           )}
         </View>
+
         {/* Country And  City */}
         <View style={styles.container}>
           <Text style={styles.label}>Location</Text>
@@ -359,5 +334,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 20,
     borderColor: '#AC25AC',
+  },
+  radioOption: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: 3,
+    paddingHorizontal: 20,
+    // borderWidth: 1,
   },
 });

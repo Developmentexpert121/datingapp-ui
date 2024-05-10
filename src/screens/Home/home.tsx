@@ -31,7 +31,7 @@ const HomeScreen = () => {
     (state: any) => state?.Auth?.data?.profileData,
   );
 
-  console.log('profileData0', profileData);
+  // console.log('profileData0', profileData);
 
   const [showIn, setShowIn] = useState(profileData?.showInDistance);
   console.log('showIn Me', showIn);

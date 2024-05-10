@@ -220,7 +220,6 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
                     goToCallScreen();
                   }}>
                   <View style={styles.editIcon}>
-                    {/* <Icon1 name="phone" size={26} color="#AC25AC" /> */}
                     {/* <PhoneCallIC /> */}
                     <Image
                       source={require('../../assets/images/Phone.png/')}
@@ -234,7 +233,6 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
                     goToCallScreen();
                   }}>
                   <View style={styles.editIcon}>
-                    {/* <Icon2 name="video" size={24} color="#AC25AC" /> */}
                     {/* <VideoIC /> */}
                     <Image
                       source={require('../../assets/images/Video.png/')}

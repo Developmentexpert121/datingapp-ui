@@ -16,7 +16,7 @@ export const ProfileData = createAsyncThunk('auth/ProfileData', async () => {
   try {
     const response: any = await http.get(`/user/profile`);
     if (response.status === 200) {
-      console.log('ProfileData', response.data);
+      console.log('ProfileData auth', response.data);
       return response.data;
     }
   } catch (error: any) {
@@ -322,6 +322,30 @@ export const getAllUsers = createAsyncThunk(
     }
   },
 );
+export const getChatUsersList = createAsyncThunk(
+  'auth/getChatUsersList',
+  async ({userId}: any) => {
+    try {
+      const response = await http.get('/users/chatlist', {
+        params: {
+          id: userId,
+        },
+      });
+      if (response.status === 200) {
+        console.log('//////first', response.data);
+        return response.data;
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        return {error: 'Bad Request'};
+      } else {
+        throw error;
+      }
+    } finally {
+      //  dispatch(activityLoaderFinished());
+    }
+  },
+);
 
 export const getNotifications = createAsyncThunk(
   'auth/getNotifications',
@@ -507,6 +531,7 @@ const initialState = {
     data: {},
     profileData: {},
     allUsers: [],
+    chatUsersList: [],
     allNotifications: [],
     signInInfo: '',
     otpVerified: false,
@@ -574,7 +599,16 @@ const Auth: any = createSlice({
       .addCase(getAllUsers.rejected, (state, action) => {
         state.loading = false;
       })
-
+      .addCase(getChatUsersList.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(getChatUsersList.fulfilled, (state, action) => {
+        state.data.chatUsersList = action.payload.users;
+        state.loading = false;
+      })
+      .addCase(getChatUsersList.rejected, (state, action) => {
+        state.loading = false;
+      })
       .addCase(getNotifications.pending, (state, action) => {
         state.loading = true;
       })

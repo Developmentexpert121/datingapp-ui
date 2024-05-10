@@ -89,6 +89,12 @@ const FifthStepScreen = ({habits2, control, errors}: any) => {
         <Text style={styles.paragraphText}>
           Don't hold back Authenticity attracts authenticity.
         </Text>
+        {errors.habits2 && (
+          <Text style={{color: 'red', alignSelf: 'center', marginTop: 6}}>
+            {errors.habits2.message}
+          </Text>
+        )}
+        <View style={{height: 10}}></View>
         <Controller
           name={habits2}
           control={control}
@@ -100,7 +106,7 @@ const FifthStepScreen = ({habits2, control, errors}: any) => {
                   key={item.id}
                   style={[
                     styles.boxContainer,
-                    errors.habits2 && styles.errorBorder,
+                    // errors.habits2 && styles.errorBorder,
                   ]}>
                   <View
                     style={{
@@ -209,11 +215,6 @@ const FifthStepScreen = ({habits2, control, errors}: any) => {
             </>
           )}
         />
-        {errors.habits2 && (
-          <Text style={{color: 'red', alignSelf: 'center'}}>
-            {errors.habits2.message}
-          </Text>
-        )}
       </View>
     </ScrollView>
   );
@@ -239,7 +240,6 @@ const styles = StyleSheet.create({
   paragraphText: {
     fontFamily: 'Sansation-Regular',
     fontSize: 14,
-    marginBottom: 16,
     color: '#575757',
   },
   boxContainer: {

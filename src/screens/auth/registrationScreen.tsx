@@ -87,12 +87,12 @@ const defaultValues = {
 };
 
 const schema = yup.object().shape({
-  name: yup.string().trim().required('Name is required'),
-  phone: yup
-    .string()
-    .matches(/^[0-9]+$/, 'Phone must contain only digits')
-    .min(8, 'Phone must be at least 8 digits long')
-    .required('Phone is required'),
+  // name: yup.string().trim().required('Name is required'),
+  // phone: yup
+  //   .string()
+  //   .matches(/^[0-9]+$/, 'Phone must contain only digits')
+  //   .min(8, 'Phone must be at least 8 digits long')
+  //   .required('Phone is required'),
   email: yup.string().email('Invalid email').required('Email is required'),
   // setSelectedCountry: yup
   //   .string()
@@ -101,15 +101,15 @@ const schema = yup.object().shape({
   // state: yup.string().trim().required('State is required'),
   // city: yup.string().trim().required('City is required'),
   //
-  gender: yup.string().trim().required('Gender is required'),
-  password: yup
-    .string()
-    .required('Please Enter your password')
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})/,
-      'Must Contain 6 Characters, One Uppercase, One Lowercase, One Number and one special case character',
-    ),
-  dob: yup.string().trim().required('DOB is required'),
+  // gender: yup.string().trim().required('Gender is required'),
+  // password: yup
+  //   .string()
+  //   .required('Please Enter your password')
+  //   .matches(
+  //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})/,
+  //     'Must Contain 6 Characters, One Uppercase, One Lowercase, One Number and one special case character',
+  //   ),
+  // dob: yup.string().trim().required('DOB is required'),
 });
 
 const schema1 = yup.object().shape({
@@ -194,6 +194,13 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
       return yupResolver<any>(schema7);
     }
   };
+  const handleCloseModal = () => {
+    dispatch(
+      otpModal({
+        visible: false,
+      }),
+    );
+  };
 
   const {
     control,
@@ -204,6 +211,130 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     defaultValues,
     resolver: Schemas(steps),
   });
+  // ******************************
+  // const getLocationAndRegister = async (data: RegisterForm) => {
+  //   console.log('hite2');
+
+  //   try {
+  //     console.log('hite2.5');
+  //     const position = await new Promise((resolve, reject) => {
+  //       Geolocation.getCurrentPosition(resolve, reject, {
+  //         enableHighAccuracy: true,
+  //         timeout: 17000,
+  //         maximumAge: 10000,
+  //       });
+  //     });
+  //     console.log('hite3');
+  //     console.log('hite3');
+  //     const {latitude, longitude} = position.coords;
+  //     setLocation({latitude, longitude});
+  //     setPermissionStatus('granted');
+  //     console.log('hite4');
+
+  //     // Call registration API here
+  //     dispatch(
+  //       RegisterSignUp({
+  //         ...data,
+  //         phoneNumber: phone,
+  //         locationData: {latitude, longitude},
+  //         distance: `${distance}mi`,
+  //         profilePic: profileImages?.join(','),
+  //         dob: dob,
+  //         country: country,
+  //         state: state,
+  //         city: city,
+  //       }),
+  //     );
+
+  //     // Reset form data
+  //     reset();
+
+  //     // Navigate to Loginhome
+  //     navigate('Loginhome');
+  //   } catch (err: any) {
+  //     // Handle errors from Geolocation API
+  //     setError(err.message);
+  //     setPermissionStatus('denied');
+  //   }
+  // };
+
+  // ***************************************************************************************
+
+  // const getLocationAndRegister = async (data: RegisterForm) => {
+  //   console.log('hite1');
+  //   await Geolocation.getCurrentPosition(
+  //     async position => {
+  //       console.log('hite2');
+  //       const {latitude, longitude} = await position.coords;
+  //       setLocation({latitude, longitude});
+  //       setPermissionStatus('granted');
+  //       console.log('hite3');
+  //       // Call registration API here
+  //       dispatch(
+  //         RegisterSignUp({
+  //           ...data,
+  //           phoneNumber: phone,
+  //           location: {latitude, longitude},
+  //           distance: `${distance}mi`,
+  //           profilePic: profileImages?.join(','),
+  //           dob: dob,
+  //           country: country,
+  //           state: state,
+  //           city: city,
+  //         }),
+  //       );
+  //       reset();
+  //       navigate('Login');
+  //     },
+  //     err => {
+  //       console.log('arrr error', err);
+  //       setError(err.message);
+  //       setPermissionStatus('denied');
+  //     },
+  //     {enableHighAccuracy: true, timeout: 5000, maximumAge: 1000},
+  //   );
+  // };
+
+  // const requestLocationPermission = (data: RegisterForm) => {
+  //   console.log('hite');
+  //   Geolocation.requestAuthorization();
+  //   getLocationAndRegister(data);
+  // };
+
+  // const showPermissionPopup = (data: RegisterForm) => {
+  //   Alert.alert(
+  //     'Location Permission',
+  //     'This app needs access to your location to provide the service.',
+  //     [
+  //       {
+  //         text: 'Cancel',
+  //         onPress: () => {
+  //           setPermissionStatus('denied');
+  //           dispatch(
+  //             RegisterSignUp({
+  //               ...data,
+  //               phoneNumber: phone,
+  //               // location: {latitude, longitude},
+  //               distance: `${distance}mi`,
+  //               profilePic: profileImages?.join(','),
+  //               dob: dob,
+  //               country: country,
+  //               state: state,
+  //               city: city,
+  //             }),
+  //           );
+  //           reset();
+  //           navigate('Loginhome');
+  //         },
+  //         style: 'cancel',
+  //       },
+  //       {text: 'Allow', onPress: () => requestLocationPermission(data)},
+  //     ],
+  //   );
+  // };
+
+  //******************************************** */
+  //
 
   const getLocationAndRegister = async (data: RegisterForm) => {
     Geolocation.getCurrentPosition(
@@ -277,6 +408,8 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
       ],
     );
   };
+
+  //******************************************** */
 
   const [email, setEmail] = useState('');
   const [dob, setDob] = useState('');
@@ -497,6 +630,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
         otp={otp}
         setOtp={setOtp}
         handleResendOTP={resendOTP}
+        onClose={handleCloseModal}
       />
 
       {loader && <Loader />}

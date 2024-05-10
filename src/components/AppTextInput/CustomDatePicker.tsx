@@ -1,3 +1,4 @@
+import React, {useState, useEffect} from 'react';
 import {
   Pressable,
   StyleProp,
@@ -6,12 +7,12 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
 import Label from '../Label';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import Spacing from '../../constants/Spacing';
 import Colors from '../../constants/Colors';
+
 interface Iprops {
   label?: string;
   placeholder?: string;
@@ -37,6 +38,7 @@ interface Iprops {
   disabled?: any;
   errors?: boolean;
 }
+
 const CustomDatePicker = ({
   label,
   containerStyle,
@@ -50,27 +52,43 @@ const CustomDatePicker = ({
 }: Iprops) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState<string>('');
+  const [dateError, setDateError] = useState<string | null>(null);
+
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
+
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
   };
-  const handleConfirm = (date: any) => {
-    setDate(date);
-    onChangeText && onChangeText(date.toString());
+
+  const handleConfirm = (selectedDate: any) => {
+    const selectedDateTime = new Date(selectedDate);
+    const minDate = moment().subtract(56, 'years').toDate();
+    const maxDate = moment().subtract(18, 'years').toDate();
+
+    // Validate the selected date
+    if (selectedDateTime < minDate) {
+      setDateError('Date must be within the past 56 years');
+    } else if (selectedDateTime > maxDate) {
+      setDateError('Date must be within the last 18 years');
+    } else {
+      setDateError(null);
+    }
+
+    setDate(selectedDate);
+    if (onChangeText) {
+      onChangeText(selectedDate.toString());
+    }
     hideDatePicker();
   };
-  const currentDate = new Date();
-  const minDate = new Date(currentDate);
-  minDate.setFullYear(minDate.getFullYear() - 56); // 56 years ago
-  const maxDate = new Date(currentDate);
-  maxDate.setFullYear(maxDate.getFullYear() - 18); // 18 years ago
 
   useEffect(() => {
     setDate(value ?? '');
   }, [value]);
+
   const hasError = errors;
+
   return (
     <View style={[styles.container, containerStyle]}>
       <Label text={label} style={[styles.label]} />
@@ -91,8 +109,8 @@ const CustomDatePicker = ({
             mode="date"
             onConfirm={handleConfirm}
             onCancel={hideDatePicker}
-            minimumDate={minDate}
-            maximumDate={maxDate}
+            // minimumDate={moment().subtract(56, 'years').toDate()}
+            // maximumDate={moment().subtract(18, 'years').toDate()}
           />
           <Label
             style={{
@@ -101,17 +119,19 @@ const CustomDatePicker = ({
               textAlign: 'center',
               fontFamily: 'Sansation-Regular',
             }}
-            text={date == '' ? 'DD-MM-YYYY' : moment(date).format('DD-MM-YYYY')}
+            text={
+              date === '' ? 'DD-MM-YYYY' : moment(date).format('DD-MM-YYYY')
+            }
           />
         </Pressable>
       </View>
-      {showError && error ? (
-        <Text style={styles.error}>{'* ' + error}</Text>
-      ) : null}
+      {dateError && <Text style={styles.error}>{`* ${dateError}`}</Text>}
     </View>
   );
 };
+
 export default CustomDatePicker;
+
 const styles = StyleSheet.create({
   container: {
     marginVertical: 5,
@@ -139,7 +159,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderWidth: 1,
   },
-  error: {marginTop: 5, color: 'red'},
+  error: {marginTop: 5, color: 'red', textAlign: 'center'},
   errorBorder: {
     borderWidth: 2,
     borderColor: 'red',

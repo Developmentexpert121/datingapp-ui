@@ -11,8 +11,10 @@ import Label from '../Label';
 import MainButton from '../ButtonComponent/MainButton';
 import {RootState, useAppDispatch, useAppSelector} from '../../store/store';
 import GlobalModal from '../Modals/GlobalModal';
+import {CrossIconIC} from '../../assets/svgs';
 interface LoginFailModalProps {
   onPress?: () => void | undefined;
+  onClose?: () => void | undefined;
   text?: string | undefined;
   isVisible?: boolean | undefined;
   setOtp: any;
@@ -22,6 +24,7 @@ interface LoginFailModalProps {
   resetOTP?: () => void | undefined;
 }
 const OtpModal = ({
+  onClose,
   onPress,
   setOtp,
   otp,
@@ -91,12 +94,14 @@ const OtpModal = ({
   return (
     <Modal
       animationType={'slide'}
-      // onBackdropPress={handleCloseModal}
       visible={showOtpModal}
       transparent={true}
       style={{backgroundColor: 'transparent', margin: 0}}>
       <View style={styles.modal}>
         <View style={styles.modalstyle}>
+          <TouchableOpacity onPress={onClose} style={{alignSelf: 'flex-end'}}>
+            <CrossIconIC />
+          </TouchableOpacity>
           <Label
             text={'Enter your verification code'}
             style={styles.textstyle}
@@ -156,7 +161,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFC7FF',
     borderRadius: 10,
     alignItems: 'center',
-    justifyContent: 'center',
+    // justifyContent: 'center',
     bottom: 20,
   },
   modal: {
