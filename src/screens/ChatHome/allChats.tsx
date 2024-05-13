@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TextInput,
   SafeAreaView,
+  Image,
 } from 'react-native';
 import {ListItem, Avatar} from 'react-native-elements';
 import CommonBackbutton from '../../components/commonBackbutton/CommonBackbutton';
@@ -14,63 +15,46 @@ import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {getChatUsersList, getReceivers} from '../../store/Auth/auth';
 import {videoCallUser} from '../../store/Activity/activity';
+import SmallLoader from '../../components/Loader/SmallLoader';
 
 const ChatSection = () => {
+  const [loader, setLoader] = useState<boolean>(false);
   const navigation: any = useNavigation();
   const dispatch: any = useAppDispatch();
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-  const allUsers: any = useAppSelector(
-    (state: any) => state?.Auth?.data?.allUsers,
-  );
+  // const allUsers: any = useAppSelector(
+  //   (state: any) => state?.Auth?.data?.allUsers,
+  // );
   // console.log('allUsers allUsers', allUsers);
   const chatUsersList: any = useAppSelector(
     (state: any) => state?.Auth?.data?.chatUsersList,
   );
-  console.log('chatUsersList', chatUsersList);
   const [receiverData, setReceiverData] = useState<any>([]);
   const [chatListData, setChatListData] = useState<any>([]);
-  console.log('--------------Array', receiverData);
-  console.log('-------chatListData-------', chatListData);
+  // console.log('data List', chatListData);
 
   const goToChatWith = async (user: any) => {
     await dispatch(videoCallUser({user: user}));
     navigation.navigate('VideoCallRedirect');
   };
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await dispatch(
-  //         getReceivers({senderId: profileData._id}),
-  //       ).unwrap();
-  //       setReceiverData(response.receivers);
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //     }
-  //   };
-  //   // const intervalId = setInterval(fetchData, 5000); // Poll every 5 seconds
-  //   fetchData(); // Fetch data immediately on component mount
-  //   // return () => clearInterval(intervalId);
-  // }, []);
-
   // Seacrh Function
-
   const [search, setSearch] = useState<any>('');
   const handleSearchChange = (text: any) => {
     setSearch(text);
   };
-  const filteredReceiverData = allUsers.filter((item: any) =>
-    item.name.toLowerCase().includes(search.toLowerCase()),
-  );
+  const filteredData = chatListData.data
+    ? chatListData.data.filter((item: any) =>
+        item.name.toLowerCase().includes(search.toLowerCase()),
+      )
+    : [];
   const getTimeAgo = (timestamp: string) => {
     const timeNow = new Date();
     const timeSent = new Date(timestamp);
     const differenceInSeconds = Math.floor(
       (timeNow.getTime() - timeSent.getTime()) / 1000,
     );
-
     if (differenceInSeconds < 60) {
       return `${differenceInSeconds} sec ago`;
     } else if (differenceInSeconds < 3600) {
@@ -93,15 +77,13 @@ const ChatSection = () => {
       return `${years} years ago`;
     }
   };
-
-  // ******************
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await dispatch(
           getChatUsersList({userId: profileData._id}),
         ).unwrap();
-        setChatListData(response.receivers);
+        setChatListData(response);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -110,7 +92,6 @@ const ChatSection = () => {
     fetchData(); // Fetch data immediately on component mount
     // return () => clearInterval(intervalId);
   }, []);
-  // ******************
   const renderItem = ({item}: {item: any}) => {
     return (
       <ListItem
@@ -119,7 +100,11 @@ const ChatSection = () => {
         //
       >
         <View style={{width: '15%'}}>
-          <Avatar size={60} source={{uri: item.profilePic}} rounded />
+          {item.profilePic ? (
+            <Avatar size={60} source={{uri: item.profilePic}} rounded />
+          ) : (
+            <SmallLoader />
+          )}
         </View>
         <View style={{width: '65%'}}>
           <Text
@@ -131,12 +116,15 @@ const ChatSection = () => {
             }}>
             {item.name}
           </Text>
-          <Text
-            style={{
-              fontFamily: 'Sansation-Regular',
-            }}>
-            {item.latestMessage}
-          </Text>
+
+          {item.latestMessage && item.latestMessageTimestamp ? (
+            <Text
+              style={{
+                fontFamily: 'Sansation-Regular',
+              }}>
+              {item.latestMessage}
+            </Text>
+          ) : null}
         </View>
         <View
           style={{
@@ -144,14 +132,16 @@ const ChatSection = () => {
             rowGap: 4,
             width: '20%',
           }}>
-          <Text
-            style={{
-              fontFamily: 'Sansation-Regular',
-              fontSize: 10,
-              color: 'black',
-            }}>
-            {getTimeAgo(item.latestMessageTimestamp)}
-          </Text>
+          {item.latestMessage && item.latestMessageTimestamp ? (
+            <Text
+              style={{
+                fontFamily: 'Sansation-Regular',
+                fontSize: 10,
+                color: 'black',
+              }}>
+              {getTimeAgo(item.latestMessageTimestamp)}
+            </Text>
+          ) : null}
           <Ionicons name="checkmark-done" size={20} color="#AC25AC" />
         </View>
       </ListItem>
@@ -173,7 +163,7 @@ const ChatSection = () => {
         <Text style={styles.msgs}>Messages</Text>
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={filteredReceiverData}
+          data={filteredData}
           keyExtractor={item => item.id}
           renderItem={renderItem}
         />

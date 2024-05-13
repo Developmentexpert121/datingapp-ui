@@ -87,12 +87,12 @@ const defaultValues = {
 };
 
 const schema = yup.object().shape({
-  // name: yup.string().trim().required('Name is required'),
-  // phone: yup
-  //   .string()
-  //   .matches(/^[0-9]+$/, 'Phone must contain only digits')
-  //   .min(8, 'Phone must be at least 8 digits long')
-  //   .required('Phone is required'),
+  name: yup.string().trim().required('Name is required'),
+  phone: yup
+    .string()
+    .matches(/^[0-9]+$/, 'Phone must contain only digits')
+    .min(8, 'Phone must be at least 8 digits long')
+    .required('Phone is required'),
   email: yup.string().email('Invalid email').required('Email is required'),
   // setSelectedCountry: yup
   //   .string()
@@ -101,15 +101,15 @@ const schema = yup.object().shape({
   // state: yup.string().trim().required('State is required'),
   // city: yup.string().trim().required('City is required'),
   //
-  // gender: yup.string().trim().required('Gender is required'),
-  // password: yup
-  //   .string()
-  //   .required('Please Enter your password')
-  //   .matches(
-  //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})/,
-  //     'Must Contain 6 Characters, One Uppercase, One Lowercase, One Number and one special case character',
-  //   ),
-  // dob: yup.string().trim().required('DOB is required'),
+  gender: yup.string().trim().required('Gender is required'),
+  password: yup
+    .string()
+    .required('Please Enter your password')
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})/,
+      'Must Contain 6 Characters, One Uppercase, One Lowercase, One Number and one special case character',
+    ),
+  dob: yup.string().trim().required('DOB is required'),
 });
 
 const schema1 = yup.object().shape({

@@ -7,7 +7,6 @@ import {
   SafeAreaView,
 } from 'react-native';
 import React, {useEffect, useMemo, useState} from 'react';
-import {RadioButton} from 'react-native-paper';
 import AppTextInput from '../../../components/AppTextInput/AppTextInput';
 import {Controller} from 'react-hook-form';
 import Colors from '../../../constants/Colors';

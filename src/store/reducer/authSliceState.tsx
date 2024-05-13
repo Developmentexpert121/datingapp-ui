@@ -6,6 +6,7 @@ export interface Iprops {
   showOtpModal?: boolean;
   showLoader?: boolean;
   isNavigate?: string;
+  isLoggedin: boolean;
 }
 const initialState: Iprops = {
   showGlobalModal: false,
@@ -13,6 +14,7 @@ const initialState: Iprops = {
   showOtpModal: false,
   showLoader: false,
   isNavigate: '',
+  isLoggedin: false,
 };
 export const authSice = createSlice({
   name: 'authSice',
@@ -31,9 +33,39 @@ export const authSice = createSlice({
     navigation: (state, action) => {
       state.isNavigate = action.payload;
     },
+    setAuthentication: (state, {payload}) => {
+      state.isLoggedin = payload;
+    },
+    resetSlice: state => {
+      // state.userSignUpData = {
+      //   loginType: 'EMAIL',
+      //   role: 'U',
+      //   email: '',
+      //   password: '',
+      //   confirmPassword: '',
+      //   deviceToken: 'dhjjhhhjhkjhdskhhsdkhdsh',
+      // };
+      // state.userLoginData = {
+      //   loginType: 'EMAIL',
+      //   role: 'U',
+      //   email: '',
+      //   deviceToken: 'jkhreehhh',
+      //   password: '',
+      // };
+      state.isLoggedin = false;
+      // state.apiError = undefined;
+      // removeLocalStorage('token');
+      // removeLocalStorage('isProfileCompleted');
+      // removeLocalStorage('userProfileData');
+    },
   },
 });
 
-export const {toggleGlobalModal, otpModal, globaLoader, navigation} =
-  authSice.actions;
+export const {
+  toggleGlobalModal,
+  otpModal,
+  globaLoader,
+  navigation,
+  setAuthentication,
+} = authSice.actions;
 export default authSice.reducer;
