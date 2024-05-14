@@ -15,31 +15,10 @@ import {AppleIC, FacebookIC, GoogleIC} from '../../assets/svgs';
 import MainButton from '../../components/ButtonComponent/MainButton';
 import Colors from '../../constants/Colors';
 import {useNavigation} from '@react-navigation/native';
-import {
-  GoogleSignin,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
-// import AppleAuthentication from '@invertase/react-native-apple-authentication';
-import * as AppleAuthentication from '@invertase/react-native-apple-authentication';
-// import {_googleLogin, onAppleButtonPress} from '../../store/Auth/socialLogin';
-import {GoogleLogin} from '../../store/Auth/auth';
-import {useDispatch} from 'react-redux';
 import {useAppDispatch} from '../../store/store';
 import {googleLogin} from '../../store/Auth/socialLogin';
 import {setLocalStorage} from '../../api/storage';
 import {setAuthentication} from '../../store/reducer/authSliceState';
-
-// import {LoginButton, AccessToken} from 'react-native-fbsdk-next';
-
-GoogleSignin.configure({
-  webClientId:
-    '1097775841702-5l4cg4rsng9hhjnjlmah7n75et0eqj4l.apps.googleusercontent.com',
-  offlineAccess: true,
-  hostedDomain: '',
-  accountName: '',
-  iosClientId:
-    '1097775841702-3616366houm9b5durv1ndpnv3779f07p.apps.googleusercontent.com',
-});
 interface AppleAuthResponse {
   user: string;
   email: string | null;

@@ -31,7 +31,7 @@ const HomeScreen = () => {
     (state: any) => state?.Auth?.data?.profileData,
   );
 
-  // console.log('profileData0', profileData);
+  console.log('profileData0', profileData);
 
   const [showIn, setShowIn] = useState(profileData?.showInDistance);
   console.log('showIn Me', showIn);
@@ -39,7 +39,7 @@ const HomeScreen = () => {
   const [distance, setDistance] = useState(
     parseInt(profileData?.distance) || 50,
   );
-  console.log('distance', distance);
+  // console.log('distance', distance);
 
   const isAuthenticated = useAppSelector(
     (state: any) => state?.Auth?.isAuthenticated,
@@ -48,7 +48,7 @@ const HomeScreen = () => {
     dispatch(ProfileData());
   }, []);
   console.log('---isAuthenticated', isAuthenticated);
-  console.log('---ProfileData', ProfileData);
+  // console.log('---ProfileData', ProfileData);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [data, setData] = useState([]);

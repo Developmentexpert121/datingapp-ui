@@ -138,7 +138,7 @@ const SeventhStepScreen = ({
             setUploadError(true);
           }
           setLoader(false);
-        }, 2000);
+        }, 200);
       }
     });
   };

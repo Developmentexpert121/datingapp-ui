@@ -94,13 +94,11 @@ const schema = yup.object().shape({
     .min(8, 'Phone must be at least 8 digits long')
     .required('Phone is required'),
   email: yup.string().email('Invalid email').required('Email is required'),
-  // setSelectedCountry: yup
-  //   .string()
-  //   .trim()
-  //   .required('Country, State, and City is required'),
+  // *************
+  // country: yup.string().trim().required('Country, State, and City is required'),
   // state: yup.string().trim().required('State is required'),
   // city: yup.string().trim().required('City is required'),
-  //
+  // *************
   gender: yup.string().trim().required('Gender is required'),
   password: yup
     .string()
@@ -167,10 +165,10 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const [otp, setOtp] = useState<string[]>(['', '', '', '', '', '']);
   const [loader, setLoader] = useState<boolean>(false);
   const [phone, setPhone] = useState<object>({});
-
   const [country, setSelectedCountry] = useState<string | null>(null);
   const [state, setSelectedState] = useState<string | null>(null);
   const [city, setSelectedCity] = useState<string | null>(null);
+  // console.log('.......', country);
 
   const dispatch: any = useAppDispatch();
 

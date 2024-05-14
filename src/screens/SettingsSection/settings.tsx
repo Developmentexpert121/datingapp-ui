@@ -314,6 +314,8 @@ const SettingsSection = () => {
     Geolocation.getCurrentPosition(
       position => {
         const {latitude, longitude} = position.coords;
+        console.log(latitude);
+        console.log(longitude);
         setPermissionStatus('granted');
         // Call registration API here
         dispatch(

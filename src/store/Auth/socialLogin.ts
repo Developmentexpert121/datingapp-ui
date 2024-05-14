@@ -7,26 +7,27 @@ import jwt_decode from 'jwt-decode';
 
 export const configureGoogleSignIn = async () => {
   await GoogleSignin.configure({
-    // scopes: googleScopes, // what API you want to access on behalf of the user, default is email and profile
+    // scopes: googleScopes,
     webClientId:
-      '1097775841702-5l4cg4rsng9hhjnjlmah7n75et0eqj4l.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+      '926614695799-nq2mij6q6a8ok8oomurtl962kd3d62pd.apps.googleusercontent.com',
     offlineAccess: false,
-    hostedDomain: '',
-    accountName: '',
+    // hostedDomain: '',
+    // accountName: '',
     iosClientId:
       '1097775841702-3616366houm9b5durv1ndpnv3779f07p.apps.googleusercontent.com',
   });
 };
 
 export const googleLogin = async () => {
-  //function to sign in google account
   configureGoogleSignIn();
   try {
     await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
+    console.log('00000000', GoogleSignin);
     const userInfo = await GoogleSignin.signIn();
+    console.log('111111111111');
     return userInfo?.user;
   } catch (error) {
-    console.log(error);
+    console.log('hhhh', error);
   }
 };
 

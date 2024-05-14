@@ -11,6 +11,7 @@ import {
 } from 'country-state-city';
 import Spacing from '../../constants/Spacing';
 import Colors from '../../constants/Colors';
+import {Text} from 'react-native-elements';
 
 // Define an interface for the props
 interface CountryCityProps {
@@ -116,7 +117,7 @@ const CountryCity: FC<CountryCityProps> = ({
       onSetScrollEnabled(!isOpen);
     }
   };
-
+  // console.log('::::', errors);
   return (
     <View style={styles.container}>
       {/* Country Dropdown */}

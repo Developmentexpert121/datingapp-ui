@@ -193,12 +193,16 @@ const ZeroStepScreen = ({
             errors={errors?.country}
             onSetScrollEnabled={setScrollEnabled}
           />
-
-          {errors.setSelectedCountry && (
+          {errors.country && (
+            <Text style={{color: 'red', alignSelf: 'center', marginTop: 6}}>
+              {errors.country.message}
+            </Text>
+          )}
+          {/* {errors.setSelectedCountry && (
             <Text style={styles.errorText}>
               {errors.setSelectedCountry.message}
             </Text>
-          )}
+          )} */}
         </View>
         {/* Mail */}
         <View style={styles.container}>

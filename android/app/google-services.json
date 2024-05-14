@@ -9,10 +9,15 @@
       "client_info": {
         "mobilesdk_app_id": "1:926614695799:android:42ee9ff5e457d3b370fb72",
         "android_client_info": {
-          "package_name": "com.toptierdating"
+          "package_name": "com.datingapp"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "926614695799-nq2mij6q6a8ok8oomurtl962kd3d62pd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBncREhlivlcZs_DGZI7BO3J3Q_FrrSniA"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "926614695799-nq2mij6q6a8ok8oomurtl962kd3d62pd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "926614695799-ajqn7ev3tn6rvprf22aukon50a8qf0t4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "Dating-App"
+              }
+            }
+          ]
         }
       }
     }

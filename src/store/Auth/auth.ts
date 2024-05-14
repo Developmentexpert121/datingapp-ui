@@ -16,7 +16,7 @@ export const ProfileData = createAsyncThunk('auth/ProfileData', async () => {
   try {
     const response: any = await http.get(`/user/profile`);
     if (response.status === 200) {
-      console.log('ProfileData auth', response.data);
+      // console.log('ProfileData auth', response.data);
       return response.data;
     }
   } catch (error: any) {
@@ -298,6 +298,7 @@ export const getAllUsers = createAsyncThunk(
     {dispatch}: any,
   ) => {
     try {
+      console.log('.........checkedInterests', checkedInterests);
       const response = await http.get('/user/getUsers', {
         params: {
           id: userId,

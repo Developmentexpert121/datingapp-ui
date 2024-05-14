@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   modalstyle: {
-    height: '50%',
+    height: 325,
     width: '90%',
     backgroundColor: '#FFC7FF',
     borderRadius: 10,

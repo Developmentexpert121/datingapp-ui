@@ -46,7 +46,7 @@ const SecondStepScreen = ({partnerType, control, errors}: any) => {
   ];
 
   return (
-    <View>
+    <View style={{flex: 1}}>
       <View style={styles.container}>
         <Text style={styles.headerText}>Right now I'm looking for...</Text>
         <Text style={styles.paragraphText}>
