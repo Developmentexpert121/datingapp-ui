@@ -1,41 +1,34 @@
 {
   "project_info": {
-    "project_number": "926614695799",
-    "project_id": "dating-app-4b44c",
-    "storage_bucket": "dating-app-4b44c.appspot.com"
+    "project_number": "525170388912",
+    "project_id": "toptier-dating-a2942",
+    "storage_bucket": "toptier-dating-a2942.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:926614695799:android:42ee9ff5e457d3b370fb72",
+        "mobilesdk_app_id": "1:525170388912:android:c35172aaa2f54f178c3075",
         "android_client_info": {
-          "package_name": "com.datingapp"
+          "package_name": "com.toptierdating"
         }
       },
       "oauth_client": [
         {
-          "client_id": "926614695799-nq2mij6q6a8ok8oomurtl962kd3d62pd.apps.googleusercontent.com",
+          "client_id": "525170388912-venl0pg78o0idesf36n54pet7mvg9von.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBncREhlivlcZs_DGZI7BO3J3Q_FrrSniA"
+          "current_key": "AIzaSyAUO5v_-yE8dtSfGR9oIut7DKEpKeIalgg"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "926614695799-nq2mij6q6a8ok8oomurtl962kd3d62pd.apps.googleusercontent.com",
+              "client_id": "525170388912-venl0pg78o0idesf36n54pet7mvg9von.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "926614695799-ajqn7ev3tn6rvprf22aukon50a8qf0t4.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "Dating-App"
-              }
             }
           ]
         }

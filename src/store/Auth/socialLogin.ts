@@ -9,12 +9,12 @@ export const configureGoogleSignIn = async () => {
   await GoogleSignin.configure({
     // scopes: googleScopes,
     webClientId:
-      '926614695799-nq2mij6q6a8ok8oomurtl962kd3d62pd.apps.googleusercontent.com',
+      '525170388912-venl0pg78o0idesf36n54pet7mvg9von.apps.googleusercontent.com',
     offlineAccess: false,
     // hostedDomain: '',
     // accountName: '',
     iosClientId:
-      '1097775841702-3616366houm9b5durv1ndpnv3779f07p.apps.googleusercontent.com',
+      '151623051367-evoer0qadv6g613aaiea5o2bd0s4sa3c.apps.googleusercontent.com',
   });
 };
 

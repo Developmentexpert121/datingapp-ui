@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>926614695799-ajqn7ev3tn6rvprf22aukon50a8qf0t4.apps.googleusercontent.com</string>
+	<string>525170388912-eorb7m1587a3gk6s3n9re3r3eo5gbo75.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.926614695799-ajqn7ev3tn6rvprf22aukon50a8qf0t4</string>
+	<string>com.googleusercontent.apps.525170388912-eorb7m1587a3gk6s3n9re3r3eo5gbo75</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAYjwbYSLbae0rTQHXZdkvJYF-uPrZ_0ro</string>
+	<string>AIzaSyAtqa4_Lij6XREwsJ1zs-DKWHi7-Z1Rby0</string>
 	<key>GCM_SENDER_ID</key>
-	<string>926614695799</string>
+	<string>525170388912</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>Dating-App</string>
+	<string>com.toptierdating.app</string>
 	<key>PROJECT_ID</key>
-	<string>dating-app-4b44c</string>
+	<string>toptier-dating-a2942</string>
 	<key>STORAGE_BUCKET</key>
-	<string>dating-app-4b44c.appspot.com</string>
+	<string>toptier-dating-a2942.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:926614695799:ios:27f3b2c5cf35681570fb72</string>
+	<string>1:525170388912:ios:d44f955e7e2f68d88c3075</string>
 </dict>
 </plist>

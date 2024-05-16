@@ -156,7 +156,7 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
                 autoCapitalize="none"
                 control={control}
                 errors={Boolean(errors?.email)}
-                keyboardType="email-address"
+                // keyboardType="email-address"
               />
               <View style={{height: 15}}>
                 {errors.email && (

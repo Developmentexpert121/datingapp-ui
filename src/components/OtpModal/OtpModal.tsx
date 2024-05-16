@@ -103,7 +103,7 @@ const OtpModal = ({
             <CrossIconIC />
           </TouchableOpacity>
           <Label
-            text={'Enter your verification code'}
+            text={'Enter your verification code from email'}
             style={styles.textstyle}
           />
           <View style={styles.otpContainer}>
@@ -148,7 +148,7 @@ const OtpModal = ({
 export default OtpModal;
 const styles = StyleSheet.create({
   textstyle: {
-    width: '50%',
+    width: '70%',
     fontSize: 20,
     // fontWeight: "400",
     color: '#071731',

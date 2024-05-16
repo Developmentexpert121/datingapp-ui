@@ -621,7 +621,8 @@ const Auth: any = createSlice({
         state.loading = false;
       })
       .addCase(VerifyOtp.fulfilled, (state, action) => {
-        state.data.otpVerified = true;
+        console.log('/////////', action.payload);
+        state.data.otpVerified = action.payload.success;
       })
       .addCase(updateAuthentication.fulfilled, (state, action) => {
         state.isAuthenticated = false;

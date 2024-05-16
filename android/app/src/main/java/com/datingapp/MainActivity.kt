@@ -4,6 +4,11 @@ import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
 import com.facebook.react.defaults.DefaultReactActivityDelegate
+import android.content.Intent;
+import com.facebook.react.ReactRootView;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import android.os.Bundle;
 import org.devio.rn.splashscreen.SplashScreen;
 

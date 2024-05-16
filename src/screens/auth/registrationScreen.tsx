@@ -433,6 +433,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     }
     if (steps === 0 && !otpVerified) {
       setLoader(true);
+      console.log('first', otpVerified);
       try {
         await dispatch(
           EmailVerification({

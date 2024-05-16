@@ -9,6 +9,8 @@ PODS:
   - BVLinearGradient (2.8.3):
     - React-Core
   - DoubleConversion (1.1.6)
+  - FBAEMKit (17.0.1):
+    - FBSDKCoreKit_Basics (= 17.0.1)
   - FBLazyVector (0.73.1)
   - FBReactNativeSpec (0.73.1):
     - RCT-Folly (= 2022.05.16.00)
@@ -17,9 +19,24 @@ PODS:
     - React-Core (= 0.73.1)
     - React-jsi (= 0.73.1)
     - ReactCommon/turbomodule/core (= 0.73.1)
+  - FBSDKCoreKit (17.0.1):
+    - FBAEMKit (= 17.0.1)
+    - FBSDKCoreKit_Basics (= 17.0.1)
+  - FBSDKCoreKit_Basics (17.0.1)
+  - FBSDKGamingServicesKit (17.0.1):
+    - FBSDKCoreKit (= 17.0.1)
+    - FBSDKCoreKit_Basics (= 17.0.1)
+    - FBSDKShareKit (= 17.0.1)
+  - FBSDKLoginKit (17.0.1):
+    - FBSDKCoreKit (= 17.0.1)
+  - FBSDKShareKit (17.0.1):
+    - FBSDKCoreKit (= 17.0.1)
   - Firebase/AnalyticsWithoutAdIdSupport (10.24.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics/WithoutAdIdSupport (~> 10.24.0)
+  - Firebase/Auth (10.24.0):
+    - Firebase/CoreOnly
+    - FirebaseAuth (~> 10.24.0)
   - Firebase/CoreOnly (10.24.0):
     - FirebaseCore (= 10.24.0)
   - FirebaseAnalytics/WithoutAdIdSupport (10.24.0):
@@ -31,6 +48,14 @@ PODS:
     - GoogleUtilities/Network (~> 7.11)
     - "GoogleUtilities/NSData+zlib (~> 7.11)"
     - nanopb (< 2.30911.0, >= 2.30908.0)
+  - FirebaseAppCheckInterop (10.25.0)
+  - FirebaseAuth (10.24.0):
+    - FirebaseAppCheckInterop (~> 10.17)
+    - FirebaseCore (~> 10.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.8)
+    - GoogleUtilities/Environment (~> 7.8)
+    - GTMSessionFetcher/Core (< 4.0, >= 2.1)
+    - RecaptchaInterop (~> 100.0)
   - FirebaseCore (10.24.0):
     - FirebaseCoreInternal (~> 10.0)
     - GoogleUtilities/Environment (~> 7.12)
@@ -996,6 +1021,21 @@ PODS:
   - React-Mapbuffer (0.73.1):
     - glog
     - React-debug
+  - react-native-fbsdk-next (13.0.0):
+    - React-Core
+    - react-native-fbsdk-next/Core (= 13.0.0)
+    - react-native-fbsdk-next/Login (= 13.0.0)
+    - react-native-fbsdk-next/Share (= 13.0.0)
+  - react-native-fbsdk-next/Core (13.0.0):
+    - FBSDKCoreKit (~> 17.0.0)
+    - React-Core
+  - react-native-fbsdk-next/Login (13.0.0):
+    - FBSDKLoginKit (~> 17.0.0)
+    - React-Core
+  - react-native-fbsdk-next/Share (13.0.0):
+    - FBSDKGamingServicesKit (~> 17.0.0)
+    - FBSDKShareKit (~> 17.0.0)
+    - React-Core
   - react-native-geolocation (3.2.1):
     - glog
     - RCT-Folly (= 2022.05.16.00)
@@ -1187,6 +1227,7 @@ PODS:
     - React-perflogger (= 0.73.1)
   - ReactNativeIncallManager (4.2.0):
     - React-Core
+  - RecaptchaInterop (100.0.0)
   - rn-fetch-blob (0.12.0):
     - React-Core
   - RNAppleAuthentication (2.3.0):
@@ -1204,6 +1245,10 @@ PODS:
   - RNFBApp (19.2.2):
     - Firebase/CoreOnly (= 10.24.0)
     - React-Core
+  - RNFBAuth (19.2.2):
+    - Firebase/Auth (= 10.24.0)
+    - React-Core
+    - RNFBApp
   - RNGestureHandler (2.16.2):
     - glog
     - RCT-Folly (= 2022.05.16.00)
@@ -1228,7 +1273,7 @@ PODS:
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
     - React-RCTImage
-  - RNSVG (14.1.0):
+  - RNSVG (14.2.0):
     - React-Core
   - RNVectorIcons (10.1.0):
     - glog
@@ -1281,6 +1326,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector-modern`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
+  - react-native-fbsdk-next (from `../node_modules/react-native-fbsdk-next`)
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-maps (from `../node_modules/react-native-maps`)
@@ -1317,6 +1363,7 @@ DEPENDENCIES:
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - "RNFBAnalytics (from `../node_modules/@react-native-firebase/analytics`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
+  - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - "RNNotifee (from `../node_modules/@notifee/react-native`)"
@@ -1333,8 +1380,16 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - AppAuth
+    - FBAEMKit
+    - FBSDKCoreKit
+    - FBSDKCoreKit_Basics
+    - FBSDKGamingServicesKit
+    - FBSDKLoginKit
+    - FBSDKShareKit
     - Firebase
     - FirebaseAnalytics
+    - FirebaseAppCheckInterop
+    - FirebaseAuth
     - FirebaseCore
     - FirebaseCoreInternal
     - FirebaseInstallations
@@ -1349,6 +1404,7 @@ SPEC REPOS:
     - lottie-ios
     - nanopb
     - PromisesObjC
+    - RecaptchaInterop
     - SocketRocket
 
 EXTERNAL SOURCES:
@@ -1411,6 +1467,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   React-Mapbuffer:
     :path: "../node_modules/react-native/ReactCommon"
+  react-native-fbsdk-next:
+    :path: "../node_modules/react-native-fbsdk-next"
   react-native-geolocation:
     :path: "../node_modules/@react-native-community/geolocation"
   react-native-image-picker:
@@ -1483,6 +1541,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/analytics"
   RNFBApp:
     :path: "../node_modules/@react-native-firebase/app"
+  RNFBAuth:
+    :path: "../node_modules/@react-native-firebase/auth"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNGoogleSignin:
@@ -1513,10 +1573,18 @@ SPEC CHECKSUMS:
   boost: 26fad476bfa736552bbfa698a06cc530475c1505
   BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
   DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953
+  FBAEMKit: 97eaf41451b49691447df831f7f425229ae64b66
   FBLazyVector: 2296bacb2fa157a43991048b0a9d71c1c8b65083
   FBReactNativeSpec: df0ebe69acd14ce0be0269cf75b6e338a727259b
+  FBSDKCoreKit: e34084567d11cfdd4787ace2b1a0255bedf34ade
+  FBSDKCoreKit_Basics: 3d78e5fe00504e5c1aed1c48de0654c3a1565d15
+  FBSDKGamingServicesKit: da5ffcbe3a9e369db8c235641500ea18e576c40c
+  FBSDKLoginKit: 9a581053879a1e6fc3fab8ead341c78c6a318255
+  FBSDKShareKit: c3b14e2aa947fc6dc8d3ccdd52bfe5ddc88049cf
   Firebase: 91fefd38712feb9186ea8996af6cbdef41473442
   FirebaseAnalytics: b5efc493eb0f40ec560b04a472e3e1a15d39ca13
+  FirebaseAppCheckInterop: 5da5ce93e8797a215e3f677fb0654b74e736c8b8
+  FirebaseAuth: 711d01cccefaf10035b3090a92956d0dd4f99088
   FirebaseCore: 11dc8a16dfb7c5e3c3f45ba0e191a33ac4f50894
   FirebaseCoreInternal: bcb5acffd4ea05e12a783ecf835f2210ce3dc6af
   FirebaseInstallations: 8f581fca6478a50705d2bd2abd66d306e0f5736e
@@ -1555,6 +1623,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 369048694e39942063c5d08e9580b43e2edd379a
   React-logger: e0c1e918d9588a9f39c9bc62d9d6bfe9ca238d9d
   React-Mapbuffer: babe0bb3746937775f8a3a89b861cea3c077162d
+  react-native-fbsdk-next: 84746ea062dc3b1a422154d7674ba4c5836b6d82
   react-native-geolocation: 1a28156c0c562c894460e1b359e12fe4c13d0240
   react-native-image-picker: fefff630cfa3ee6a809f6ac6569981f4a34e0050
   react-native-maps: 4c07b21deac3ac3579558956b63e288efb8725bb
@@ -1584,6 +1653,7 @@ SPEC CHECKSUMS:
   React-utils: fefa27e6d4a5b733f5e76cf8802ccf023ff8cc94
   ReactCommon: 73242ec9768e71688f35ad97ae3d0709a0f66435
   ReactNativeIncallManager: bfc9c67358cd524882a7c4116dcb311ac2293d4b
+  RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNAppleAuthentication: e99eaf3c4c01ad8ecb6125dd6f0cfd98871685b5
   RNCallKeep: 2015ba5eb74666407e3613fd54c65bd227624a0a
@@ -1591,13 +1661,14 @@ SPEC CHECKSUMS:
   RNDateTimePicker: 4f3c4dbd4f908be32ec8c93f086e8924bd4a2e07
   RNFBAnalytics: 56a13f68c23e236cc5ca7fab1573398287633c15
   RNFBApp: 91311b27bc9a33e23b76a62825afd1635501018a
+  RNFBAuth: 92172d8976baaa829825017174106e2b2c550319
   RNGestureHandler: a51b249f3c779e38a5d9ec45cb107d8780b39fb2
   RNGoogleSignin: 24d3b3261f78b0fae0aa013f8ab6f8d25e369b0c
   RNNotifee: 8e2d3df3f0e9ce8f5d1fe4c967431138190b6175
   RNPermissions: 294531ede5a64d1528463e88fffef05675842042
   RNReanimated: 974a111de8e7b1dc7dbfee3412309c2d7922f1be
   RNScreens: 35f3344904f6bba888c0e61532278436e275de3c
-  RNSVG: ba3e7232f45e34b7b47e74472386cf4e1a676d0a
+  RNSVG: 963a95f1f5d512a13d11ffd50d351c87fb5c6890
   RNVectorIcons: 9282eb0aef2f7d4747f621aa6c586ce910de23b1
   RNVoipPushNotification: 543e18f83089134a35e7f1d2eba4c8b1f7776b08
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17

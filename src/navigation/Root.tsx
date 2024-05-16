@@ -16,7 +16,7 @@ import SplashScreen from 'react-native-splash-screen';
 import {requestNotifications} from 'react-native-permissions';
 import FilterSection from '../screens/FilterSection/filterSection';
 import {useNavigation} from '@react-navigation/native';
-import {configureGoogleSignIn} from '../store/Auth/socialLogin';
+// import {configureGoogleSignIn} from '../store/Auth/socialLogin';
 export type RegisterType = {};
 export type RootStackParamList = {
   Home: undefined;
@@ -44,7 +44,7 @@ const Root = () => {
 
   const navigation: any = useNavigation();
   useEffect(() => {
-    configureGoogleSignIn();
+    // configureGoogleSignIn();
     setTimeout(() => {
       setLoading(false);
       SplashScreen.hide();

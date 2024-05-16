@@ -15,7 +15,7 @@
 		3A04FE25AEC1490EAF39DA49 /* PassionOne-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FB51463032AE48548C8355C8 /* PassionOne-Black.ttf */; };
 		3B895E11EF2936C033842C6E /* Pods_DatingApp_DatingAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DA205B2F181DC0AA63C34BD /* Pods_DatingApp_DatingAppTests.framework */; };
 		69BDFC65BAD3441AAF1AA2AE /* Sansation-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1E92A9EBB09D422CA4247D82 /* Sansation-Italic.ttf */; };
-		73B7A5702BD61B3F007DA69A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 73B7A56F2BD61B3F007DA69A /* GoogleService-Info.plist */; };
+		73DC13422BF49CF100D8D964 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 73DC13412BF49CF100D8D964 /* GoogleService-Info.plist */; };
 		7AE3F1C654F84C6A8FD4257E /* Sansation-Bold-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 166BB430F5E84D20A712F40F /* Sansation-Bold-Italic.ttf */; };
 		7E62B00978FB4E7ABCB2442C /* Sansation-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0BFA7B56BC3B4E70A245AFD2 /* Sansation-Light.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -58,7 +58,8 @@
 		5709B34CF0A7D63546082F79 /* Pods-DatingApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DatingApp.release.xcconfig"; path = "Target Support Files/Pods-DatingApp/Pods-DatingApp.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-DatingApp-DatingAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DatingApp-DatingAppTests.debug.xcconfig"; path = "Target Support Files/Pods-DatingApp-DatingAppTests/Pods-DatingApp-DatingAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DA205B2F181DC0AA63C34BD /* Pods_DatingApp_DatingAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DatingApp_DatingAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		73B7A56F2BD61B3F007DA69A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Documents/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		7331E69F2BF64518009052FA /* DatingAppRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = DatingAppRelease.entitlements; path = DatingApp/DatingAppRelease.entitlements; sourceTree = "<group>"; };
+		73DC13412BF49CF100D8D964 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = DatingApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8889862103064F618212876F /* Sansation-Light-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Sansation-Light-Italic.ttf"; path = "../src/assets/fonts/Sansation-Light-Italic.ttf"; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-DatingApp-DatingAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DatingApp-DatingAppTests.release.xcconfig"; path = "Target Support Files/Pods-DatingApp-DatingAppTests/Pods-DatingApp-DatingAppTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -108,12 +109,13 @@
 		13B07FAE1A68108700A75B9A /* DatingApp */ = {
 			isa = PBXGroup;
 			children = (
+				7331E69F2BF64518009052FA /* DatingAppRelease.entitlements */,
 				A70C929B2BAD904E00646DD7 /* Ionicons.ttf */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
-				73B7A56F2BD61B3F007DA69A /* GoogleService-Info.plist */,
+				73DC13412BF49CF100D8D964 /* GoogleService-Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
@@ -286,13 +288,13 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				73B7A5702BD61B3F007DA69A /* GoogleService-Info.plist in Resources */,
 				3A04FE25AEC1490EAF39DA49 /* PassionOne-Black.ttf in Resources */,
 				A4502E740C3D48C5B4DFB619 /* PassionOne-Regular.ttf in Resources */,
 				7AE3F1C654F84C6A8FD4257E /* Sansation-Bold-Italic.ttf in Resources */,
 				9EDBDE7E130C43A0B4801287 /* Sansation-Bold.ttf in Resources */,
 				69BDFC65BAD3441AAF1AA2AE /* Sansation-Italic.ttf in Resources */,
 				1AF04B7BF7F0411ABC3E49EC /* Sansation-Light-Italic.ttf in Resources */,
+				73DC13422BF49CF100D8D964 /* GoogleService-Info.plist in Resources */,
 				7E62B00978FB4E7ABCB2442C /* Sansation-Light.ttf in Resources */,
 				B31EBCC6B483476A879D15DF /* Sansation-Regular.ttf in Resources */,
 			);
@@ -558,6 +560,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = DatingApp/DatingAppRelease.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 13;

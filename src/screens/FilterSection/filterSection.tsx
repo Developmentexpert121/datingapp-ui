@@ -138,7 +138,7 @@ const FilterSection = ({
         <View style={styles.distance}>
           <Text style={styles.textName}>Distance Preference</Text>
           <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
-            {distance} MT
+            {distance} Mi
           </Text>
         </View>
         <View style={styles.line} />
