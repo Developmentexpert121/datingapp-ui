@@ -168,7 +168,12 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const [country, setSelectedCountry] = useState<string | null>(null);
   const [state, setSelectedState] = useState<string | null>(null);
   const [city, setSelectedCity] = useState<string | null>(null);
-  // console.log('.......', country);
+  const [dob, setDob] = useState('');
+  const [email, setEmail] = useState('');
+  console.log('.......1', dob);
+  console.log('.......2', country);
+  console.log('.......3', state);
+  console.log('.......4', city);
 
   const dispatch: any = useAppDispatch();
 
@@ -408,9 +413,6 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   };
 
   //******************************************** */
-
-  const [email, setEmail] = useState('');
-  const [dob, setDob] = useState('');
 
   const onSubmit: any = async (data: RegisterForm) => {
     console.log('onSubmitfirst', data);

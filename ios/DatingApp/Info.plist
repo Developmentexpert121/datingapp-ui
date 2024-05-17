@@ -42,10 +42,15 @@
     <string>$(MARKETING_VERSION)</string>
     <key>CFBundleSignature</key>
     <string>????</string>
-    <key>CFBundleURLSchemes</key>
-    <array>
-        <string>151623051367-evoer0qadv6g613aaiea5o2bd0s4sa3c.apps.googleusercontent.com</string>
-    </array>
+    <key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.151623051367-evoer0qadv6g613aaiea5o2bd0s4sa3c</string>
+			</array>
+		</dict>
+	</array>
     <key>CFBundleVersion</key>
     <string>$(CURRENT_PROJECT_VERSION)</string>
     <key>GIDClientID</key>

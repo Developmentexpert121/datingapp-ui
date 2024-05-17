@@ -20,17 +20,12 @@ import {useAppDispatch} from '../../store/store';
 // import {googleLogin} from '../../store/Auth/socialLogin';
 import {setLocalStorage} from '../../api/storage';
 import {setAuthentication} from '../../store/reducer/authSliceState';
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-} from '@react-native-google-signin/google-signin';
-import auth from '@react-native-firebase/auth';
 import appleAuth, {
   AppleRequestOperation,
   AppleRequestScope,
 } from '@invertase/react-native-apple-authentication';
-
 import {LoginManager, AccessToken} from 'react-native-fbsdk-next';
+import {googleLogin, onAppleButtonPress} from '../../store/Auth/socialLogin';
 interface AppleAuthResponse {
   user: string;
   email: string | null;
@@ -38,14 +33,6 @@ interface AppleAuthResponse {
   identityToken: string | null;
   authorizationCode: string | null;
 }
-
-// ******************
-// GoogleSignin.configure({
-//   webClientId:
-//     '525170388912-venl0pg78o0idesf36n54pet7mvg9von.apps.googleusercontent.com',
-//   offlineAccess: true,
-// });
-// ***************
 type Props = NativeStackScreenProps<RootStackParamList, 'Loginhome'>;
 const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const [state, setState] = useState<string>('');
@@ -55,158 +42,122 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const [activeModal, setActiveModal] = useState<boolean>(false);
   const [msg, setMsg] = useState<string | undefined>('');
   // **************
-  async function onGoogleButtonPress2() {
-    // Check if your device supports Google Play
-    await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
-    // Get the users ID token
-    const {idToken} = await GoogleSignin.signIn();
-
-    // Create a Google credential with the token
-    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-
-    // Sign-in the user with the credential
-    return auth().signInWithCredential(googleCredential);
-  }
-
-  const onGoogleButtonPress1 = async () => {
-    try {
-      GoogleSignin.configure({
-        scopes: ['profile', 'email'],
-        webClientId:
-          '151623051367-b882b5sufigjbholkehodmi9ccn4hv6m.apps.googleusercontent.com',
-        offlineAccess: false,
-      });
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-
-      console.log('userInfouserInfo 000000 ', userInfo);
-      return userInfo;
-      // const googleCredential = auth.GoogleAuthProvider.credential(userInfo.idToken);
-      // await auth().signInWithCredential(googleCredential);
-    } catch (error) {
-      console.log('hhhhhhhhg', error);
-    }
-  };
-
-  const onGoogleButtonPress = async () => {
-    await onGoogleButtonPress1().then((data: any) => {
-      console.log('dataaaaa ', data);
-    });
-  };
   // **************
 
-  // const handleNavigation = (response: any) => {
-  //   if (!response.payload?.data.otpVerified) {
-  //     navigation.navigate('Loginhome');
-  //   } else if (!response.payload?.data?.isProfileCompleted) {
-  //     navigation.navigate('Loginhome');
-  //   } else {
-  //     setLocalStorage('isProfileCompleted', true);
-  //     dispatch(setAuthentication(true));
-  //   }
-  //   // dispatch(getProfile());
-  // };
+  const handleNavigation = (response: any) => {
+    if (!response.payload?.data.otpVerified) {
+      navigation.navigate('Loginhome');
+    } else if (!response.payload?.data?.isProfileCompleted) {
+      navigation.navigate('Loginhome');
+    } else {
+      setLocalStorage('isProfileCompleted', true);
+      dispatch(setAuthentication(true));
+    }
+    // dispatch(getProfile());
+  };
 
-  // const handleGoogleLogin = async () => {
-  //   console.log('zzzzzzzzzzzzz');
-  //   // crashlytics().log('google-login');
-  //   try {
-  //     let userInfo = await googleLogin();
-  //     if (userInfo) {
-  //       // Extract the email and id from the user info
-  //       const {email, id} = userInfo;
-  //       console.log('zzzzzzzzzzzzz', userInfo);
-  //       // dispatch(
-  //       //   userProfileDataChange({
-  //       //     key: 'email',
-  //       //     value: email,
-  //       //   }),
-  //       // );
-  //       // Prepare the login payload for Google login
-  //       let loginPayload = {
-  //         loginType: 'GOOGLE',
-  //         role: 'U',
-  //         email: email,
-  //         socialId: id,
-  //         deviceToken: 'abcde',
-  //       };
-  //       // Dispatch the user sign-up action with the login payload
-  //       // dispatch(userSignUp({...loginPayload}))
-  //       //   .then((response: any) => {
-  //       //     if (response.payload?.code === 200) {
-  //       //       let token: string = response?.payload?.data?.accessToken;
-  //       //       setLocalStorage('token', token);
-
-  //       //       // If sign-up is successful, call the function to handle the navigation
-  //       //       handleNavigation(response);
-  //       //     } else {
-  //       //       // If there is an error in sign-up, check if there is an error message and set it
-  //       //       if (response.payload?.message) {
-  //       //         setMsg(response.payload?.message);
-  //       //       }
-  //       //       // Show the modal with the error message
-  //       //       setActiveModal(true);
-  //       //     }
-  //       //   })
-  //       //   .catch((error: any) => {
-  //       //     // If there is an error in the promise chain, set the error message and show the modal
-  //       //     setMsg(error?.payload?.message);
-  //       //     setActiveModal(true);
-  //       //   });
-  //     }
-  //   } catch (error) {
-  //     // Handle any errors that occur during the Google login process
-  //     console.log('Error logging in with Google:', error);
-  //   }
-  // };
-  const handleFacebookLogin = async () => {
+  const handleGoogleLogin = async () => {
+    console.log('zzzzzzzzzzzzz');
+    // crashlytics().log('google-login');
     try {
-      console.log('asdfdsa cancelled');
-      const result = await LoginManager.logInWithPermissions([
-        'public_profile',
-        'email',
-      ]);
-      console.log('first', LoginManager);
-      if (result.isCancelled) {
-        console.log('......Login cancelled');
-      } else {
-        const data = await AccessToken.getCurrentAccessToken();
-        if (!data) {
-          console.log('Something went wrong obtaining access token');
-        } else {
-          console.log(
-            'Login success with permissions: ' +
-              result.grantedPermissions.toString(),
-          );
-          console.log('Access Token: ' + data.accessToken.toString());
-        }
+      let userInfo = await googleLogin();
+      if (userInfo) {
+        // Extract the email and id from the user info
+        const {email, id} = userInfo;
+        console.log('zzzzzzzzzzzzz', userInfo);
+        // dispatch(
+        //   userProfileDataChange({
+        //     key: 'email',
+        //     value: email,
+        //   }),
+        // );
+        // Prepare the login payload for Google login
+        let loginPayload = {
+          loginType: 'GOOGLE',
+          role: 'U',
+          email: email,
+          socialId: id,
+          deviceToken: 'abcde',
+        };
+        // Dispatch the user sign-up action with the login payload
+        // dispatch(userSignUp({...loginPayload}))
+        //   .then((response: any) => {
+        //     if (response.payload?.code === 200) {
+        //       let token: string = response?.payload?.data?.accessToken;
+        //       setLocalStorage('token', token);
+
+        //       // If sign-up is successful, call the function to handle the navigation
+        //       handleNavigation(response);
+        //     } else {
+        //       // If there is an error in sign-up, check if there is an error message and set it
+        //       if (response.payload?.message) {
+        //         setMsg(response.payload?.message);
+        //       }
+        //       // Show the modal with the error message
+        //       setActiveModal(true);
+        //     }
+        //   })
+        //   .catch((error: any) => {
+        //     // If there is an error in the promise chain, set the error message and show the modal
+        //     setMsg(error?.payload?.message);
+        //     setActiveModal(true);
+        //   });
       }
     } catch (error) {
-      console.log('Login fail with error: ' + error);
+      // Handle any errors that occur during the Google login process
+      console.log('Error logging in with Google:', error);
     }
   };
-  const onAppleButtonPress = async () => {
-    try {
-      console.log('////////', appleAuth);
-      const appleAuthRequestResponse = await appleAuth.performRequest({
-        requestedOperation: AppleRequestOperation.LOGIN,
-        requestedScopes: [AppleRequestScope.EMAIL, AppleRequestScope.FULL_NAME],
-      });
-
-      // Handle successful Apple login response
-      console.log(appleAuthRequestResponse);
-    } catch (error: any) {
-      if (error.code === 'ERR_CANCELED') {
-        // Handle user cancellation
-        console.warn('User cancelled Apple login');
-      } else {
-        // Handle other errors
-        Alert.alert('Error', 'An error occurred during Apple login');
-        console.error(error);
+  // **************************
+  const handleAppleLogin = async () => {
+    // Check if the platform is iOS
+    if (Platform.OS === 'ios') {
+      // crashlytics().log('Apple-login');
+      try {
+        // Call the function to handle Apple button press and get user info
+        let userInfo: any = await onAppleButtonPress();
+        console.log(userInfo, 'userInfo');
+        if (userInfo) {
+          // Prepare the login payload for Apple login
+          let loginPayload = {
+            loginType: 'APPLE',
+            role: 'U',
+            email: userInfo?.email,
+            socialId: userInfo?.sub,
+            deviceToken: 'abcde',
+          };
+          // Dispatch the user sign-up action with the login payload
+          // dispatch(userSignUp({...loginPayload}))
+          //   .then((response: any) => {
+          //     if (response.payload?.code === 200) {
+          //       // If sign-up is successful, extract the access token and store it in local storage
+          //       let token: string = response?.payload?.data?.accessToken;
+          //       setLocalStorage('token', token);
+          //       // Call the function to handle the navigation based on the response
+          //       handleNavigation(response);
+          //     } else {
+          //       // If there is an error in sign-up, set the error message and show the modal
+          //       setMsg(response.payload?.message);
+          //       setActiveModal(true);
+          //     }
+          //   })
+          //   .catch((error: any) => {
+          //     // If there is an error in the promise chain, set the error message and show the modal
+          //     setMsg(error?.payload?.message);
+          //     setActiveModal(true);
+          //   });
+        } else {
+          // Handle the case when the user info is not available
+        }
+      } catch (error) {
+        // Handle any errors that occur during the Apple login process
       }
+    } else {
+      // If the platform is not iOS, show a message indicating that the feature is only supported on Apple devices
+      setMsg('This feature is only supported on Apple devices.');
+      setActiveModal(true);
     }
   };
-
   return (
     <SafeAreaView
       style={{
@@ -260,19 +211,22 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
             justifyContent: 'space-evenly',
           }}>
           <TouchableOpacity
-            // onPress={handleGoogleLogin}
-            onPress={() => onGoogleButtonPress()}
+            onPress={handleGoogleLogin}
+            // onPress={() => onGoogleButtonPress()}
             //
           >
             <GoogleIC />
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleFacebookLogin}>
+          <TouchableOpacity
+          // onPress={handleFacebookLogin}
+          //
+          >
             <FacebookIC />
           </TouchableOpacity>
           {Platform.OS === 'ios' && (
             <TouchableOpacity
               // onPress={handleAppleSignIn}
-              onPress={onAppleButtonPress}
+              onPress={handleAppleLogin}
               //
             >
               <AppleIC />
@@ -289,7 +243,9 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
           <Text
             style={styles.termsText}
             onPress={() => {
-              Linking.openURL('https://sheikhproperty.com/privacy-policy');
+              Linking.openURL(
+                'https://www.freeprivacypolicy.com/live/049b6fad-d131-4ee8-b7c0-51b2fe118617',
+              );
             }}>
             Terms of use
           </Text>
@@ -297,7 +253,9 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
           <Text
             style={styles.termsText}
             onPress={() => {
-              Linking.openURL('https://sheikhproperty.com/privacy-policy');
+              Linking.openURL(
+                'https://www.freeprivacypolicy.com/live/049b6fad-d131-4ee8-b7c0-51b2fe118617',
+              );
             }}>
             privacy policy{' '}
           </Text>

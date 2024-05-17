@@ -14,8 +14,13 @@ const GlobalModal = () => {
   return (
     <Modal
       style={{backgroundColor: 'transparent', margin: 0}}
+      isVisible={showGlobalModal}
       animationIn="slideInDown"
-      isVisible={showGlobalModal}>
+      animationOut="slideOutDown"
+      animationInTiming={600}
+      animationOutTiming={1000}
+      backdropTransitionInTiming={600}
+      backdropTransitionOutTiming={1000}>
       <View style={styles.modal}>
         <View style={styles.modalstyle}>
           <Label text={modalData?.label} style={styles.textstyle} />

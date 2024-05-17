@@ -38,6 +38,7 @@ target 'DatingApp' do
   # pod 'RNFBApp', :modular_headers => true
   # pod 'RNFBAnalytics', :modular_headers => true
   pod 'RNFBApp', :path => '../node_modules/@react-native-firebase/app'
+  pod 'GoogleSignIn'
 
   use_frameworks! :linkage => :static
   $RNFirebaseAsStaticFramework = true

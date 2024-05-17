@@ -31,36 +31,64 @@ export const googleLogin = async () => {
   }
 };
 
-/////   Apple Login //
-// export async function onAppleButtonPress() {
+///// ************************  Apple Login //
+export async function onAppleButtonPress() {
+  try {
+    // performs login request
+    const appleAuthRequestResponse = await appleAuth.performRequest({
+      requestedOperation: appleAuth.Operation.LOGIN,
+      // Note: it appears putting FULL_NAME first is important, see issue #293
+      requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
+    });
+
+    // other fields are available, but full name is not
+    if (appleAuthRequestResponse?.identityToken) {
+      const userInfo = await jwt_decode(
+        appleAuthRequestResponse?.identityToken,
+      );
+      return userInfo;
+    }
+
+    // get current authentication state for user
+    // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
+    const credentialState = await appleAuth.getCredentialStateForUser(
+      appleAuthRequestResponse.user,
+    );
+
+    // use credentialState response to ensure the user is authenticated
+    if (credentialState === appleAuth.State.AUTHORIZED) {
+      // user is authenticated
+    }
+  } catch (error) {
+    console.log('Apple Authentication Error:', error);
+    // handle error
+  }
+}
+
+// *****************************Facebook Login //
+// const handleFacebookLogin = async () => {
 //   try {
-//     // performs login request
-//     const appleAuthRequestResponse = await appleAuth.performRequest({
-//       requestedOperation: appleAuth.Operation.LOGIN,
-//       // Note: it appears putting FULL_NAME first is important, see issue #293
-//       requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
-//     });
-
-//     // other fields are available, but full name is not
-//     if (appleAuthRequestResponse?.identityToken) {
-//       const userInfo = await jwt_decode(
-//         appleAuthRequestResponse?.identityToken,
-//       );
-//       return userInfo;
-//     }
-
-//     // get current authentication state for user
-//     // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
-//     const credentialState = await appleAuth.getCredentialStateForUser(
-//       appleAuthRequestResponse.user,
-//     );
-
-//     // use credentialState response to ensure the user is authenticated
-//     if (credentialState === appleAuth.State.AUTHORIZED) {
-//       // user is authenticated
+//     console.log('asdfdsa cancelled');
+//     const result = await LoginManager.logInWithPermissions([
+//       'public_profile',
+//       'email',
+//     ]);
+//     console.log('first', LoginManager);
+//     if (result.isCancelled) {
+//       console.log('......Login cancelled');
+//     } else {
+//       const data = await AccessToken.getCurrentAccessToken();
+//       if (!data) {
+//         console.log('Something went wrong obtaining access token');
+//       } else {
+//         console.log(
+//           'Login success with permissions: ' +
+//             result.grantedPermissions.toString(),
+//         );
+//         console.log('Access Token: ' + data.accessToken.toString());
+//       }
 //     }
 //   } catch (error) {
-//     console.log('Apple Authentication Error:', error);
-//     // handle error
+//     console.log('Login fail with error: ' + error);
 //   }
-// }
+// };

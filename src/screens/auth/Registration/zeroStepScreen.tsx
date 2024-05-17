@@ -60,7 +60,6 @@ const ZeroStepScreen = ({
   const navigation = useNavigation();
   const [isEmailEditable, setIsEmailEditable] = useState(true);
   const [isPasswordEditable, setIsPasswordEditable] = useState(true);
-  const [checked, setChecked] = useState<boolean>(true);
 
   // Check otpVerified state
   const otpVerified = useAppSelector(
@@ -143,12 +142,10 @@ const ZeroStepScreen = ({
             errors={Boolean(errors?.phone)}
             callingCode={callingCode}
             setCallingCode={setCallingCode}
-            // onChangeText={handleChange("phoneNumber")}
           />
           {errors.phone && (
             <Text style={styles.errorText}>{errors.phone.message}</Text>
           )}
-
           <Text style={styles.label2}>Your phone will be public</Text>
         </View>
         {/* Gender */}
