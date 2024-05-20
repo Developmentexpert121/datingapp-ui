@@ -26,21 +26,110 @@ export const ProfileData = createAsyncThunk('auth/ProfileData', async () => {
   }
 });
 
-export const GoogleLogin = createAsyncThunk('auth/Google', async () => {
-  try {
-    console.log('GoogleLogin');
-    const response: any = await http.get(`/user/google`);
-    // console.log('GoogleLogin');
-    if (response.status === 200) {
-      return response.data;
+export const GoogleLogin = createAsyncThunk(
+  'auth/GoogleLogin',
+  async (data: any, {dispatch}: any) => {
+    console.log('////////////////////', data);
+    try {
+      dispatch(activityLoaderStarted());
+      const response: any = await http.post('/auth/loginwithgoogle', data);
+      console.log(response);
+      if (response.status === 200) {
+        await AsyncStorage.setItem(
+          'authToken',
+          JSON.stringify(response?.data?.token),
+        );
+        await AsyncStorage.setItem(
+          'userId',
+          JSON.stringify(response?.data?._id),
+        );
+        console.log('dfjdfhjhjdf', response?.data, response?.data?._id);
+        dispatch(ProfileData());
+        dispatch(
+          toggleGlobalModal({
+            visible: true,
+            data: {
+              text: 'OK',
+              label: 'Login Successful',
+            },
+          }),
+        );
+        return response.data;
+      }
+    } catch (error: any) {
+      console.log('first error', error);
+      if (error.response && error.response.status === 400) {
+        dispatch(
+          toggleGlobalModal({
+            visible: true,
+            data: {
+              text: 'OK',
+              label:
+                'Invalid credentials, Enter valid credentials or create a new account',
+            },
+          }),
+        );
+        return {};
+      } else {
+        throw error;
+      }
+    } finally {
+      dispatch(activityLoaderFinished());
     }
-  } catch (error: any) {
-    console.log('first', error);
-    if (error.response && error.response.status === 400) {
-      return {error: 'Bad Request'};
+  },
+);
+export const AppleLogin = createAsyncThunk(
+  'auth/GoogleLogin',
+  async (data: any, {dispatch}: any) => {
+    console.log('////////////////////', data);
+    try {
+      dispatch(activityLoaderStarted());
+      const response: any = await http.post('/auth/loginwithgoogle', data);
+      console.log(response);
+      if (response.status === 200) {
+        await AsyncStorage.setItem(
+          'authToken',
+          JSON.stringify(response?.data?.token),
+        );
+        await AsyncStorage.setItem(
+          'userId',
+          JSON.stringify(response?.data?._id),
+        );
+        console.log('dfjdfhjhjdf', response?.data, response?.data?._id);
+        dispatch(ProfileData());
+        dispatch(
+          toggleGlobalModal({
+            visible: true,
+            data: {
+              text: 'OK',
+              label: 'Login Successful',
+            },
+          }),
+        );
+        return response.data;
+      }
+    } catch (error: any) {
+      console.log('first error', error);
+      if (error.response && error.response.status === 400) {
+        dispatch(
+          toggleGlobalModal({
+            visible: true,
+            data: {
+              text: 'OK',
+              label:
+                'Invalid credentials, Enter valid credentials or create a new account',
+            },
+          }),
+        );
+        return {};
+      } else {
+        throw error;
+      }
+    } finally {
+      dispatch(activityLoaderFinished());
     }
-  }
-});
+  },
+);
 
 export const LoginSignIn = createAsyncThunk(
   'auth/LoginSignIn',
@@ -528,6 +617,7 @@ const initialState = {
   data: {
     status: false,
     signin: {},
+    loginwithgoogle: {},
     signup: {},
     data: {},
     profileData: {},
@@ -551,6 +641,21 @@ const Auth: any = createSlice({
   },
   extraReducers: builder => {
     builder
+      .addCase(GoogleLogin.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(GoogleLogin.fulfilled, (state, action) => {
+        if (action.payload.data) {
+          // Check if data is present in the payload
+          state.data.loginwithgoogle = action.payload.data;
+          state.isAuthenticated = true;
+        } else {
+          state.data.signInInfo = action.payload.error; // Assuming the error field is set properly on unsuccessful login
+        }
+      })
+      .addCase(GoogleLogin.rejected, (state, action) => {
+        state.loading = false;
+      })
       .addCase(LoginSignIn.pending, (state, action) => {
         state.loading = true;
       })
@@ -621,7 +726,7 @@ const Auth: any = createSlice({
         state.loading = false;
       })
       .addCase(VerifyOtp.fulfilled, (state, action) => {
-        console.log('/////////', action.payload);
+        // console.log('/////////', action.payload);
         state.data.otpVerified = action.payload.success;
       })
       .addCase(updateAuthentication.fulfilled, (state, action) => {

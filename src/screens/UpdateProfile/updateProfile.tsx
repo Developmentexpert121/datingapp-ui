@@ -5,6 +5,9 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import CommonBackbutton from '../../components/commonBackbutton/CommonBackbutton';
@@ -15,6 +18,7 @@ import {useAppDispatch, useAppSelector} from '../../store/store';
 import {updateProfileData} from '../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BottomDrawer from './BottomDrawer';
+
 interface UpdateForm {
   work: string;
   education: string;
@@ -24,6 +28,7 @@ interface UpdateForm {
   email: string;
   password: string;
 }
+
 const defaultValues = {
   work: '',
   education: '',
@@ -33,10 +38,10 @@ const defaultValues = {
   email: '',
   password: '',
 };
+
 const getUserId = async () => {
   try {
     const userId: any = await AsyncStorage.getItem('userId');
-
     if (userId !== null) {
       return JSON.parse(userId);
     } else {
@@ -48,7 +53,7 @@ const getUserId = async () => {
 };
 
 const schema = yup.object().shape({
-  //name: yup.string().required('Name is required'),
+  // name: yup.string().required('Name is required'),
 });
 
 const UpdateProfile = () => {
@@ -62,6 +67,10 @@ const UpdateProfile = () => {
   const [profileImages, setProfileImages] = useState<any>(
     profileData?.profilePic?.split(',') || [],
   );
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [keyboardShown, setKeyboardShown] = useState(false);
+  const [marginBottom, setMarginBottom] = useState(0);
+
   console.log('title', value);
 
   const handleSliderChange = (value: any) => {
@@ -85,7 +94,6 @@ const UpdateProfile = () => {
     {title: 'Relationship Goals', name: profileData?.partnerType},
   ];
 
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const openDrawer = () => {
     setIsDrawerOpen(true);
   };
@@ -99,56 +107,83 @@ const UpdateProfile = () => {
     setValue(item?.name);
     setIsDrawerOpen(true);
   };
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardShown(true);
+        setMarginBottom(300);
+      },
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardShown(false);
+        setMarginBottom(0);
+      },
+    );
+
+    // Clean up listeners
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <CommonBackbutton title="Edit Profile" />
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <SeventhStepScreen
-          profileImages={profileImages}
-          setProfileImages={setProfileImages}
-        />
-        <View style={[styles.boxContainer, {marginTop: 28}]}>
-          <View style={styles.distance}>
-            <Text style={styles.textName}>Height</Text>
-            <Text style={{fontFamily: 'Sansation-Regular'}}>{height} MT</Text>
-          </View>
-          <View style={styles.line} />
-          <Slider
-            style={styles.slider}
-            minimumValue={2}
-            maximumValue={12}
-            value={height}
-            onSlidingComplete={handleSliderChange}
-            step={1}
-            thumbTintColor="#AC25AC"
-            minimumTrackTintColor="#AC25AC"
-            maximumTrackTintColor="gray"
-            thumbStyle={styles.thumbStyle}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{flex: 1, marginBottom}}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <SeventhStepScreen
+            profileImages={profileImages}
+            setProfileImages={setProfileImages}
           />
-        </View>
-        {dataArr &&
-          dataArr.map((item, index) => (
-            <View style={styles.boxContainer} key={index}>
-              <Text style={styles.textName}>{item.title}</Text>
-              <View style={styles.line} />
-              <View>
-                <TouchableOpacity
-                  style={styles.textField}
-                  onPress={() => handleModal(item)}>
-                  <Text style={{fontFamily: 'Sansation-Regular'}}>
-                    {item.name}
-                  </Text>
-                </TouchableOpacity>
-              </View>
+          <View style={[styles.boxContainer, {marginTop: 28}]}>
+            <View style={styles.distance}>
+              <Text style={styles.textName}>Height</Text>
+              <Text style={{fontFamily: 'Sansation-Regular'}}>{height} MT</Text>
             </View>
-          ))}
-        <BottomDrawer
-          isOpen={isDrawerOpen}
-          onClose={closeDrawer}
-          title={title}
-          value={value}
-        />
-      </ScrollView>
+            <View style={styles.line} />
+            <Slider
+              style={styles.slider}
+              minimumValue={2}
+              maximumValue={12}
+              value={height}
+              onSlidingComplete={handleSliderChange}
+              step={1}
+              thumbTintColor="#AC25AC"
+              minimumTrackTintColor="#AC25AC"
+              maximumTrackTintColor="gray"
+              thumbStyle={styles.thumbStyle}
+            />
+          </View>
+          {dataArr &&
+            dataArr.map((item, index) => (
+              <View style={styles.boxContainer} key={index}>
+                <Text style={styles.textName}>{item.title}</Text>
+                <View style={styles.line} />
+                <View>
+                  <TouchableOpacity
+                    style={styles.textField}
+                    onPress={() => handleModal(item)}>
+                    <Text style={{fontFamily: 'Sansation-Regular'}}>
+                      {item.name}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ))}
+          <BottomDrawer
+            isOpen={isDrawerOpen}
+            onClose={closeDrawer}
+            title={title}
+            value={value}
+          />
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

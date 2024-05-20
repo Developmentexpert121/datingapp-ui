@@ -170,10 +170,10 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const [city, setSelectedCity] = useState<string | null>(null);
   const [dob, setDob] = useState('');
   const [email, setEmail] = useState('');
-  console.log('.......1', dob);
-  console.log('.......2', country);
-  console.log('.......3', state);
-  console.log('.......4', city);
+  // console.log('.......1', dob);
+  // console.log('.......2', country);
+  // console.log('.......3', state);
+  // console.log('.......4', city);
 
   const dispatch: any = useAppDispatch();
 
@@ -202,6 +202,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
       otpModal({
         visible: false,
       }),
+      setOtp(['', '', '', '', '', '']),
     );
   };
 
@@ -512,6 +513,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
                 label: 'Invalid OTP',
               },
             }),
+            setOtp(['', '', '', '', '', '']),
           );
         }
       });

@@ -16,16 +16,15 @@ import {AppleIC, FacebookIC, GoogleIC} from '../../assets/svgs';
 import MainButton from '../../components/ButtonComponent/MainButton';
 import Colors from '../../constants/Colors';
 import {useNavigation} from '@react-navigation/native';
-import {useAppDispatch} from '../../store/store';
+import {useAppDispatch, useAppSelector} from '../../store/store';
 // import {googleLogin} from '../../store/Auth/socialLogin';
 import {setLocalStorage} from '../../api/storage';
 import {setAuthentication} from '../../store/reducer/authSliceState';
-import appleAuth, {
-  AppleRequestOperation,
-  AppleRequestScope,
-} from '@invertase/react-native-apple-authentication';
-import {LoginManager, AccessToken} from 'react-native-fbsdk-next';
 import {googleLogin, onAppleButtonPress} from '../../store/Auth/socialLogin';
+import {userProfileDataChange} from '../../store/slice/myProfileSlice/myProfileSlice';
+import {AppleLogin, GoogleLogin} from '../../store/Auth/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {getProfile} from '../../store/slice/myProfileSlice/myProfileAction';
 interface AppleAuthResponse {
   user: string;
   email: string | null;
@@ -41,6 +40,7 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const navigation = useNavigation();
   const [activeModal, setActiveModal] = useState<boolean>(false);
   const [msg, setMsg] = useState<string | undefined>('');
+  const [loader, setLoader] = useState<boolean>(false);
   // **************
   // **************
 
@@ -53,24 +53,24 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
       setLocalStorage('isProfileCompleted', true);
       dispatch(setAuthentication(true));
     }
-    // dispatch(getProfile());
+    dispatch(getProfile());
   };
 
   const handleGoogleLogin = async () => {
-    console.log('zzzzzzzzzzzzz');
+    // console.log('zzzzzzzzzzzzz');
     // crashlytics().log('google-login');
     try {
       let userInfo = await googleLogin();
       if (userInfo) {
         // Extract the email and id from the user info
         const {email, id} = userInfo;
-        console.log('zzzzzzzzzzzzz', userInfo);
-        // dispatch(
-        //   userProfileDataChange({
-        //     key: 'email',
-        //     value: email,
-        //   }),
-        // );
+        console.log('User data', userInfo);
+        dispatch(
+          userProfileDataChange({
+            key: 'email',
+            value: email,
+          }),
+        );
         // Prepare the login payload for Google login
         let loginPayload = {
           loginType: 'GOOGLE',
@@ -80,43 +80,50 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
           deviceToken: 'abcde',
         };
         // Dispatch the user sign-up action with the login payload
-        // dispatch(userSignUp({...loginPayload}))
-        //   .then((response: any) => {
-        //     if (response.payload?.code === 200) {
-        //       let token: string = response?.payload?.data?.accessToken;
-        //       setLocalStorage('token', token);
+        setLoader(true);
+        dispatch(GoogleLogin({...loginPayload}))
+          .then((response: any) => {
+            if (response.payload?.code === 200) {
+              let token: string = response?.payload?.data?.accessToken;
+              setLocalStorage('token', token);
+              console.log('GoogleLogin', GoogleLogin);
 
-        //       // If sign-up is successful, call the function to handle the navigation
-        //       handleNavigation(response);
-        //     } else {
-        //       // If there is an error in sign-up, check if there is an error message and set it
-        //       if (response.payload?.message) {
-        //         setMsg(response.payload?.message);
-        //       }
-        //       // Show the modal with the error message
-        //       setActiveModal(true);
-        //     }
-        //   })
-        //   .catch((error: any) => {
-        //     // If there is an error in the promise chain, set the error message and show the modal
-        //     setMsg(error?.payload?.message);
-        //     setActiveModal(true);
-        //   });
+              // If sign-up is successful, call the function to handle the navigation
+              handleNavigation(response);
+            } else {
+              // If there is an error in sign-up, check if there is an error message and set it
+              if (response.payload?.message) {
+                setMsg(response.payload?.message);
+              }
+              // Show the modal with the error message
+              setActiveModal(true);
+            }
+            setLoader(false);
+          })
+
+          .catch((error: any) => {
+            // If there is an error in the promise chain, set the error message and show the modal
+            setMsg(error?.payload?.message);
+            setActiveModal(true);
+          });
+
+        setLoader(false);
       }
     } catch (error) {
       // Handle any errors that occur during the Google login process
       console.log('Error logging in with Google:', error);
     }
   };
-  // **************************
+  // *****************
   const handleAppleLogin = async () => {
     // Check if the platform is iOS
     if (Platform.OS === 'ios') {
       // crashlytics().log('Apple-login');
+      console.log('000000000');
       try {
         // Call the function to handle Apple button press and get user info
         let userInfo: any = await onAppleButtonPress();
-        console.log(userInfo, 'userInfo');
+        console.log('userInfo', userInfo);
         if (userInfo) {
           // Prepare the login payload for Apple login
           let loginPayload = {
@@ -127,25 +134,25 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
             deviceToken: 'abcde',
           };
           // Dispatch the user sign-up action with the login payload
-          // dispatch(userSignUp({...loginPayload}))
-          //   .then((response: any) => {
-          //     if (response.payload?.code === 200) {
-          //       // If sign-up is successful, extract the access token and store it in local storage
-          //       let token: string = response?.payload?.data?.accessToken;
-          //       setLocalStorage('token', token);
-          //       // Call the function to handle the navigation based on the response
-          //       handleNavigation(response);
-          //     } else {
-          //       // If there is an error in sign-up, set the error message and show the modal
-          //       setMsg(response.payload?.message);
-          //       setActiveModal(true);
-          //     }
-          //   })
-          //   .catch((error: any) => {
-          //     // If there is an error in the promise chain, set the error message and show the modal
-          //     setMsg(error?.payload?.message);
-          //     setActiveModal(true);
-          //   });
+          dispatch(AppleLogin({...loginPayload}))
+            .then((response: any) => {
+              if (response.payload?.code === 200) {
+                // If sign-up is successful, extract the access token and store it in local storage
+                let token: string = response?.payload?.data?.accessToken;
+                setLocalStorage('token', token);
+                // Call the function to handle the navigation based on the response
+                handleNavigation(response);
+              } else {
+                // If there is an error in sign-up, set the error message and show the modal
+                setMsg(response.payload?.message);
+                setActiveModal(true);
+              }
+            })
+            .catch((error: any) => {
+              // If there is an error in the promise chain, set the error message and show the modal
+              setMsg(error?.payload?.message);
+              setActiveModal(true);
+            });
         } else {
           // Handle the case when the user info is not available
         }
@@ -158,6 +165,7 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
       setActiveModal(true);
     }
   };
+
   return (
     <SafeAreaView
       style={{
@@ -210,11 +218,7 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
             width: '50%',
             justifyContent: 'space-evenly',
           }}>
-          <TouchableOpacity
-            onPress={handleGoogleLogin}
-            // onPress={() => onGoogleButtonPress()}
-            //
-          >
+          <TouchableOpacity onPress={handleGoogleLogin}>
             <GoogleIC />
           </TouchableOpacity>
           <TouchableOpacity
@@ -224,11 +228,7 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
             <FacebookIC />
           </TouchableOpacity>
           {Platform.OS === 'ios' && (
-            <TouchableOpacity
-              // onPress={handleAppleSignIn}
-              onPress={handleAppleLogin}
-              //
-            >
+            <TouchableOpacity onPress={handleAppleLogin}>
               <AppleIC />
             </TouchableOpacity>
           )}

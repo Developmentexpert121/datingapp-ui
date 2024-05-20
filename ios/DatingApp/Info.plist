@@ -2,47 +2,25 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>CFBundleURLTypes</key>
-    <array>
-        <dict>
-            <key>CFBundleURLSchemes</key>
-            <array>
-                <string>fb1761035230974329</string>
-            </array>
-        </dict>
-    </array>
-    <key>FacebookAppID</key>
-    <string>1761035230974329</string>
-    <key>FacebookDisplayName</key>
-    <string>YOUR_APP_NAME</string>
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-        <string>fbapi</string>
-        <string>fb-messenger-api</string>
-        <string>fbauth2</string>
-        <string>fbshareextension</string>
-    </array>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>TopTier Dating app using current location to get nearby another users.</string>
-    <key>CFBundleDevelopmentRegion</key>
-    <string></string>
-    <key>CFBundleDisplayName</key>
-    <string>DatingApp</string>
-    <key>CFBundleExecutable</key>
-    <string>$(EXECUTABLE_NAME)</string>
-    <key>CFBundleIdentifier</key>
-    <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-    <key>CFBundleInfoDictionaryVersion</key>
-    <string>6.0</string>
-    <key>CFBundleName</key>
-    <string>$(PRODUCT_NAME)</string>
-    <key>CFBundlePackageType</key>
-    <string>APPL</string>
-    <key>CFBundleShortVersionString</key>
-    <string>$(MARKETING_VERSION)</string>
-    <key>CFBundleSignature</key>
-    <string>????</string>
-    <key>CFBundleURLTypes</key>
+	<key>CFBundleDevelopmentRegion</key>
+	<string></string>
+	<key>CFBundleDisplayName</key>
+	<string>DatingApp</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
 			<key>CFBundleURLSchemes</key>
@@ -51,54 +29,67 @@
 			</array>
 		</dict>
 	</array>
-    <key>CFBundleVersion</key>
-    <string>$(CURRENT_PROJECT_VERSION)</string>
-    <key>GIDClientID</key>
-    <string>151623051367-evoer0qadv6g613aaiea5o2bd0s4sa3c.apps.googleusercontent.com</string>
-    <key>LSRequiresIPhoneOS</key>
-    <true/>
-    <key>NSAppTransportSecurity</key>
-    <dict>
-        <key>NSAllowsArbitraryLoads</key>
-        <false/>
-        <key>NSAllowsLocalNetworking</key>
-        <true/>
-    </dict>
-    <key>NSAppleMusicUsageDescription</key>
-    <string>YOUR TEXT</string>
-    <key>NSCameraUsageDescription</key>
-    <string>TopTier Dating App uses camera to take photos.</string>
-    <key>NSLocationAlwaysUsageDescription</key>
-    <string>TopTier Dating app uses current location to get nearby another users.</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>TopTier Dating app uses microphone to call.</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>TopTier Dating App uses gallery to pick photos.</string>
-    <key>UIAppFonts</key>
-    <array>
-        <string>PassionOne-Black.ttf</string>
-        <string>PassionOne-Regular.ttf</string>
-        <string>Ionicons.ttf</string>
-        <string>Sansation-Bold-Italic.ttf</string>
-        <string>Sansation-Bold.ttf</string>
-        <string>Sansation-Italic.ttf</string>
-        <string>Sansation-Light-Italic.ttf</string>
-        <string>Sansation-Light.ttf</string>
-        <string>Sansation-Regular.ttf</string>
-    </array>
-    <key>UILaunchStoryboardName</key>
-    <string>LaunchScreen</string>
-    <key>UIRequiredDeviceCapabilities</key>
-    <array>
-        <string>armv7</string>
-    </array>
-    <key>UISupportedInterfaceOrientations</key>
-    <array>
-        <string>UIInterfaceOrientationPortrait</string>
-        <string>UIInterfaceOrientationLandscapeLeft</string>
-        <string>UIInterfaceOrientationLandscapeRight</string>
-    </array>
-    <key>UIViewControllerBasedStatusBarAppearance</key>
-    <false/>
+	<key>CFBundleVersion</key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>FacebookAppID</key>
+	<string>1761035230974329</string>
+	<key>FacebookDisplayName</key>
+	<string>YOUR_APP_NAME</string>
+	<key>GIDClientID</key>
+	<string>151623051367-evoer0qadv6g613aaiea5o2bd0s4sa3c.apps.googleusercontent.com</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>YOUR TEXT</string>
+	<key>NSCameraUsageDescription</key>
+	<string>TopTier Dating App uses camera to take photos.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>TopTier Dating app uses current location to get nearby another users.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>TopTier Dating app using current location to get nearby another users.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>TopTier Dating app uses microphone to call.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>TopTier Dating App uses gallery to pick photos.</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>PassionOne-Black.ttf</string>
+		<string>PassionOne-Regular.ttf</string>
+		<string>Ionicons.ttf</string>
+		<string>Sansation-Bold-Italic.ttf</string>
+		<string>Sansation-Bold.ttf</string>
+		<string>Sansation-Italic.ttf</string>
+		<string>Sansation-Light-Italic.ttf</string>
+		<string>Sansation-Light.ttf</string>
+		<string>Sansation-Regular.ttf</string>
+	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>armv7</string>
+	</array>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 </dict>
 </plist>

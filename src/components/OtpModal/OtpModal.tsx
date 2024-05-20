@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   Modal,
+  Keyboard,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import Label from '../Label';
@@ -12,6 +13,7 @@ import MainButton from '../ButtonComponent/MainButton';
 import {RootState, useAppDispatch, useAppSelector} from '../../store/store';
 import GlobalModal from '../Modals/GlobalModal';
 import {CrossIconIC} from '../../assets/svgs';
+
 interface LoginFailModalProps {
   onPress?: () => void | undefined;
   onClose?: () => void | undefined;
@@ -19,10 +21,10 @@ interface LoginFailModalProps {
   isVisible?: boolean | undefined;
   setOtp: any;
   otp: any;
-  value?: any;
   handleResendOTP?: any;
   resetOTP?: () => void | undefined;
 }
+
 const OtpModal = ({
   onClose,
   onPress,
@@ -39,27 +41,28 @@ const OtpModal = ({
   const [isOtpComplete, setIsOtpComplete] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
 
-  const inputRefs = [
-    useRef<TextInput>(null),
-    useRef<TextInput>(null),
-    useRef<TextInput>(null),
-    useRef<TextInput>(null),
-    useRef<TextInput>(null),
-    useRef<TextInput>(null),
-  ];
+  const inputRefs = useRef<TextInput[]>([null, null, null, null, null, null]);
+
+  useEffect(() => {
+    const allInputsEmpty = otp.every((value: string) => value === '');
+    if (allInputsEmpty) {
+      inputRefs.current[0]?.focus();
+    }
+  }, [otp]);
 
   const resetOTP = () => {
     setOtp(['', '', '', '', '', '']);
-    inputRefs[0].current?.focus();
+    inputRefs.current[0]?.focus();
   };
+
   const handleOTPChange = (txt: string, index: number) => {
     const newOtp = [...otp];
     newOtp[index] = txt;
     setOtp(newOtp);
     if (txt.length >= 1 && index < otp.length - 1) {
-      inputRefs[index + 1].current?.focus();
+      inputRefs.current[index + 1]?.focus();
     } else if (txt.length === 0 && index > 0) {
-      inputRefs[index - 1].current?.focus();
+      inputRefs.current[index - 1]?.focus();
     }
     const isAllFieldsFilled = newOtp.every(field => field !== '');
     setIsOtpComplete(isAllFieldsFilled);
@@ -77,6 +80,7 @@ const OtpModal = ({
       startResendTimer(59);
     }
   };
+
   const startResendTimer = (seconds: number) => {
     setTimer(seconds);
     const timerInterval = setInterval(() => {
@@ -91,6 +95,7 @@ const OtpModal = ({
       });
     }, 1000);
   };
+
   return (
     <Modal
       animationType={'slide'}
@@ -115,14 +120,14 @@ const OtpModal = ({
                 onChangeText={txt => handleOTPChange(txt, index)}
                 keyboardType="numeric"
                 maxLength={1}
-                ref={inputRefs[index]}
+                ref={ref => (inputRefs.current[index] = ref)}
               />
             ))}
           </View>
           <View style={{height: 15}}>
-            {/* {errorMessage && (
+            {errorMessage && (
               <Text style={styles.errorText}>{errorMessage}</Text>
-            )} */}
+            )}
           </View>
           <View style={styles.loginContainer}>
             <Text style={styles.loginText}>Didn’t receive a OTP? </Text>
@@ -146,11 +151,11 @@ const OtpModal = ({
 };
 
 export default OtpModal;
+
 const styles = StyleSheet.create({
   textstyle: {
     width: '70%',
     fontSize: 20,
-    // fontWeight: "400",
     color: '#071731',
     textAlign: 'center',
     marginVertical: 20,
@@ -161,7 +166,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFC7FF',
     borderRadius: 10,
     alignItems: 'center',
-    // justifyContent: 'center',
     bottom: 20,
   },
   modal: {

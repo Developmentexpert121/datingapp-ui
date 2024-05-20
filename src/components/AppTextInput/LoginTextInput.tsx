@@ -1,10 +1,10 @@
 import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {memo, useState} from 'react';
 import Colors from '../../constants/Colors';
 import {Controller} from 'react-hook-form';
 import {EyeslashIC, EyeslashOpenIC} from '../../assets/svgs';
 
-const LoginTextInput = (Props: any) => {
+const LoginTextInput = memo((Props: any) => {
   const {
     name,
     control,
@@ -64,7 +64,7 @@ const LoginTextInput = (Props: any) => {
       )}
     />
   );
-};
+});
 
 export default LoginTextInput;
 

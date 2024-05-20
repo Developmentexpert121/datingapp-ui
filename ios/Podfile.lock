@@ -1299,6 +1299,7 @@ DEPENDENCIES:
   - FirebaseCore
   - FirebaseCoreInternal
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - GoogleSignIn
   - GoogleUtilities
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
   - libevent (~> 2.1.12)
@@ -1676,6 +1677,6 @@ SPEC CHECKSUMS:
   stream-video-react-native: 170df9bdf51319aa63f98e74f9441427db416ba7
   Yoga: 4f53dc50008d626fa679c7a1cb4bed898f8c0bde
 
-PODFILE CHECKSUM: c19988ebf893d7f8dce405d498d39d99aaeb92e2
+PODFILE CHECKSUM: 171f83a8fd0289d7b0056cf793b8d56c7ce00851
 
 COCOAPODS: 1.15.2

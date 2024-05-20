@@ -125,7 +125,7 @@ dependencies {
     implementation("com.facebook.react:flipper-integration")
     implementation ("com.facebook.fresco:animated-gif:3.1.0")
     implementation project(':react-native-splash-screen')
-    implementation 'com.google.android.gms:play-services-auth:19.2.0'
+    implementation 'com.google.android.gms:play-services-auth:20.1.0'
     implementation 'com.facebook.android:facebook-android-sdk:13.0.0'
 
 
