@@ -24,6 +24,7 @@ import {LoginSignIn} from '../../store/Auth/auth';
 import Colors from '../../constants/Colors';
 import Loader from '../../components/Loader/Loader';
 import {BackIC} from '../../assets/svgs';
+import LoginTextInputEmail from '../../components/AppTextInput/LoginTextInputEmail';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 interface LoginForm {
@@ -150,7 +151,7 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
                 justifyContent: 'center',
                 alignSelf: 'center',
               }}>
-              <LoginTextInput
+              <LoginTextInputEmail
                 placeholder="Enter Your Email"
                 name="email"
                 autoCapitalize="none"

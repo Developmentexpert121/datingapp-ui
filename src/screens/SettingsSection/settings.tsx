@@ -66,6 +66,9 @@ const SettingsSection = () => {
   const navigation: any = useNavigation();
   const [title, setTitle] = useState<string>('');
   const [values, setValues] = useState<string>('');
+  const [phone, setPhone] = useState<object>({});
+  console.log('title', title);
+  console.log('values', values);
   const {
     reset,
     formState: {errors},
@@ -124,7 +127,7 @@ const SettingsSection = () => {
   const dataArr = [
     {
       title: 'Phone Number',
-      name: `${profileData?.phone?.countryCode || ''}${
+      name: `${profileData?.phone?.countryCode || ''} ${
         profileData?.phone?.number || ''
       }`,
     },
@@ -141,6 +144,10 @@ const SettingsSection = () => {
 
   const closeDrawer = () => {
     setIsDrawerOpen(false);
+    // setPhone({
+    //   countryCode: callingCode,
+    //   number: data.phone,
+    // });
   };
 
   const handleModal = (item: any) => {
@@ -285,6 +292,10 @@ const SettingsSection = () => {
           onClose={closeDrawer}
           title={title}
           value={values}
+          // callingCode={`${profileData?.phone?.countryCode}`}
+          // setCallingCode={`${profileData?.phone?.countryCode}`}
+          // abde={`${profileData?.phone?.number}`}
+          // zxcv={`${profileData?.phone?.number}`}
         />
       </ScrollView>
     </SafeAreaView>

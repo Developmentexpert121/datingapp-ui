@@ -3,6 +3,9 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {appleAuth} from '@invertase/react-native-apple-authentication';
 const jwtDecode = require('jwt-decode'); // Use CommonJS require syntax
 
+// import {appleAuth} from '@invertase/react-native-apple-authentication';
+// import jwt_decode from 'jwt-decode';
+
 // import {GOOGLE_WEB_CLIENT_ID, GOOGLE_CLIENT_ID_IOS} from '@env';
 
 export const configureGoogleSignIn = async () => {
@@ -40,6 +43,8 @@ export async function onAppleButtonPress() {
     });
 
     // Log the response for debugging purposes
+    console.log('appleAuth:', appleAuth);
+
     console.log('AppleAuthRequestResponse:', appleAuthRequestResponse);
 
     // Decode identity token if available
@@ -52,8 +57,6 @@ export async function onAppleButtonPress() {
     }
   } catch (error: any) {
     console.error('Apple Authentication Error:', error);
-
-    // Enhanced error handling and logging
     if (error.code) {
       switch (error.code) {
         case appleAuth.Error.CANCELED:
@@ -82,6 +85,41 @@ export async function onAppleButtonPress() {
     return null; // Handle the error as appropriate for your app
   }
 }
+
+// export async function onAppleButtonPress() {
+//   try {
+//     // performs login request
+//     console.log('first');
+//     const appleAuthRequestResponse = await appleAuth.performRequest({
+//       requestedOperation: appleAuth.Operation.LOGIN,
+//       // Note: it appears putting FULL_NAME first is important, see issue #293
+//       requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
+//     });
+
+//     // other fields are available, but full name is not
+//     if (appleAuthRequestResponse?.identityToken) {
+//       const userInfo = await jwt_decode(
+//         appleAuthRequestResponse?.identityToken,
+//       );
+//       console.log('999999', userInfo);
+//       return userInfo;
+//     }
+
+//     // get current authentication state for user
+//     // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
+//     const credentialState = await appleAuth.getCredentialStateForUser(
+//       appleAuthRequestResponse.user,
+//     );
+//     console.log('999999', appleAuth);
+//     // use credentialState response to ensure the user is authenticated
+//     if (credentialState === appleAuth.State.AUTHORIZED) {
+//       // user is authenticated
+//     }
+//   } catch (error) {
+//     console.log('Apple Authentication Error:', error);
+//     // handle error
+//   }
+// }
 
 // *****************************Facebook Login //
 // const handleFacebookLogin = async () => {

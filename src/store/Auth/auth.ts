@@ -79,13 +79,13 @@ export const GoogleLogin = createAsyncThunk(
   },
 );
 export const AppleLogin = createAsyncThunk(
-  'auth/GoogleLogin',
+  'auth/AppleLogin',
   async (data: any, {dispatch}: any) => {
     console.log('////////////////////', data);
     try {
       dispatch(activityLoaderStarted());
-      const response: any = await http.post('/auth/loginwithgoogle', data);
-      console.log(response);
+      const response: any = await http.post('/auth/loginwithapple', data);
+      console.log(':::::::::', response);
       if (response.status === 200) {
         await AsyncStorage.setItem(
           'authToken',
@@ -618,6 +618,7 @@ const initialState = {
     status: false,
     signin: {},
     loginwithgoogle: {},
+    loginwithapple: {},
     signup: {},
     data: {},
     profileData: {},
@@ -654,6 +655,21 @@ const Auth: any = createSlice({
         }
       })
       .addCase(GoogleLogin.rejected, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(AppleLogin.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(AppleLogin.fulfilled, (state, action) => {
+        if (action.payload.data) {
+          // Check if data is present in the payload
+          state.data.loginwithapple = action.payload.data;
+          state.isAuthenticated = true;
+        } else {
+          state.data.signInInfo = action.payload.error; // Assuming the error field is set properly on unsuccessful login
+        }
+      })
+      .addCase(AppleLogin.rejected, (state, action) => {
         state.loading = false;
       })
       .addCase(LoginSignIn.pending, (state, action) => {

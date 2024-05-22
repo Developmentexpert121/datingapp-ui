@@ -6,9 +6,9 @@ import {
   FlatList,
   StyleSheet,
 } from 'react-native';
-import React, {useEffect} from 'react';
-import {useAppDispatch} from '../../store/store';
-import {updateProfileData} from '../../store/Auth/auth';
+import React, {useEffect, useState} from 'react';
+import {useAppDispatch, useAppSelector} from '../../store/store';
+import {ProfileData, updateProfileData} from '../../store/Auth/auth';
 import AppTextInput from '../../components/AppTextInput/AppTextInput';
 import MainButton from '../../components/ButtonComponent/MainButton';
 import {useForm} from 'react-hook-form';
@@ -16,18 +16,27 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import PhoneInput from '../../components/AppTextInput/PhoneInput';
+import {name} from '@stream-io/video-react-native-sdk';
 
 interface UpdateForm {
   name: string;
   email: string;
   password: string;
   gender: string;
+  setCallingCode: any;
+  callingCode: any;
+  abde: any;
+  zxcv: any;
 }
 const defaultValues = {
+  abde: '',
+  zxcv: '',
   name: '',
   email: '',
   password: '',
   gender: '',
+  setCallingCode: '',
+  callingCode: '',
 };
 const schema = yup.object().shape({
   // gender: yup.string().required('gender is required'),
@@ -52,8 +61,15 @@ const BottomDrawer = ({
   value,
   callingCode,
   setCallingCode,
+  abde,
+  zxcv,
 }: any) => {
   const dispatch: any = useAppDispatch();
+  const profileData: any = useAppSelector(
+    (state: any) => state?.Auth?.data?.profileData,
+  );
+  const [phone, setPhone] = useState<object>({});
+  console.log('................phone', phone);
   const Data = [
     {id: 1, text: 'Lodo'},
     {id: 2, text: 'Cricket'},
@@ -92,10 +108,17 @@ const BottomDrawer = ({
 
   const onSubmit = (data: any) => {
     const fieldValue = data[title];
-
     let field;
     if (title.toLowerCase() === 'show me') {
       field = 'interests';
+    } else if (title.toLowerCase() === 'phone number') {
+      // field = 'partnerType';
+      title?.toLowerCase().split(' ')[0];
+      setPhone({
+        countryCode: callingCode,
+        number: data.phone,
+      });
+      // fieldValue = selectedAvatar;
     } else {
       // Extract "email" from the title string
       field = title?.toLowerCase().split(' ')[0];
@@ -174,6 +197,22 @@ const BottomDrawer = ({
                 numColumns={4} // Display three items per row
               />
             </View>
+          ) : title === 'Phone Number' ? (
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                // borderWidth: 2,
+              }}>
+              <PhoneInput
+                placeholder={'Enter Your ' + title.split(' ')[0]}
+                name={title}
+                control={control}
+                // label="Phone Number"
+                // callingCode={callingCode}
+                // setCallingCode={setCallingCode}
+              />
+            </View>
           ) : (
             <View
               style={{
@@ -186,14 +225,6 @@ const BottomDrawer = ({
                 name={title}
                 control={control}
               />
-
-              {/* <PhoneInput
-                name={title}
-                control={control}
-                label="Phone Number"
-                callingCode={callingCode}
-                setCallingCode={setCallingCode}
-              /> */}
             </View>
           )}
           <MainButton
@@ -213,13 +244,15 @@ const styles = StyleSheet.create({
   overlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
   },
   drawer: {
     backgroundColor: '#FFFFFF',
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
     paddingVertical: 32,
+    paddingHorizontal: 10,
+    width: '90%',
+    alignSelf: 'center',
+    borderRadius: 12,
   },
   drawerText: {
     fontSize: 20,

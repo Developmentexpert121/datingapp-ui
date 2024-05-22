@@ -35,7 +35,7 @@ interface Iprops {
   callingCode?: any;
   setCallingCode?: any;
 }
-const PhoneInput = ({
+const updatePhoneNumber = ({
   name,
   control,
   label,
@@ -48,7 +48,7 @@ const PhoneInput = ({
 }: Iprops) => {
   const [show, setShow] = useState<boolean>(false);
   const [countryFlag, setCountryFlag] = useState(
-    findFlagByDialCode(code || '+91'),
+    findFlagByDialCode(code || ''),
   );
   const hasError = errors;
   return (
@@ -114,7 +114,7 @@ const PhoneInput = ({
   );
 };
 
-export default PhoneInput;
+export default updatePhoneNumber;
 
 const styles = StyleSheet.create({
   countryWrap: {

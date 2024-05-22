@@ -84,6 +84,7 @@ const ChatSection = () => {
           getChatUsersList({userId: profileData._id}),
         ).unwrap();
         setChatListData(response);
+        console.log('.......response', response.messageData);
       } catch (error) {
         console.error('Error fetching data:', error);
       }

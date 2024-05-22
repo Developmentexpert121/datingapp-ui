@@ -71,6 +71,13 @@ const FilterSection = ({
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
+  // const [checkedInterests, setCheckedInterests] = useState(
+  //   profileData?.interests,
+  // );
+  useEffect(() => {
+    setCheckedInterests(profileData?.interests);
+  }, [profileData?.interests]);
+  console.log('firstprofileDataprofileData', profileData);
   const {
     control,
     formState: {errors},
@@ -205,7 +212,7 @@ const FilterSection = ({
               <Controller
                 name={'interests'}
                 control={control}
-                // defaultValue="female"
+                defaultValue={profileData?.interests}
                 render={() => (
                   <View
                     style={{

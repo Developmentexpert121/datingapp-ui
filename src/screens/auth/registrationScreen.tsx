@@ -173,7 +173,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   // console.log('.......1', dob);
   // console.log('.......2', country);
   // console.log('.......3', state);
-  // console.log('.......4', city);
+  console.log('.......4', phone);
 
   const dispatch: any = useAppDispatch();
 

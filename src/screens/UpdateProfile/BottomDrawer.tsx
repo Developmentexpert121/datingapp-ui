@@ -268,13 +268,15 @@ const styles = StyleSheet.create({
   overlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
   },
   drawer: {
     backgroundColor: '#FFFFFF',
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
     paddingVertical: 32,
+    paddingHorizontal: 10,
+    width: '90%',
+    alignSelf: 'center',
+    borderRadius: 12,
   },
   drawerText: {
     fontSize: 20,

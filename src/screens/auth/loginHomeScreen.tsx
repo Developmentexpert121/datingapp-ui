@@ -118,27 +118,29 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const handleAppleLogin = async () => {
     // Check if the platform is iOS
     if (Platform.OS === 'ios') {
-      // crashlytics().log('Apple-login');
-      console.log('000000000');
+      console.log('Apple login initiated');
+
       try {
         // Call the function to handle Apple button press and get user info
-        let userInfo: any = await onAppleButtonPress();
-        console.log('userInfo', userInfo);
+        const userInfo = await onAppleButtonPress();
+        console.log('UserInfo:', userInfo);
+
         if (userInfo) {
           // Prepare the login payload for Apple login
-          let loginPayload = {
+          const loginPayload = {
             loginType: 'APPLE',
             role: 'U',
             email: userInfo?.email,
             socialId: userInfo?.sub,
-            deviceToken: 'abcde',
+            deviceToken: 'abcde', // Replace with actual device token if available
           };
+
           // Dispatch the user sign-up action with the login payload
           dispatch(AppleLogin({...loginPayload}))
             .then((response: any) => {
               if (response.payload?.code === 200) {
                 // If sign-up is successful, extract the access token and store it in local storage
-                let token: string = response?.payload?.data?.accessToken;
+                const token = response.payload?.data?.accessToken;
                 setLocalStorage('token', token);
                 // Call the function to handle the navigation based on the response
                 handleNavigation(response);
@@ -150,14 +152,23 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
             })
             .catch((error: any) => {
               // If there is an error in the promise chain, set the error message and show the modal
-              setMsg(error?.payload?.message);
+              console.error('Apple login dispatch error:', error);
+              setMsg(
+                error?.payload?.message ||
+                  'An error occurred during Apple login.',
+              );
               setActiveModal(true);
             });
         } else {
           // Handle the case when the user info is not available
+          setMsg('User information could not be retrieved. Please try again.');
+          setActiveModal(true);
         }
       } catch (error) {
         // Handle any errors that occur during the Apple login process
+        console.error('Apple Authentication Error:', error);
+        setMsg('An error occurred during Apple login. Please try again.');
+        setActiveModal(true);
       }
     } else {
       // If the platform is not iOS, show a message indicating that the feature is only supported on Apple devices

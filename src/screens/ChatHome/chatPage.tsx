@@ -171,6 +171,20 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
       <ActivityIndicator size="large" color="#AC25AC" />
     </View>
   );
+  const handleImageSelect = useCallback(
+    (selectedImage: SelectedImage) => {
+      const newMessage = {
+        selfMessage: true,
+        fileType: selectedImage.type,
+        uri: selectedImage.uri,
+        name: selectedImage.name,
+        createdAt: new Date(),
+      };
+      // dispatch(sendMessageAction({newMessage}));
+      // setMessage('');
+    },
+    [dispatch],
+  );
 
   return (
     <>
@@ -186,6 +200,7 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
             <View style={styles.container}>
               <View
                 style={{
+                  width: '75%',
                   flexDirection: 'row',
                   paddingStart: 10,
                   alignItems: 'center',
@@ -200,8 +215,10 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
                   />
                 </Pressable>
                 <Avatar source={{uri: user?.profilePic}} rounded size={60} />
-                <View style={{flexDirection: 'column'}}>
-                  <Text style={styles.stepsText}>{user?.name}</Text>
+                <View style={{flexDirection: 'column', flex: 1}}>
+                  <Text numberOfLines={1} style={styles.stepsText}>
+                    {user?.name}dgn,dsng,sewkfksfsdgs
+                  </Text>
                   <Text
                     style={{
                       fontSize: 16,
@@ -213,7 +230,7 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
                   </Text>
                 </View>
               </View>
-              <View style={{flexDirection: 'row', marginEnd: 10}}>
+              <View style={{flexDirection: 'row', marginEnd: 10, width: '25%'}}>
                 <TouchableOpacity
                   onPress={() => {
                     setEnableCamera(false);
@@ -331,12 +348,21 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
                 styles.inputView,
                 isKeyboardVisible && {marginBottom: 40},
               ]}>
-              <TextInput
-                value={inputMessage}
-                onChangeText={setInputMessage}
-                placeholder="Type your message..."
-                style={styles.input}
-              />
+              <View
+                style={{borderWidth: 1, width: '88%', flexDirection: 'row'}}>
+                <TextInput
+                  value={inputMessage}
+                  onChangeText={setInputMessage}
+                  placeholder="Type your message..."
+                  style={styles.input}
+                />
+                <TouchableOpacity onPress={() => ''}>
+                  <Image
+                    source={require('../../assets/images/media.png')}
+                    style={{height: 40, width: 40, alignSelf: 'center'}}
+                  />
+                </TouchableOpacity>
+              </View>
               <TouchableOpacity
                 // onPress={handleSendMessage}
                 style={styles.sendButton}>
@@ -377,18 +403,19 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 40,
     borderColor: 'gray',
-    borderWidth: 1,
+    // borderWidth: 1,
     marginRight: 10,
     paddingHorizontal: 10,
   },
   container: {
+    width: '100%',
     backgroundColor: 'white',
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingTop: 16,
     paddingBottom: 4,
     alignItems: 'center',
-    borderWidth: 0,
+    // borderWidth: 2,
   },
   circularImage: {
     width: 20,
@@ -396,12 +423,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   backPress: {
+    // width: '10%',
     marginEnd: 10,
   },
   backPressIcon: {
     color: '#AC25AC',
   },
   stepsText: {
+    // flex: 1,
+    // width: '60%',
     color: 'black',
     fontSize: 20,
     marginHorizontal: 12,

@@ -19,6 +19,7 @@ import {BackIC} from '../../../assets/svgs';
 import CountryCity from '../../../components/AppTextInput/CountryCity';
 import {useAppSelector} from '../../../store/store';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AppTextInputEmail from '../../../components/AppTextInput/AppTextInputEmail';
 
 interface RegForm0 {
   name: string;
@@ -39,16 +40,10 @@ const ZeroStepScreen = ({
   dob,
   password,
   gender,
-  country,
-  state,
-  city,
   callingCode,
   setCallingCode,
-  selectedCountry,
   setSelectedCountry,
-  selectedState,
   setSelectedState,
-  selectedCity,
   setSelectedCity,
 }: any) => {
   const options = [
@@ -204,7 +199,7 @@ const ZeroStepScreen = ({
         {/* Mail */}
         <View style={styles.container}>
           <Text style={styles.label}>Email</Text>
-          <AppTextInput
+          <AppTextInputEmail
             placeholder="Enter Your Email"
             name={email}
             control={control}

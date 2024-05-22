@@ -133,57 +133,53 @@ const UpdateProfile = () => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <CommonBackbutton title="Edit Profile" />
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{flex: 1, marginBottom}}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <SeventhStepScreen
-            profileImages={profileImages}
-            setProfileImages={setProfileImages}
-          />
-          <View style={[styles.boxContainer, {marginTop: 28}]}>
-            <View style={styles.distance}>
-              <Text style={styles.textName}>Height</Text>
-              <Text style={{fontFamily: 'Sansation-Regular'}}>{height} MT</Text>
-            </View>
-            <View style={styles.line} />
-            <Slider
-              style={styles.slider}
-              minimumValue={2}
-              maximumValue={12}
-              value={height}
-              onSlidingComplete={handleSliderChange}
-              step={1}
-              thumbTintColor="#AC25AC"
-              minimumTrackTintColor="#AC25AC"
-              maximumTrackTintColor="gray"
-              thumbStyle={styles.thumbStyle}
-            />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <SeventhStepScreen
+          profileImages={profileImages}
+          setProfileImages={setProfileImages}
+        />
+        <View style={[styles.boxContainer, {marginTop: 28}]}>
+          <View style={styles.distance}>
+            <Text style={styles.textName}>Height</Text>
+            <Text style={{fontFamily: 'Sansation-Regular'}}>{height} MT</Text>
           </View>
-          {dataArr &&
-            dataArr.map((item, index) => (
-              <View style={styles.boxContainer} key={index}>
-                <Text style={styles.textName}>{item.title}</Text>
-                <View style={styles.line} />
-                <View>
-                  <TouchableOpacity
-                    style={styles.textField}
-                    onPress={() => handleModal(item)}>
-                    <Text style={{fontFamily: 'Sansation-Regular'}}>
-                      {item.name}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            ))}
-          <BottomDrawer
-            isOpen={isDrawerOpen}
-            onClose={closeDrawer}
-            title={title}
-            value={value}
+          <View style={styles.line} />
+          <Slider
+            style={styles.slider}
+            minimumValue={2}
+            maximumValue={12}
+            value={height}
+            onSlidingComplete={handleSliderChange}
+            step={1}
+            thumbTintColor="#AC25AC"
+            minimumTrackTintColor="#AC25AC"
+            maximumTrackTintColor="gray"
+            thumbStyle={styles.thumbStyle}
           />
-        </ScrollView>
-      </KeyboardAvoidingView>
+        </View>
+        {dataArr &&
+          dataArr.map((item, index) => (
+            <View style={styles.boxContainer} key={index}>
+              <Text style={styles.textName}>{item.title}</Text>
+              <View style={styles.line} />
+              <View>
+                <TouchableOpacity
+                  style={styles.textField}
+                  onPress={() => handleModal(item)}>
+                  <Text style={{fontFamily: 'Sansation-Regular'}}>
+                    {item.name}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          ))}
+        <BottomDrawer
+          isOpen={isDrawerOpen}
+          onClose={closeDrawer}
+          title={title}
+          value={value}
+        />
+      </ScrollView>
     </SafeAreaView>
   );
 };
