@@ -21,7 +21,8 @@ import {reciveMessages, sendAMessage} from '../../store/Auth/auth';
 import io from 'socket.io-client';
 import {PhoneCallIC, SendIC, VideoIC} from '../../assets/svgs';
 
-const socket = io('https://datingapp-api.onrender.com');
+// const socket = io('https://datingapp-api.onrender.com');
+const socket = io('https://2446-122-176-88-30.ngrok-free.app/');
 
 type Props = {
   goToCallScreen: () => void;
@@ -172,7 +173,7 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
     </View>
   );
   const handleImageSelect = useCallback(
-    (selectedImage: SelectedImage) => {
+    (selectedImage: any) => {
       const newMessage = {
         selfMessage: true,
         fileType: selectedImage.type,
@@ -200,7 +201,7 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
             <View style={styles.container}>
               <View
                 style={{
-                  width: '75%',
+                  width: '72%',
                   flexDirection: 'row',
                   paddingStart: 10,
                   alignItems: 'center',
@@ -214,10 +215,10 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
                     size={30}
                   />
                 </Pressable>
-                <Avatar source={{uri: user?.profilePic}} rounded size={60} />
+                <Avatar source={{uri: user?.profilePic}} rounded size={50} />
                 <View style={{flexDirection: 'column', flex: 1}}>
                   <Text numberOfLines={1} style={styles.stepsText}>
-                    {user?.name}dgn,dsng,sewkfksfsdgs
+                    {user?.name}
                   </Text>
                   <Text
                     style={{

@@ -142,6 +142,7 @@ export const LoginSignIn = createAsyncThunk(
           'authToken',
           JSON.stringify(response?.data?.token),
         );
+        console.log('token Login', response?.data?.token);
         await AsyncStorage.setItem(
           'userId',
           JSON.stringify(response?.data?._id),
@@ -387,7 +388,10 @@ export const getAllUsers = createAsyncThunk(
     {dispatch}: any,
   ) => {
     try {
-      console.log('.........checkedInterests', checkedInterests);
+      console.log(
+        '.checkedInterests........checkedInterests',
+        checkedInterests,
+      );
       const response = await http.get('/user/getUsers', {
         params: {
           id: userId,

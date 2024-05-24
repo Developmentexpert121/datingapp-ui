@@ -221,11 +221,6 @@ const SeventhStepScreen = ({
           </TouchableOpacity>
         ))}
       </View>
-      {/* {errors.profileImages && (
-        <Text style={{color: 'red', alignSelf: 'center', marginTop: 30}}>
-          {errors.profileImages.message}
-        </Text>
-      )} */}
       {errors && (
         <Text
           style={{

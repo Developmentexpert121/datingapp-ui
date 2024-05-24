@@ -3,9 +3,7 @@ import {
   Text,
   TouchableOpacity,
   View,
-  KeyboardAvoidingView,
   Platform,
-  ScrollView,
   ImageBackground,
   Linking,
 } from 'react-native';
@@ -25,6 +23,7 @@ import Colors from '../../constants/Colors';
 import Loader from '../../components/Loader/Loader';
 import {BackIC} from '../../assets/svgs';
 import LoginTextInputEmail from '../../components/AppTextInput/LoginTextInputEmail';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 interface LoginForm {
@@ -43,6 +42,7 @@ const schema = yup.object().shape({
     .min(6, 'Password must be at least 6 characters')
     .required('Password is required'),
 });
+
 const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const dispatch: any = useAppDispatch();
   const navigation = useNavigation();
@@ -57,11 +57,11 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     defaultValues,
     resolver: yupResolver(schema),
   });
+
   const onSubmit: any = (data: LoginForm) => {
     setLoader(true);
     console.log('data user', data);
     dispatch(LoginSignIn(data));
-    // reset();
     setLoader(false);
   };
 
@@ -86,86 +86,44 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   }, []);
 
   return (
-    // <ImageContainer
-    // isScroll
-    // // title="Sign In"
-    // // subTitle="Sign In to continue"
-    // bgImage={require("../../assets/images/login_Image.png")}
-    // >
     <>
-      <KeyboardAvoidingView
-        behavior="padding"
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 10 : 0}
-        style={styles.container}>
-        <ScrollView
-          style={{flex: 1}}
-          nestedScrollEnabled={true}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.scrollViewContent}
-          keyboardShouldPersistTaps="always">
-          <View
-            style={{
-              flex: 9 / 10,
-              alignItems: 'center',
-            }}>
-            {/* <Image
-              source={require('../../assets/images/LoginTop.png')}
-              // resizeMode="contain"
-              style={{width: 160, height: 160}}
-            />
-            <Image
-              source={require('../../assets/images/LoginBottom.png')}
-              resizeMode="contain"
-              style={{width: '100%', height: '70%'}}
-            /> */}
+      <KeyboardAwareScrollView
+        showsVerticalScrollIndicator={false}
+        style={{flex: 1}}
+        contentContainerStyle={styles.scrollViewContent}
+        keyboardShouldPersistTaps="handled"
+        enableOnAndroid={true}
+        extraHeight={Platform.select({android: 200})}>
+        <View style={styles.container}>
+          <View style={styles.imageContainer}>
             <ImageBackground
               source={require('../../assets/images/login_Image.png')}
               resizeMode="contain"
-              style={{
-                width: '100%',
-                height: '102%',
-                // marginTop: 20,
-              }}>
+              style={styles.imageBackground}>
               <TouchableOpacity
-                style={{marginLeft: 20, marginTop: 80}}
+                style={styles.backButton}
                 onPress={() => navigation.goBack()}>
                 <BackIC />
               </TouchableOpacity>
             </ImageBackground>
           </View>
 
-          <View
-            style={{
-              flex: 1 / 10,
-              width: '100%',
-              height: '100%',
-              alignItems: 'center',
-            }}>
+          <View style={styles.formContainer}>
             <Text style={styles.label}>What's your email?</Text>
             <Text style={styles.subText}>
               Don't lose access to your account,{'\n'}verify your email.
             </Text>
-            <View
-              style={{
-                width: '80%',
-                justifyContent: 'center',
-                alignSelf: 'center',
-              }}>
+            <View style={styles.inputContainer}>
               <LoginTextInputEmail
                 placeholder="Enter Your Email"
                 name="email"
                 autoCapitalize="none"
                 control={control}
                 errors={Boolean(errors?.email)}
-                // keyboardType="email-address"
               />
-              <View style={{height: 15}}>
-                {errors.email && (
-                  <Text style={{color: 'red', fontFamily: 'Sansation-Regular'}}>
-                    {errors.email.message}
-                  </Text>
-                )}
-              </View>
+              {errors.email && (
+                <Text style={styles.errorText}>{errors.email.message}</Text>
+              )}
 
               <LoginTextInput
                 placeholder="Enter Your Password"
@@ -174,31 +132,19 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
                 errors={Boolean(errors?.password)}
                 secureTextEntry
               />
-              <View style={{height: 15}}>
-                {errors.password && (
-                  <Text style={{color: 'red', fontFamily: 'Sansation-Regular'}}>
-                    {errors.password.message}
-                  </Text>
-                )}
-              </View>
+              {errors.password && (
+                <Text style={styles.errorText}>{errors.password.message}</Text>
+              )}
               <MainButton
-                buttonStyle={{
-                  width: '100%',
-                }}
+                buttonStyle={styles.loginButton}
                 onPress={handleSubmit(onSubmit)}
                 ButtonName={'Log In'}
               />
             </View>
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
-      <View
-        style={{
-          flexDirection: 'row',
-          bottom: 20,
-          position: 'absolute',
-          alignSelf: 'center',
-        }}>
+        </View>
+      </KeyboardAwareScrollView>
+      <View style={styles.footer}>
         <Text
           style={styles.termsText}
           onPress={() => {
@@ -217,7 +163,6 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
       </View>
       {loader ? <Loader /> : null}
     </>
-    // </ImageContainer>
   );
 };
 
@@ -226,10 +171,26 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     backgroundColor: '#FFC7FF',
-    borderWidth: 0,
   },
   scrollViewContent: {
     flexGrow: 1,
+  },
+  imageContainer: {
+    flex: 9 / 10,
+    alignItems: 'center',
+  },
+  imageBackground: {
+    width: '100%',
+    height: '102%',
+  },
+  backButton: {
+    marginLeft: 20,
+    marginTop: 80,
+  },
+  formContainer: {
+    flex: 1 / 10,
+    width: '100%',
+    alignItems: 'center',
   },
   label: {
     fontSize: 22,
@@ -243,6 +204,25 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'black',
     marginVertical: 7,
+  },
+  inputContainer: {
+    width: '80%',
+    justifyContent: 'center',
+    alignSelf: 'center',
+  },
+  errorText: {
+    color: 'red',
+    fontFamily: 'Sansation-Regular',
+    height: 15,
+  },
+  loginButton: {
+    width: '100%',
+  },
+  footer: {
+    flexDirection: 'row',
+    bottom: 20,
+    position: 'absolute',
+    alignSelf: 'center',
   },
   termsText1: {
     color: 'gray',

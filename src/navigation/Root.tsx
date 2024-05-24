@@ -65,7 +65,7 @@ const Root = () => {
   }
   const getToken = async () => {
     const token = await messaging().getToken();
-    console.log('Sdk Token:', token);
+    // console.log('Sdk Token:', token);
   };
   const fetchAuthToken = async () => {
     try {

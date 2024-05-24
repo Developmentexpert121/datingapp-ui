@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, Text, Image, ScrollView} from 'react-native';
+import {View, StyleSheet, ScrollView} from 'react-native';
 import Card from '../../components/Dashboard/homeCard/homeCard';
 import AnimatedStack from './AnimatedStack/animatedStack';
 import HeaderComponent from '../../components/Dashboard/header/header';
@@ -31,7 +31,7 @@ const HomeScreen = () => {
     (state: any) => state?.Auth?.data?.profileData,
   );
 
-  // console.log('profileData0', profileData);
+  console.log('profileData0', profileData);
 
   const [showIn, setShowIn] = useState(profileData?.showInDistance);
   console.log('showIn Me', showIn);
@@ -51,10 +51,10 @@ const HomeScreen = () => {
   console.log('---ProfileData', ProfileData);
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<any>([]);
   console.log('first data', data);
   const [checkedInterests, setCheckedInterests] = useState(
-    profileData?.interests,
+    profileData?.interests || 'everyone',
   );
   useEffect(() => {
     setCheckedInterests(profileData?.interests);
@@ -76,6 +76,7 @@ const HomeScreen = () => {
           low: low,
           high: high,
         }),
+        console.log('??????????', getAllUsers),
       )
         .unwrap()
         .then((response: any) => {

@@ -24,31 +24,32 @@ const ChatSection = () => {
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-  // const allUsers: any = useAppSelector(
-  //   (state: any) => state?.Auth?.data?.allUsers,
-  // );
-  // console.log('allUsers allUsers', allUsers);
   const chatUsersList: any = useAppSelector(
     (state: any) => state?.Auth?.data?.chatUsersList,
   );
-  const [receiverData, setReceiverData] = useState<any>([]);
   const [chatListData, setChatListData] = useState<any>([]);
-  // console.log('data List', chatListData);
+  console.log('data List', chatListData);
+
+  const [lastChat, setlastChat] = useState<any>([]);
+  console.log('lastChat', lastChat);
 
   const goToChatWith = async (user: any) => {
     await dispatch(videoCallUser({user: user}));
     navigation.navigate('VideoCallRedirect');
   };
-  // Seacrh Function
+
+  // Search Function
   const [search, setSearch] = useState<any>('');
   const handleSearchChange = (text: any) => {
     setSearch(text);
   };
+
   const filteredData = chatListData.data
     ? chatListData.data.filter((item: any) =>
         item.name.toLowerCase().includes(search.toLowerCase()),
       )
     : [];
+
   const getTimeAgo = (timestamp: string) => {
     const timeNow = new Date();
     const timeSent = new Date(timestamp);
@@ -77,6 +78,7 @@ const ChatSection = () => {
       return `${years} years ago`;
     }
   };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -84,22 +86,28 @@ const ChatSection = () => {
           getChatUsersList({userId: profileData._id}),
         ).unwrap();
         setChatListData(response);
-        console.log('.......response', response.messageData);
+        if (response.data && response.data.length > 0) {
+          const allUsers = response.data;
+          allUsers.forEach((user: any) => {
+            const lastChat = user.chat.message;
+            // console.log('User:', user);
+            console.log('Last chat:', lastChat);
+          });
+        } else {
+          console.log('No users found in response');
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
-    // const intervalId = setInterval(fetchData, 5000); // Poll every 5 seconds
-    fetchData(); // Fetch data immediately on component mount
-    // return () => clearInterval(intervalId);
-  }, []);
+    fetchData();
+  }, [dispatch, profileData._id]);
+
   const renderItem = ({item}: {item: any}) => {
     return (
       <ListItem
         containerStyle={styles.listItemContainer}
-        onPress={() => goToChatWith(item)}
-        //
-      >
+        onPress={() => goToChatWith(item)}>
         <View style={{width: '15%'}}>
           {item.profilePic ? (
             <Avatar size={60} source={{uri: item.profilePic}} rounded />
@@ -117,15 +125,12 @@ const ChatSection = () => {
             }}>
             {item.name}
           </Text>
-
-          {item.latestMessage && item.latestMessageTimestamp ? (
-            <Text
-              style={{
-                fontFamily: 'Sansation-Regular',
-              }}>
-              {item.latestMessage}
-            </Text>
-          ) : null}
+          <Text
+            style={{
+              fontFamily: 'Sansation-Regular',
+            }}>
+            {item.lastChat}
+          </Text>
         </View>
         <View
           style={{
@@ -133,21 +138,20 @@ const ChatSection = () => {
             rowGap: 4,
             width: '20%',
           }}>
-          {item.latestMessage && item.latestMessageTimestamp ? (
-            <Text
-              style={{
-                fontFamily: 'Sansation-Regular',
-                fontSize: 10,
-                color: 'black',
-              }}>
-              {getTimeAgo(item.latestMessageTimestamp)}
-            </Text>
-          ) : null}
+          <Text
+            style={{
+              fontFamily: 'Sansation-Regular',
+              fontSize: 10,
+              color: 'black',
+            }}>
+            {item.time}
+          </Text>
           <Ionicons name="checkmark-done" size={20} color="#AC25AC" />
         </View>
       </ListItem>
     );
   };
+
   return (
     <SafeAreaView style={styles.container}>
       <CommonBackbutton title="Chat" />
@@ -165,13 +169,14 @@ const ChatSection = () => {
         <FlatList
           showsVerticalScrollIndicator={false}
           data={filteredData}
-          keyExtractor={item => item.id}
+          keyExtractor={(item, index) => item._id || index.toString()}
           renderItem={renderItem}
         />
       </View>
     </SafeAreaView>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

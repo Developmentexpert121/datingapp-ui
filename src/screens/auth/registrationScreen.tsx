@@ -173,7 +173,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   // console.log('.......1', dob);
   // console.log('.......2', country);
   // console.log('.......3', state);
-  console.log('.......4', phone);
+  // console.log('.......4', phone);
 
   const dispatch: any = useAppDispatch();
 
@@ -341,6 +341,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   //
 
   const getLocationAndRegister = async (data: RegisterForm) => {
+    console.log('................', data);
     Geolocation.getCurrentPosition(
       async (position: any) => {
         const {latitude, longitude} = await position.coords;
@@ -378,6 +379,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   };
 
   const showPermissionPopup = (data: RegisterForm) => {
+    console.log('................0', data);
     Alert.alert(
       'Location Permission',
       'This app needs access to your location to provide the service.',

@@ -212,7 +212,7 @@ const FilterSection = ({
               <Controller
                 name={'interests'}
                 control={control}
-                defaultValue={profileData?.interests}
+                defaultValue="Everyone"
                 render={() => (
                   <View
                     style={{

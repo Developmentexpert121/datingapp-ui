@@ -243,7 +243,7 @@ const SettingsSection = () => {
               <View>
                 <TouchableOpacity
                   style={styles.textField}
-                  disabled={index === 1}
+                  disabled={index === 1 || index === 0}
                   onPress={() => {
                     if (item.title === 'Location') {
                       showPermissionPopup();
