@@ -18,17 +18,14 @@ import {videoCallUser} from '../../store/Activity/activity';
 import SmallLoader from '../../components/Loader/SmallLoader';
 
 const ChatSection = () => {
-  const [loader, setLoader] = useState<boolean>(false);
   const navigation: any = useNavigation();
   const dispatch: any = useAppDispatch();
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-  const chatUsersList: any = useAppSelector(
-    (state: any) => state?.Auth?.data?.chatUsersList,
-  );
   const [chatListData, setChatListData] = useState<any>([]);
-  console.log('data List', chatListData);
+  console.log('chatListDatadata List', chatListData);
+  console.log('data List', chatListData.data?.[0].chat);
 
   const [lastChat, setlastChat] = useState<any>([]);
   console.log('lastChat', lastChat);
@@ -50,35 +47,6 @@ const ChatSection = () => {
       )
     : [];
 
-  const getTimeAgo = (timestamp: string) => {
-    const timeNow = new Date();
-    const timeSent = new Date(timestamp);
-    const differenceInSeconds = Math.floor(
-      (timeNow.getTime() - timeSent.getTime()) / 1000,
-    );
-    if (differenceInSeconds < 60) {
-      return `${differenceInSeconds} sec ago`;
-    } else if (differenceInSeconds < 3600) {
-      const minutes = Math.floor(differenceInSeconds / 60);
-      return `${minutes} mins ago`;
-    } else if (differenceInSeconds < 86400) {
-      const hours = Math.floor(differenceInSeconds / 3600);
-      return `${hours} hrs ago`;
-    } else if (differenceInSeconds < 604800) {
-      const days = Math.floor(differenceInSeconds / 86400);
-      return `${days} days ago`;
-    } else if (differenceInSeconds < 2592000) {
-      const weeks = Math.floor(differenceInSeconds / 604800);
-      return `${weeks} weeks ago`;
-    } else if (differenceInSeconds < 31536000) {
-      const months = Math.floor(differenceInSeconds / 2592000);
-      return `${months} months ago`;
-    } else {
-      const years = Math.floor(differenceInSeconds / 31536000);
-      return `${years} years ago`;
-    }
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -89,7 +57,7 @@ const ChatSection = () => {
         if (response.data && response.data.length > 0) {
           const allUsers = response.data;
           allUsers.forEach((user: any) => {
-            const lastChat = user.chat.message;
+            const lastChat = user.chat?.message;
             // console.log('User:', user);
             console.log('Last chat:', lastChat);
           });
@@ -101,7 +69,7 @@ const ChatSection = () => {
       }
     };
     fetchData();
-  }, [dispatch, profileData._id]);
+  }, []);
 
   const renderItem = ({item}: {item: any}) => {
     return (
@@ -129,7 +97,7 @@ const ChatSection = () => {
             style={{
               fontFamily: 'Sansation-Regular',
             }}>
-            {item.lastChat}
+            {item.chat?.message}
           </Text>
         </View>
         <View

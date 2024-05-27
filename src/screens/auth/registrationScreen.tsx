@@ -388,7 +388,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
           text: 'Cancel',
           onPress: () => {
             setPermissionStatus('denied');
-            reset();
+            // reset();
           },
           style: 'cancel',
         },

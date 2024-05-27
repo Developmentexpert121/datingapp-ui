@@ -1,10 +1,9 @@
 import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
-import React, {memo, useState} from 'react';
+import React from 'react';
 import Colors from '../../constants/Colors';
 import {Controller} from 'react-hook-form';
-import {EyeslashIC, EyeslashOpenIC} from '../../assets/svgs';
 
-const LoginTextInputEmail = memo((Props: any) => {
+const LoginTextInputEmail = (Props: any) => {
   const {
     name,
     control,
@@ -19,11 +18,8 @@ const LoginTextInputEmail = memo((Props: any) => {
     secureTextEntry,
     ...textInputProps
   } = Props;
-  const [focused, setFocused] = useState<boolean>(false);
   const hasError = errors;
 
-  const [showPassword, setShowPassword] = useState(false);
-  // Function to remove spaces from input
   const removeSpaces = (text: string) => text.replace(/\s/g, '');
 
   return (
@@ -46,27 +42,18 @@ const LoginTextInputEmail = memo((Props: any) => {
             style={[styles.textInput1, textstyle]}
             keyboardType={Props.keyboardType}
             placeholderTextColor={Colors.darkText}
-            onFocus={() => setFocused(true)}
-            onBlur={() => (onBlur(), setFocused(false))}
+            // onFocus={() => setFocused(true)}
+            // onBlur={() => (onBlur(), setFocused(false))}
             onChangeText={text => onChange(removeSpaces(text))}
             value={value}
             error={Boolean(errors)}
             autoCapitalize={autoCapitalize}
-            secureTextEntry={secureTextEntry && !showPassword}
           />
-          {rightIcon}
-          {secureTextEntry && (
-            <TouchableOpacity
-              onPress={() => setShowPassword(!showPassword)}
-              style={styles.icon}>
-              {showPassword ? <EyeslashOpenIC /> : <EyeslashIC />}
-            </TouchableOpacity>
-          )}
         </View>
       )}
     />
   );
-});
+};
 
 export default LoginTextInputEmail;
 

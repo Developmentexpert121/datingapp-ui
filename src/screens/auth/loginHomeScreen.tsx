@@ -25,6 +25,7 @@ import {userProfileDataChange} from '../../store/slice/myProfileSlice/myProfileS
 import {AppleLogin, GoogleLogin} from '../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getProfile} from '../../store/slice/myProfileSlice/myProfileAction';
+import {name} from '@stream-io/video-react-native-sdk';
 interface AppleAuthResponse {
   user: string;
   email: string | null;
@@ -63,8 +64,8 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
       let userInfo = await googleLogin();
       if (userInfo) {
         // Extract the email and id from the user info
-        const {email, id} = userInfo;
-        console.log('User data', userInfo);
+        const {email, id, name, photo} = userInfo;
+        console.log('User data///', userInfo);
         dispatch(
           userProfileDataChange({
             key: 'email',
@@ -78,6 +79,8 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
           email: email,
           socialId: id,
           deviceToken: 'abcde',
+          name: name,
+          photo: photo,
         };
         // Dispatch the user sign-up action with the login payload
         setLoader(true);

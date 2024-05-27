@@ -272,13 +272,11 @@ const SettingsSection = () => {
             </View>
           ))}
 
-        <TouchableOpacity style={styles.boxContainer}>
-          <Text
-            style={[styles.textName, {color: '#AC25AC'}]}
-            // onPress={handleLogout}
-            onPress={deleteUserButton}>
-            Log Out
-          </Text>
+        <TouchableOpacity
+          style={styles.boxContainer}
+          // onPress={handleLogout}
+          onPress={deleteUserButton}>
+          <Text style={[styles.textName, {color: '#AC25AC'}]}>Log Out</Text>
         </TouchableOpacity>
         {/* <TouchableOpacity style={styles.boxContainer}>
           <Text

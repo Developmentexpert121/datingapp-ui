@@ -21,8 +21,8 @@ import {reciveMessages, sendAMessage} from '../../store/Auth/auth';
 import io from 'socket.io-client';
 import {PhoneCallIC, SendIC, VideoIC} from '../../assets/svgs';
 
-// const socket = io('https://datingapp-api.onrender.com');
-const socket = io('https://2446-122-176-88-30.ngrok-free.app/');
+const socket = io('https://datingapp-api.onrender.com');
+// const socket = io('https://2446-122-176-88-30.ngrok-free.app/');
 
 type Props = {
   goToCallScreen: () => void;
@@ -51,6 +51,8 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
 
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
+
+  const [onlineUsers, setOnlineUsers] = useState<any>([]);
 
   // const handleSendMessage = () => {
   //   // Implement logic to send the message
@@ -87,8 +89,20 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
   }, [scrollViewRef /* Add any dependencies */]);
 
   useEffect(() => {
-    socket.on('connection', () => {
-      console.log('Connected to server');
+    socket.on('connect', () => {
+      const userId = profileData?._id;
+      console.log('userId userId', userId);
+      socket.emit('user_connected', userId);
+    });
+
+    socket.on('user_online', userId => {
+      setOnlineUsers(prevOnlineUsers => [...prevOnlineUsers, userId]);
+    });
+
+    socket.on('user_offline', userId => {
+      setOnlineUsers(prevOnlineUsers =>
+        prevOnlineUsers.filter(user => user !== userId),
+      );
     });
 
     socket.on('disconnect', () => {
@@ -99,13 +113,11 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
       // Handle incoming messages
       console.log('Received message:', msg);
       // Update chatMessages state accordingly
-
-      // Update chatMessages state with the received message
       if (msg.sender !== profileData._id) {
         setChatMessages((prevMessages: any) => [...prevMessages, msg]);
       }
     });
-
+    console.log(',,,,,,,', onlineUsers);
     return () => {
       socket.disconnect();
     };
@@ -234,8 +246,8 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
               <View style={{flexDirection: 'row', marginEnd: 10, width: '25%'}}>
                 <TouchableOpacity
                   onPress={() => {
-                    setEnableCamera(false);
-                    goToCallScreen();
+                    // setEnableCamera(false);
+                    // goToCallScreen();
                   }}>
                   <View style={styles.editIcon}>
                     {/* <PhoneCallIC /> */}
@@ -359,7 +371,7 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
                 />
                 <TouchableOpacity onPress={() => ''}>
                   <Image
-                    source={require('../../assets/images/media.png')}
+                    source={require('../../assets/images/documentUpload.png')}
                     style={{height: 40, width: 40, alignSelf: 'center'}}
                   />
                 </TouchableOpacity>
@@ -367,7 +379,6 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
               <TouchableOpacity
                 // onPress={handleSendMessage}
                 style={styles.sendButton}>
-                {/* <Text style={styles.sendButtonText}>Send</Text> */}
                 <SendIC onPress={handleSendMessage} />
               </TouchableOpacity>
             </View>

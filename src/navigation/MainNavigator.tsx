@@ -12,7 +12,6 @@ import ExploredScreen from '../screens/Explore/explored';
 import ProfileScreen from '../screens/Profile/profileSection';
 import SettingsScreen from '../screens/SettingsSection/settings';
 import UpdateProfileScreen from '../screens/UpdateProfile/updateProfile';
-import ChatPage from '../screens/ChatHome/chatPage';
 import VideoCallRedirect from '../screens/ChatHome/chatVideoRedirect';
 
 const Stack = createStackNavigator<RootStackParamList>();
