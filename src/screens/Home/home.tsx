@@ -31,10 +31,10 @@ const HomeScreen = () => {
     (state: any) => state?.Auth?.data?.profileData,
   );
 
-  console.log('profileData0', profileData);
+  // console.log('profileData0', profileData);
 
   const [showIn, setShowIn] = useState(profileData?.showInDistance);
-  console.log('showIn Me', showIn);
+  // console.log('showIn Me', showIn);
 
   const [distance, setDistance] = useState(
     parseInt(profileData?.distance) || 50,
@@ -47,12 +47,12 @@ const HomeScreen = () => {
   useEffect(() => {
     dispatch(ProfileData());
   }, []);
-  console.log('---isAuthenticated', isAuthenticated);
-  console.log('---ProfileData', ProfileData);
+  // console.log('---isAuthenticated', isAuthenticated);
+  // console.log('---ProfileData', ProfileData);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [data, setData] = useState<any>([]);
-  console.log('first data', data);
+  // console.log('first data', data);
   const [checkedInterests, setCheckedInterests] = useState(
     profileData?.interests || 'everyone',
   );
@@ -60,8 +60,8 @@ const HomeScreen = () => {
     setCheckedInterests(profileData?.interests);
   }, [profileData?.interests]);
 
-  console.log('/////////sxfbjjs', profileData?.interests);
-  console.log('checkedInterests', checkedInterests);
+  // console.log('/////////sxfbjjs', profileData?.interests);
+  // console.log('checkedInterests', checkedInterests);
   const [low, setLow] = useState<number>(18);
   const [high, setHigh] = useState<number>(56);
   useEffect(() => {
@@ -76,7 +76,7 @@ const HomeScreen = () => {
           low: low,
           high: high,
         }),
-        console.log('??????????', getAllUsers),
+        // console.log('??????????', getAllUsers),
       )
         .unwrap()
         .then((response: any) => {

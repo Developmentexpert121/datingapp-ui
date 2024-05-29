@@ -161,7 +161,7 @@ export const LoginSignIn = createAsyncThunk(
         return response.data;
       }
     } catch (error: any) {
-      // console.log('first error', error);
+      console.log('first error', error);
       if (error.response && error.response.status === 400) {
         dispatch(
           toggleGlobalModal({
@@ -388,10 +388,7 @@ export const getAllUsers = createAsyncThunk(
     {dispatch}: any,
   ) => {
     try {
-      console.log(
-        '.checkedInterests........checkedInterests',
-        checkedInterests,
-      );
+      // console.log('.checkedInte', checkedInterests);
       const response = await http.get('/user/getUsers', {
         params: {
           id: userId,
@@ -601,10 +598,12 @@ export const updateAuthentication = createAsyncThunk(
 export const videoCallToken = createAsyncThunk(
   'auth/videoCallToken',
   async (data: any, {dispatch}: any) => {
+    console.log(',,,,,,VIdeo calll');
     try {
       const response = await http.post(`/user/stream-chat/token`, data);
 
       if (response.status === 200) {
+        console.log(',,,,,VIdeo calll2');
         return response.data;
       }
     } catch (error: any) {

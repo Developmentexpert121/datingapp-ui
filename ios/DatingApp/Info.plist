@@ -49,29 +49,12 @@
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
-		<true/>
+		<false/>
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>YOUR TEXT</string>
-	<!-- <key>com.apple.developer.applesignin</key>
-    <array>
-    <string>Default</string>
-    </array>
-    <key>CFBundleURLTypes</key>
-    <array>
-    <dict>
-        <key>CFBundleTypeRole</key>
-        <string>Editor</string>
-        <key>CFBundleURLName</key>
-        <string>com.yourcompany.yourapp</string>
-        <key>CFBundleURLSchemes</key>
-        <array>
-            <string>yourapp</string>
-        </array>
-    </dict>
-    </array> -->
 	<key>NSCameraUsageDescription</key>
 	<string>TopTier Dating App uses camera to take photos.</string>
 	<key>NSLocationAlwaysUsageDescription</key>

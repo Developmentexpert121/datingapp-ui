@@ -28,7 +28,7 @@ export const googleLogin = async () => {
     // console.log('111111111111');
     return userInfo?.user;
   } catch (error) {
-    console.log('hhhh', error);
+    console.log('error NETWORK_ERROR', error);
   }
 };
 

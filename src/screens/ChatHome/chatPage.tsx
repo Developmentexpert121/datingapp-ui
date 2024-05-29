@@ -22,7 +22,6 @@ import io from 'socket.io-client';
 import {PhoneCallIC, SendIC, VideoIC} from '../../assets/svgs';
 
 const socket = io('https://datingapp-api.onrender.com');
-// const socket = io('https://2446-122-176-88-30.ngrok-free.app/');
 
 type Props = {
   goToCallScreen: () => void;
@@ -42,7 +41,6 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
   );
 
   const [inputMessage, setInputMessage] = useState('');
-
   const [chatMessages, setChatMessages] = useState<any>([]);
   const [messageCount, setMessageCount] = useState(0);
   const [limit, setLimit] = useState(10); // Number of messages to fetch per request
@@ -89,25 +87,25 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
   }, [scrollViewRef /* Add any dependencies */]);
 
   useEffect(() => {
-    socket.on('connect', () => {
-      const userId = profileData?._id;
-      console.log('userId userId', userId);
-      socket.emit('user_connected', userId);
-    });
+    // socket.on('connect', () => {
+    //   const userId = profileData?._id;
+    //   console.log('userId userId', userId);
+    //   socket.emit('user_connected', userId);
+    // });
 
-    socket.on('user_online', userId => {
-      setOnlineUsers(prevOnlineUsers => [...prevOnlineUsers, userId]);
-    });
+    // socket.on('user_online', userId => {
+    //   setOnlineUsers(prevOnlineUsers => [...prevOnlineUsers, userId]);
+    // });
 
-    socket.on('user_offline', userId => {
-      setOnlineUsers(prevOnlineUsers =>
-        prevOnlineUsers.filter(user => user !== userId),
-      );
-    });
+    // socket.on('user_offline', userId => {
+    //   setOnlineUsers(prevOnlineUsers =>
+    //     prevOnlineUsers.filter(user => user !== userId),
+    //   );
+    // });
 
-    socket.on('disconnect', () => {
-      console.log('Disconnected from server');
-    });
+    // socket.on('disconnect', () => {
+    //   console.log('Disconnected from server');
+    // });
 
     socket.on('chat message', msg => {
       // Handle incoming messages
@@ -117,10 +115,10 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
         setChatMessages((prevMessages: any) => [...prevMessages, msg]);
       }
     });
-    console.log(',,,,,,,', onlineUsers);
-    return () => {
-      socket.disconnect();
-    };
+    // console.log(',,,,,,,', onlineUsers);
+    // return () => {
+    //   socket.disconnect();
+    // };
   }, []);
 
   useEffect(() => {
@@ -239,7 +237,7 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
                       marginStart: 12,
                       color: '#6D6D6D',
                     }}>
-                    online 30m ago
+                    online
                   </Text>
                 </View>
               </View>

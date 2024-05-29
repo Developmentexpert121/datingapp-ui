@@ -1,13 +1,11 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
-
 import {
   Call,
   StreamVideo,
   StreamVideoClient,
 } from '@stream-io/video-react-native-sdk';
 import {useAppDispatch, useAppSelector} from '../../store/store';
-import {useRoute} from '@react-navigation/native';
 import uuid from 'react-native-uuid';
 import {videoCallToken} from '../../store/Auth/auth';
 import VideoCallInterface from './chatVideoInterface';
@@ -22,14 +20,18 @@ const VideoCallRedirect = () => {
   );
 
   const [callId, setCallId] = useState<any>('');
+  console.log('callId?????', callId);
 
   const [enableCamera, setEnableCamera] = useState<boolean>(true);
 
   const [activeScreen, setActiveScreen] = useState('home');
 
   const [client, setClient] = useState<StreamVideoClient | null>(null);
+  console.log('.????1111111111111', client);
+  console.log('.????setClient', setClient);
 
   const [call, setCall] = useState<Call>();
+  console.log('call????????????', call);
 
   useEffect(() => {
     const callId: any = uuid.v4();
@@ -39,6 +41,7 @@ const VideoCallRedirect = () => {
       const token = await dispatch(videoCallToken({id: profileData?._id}))
         .unwrap()
         .then((response: any) => response.token);
+      console.log('::::::::::::', token);
       return token;
     };
 

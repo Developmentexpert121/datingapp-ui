@@ -1044,7 +1044,7 @@ PODS:
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
-  - react-native-maps (1.15.1):
+  - react-native-maps (1.15.4):
     - React-Core
   - react-native-netinfo (9.5.0):
     - React-Core
@@ -1238,14 +1238,14 @@ PODS:
     - React-Core
   - RNDateTimePicker (7.7.0):
     - React-Core
-  - RNFBAnalytics (19.2.2):
+  - RNFBAnalytics (19.3.0):
     - Firebase/AnalyticsWithoutAdIdSupport (= 10.24.0)
     - React-Core
     - RNFBApp
-  - RNFBApp (19.2.2):
+  - RNFBApp (19.3.0):
     - Firebase/CoreOnly (= 10.24.0)
     - React-Core
-  - RNFBAuth (19.2.2):
+  - RNFBAuth (19.3.0):
     - Firebase/Auth (= 10.24.0)
     - React-Core
     - RNFBApp
@@ -1627,7 +1627,7 @@ SPEC CHECKSUMS:
   react-native-fbsdk-next: 84746ea062dc3b1a422154d7674ba4c5836b6d82
   react-native-geolocation: 1a28156c0c562c894460e1b359e12fe4c13d0240
   react-native-image-picker: fefff630cfa3ee6a809f6ac6569981f4a34e0050
-  react-native-maps: 4c07b21deac3ac3579558956b63e288efb8725bb
+  react-native-maps: aa8d9dece9896ff1b74dd969a7bd7a5896bba832
   react-native-netinfo: 48c5f79a84fbc3ba1d28a8b0d04adeda72885fa8
   react-native-safe-area-context: dcab599c527c2d7de2d76507a523d20a0b83823d
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
@@ -1660,9 +1660,9 @@ SPEC CHECKSUMS:
   RNCallKeep: 2015ba5eb74666407e3613fd54c65bd227624a0a
   RNCAsyncStorage: 826b603ae9c0f88b5ac4e956801f755109fa4d5c
   RNDateTimePicker: 4f3c4dbd4f908be32ec8c93f086e8924bd4a2e07
-  RNFBAnalytics: 56a13f68c23e236cc5ca7fab1573398287633c15
-  RNFBApp: 91311b27bc9a33e23b76a62825afd1635501018a
-  RNFBAuth: 92172d8976baaa829825017174106e2b2c550319
+  RNFBAnalytics: 74eebc66e5f2475f2ed3a63822ef6bc913c4b4ff
+  RNFBApp: de81f7eb68c1e6107574f2b102b0dee92a9862fa
+  RNFBAuth: 40b9953bc9a8e2e207843e424aa82aa84bf34057
   RNGestureHandler: a51b249f3c779e38a5d9ec45cb107d8780b39fb2
   RNGoogleSignin: 24d3b3261f78b0fae0aa013f8ab6f8d25e369b0c
   RNNotifee: 8e2d3df3f0e9ce8f5d1fe4c967431138190b6175

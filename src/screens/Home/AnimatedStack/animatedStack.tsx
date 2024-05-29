@@ -134,8 +134,8 @@ const AnimatedStack: React.FC<AnimatedStackProps> = ({
     }, 10);
   };
 
-  const onSwipeRight = () => {
-    dispatch(
+  const onSwipeRight = async () => {
+    await dispatch(
       likedAUser({
         likerId: profileData._id,
         userIdBeingLiked: data[currentIndex]._id,

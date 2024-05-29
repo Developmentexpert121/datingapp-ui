@@ -48,7 +48,7 @@
 //         ).unwrap();
 //         setReceiverData(response.receivers);
 //       } catch (error) {
-//         console.error('Error fetching data:', error);
+//         console.error('eeeeee', error);
 //       }
 //     };
 

@@ -77,7 +77,7 @@ const FilterSection = ({
   useEffect(() => {
     setCheckedInterests(profileData?.interests);
   }, [profileData?.interests]);
-  console.log('firstprofileDataprofileData', profileData);
+  // console.log('firstprofileDataprofileData', profileData);
   const {
     control,
     formState: {errors},
@@ -234,7 +234,7 @@ const FilterSection = ({
                     <TouchableOpacity
                       onPress={() => {
                         setCheckedInterests(item.value);
-                        console.log('setCheckedInterests', setCheckedInterests);
+                        // console.log('setCheckedInterests', setCheckedInterests);
                         dispatch(
                           updateProfileData({
                             field: 'interests',

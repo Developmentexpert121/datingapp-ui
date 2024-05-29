@@ -16,6 +16,7 @@ import {useAppDispatch, useAppSelector} from '../../store/store';
 import {getChatUsersList, getReceivers} from '../../store/Auth/auth';
 import {videoCallUser} from '../../store/Activity/activity';
 import SmallLoader from '../../components/Loader/SmallLoader';
+import {DoubleTickIC} from '../../assets/svgs';
 
 const ChatSection = () => {
   const navigation: any = useNavigation();
@@ -24,11 +25,8 @@ const ChatSection = () => {
     (state: any) => state?.Auth?.data?.profileData,
   );
   const [chatListData, setChatListData] = useState<any>([]);
-  console.log('chatListDatadata List', chatListData);
-  console.log('data List', chatListData.data?.[0].chat);
-
-  const [lastChat, setlastChat] = useState<any>([]);
-  console.log('lastChat', lastChat);
+  // console.log('chatListDatadata List', chatListData);
+  // console.log('data List', chatListData.data?.[0].chat);
 
   const goToChatWith = async (user: any) => {
     await dispatch(videoCallUser({user: user}));
@@ -40,7 +38,6 @@ const ChatSection = () => {
   const handleSearchChange = (text: any) => {
     setSearch(text);
   };
-
   const filteredData = chatListData.data
     ? chatListData.data.filter((item: any) =>
         item.name.toLowerCase().includes(search.toLowerCase()),
@@ -54,23 +51,60 @@ const ChatSection = () => {
           getChatUsersList({userId: profileData._id}),
         ).unwrap();
         setChatListData(response);
+
         if (response.data && response.data.length > 0) {
           const allUsers = response.data;
           allUsers.forEach((user: any) => {
             const lastChat = user.chat?.message;
+            const timestamp = user.chat?.timestamp;
             // console.log('User:', user);
-            console.log('Last chat:', lastChat);
+            // console.log('Last chat:', lastChat);
+            // console.log('timestamp chat:', timestamp);
           });
         } else {
           console.log('No users found in response');
         }
       } catch (error) {
-        console.error('Error fetching data:', error);
+        // console.error('Error fetching data:', error);
       }
     };
-    fetchData();
+    const intervalId = setInterval(fetchData, 5000); // Poll every 5 seconds
+    fetchData(); // Fetch data immediately on component mount
+    return () => clearInterval(intervalId);
   }, []);
-
+  // Time Funcation
+  const getTimeAgo = (timestamp: string) => {
+    const timeNow = new Date();
+    const timeSent = new Date(timestamp);
+    const differenceInSeconds = Math.floor(
+      (timeNow.getTime() - timeSent.getTime()) / 1000,
+    );
+    if (differenceInSeconds < 60) {
+      return `${differenceInSeconds} sec ago`;
+    } else if (differenceInSeconds < 3600) {
+      const minutes = Math.floor(differenceInSeconds / 60);
+      return `${minutes} mins ago`;
+    } else if (differenceInSeconds < 86400) {
+      const hours = Math.floor(differenceInSeconds / 3600);
+      return `${hours} hrs ago`;
+    } else if (differenceInSeconds < 604800) {
+      const days = Math.floor(differenceInSeconds / 86400);
+      return `${days} days ago`;
+    } else if (differenceInSeconds < 2592000) {
+      const weeks = Math.floor(differenceInSeconds / 604800);
+      return `${weeks} weeks ago`;
+    } else if (differenceInSeconds < 31536000) {
+      const months = Math.floor(differenceInSeconds / 2592000);
+      return `${months} months ago`;
+    } else if (differenceInSeconds < 31536000) {
+      const years = Math.floor(differenceInSeconds / 2592000);
+      return `${years} months ago`;
+    } else {
+      const year = Math.floor(differenceInSeconds / 31536000);
+      return ``;
+    }
+  };
+  //
   const renderItem = ({item}: {item: any}) => {
     return (
       <ListItem
@@ -112,9 +146,9 @@ const ChatSection = () => {
               fontSize: 10,
               color: 'black',
             }}>
-            {item.time}
+            {getTimeAgo(item.chat?.timestamp)}
           </Text>
-          <Ionicons name="checkmark-done" size={20} color="#AC25AC" />
+          {item.chat?.message ? <DoubleTickIC /> : null}
         </View>
       </ListItem>
     );
