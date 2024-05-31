@@ -27,16 +27,17 @@ const VideoCallRedirect = () => {
   const [activeScreen, setActiveScreen] = useState('home');
 
   const [client, setClient] = useState<StreamVideoClient | null>(null);
-  console.log('.????1111111111111', client);
-  console.log('.????setClient', setClient);
+  console.log('.????1111111111111client', client);
+  // console.log('----------------.????setClient', setClient);
 
   const [call, setCall] = useState<Call>();
   console.log('call????????????', call);
 
   useEffect(() => {
     const callId: any = uuid.v4();
+    console.log('callId--------', callId);
     setCallId(callId);
-    const apiKey = 'tgmn64zvvytf';
+    const apiKey = 'xxbhmm34dcx3';
     const tokenProvider = async () => {
       const token = await dispatch(videoCallToken({id: profileData?._id}))
         .unwrap()
@@ -67,6 +68,7 @@ const VideoCallRedirect = () => {
     setActiveScreen('call-screen');
     if (!client) return;
     const myCall = client.call('default', callId);
+    console.log('myCall myCall myCall myCall', myCall);
     myCall
       .getOrCreate({
         ring: true,
@@ -75,15 +77,21 @@ const VideoCallRedirect = () => {
             // include self
             {user_id: profileData._id},
             // include the userId of the callee
-            {user_id: user?._id},
+            {user_id: user._id},
           ],
         },
       })
       .catch(err => {
         console.error(`Failed to join the call`, err);
+        console.error(`Failed to join the call`, err);
+        console.error(`Failed to join the call`, err);
+        console.error(`Failed to join the call`, err);
+        console.error(`Failed to join the call`, err);
+        console.error(`Failed to join the call`, err);
+        console.error(`Failed to join the call`, err);
       });
     setCall(myCall);
-
+    console.log('myCall myCall myCall myCall2222222', myCall);
     return () => {
       setCall(undefined);
       myCall.leave().catch(err => {

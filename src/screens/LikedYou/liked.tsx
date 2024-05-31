@@ -8,10 +8,12 @@ import {
   StyleSheet,
   Dimensions,
   SafeAreaView,
+  TouchableOpacity,
 } from 'react-native';
 import CommonBackbutton from '../../components/commonBackbutton/CommonBackbutton';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import LinearGradient from 'react-native-linear-gradient';
+import {videoCallUser} from '../../store/Activity/activity';
 const LikedScreen = () => {
   const allUsers: any = useAppSelector(
     (state: any) => state?.Auth?.data?.allUsers,
@@ -24,10 +26,15 @@ const LikedScreen = () => {
     profileData?.likedBy.includes(user?._id),
   );
 
+  const dispatch: any = useAppDispatch();
+  const goToChatWith = async (user: any) => {
+    await dispatch(videoCallUser({user: user}));
+    navigation.navigate('VideoCallRedirect');
+  };
   const navigation = useNavigation();
 
   const renderGridItem = ({item}: any) => (
-    <View style={styles.card}>
+    <TouchableOpacity onPress={() => goToChatWith(item)} style={styles.card}>
       <ImageBackground source={{uri: item.profilePic}} style={styles.image}>
         <LinearGradient
           colors={['rgba(0,0,0,0)', 'rgba(0,0,0,0.8)']}
@@ -37,7 +44,7 @@ const LikedScreen = () => {
           <Text style={styles.bio}>{item.hobbies}</Text>
         </View>
       </ImageBackground>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
@@ -62,6 +69,7 @@ const LikedScreen = () => {
             marginHorizontal: 26,
           }}>
           <FlatList
+            showsVerticalScrollIndicator={false}
             data={likedUsers}
             renderItem={renderGridItem}
             keyExtractor={item => item._id}

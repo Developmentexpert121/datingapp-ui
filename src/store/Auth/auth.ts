@@ -5,7 +5,11 @@ import {
   activityLoaderFinished,
   activityLoaderStarted,
 } from '../Activity/activity';
-import {otpModal, toggleGlobalModal} from '../reducer/authSliceState';
+import {
+  navigation,
+  otpModal,
+  toggleGlobalModal,
+} from '../reducer/authSliceState';
 interface authData {
   email: string;
   password: string;
@@ -33,8 +37,11 @@ export const GoogleLogin = createAsyncThunk(
     try {
       dispatch(activityLoaderStarted());
       const response: any = await http.post('/auth/loginwithgoogle', data);
-      console.log(response);
+      console.log('response', response.data.redirect);
       if (response.status === 200) {
+        // if (response.data.redirect === 'Steps') {
+        //   navigation('Register');
+        // } else {
         await AsyncStorage.setItem(
           'authToken',
           JSON.stringify(response?.data?.token),
@@ -54,6 +61,7 @@ export const GoogleLogin = createAsyncThunk(
             },
           }),
         );
+        // }
         return response.data;
       }
     } catch (error: any) {
@@ -603,7 +611,7 @@ export const videoCallToken = createAsyncThunk(
       const response = await http.post(`/user/stream-chat/token`, data);
 
       if (response.status === 200) {
-        console.log(',,,,,VIdeo calll2');
+        console.log(',,,,,VIdeo calll200');
         return response.data;
       }
     } catch (error: any) {

@@ -26,6 +26,7 @@ import Geolocation from '@react-native-community/geolocation';
 import MainButton from '../../components/ButtonComponent/MainButton';
 import {EmailIC, LocationIC, PhoneIC} from '../../assets/svgs';
 import BottomDrawer from './BottomDrawer';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 interface UpdateForm {
   name: string;
@@ -222,8 +223,16 @@ const SettingsSection = () => {
   };
 
   const deleteUserButton = async () => {
-    dispatch(deleteUser({senderId: profileData._id}));
-    await authTokenRemove();
+    try {
+      const isSignedIn = await GoogleSignin.isSignedIn();
+      if (isSignedIn) {
+        await GoogleSignin.signOut();
+      }
+      dispatch(deleteUser({senderId: profileData._id}));
+      await authTokenRemove();
+    } catch (error) {
+      console.log(error, 'error');
+    }
   };
   const logoutUserButton = async () => {
     dispatch(logoutUser({senderId: profileData._id}));

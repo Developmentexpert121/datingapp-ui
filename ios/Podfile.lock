@@ -1044,11 +1044,11 @@ PODS:
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
-  - react-native-maps (1.15.4):
+  - react-native-maps (1.15.6):
     - React-Core
   - react-native-netinfo (9.5.0):
     - React-Core
-  - react-native-safe-area-context (4.10.1):
+  - react-native-safe-area-context (4.10.3):
     - React-Core
   - react-native-splash-screen (3.3.0):
     - React-Core
@@ -1627,9 +1627,9 @@ SPEC CHECKSUMS:
   react-native-fbsdk-next: 84746ea062dc3b1a422154d7674ba4c5836b6d82
   react-native-geolocation: 1a28156c0c562c894460e1b359e12fe4c13d0240
   react-native-image-picker: fefff630cfa3ee6a809f6ac6569981f4a34e0050
-  react-native-maps: aa8d9dece9896ff1b74dd969a7bd7a5896bba832
+  react-native-maps: 7b2c2cee95271592a92ba485eea1dec66a363a6e
   react-native-netinfo: 48c5f79a84fbc3ba1d28a8b0d04adeda72885fa8
-  react-native-safe-area-context: dcab599c527c2d7de2d76507a523d20a0b83823d
+  react-native-safe-area-context: b01d8f42d4e62a7be5a3e69fd332e0c7e67584c7
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   react-native-version-check: 6cd36aad4e30b8e3216747e3b4ddeb09e0647af8
   react-native-webview: 92cb09d7edac43fb6b750f1b4beb6b9bb4b2149f

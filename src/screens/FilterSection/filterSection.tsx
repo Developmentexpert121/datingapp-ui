@@ -249,7 +249,7 @@ const FilterSection = ({
                             ? 'radio-button-on'
                             : 'radio-button-off'
                         }
-                        size={16}
+                        size={20}
                         color="#AC25AC"
                       />
                     </TouchableOpacity>
@@ -330,7 +330,7 @@ const FilterSection = ({
                           ? 'radio-button-on'
                           : 'radio-button-off'
                       }
-                      size={16}
+                      size={20}
                       color="#AC25AC"
                     />
                   </TouchableOpacity>
@@ -366,9 +366,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   thumbStyle: {
-    width: 18,
-    height: 18,
-    borderRadius: 9,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
     shadowColor: '#AC25AC',
     shadowOffset: {
       width: 0,

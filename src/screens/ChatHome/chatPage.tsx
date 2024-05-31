@@ -49,9 +49,6 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
 
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
-
-  const [onlineUsers, setOnlineUsers] = useState<any>([]);
-
   // const handleSendMessage = () => {
   //   // Implement logic to send the message
   //   // Example:
@@ -256,10 +253,11 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => {
-                    setEnableCamera(true);
-                    goToCallScreen();
-                  }}>
+                // onPress={() => {
+                //   setEnableCamera(true);
+                //   goToCallScreen();
+                // }}
+                >
                   <View style={styles.editIcon}>
                     {/* <VideoIC /> */}
                     <Image

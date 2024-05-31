@@ -75,10 +75,13 @@ const ChatSection = () => {
   // Time Funcation
   const getTimeAgo = (timestamp: string) => {
     const timeNow = new Date();
+    // console.log(timeNow);
     const timeSent = new Date(timestamp);
+    // console.log(timeSent);
     const differenceInSeconds = Math.floor(
       (timeNow.getTime() - timeSent.getTime()) / 1000,
     );
+    // console.log('differenceInSeconds', differenceInSeconds);
     if (differenceInSeconds < 60) {
       return `${differenceInSeconds} sec ago`;
     } else if (differenceInSeconds < 3600) {

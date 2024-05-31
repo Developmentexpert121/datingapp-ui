@@ -9,22 +9,23 @@ import GlobalModal from './src/components/Modals/GlobalModal';
 import Loader from './src/components/Loader/Loader';
 import io from 'socket.io-client';
 import {ProfileData} from './src/store/Auth/auth';
+import {requestNotifications} from 'react-native-permissions';
 
 const socket = io('https://datingapp-api.onrender.com');
 
 const App = () => {
   const dispatch: any = useAppDispatch();
-  // async function requestUserPermission() {
-  //   await requestNotifications(['alert', 'sound']);
-  //   const authStatus = await messaging().requestPermission();
-  //   const enabled =
-  //     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-  //     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+  async function requestUserPermission() {
+    await requestNotifications(['alert', 'sound']);
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
-  //   if (enabled) {
-  //     // console.log('Authorization status:', authStatus);
-  //   }
-  // }
+    if (enabled) {
+      // console.log('Authorization status:', authStatus);
+    }
+  }
   // *********************
 
   const [onlineUsers, setOnlineUsers] = useState<any>([]);
