@@ -1,5 +1,5 @@
-// navigation/index.ts
-import AuthNavigator from './AuthNavigator';
-import MainNavigator from './MainNavigator';
+// // navigation/index.ts
+// import AuthNavigator from './AuthNavigator';
+// import MainNavigator from './MainNavigator';
 
-export {AuthNavigator, MainNavigator};
+// export {AuthNavigator, MainNavigator};

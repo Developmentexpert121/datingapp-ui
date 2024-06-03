@@ -12,6 +12,7 @@ import VideoCallInterface from './chatVideoInterface';
 
 const VideoCallRedirect = () => {
   const user: any = useAppSelector((state: any) => state?.ActivityLoader?.user);
+  console.log('use ruser user user ', user);
 
   const dispatch: any = useAppDispatch();
 
@@ -25,6 +26,7 @@ const VideoCallRedirect = () => {
   const [enableCamera, setEnableCamera] = useState<boolean>(true);
 
   const [activeScreen, setActiveScreen] = useState('home');
+  console.log('activeScreen activeScreen activeScreen', activeScreen);
 
   const [client, setClient] = useState<StreamVideoClient | null>(null);
   console.log('.????1111111111111client', client);
@@ -82,11 +84,6 @@ const VideoCallRedirect = () => {
         },
       })
       .catch(err => {
-        console.error(`Failed to join the call`, err);
-        console.error(`Failed to join the call`, err);
-        console.error(`Failed to join the call`, err);
-        console.error(`Failed to join the call`, err);
-        console.error(`Failed to join the call`, err);
         console.error(`Failed to join the call`, err);
         console.error(`Failed to join the call`, err);
       });

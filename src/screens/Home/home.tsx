@@ -23,6 +23,7 @@ const getUserId = async () => {
   }
 };
 const HomeScreen = () => {
+  const [activeScreen, setActiveScreen] = useState('HOME');
   const dispatch: any = useAppDispatch();
   const allUsers: any = useAppSelector(
     (state: any) => state?.Auth?.data?.allUsers,
@@ -30,62 +31,71 @@ const HomeScreen = () => {
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-
+  const [low, setLow] = useState<number>(18);
+  const [high, setHigh] = useState<number>(56);
   // console.log('profileData0', profileData);
-
   const [showIn, setShowIn] = useState(profileData?.showInDistance);
   // console.log('showIn Me', showIn);
-
   const [distance, setDistance] = useState(
     parseInt(profileData?.distance) || 50,
   );
   // console.log('distance', distance);
-
   const isAuthenticated = useAppSelector(
     (state: any) => state?.Auth?.isAuthenticated,
   );
-  useEffect(() => {
-    dispatch(ProfileData());
-  }, []);
-  // console.log('---isAuthenticated', isAuthenticated);
-  // console.log('---ProfileData', ProfileData);
-
   const [currentIndex, setCurrentIndex] = useState(0);
   const [data, setData] = useState<any>([]);
   // console.log('first data', data);
   const [checkedInterests, setCheckedInterests] = useState(
     profileData?.interests || 'everyone',
   );
+
+  const getProfileData = async () => {
+    try {
+      let responseData = await dispatch(ProfileData());
+      // console.log(responseData, 'responseDataresponseData');
+      let data = await getId();
+      // console.log('data data data data', data);
+    } catch (error) {
+      console.log(error, 'responseDataresponseData');
+    }
+  };
+
+  const getId = async () => {
+    const userId = await getUserId();
+    dispatch(
+      getAllUsers({
+        userId: userId,
+        checkedInterests: checkedInterests,
+        showIn: showIn,
+        distance: distance,
+        low: low,
+        high: high,
+      }),
+      // console.log('??????????', getAllUsers),
+    )
+      .unwrap()
+      .then((response: any) => {
+        setData(response.users);
+      });
+  };
+
+  useEffect(() => {
+    getProfileData();
+  }, []);
+
   useEffect(() => {
     setCheckedInterests(profileData?.interests);
   }, [profileData?.interests]);
 
   // console.log('/////////sxfbjjs', profileData?.interests);
   // console.log('checkedInterests', checkedInterests);
-  const [low, setLow] = useState<number>(18);
-  const [high, setHigh] = useState<number>(56);
-  useEffect(() => {
-    const getId = async () => {
-      const userId = await getUserId();
-      dispatch(
-        getAllUsers({
-          userId: userId,
-          checkedInterests: checkedInterests,
-          showIn: showIn,
-          distance: distance,
-          low: low,
-          high: high,
-        }),
-        // console.log('??????????', getAllUsers),
-      )
-        .unwrap()
-        .then((response: any) => {
-          setData(response.users);
-        });
-    };
-    getId();
-    setCurrentIndex(0);
-  }, [showIn, checkedInterests, distance, low, high]);
+
+  // useEffect(() => {
+
+  //   getId();
+  //   setCurrentIndex(0);
+  // }, [showIn, checkedInterests, distance, low, high]);
 
   const calculateDistance = (lat1: any, lon1: any, lat2: any, lon2: any) => {
     const R = 3958.8; // Earth radius in miles
@@ -106,7 +116,7 @@ const HomeScreen = () => {
   const toRadians = (degrees: any) => {
     return (degrees * Math.PI) / 180;
   };
-  const [activeScreen, setActiveScreen] = useState('HOME');
+
   return (
     <View style={styles.pageContainer}>
       <HeaderComponent

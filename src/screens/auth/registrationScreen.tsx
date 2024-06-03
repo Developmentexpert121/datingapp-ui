@@ -409,6 +409,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
               }),
             );
             navigate('Loginhome');
+            // navigate('Home');
           },
         },
       ],

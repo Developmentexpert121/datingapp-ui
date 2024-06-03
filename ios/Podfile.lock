@@ -1044,8 +1044,6 @@ PODS:
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
-  - react-native-maps (1.15.6):
-    - React-Core
   - react-native-netinfo (9.5.0):
     - React-Core
   - react-native-safe-area-context (4.10.3):
@@ -1330,7 +1328,6 @@ DEPENDENCIES:
   - react-native-fbsdk-next (from `../node_modules/react-native-fbsdk-next`)
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
-  - react-native-maps (from `../node_modules/react-native-maps`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
@@ -1474,8 +1471,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/geolocation"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
-  react-native-maps:
-    :path: "../node_modules/react-native-maps"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-safe-area-context:
@@ -1627,7 +1622,6 @@ SPEC CHECKSUMS:
   react-native-fbsdk-next: 84746ea062dc3b1a422154d7674ba4c5836b6d82
   react-native-geolocation: 1a28156c0c562c894460e1b359e12fe4c13d0240
   react-native-image-picker: fefff630cfa3ee6a809f6ac6569981f4a34e0050
-  react-native-maps: 7b2c2cee95271592a92ba485eea1dec66a363a6e
   react-native-netinfo: 48c5f79a84fbc3ba1d28a8b0d04adeda72885fa8
   react-native-safe-area-context: b01d8f42d4e62a7be5a3e69fd332e0c7e67584c7
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
@@ -1677,6 +1671,6 @@ SPEC CHECKSUMS:
   stream-video-react-native: 170df9bdf51319aa63f98e74f9441427db416ba7
   Yoga: 4f53dc50008d626fa679c7a1cb4bed898f8c0bde
 
-PODFILE CHECKSUM: 171f83a8fd0289d7b0056cf793b8d56c7ce00851
+PODFILE CHECKSUM: 41b4064532f375df63bff1e593fe7c6c14ce42c5
 
 COCOAPODS: 1.15.2

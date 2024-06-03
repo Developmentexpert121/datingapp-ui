@@ -22,7 +22,7 @@ import {setLocalStorage} from '../../api/storage';
 import {setAuthentication} from '../../store/reducer/authSliceState';
 import {googleLogin, onAppleButtonPress} from '../../store/Auth/socialLogin';
 import {userProfileDataChange} from '../../store/slice/myProfileSlice/myProfileSlice';
-import {AppleLogin, GoogleLogin} from '../../store/Auth/auth';
+import {AppleLogin, GoogleLogin, ProfileData} from '../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getProfile} from '../../store/slice/myProfileSlice/myProfileAction';
 import {name} from '@stream-io/video-react-native-sdk';
@@ -34,7 +34,7 @@ interface AppleAuthResponse {
   authorizationCode: string | null;
 }
 type Props = NativeStackScreenProps<RootStackParamList, 'Loginhome'>;
-const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
+const LoginHomeScreen: React.FC<Props> = () => {
   const [state, setState] = useState<string>('');
   const [userInfo, setUserInfo] = useState<null>(null);
   const dispatch: any = useAppDispatch();
@@ -86,21 +86,40 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
         setLoader(true);
         dispatch(GoogleLogin({...loginPayload}))
           .then((response: any) => {
-            if (response.payload?.code === 200) {
-              let token: string = response?.payload?.data?.accessToken;
-              setLocalStorage('token', token);
-              console.log('GoogleLogin', GoogleLogin);
-
-              // If sign-up is successful, call the function to handle the navigation
-              handleNavigation(response);
+            console.log('response>>>>>>>', response.payload.redirect);
+            if (response.payload.redirect !== 'Steps') {
+              console.log('00.......................00');
+              navigation.navigate('Login');
+              console.log('11.......................00');
             } else {
-              // If there is an error in sign-up, check if there is an error message and set it
-              if (response.payload?.message) {
-                setMsg(response.payload?.message);
+              if (response.payload?.code === 200) {
+                let token: string = response?.payload?.data?.accessToken;
+                setLocalStorage('token', token);
+                console.log('..............', token);
+                //
+                AsyncStorage.setItem(
+                  'authToken',
+                  JSON.stringify(response?.data?.token),
+                );
+                AsyncStorage.setItem(
+                  'userId',
+                  JSON.stringify(response?.data?._id),
+                );
+                console.log('dfjdfhjhjdf', response?.data, response?.data?._id);
+                dispatch(ProfileData());
+
+                // If sign-up is successful, call the function to handle the navigation
+                handleNavigation(response);
+              } else {
+                // If there is an error in sign-up, check if there is an error message and set it
+                if (response.payload?.message) {
+                  setMsg(response.payload?.message);
+                }
+                // Show the modal with the error message
+                setActiveModal(true);
               }
-              // Show the modal with the error message
-              setActiveModal(true);
             }
+
             setLoader(false);
           })
 
@@ -126,7 +145,7 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
       try {
         // Call the function to handle Apple button press and get user info
         const userInfo = await onAppleButtonPress();
-        console.log('UserInfo:', userInfo);
+        // console.log('UserInfo:', userInfo);
 
         if (userInfo) {
           // Prepare the login payload for Apple login
@@ -222,7 +241,7 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
         <MainButton
           buttonStyle={{width: '75%'}}
           ButtonName={'Create Account'}
-          onPress={() => navigate('Register')}
+          onPress={() => navigation.navigate('Register')}
         />
         <View
           style={{
@@ -249,7 +268,7 @@ const LoginHomeScreen: React.FC<Props> = ({navigation: {navigate}}) => {
         </View>
         <View style={styles.loginContainer}>
           <Text style={styles.loginText}>Already a member?</Text>
-          <TouchableOpacity onPress={() => navigate('Login')}>
+          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
             <Text style={styles.touchableText}> Log In</Text>
           </TouchableOpacity>
         </View>

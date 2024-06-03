@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React from 'react';
 import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 
 import {
@@ -29,7 +29,7 @@ const VideoCallInterface = ({
   const [incomingCall] = incomingCalls;
   if (incomingCall) {
     return (
-      <StreamCall call={incomingCall} key={incomingCall.cid}>
+      <StreamCall call={incomingCall} key={incomingCall?.cid}>
         <MyIncomingCallUI call={incomingCall} goToHomeScreen={goToHomeScreen} />
       </StreamCall>
     );

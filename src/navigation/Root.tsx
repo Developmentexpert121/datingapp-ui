@@ -16,6 +16,8 @@ import SplashScreen from 'react-native-splash-screen';
 import {requestNotifications} from 'react-native-permissions';
 import FilterSection from '../screens/FilterSection/filterSection';
 import {useNavigation} from '@react-navigation/native';
+import VideoCall from '../components/videoCall';
+import VideoCallInterface from '../screens/ChatHome/chatVideoInterface';
 // import {configureGoogleSignIn} from '../store/Auth/socialLogin';
 export type RegisterType = {};
 export type RootStackParamList = {
@@ -33,6 +35,7 @@ export type RootStackParamList = {
   UpdateProfile: undefined;
   ChatPage: undefined;
   VideoCallRedirect: undefined;
+  VideoCallInterface: undefined;
   BottomTabNavigation: undefined;
   FilterSection: undefined;
 };
@@ -126,6 +129,11 @@ const Root = () => {
             name="VideoCallRedirect"
             component={VideoCallRedirect}
           />
+          <Stack.Screen
+            name="VideoCallInterface"
+            component={VideoCallInterface}
+          />
+          {/* <Stack.Screen name="VideoCall" component={VideoCall} /> */}
         </Stack.Group>
       ) : (
         <Stack.Group>

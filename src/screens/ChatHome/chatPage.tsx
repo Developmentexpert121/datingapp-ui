@@ -253,11 +253,11 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity
-                // onPress={() => {
-                //   setEnableCamera(true);
-                //   goToCallScreen();
-                // }}
-                >
+                  onPress={() => {
+                    setEnableCamera(true);
+                    goToCallScreen();
+                    // navigation.navigate('VideoCall');
+                  }}>
                   <View style={styles.editIcon}>
                     {/* <VideoIC /> */}
                     <Image

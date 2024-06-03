@@ -21,6 +21,7 @@ import ChatSection from '../screens/ChatHome/allChats';
 import ProfileScreen from '../screens/Profile/profileScreen';
 import FilterSection from '../screens/FilterSection/filterSection';
 import ChatHome from '../screens/ChatHome/chatHome';
+import VideoCallRedirect from '../screens/ChatHome/chatVideoRedirect';
 
 export type HomeStackParamList = {
   HomeScreen: undefined;
@@ -29,6 +30,7 @@ export type HomeStackParamList = {
 export type ChatStackParamList = {
   ChatHome: undefined;
   ChatSection: undefined;
+  VideoCallRedirect: undefined;
 };
 export type ProfileStackParamList = {
   ProfileScreen: undefined;
@@ -41,6 +43,7 @@ export type BottomTabParamList = {
   HomeScreen: undefined;
   ProfileScreen: undefined;
   ChatHome: undefined;
+  VideoCallRedirect: undefined;
 };
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 const Stack = createNativeStackNavigator<ProfileStackParamList>();
@@ -59,6 +62,7 @@ const ChatStack = () => {
     <NStack.Navigator screenOptions={{headerShown: false}}>
       <NStack.Screen name="ChatSection" component={ChatSection} />
       <NStack.Screen name="ChatHome" component={ChatHome} />
+      {/* <Stack.Screen name="VideoCallRedirect" component={VideoCallRedirect} /> */}
     </NStack.Navigator>
   );
 };

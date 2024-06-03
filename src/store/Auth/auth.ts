@@ -20,11 +20,12 @@ export const ProfileData = createAsyncThunk('auth/ProfileData', async () => {
   try {
     const response: any = await http.get(`/user/profile`);
     if (response.status === 200) {
-      // console.log('ProfileData auth', response.data);
       return response.data;
     }
   } catch (error: any) {
     if (error.response && error.response.status === 400) {
+      console.log('12345', error);
+
       return {error: 'Bad Request'};
     }
   }

@@ -31,6 +31,7 @@ const ChatSection = () => {
   const goToChatWith = async (user: any) => {
     await dispatch(videoCallUser({user: user}));
     navigation.navigate('VideoCallRedirect');
+    // navigation.navigate('VideoCallInterface');
   };
 
   // Search Function

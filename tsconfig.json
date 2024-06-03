@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "typeRoots": ["src/helpers/Common.d.ts"],
+    "outDir": "./dist", 
     "jsx": "react", // or "react-native" if it's a React Native project
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true

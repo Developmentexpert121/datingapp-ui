@@ -102,7 +102,7 @@ export async function onAppleButtonPress() {
 
     // Decode identity token if available
     if (appleAuthRequestResponse?.identityToken) {
-      const userInfo = jwt_decode(appleAuthRequestResponse.identityToken); // Correct function usage
+      const userInfo = jwtDecode(appleAuthRequestResponse.identityToken); // Correct function usage
       console.log('User appleAuthRequestResponse', appleAuthRequestResponse);
       console.log('User Info:', userInfo);
       return userInfo;

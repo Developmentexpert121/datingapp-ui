@@ -74,6 +74,9 @@ const FilterSection = ({
   // const [checkedInterests, setCheckedInterests] = useState(
   //   profileData?.interests,
   // );
+
+  console.log(checkedInterests, 'checkedInterestscheckedInterests9090');
+
   useEffect(() => {
     setCheckedInterests(profileData?.interests);
   }, [profileData?.interests]);
@@ -92,10 +95,11 @@ const FilterSection = ({
     {label: 'Transgender', value: 'fourth'},
   ];
   const options2 = [
-    {value: 'Male', label: 'Men'},
-    {value: 'Female', label: 'Women'},
-    {value: 'everyone', label: 'Everyone'},
+    {value: 'Men', label: 'Men'},
+    {value: 'Women', label: 'Women'},
+    {value: 'Everyone', label: 'Everyone'},
   ];
+
   const [checked, setChecked] = React.useState(profileData?.gender);
 
   const handleSliderChange = (value: any) => {
@@ -207,57 +211,61 @@ const FilterSection = ({
         <Text style={styles.textName}>Show Me</Text>
         <View style={styles.line} />
         <View>
-          {options2.map(item => (
-            <View key={item.value} style={styles.radio}>
-              <Controller
-                name={'interests'}
-                control={control}
-                defaultValue="Everyone"
-                render={() => (
-                  <View
-                    style={{
-                      flex: 1,
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                    }}>
-                    <Text
-                      style={[
-                        {
-                          color: errors?.interests ? 'red' : 'black',
-                          fontFamily: 'Sansation-Regular',
-                          paddingBottom: 8,
-                        },
-                      ]}>
-                      {item.label}
-                    </Text>
-                    <TouchableOpacity
-                      onPress={() => {
-                        setCheckedInterests(item.value);
-                        // console.log('setCheckedInterests', setCheckedInterests);
-                        dispatch(
-                          updateProfileData({
-                            field: 'interests',
-                            value: item.value,
-                            id: getUserId(),
-                          }),
-                        );
+          {options2.map(item => {
+            console.log(item, '90900');
+            return (
+              <View key={item?.value} style={styles.radio}>
+                <Controller
+                  name={'interests'}
+                  control={control}
+                  defaultValue="Man"
+                  render={() => (
+                    <View
+                      style={{
+                        flex: 1,
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
                       }}>
-                      <Ionicons
-                        name={
-                          checkedInterests === item.value
-                            ? 'radio-button-on'
-                            : 'radio-button-off'
-                        }
-                        size={20}
-                        color="#AC25AC"
-                      />
-                    </TouchableOpacity>
-                  </View>
-                )}
-              />
-            </View>
-          ))}
+                      <Text
+                        style={[
+                          {
+                            color: errors?.interests ? 'red' : 'black',
+                            fontFamily: 'Sansation-Regular',
+                            paddingBottom: 8,
+                          },
+                        ]}>
+                        {item?.label}
+                      </Text>
+                      <TouchableOpacity
+                        onPress={() => {
+                          setCheckedInterests(item?.value);
+                          // console.log('setCheckedInterests', setCheckedInterests);
+                          dispatch(
+                            updateProfileData({
+                              field: 'interests',
+                              value: item.value,
+                              id: getUserId(),
+                            }),
+                          );
+                        }}>
+                        {console.log(checkedInterests, item?.value, '9090')}
+                        <Ionicons
+                          name={
+                            checkedInterests === item?.value
+                              ? 'radio-button-on'
+                              : 'radio-button-off'
+                          }
+                          size={20}
+                          color="#AC25AC"
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                />
+              </View>
+            );
+          })}
         </View>
       </View>
       {/* Age Range */}
@@ -344,7 +352,7 @@ const FilterSection = ({
   );
 };
 
-export default FilterSection;
+export default React.memo(FilterSection);
 
 const styles = StyleSheet.create({
   boxContainer: {
