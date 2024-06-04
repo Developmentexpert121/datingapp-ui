@@ -45,6 +45,7 @@ const ZeroStepScreen = ({
   setSelectedCountry,
   setSelectedState,
   setSelectedCity,
+  BackClick,
 }: any) => {
   const options = [
     {label: 'Male', value: 'first'},
@@ -55,7 +56,13 @@ const ZeroStepScreen = ({
   const navigation = useNavigation();
   const [isEmailEditable, setIsEmailEditable] = useState(true);
   const [isPasswordEditable, setIsPasswordEditable] = useState(true);
-
+  // **********************
+  const loginwithgoogle: any = useAppSelector(
+    (state: any) => state?.Auth?.data?.loginwithgoogle,
+  );
+  // console.log('(???????????????????????????)', loginwithgoogle.email);
+  // const {itemId, otherParam} = route.params;
+  // *****************************
   // Check otpVerified state
   const otpVerified = useAppSelector(
     (state: any) => state?.Auth?.data?.otpVerified,
@@ -81,7 +88,7 @@ const ZeroStepScreen = ({
   return (
     <SafeAreaView style={{borderWidth: 0, flex: 1}}>
       <View style={styles.topView}>
-        <BackIC onPress={() => navigation.goBack()} />
+        <BackIC onPress={BackClick} />
         <Text style={styles.headerLabel}>Personal</Text>
         <View style={styles.blankview}></View>
       </View>
@@ -174,7 +181,6 @@ const ZeroStepScreen = ({
             <Text style={styles.errorText}>{errors.gender.message}</Text>
           )}
         </View>
-
         {/* Country And  City */}
         <View style={styles.container}>
           <Text style={styles.label}>Location</Text>
@@ -197,35 +203,41 @@ const ZeroStepScreen = ({
           )} */}
         </View>
         {/* Mail */}
-        <View style={styles.container}>
-          <Text style={styles.label}>Email</Text>
-          <AppTextInputEmail
-            placeholder="Enter Your Email"
-            name={email}
-            control={control}
-            errors={Boolean(errors?.email)}
-            autoCapitalize="none"
-            keyboardType="email-address"
-            // editable={isEmailEditable}
-          />
-          {errors.email && (
-            <Text style={styles.errorText}>{errors.email.message}</Text>
-          )}
-        </View>
-        {/* Password */}
-        <View style={styles.container}>
-          <Text style={styles.label}>Password</Text>
-          <PasswodTextInput
-            placeholder="Enter Your Password"
-            name={password}
-            control={control}
-            errors={Boolean(errors?.password)}
-            secureTextEntry
-          />
-          {errors.password && (
-            <Text style={styles.errorText}>{errors.password.message}</Text>
-          )}
-        </View>
+        {/* ***************** */}
+        {!loginwithgoogle.email ? (
+          <>
+            <View style={styles.container}>
+              <Text style={styles.label}>Email</Text>
+              <AppTextInputEmail
+                placeholder="Enter Your Email"
+                name={email}
+                // name={loginwithgoogle.email ? loginwithgoogle.email : email}
+                control={control}
+                errors={Boolean(errors?.email)}
+                autoCapitalize="none"
+                keyboardType="email-address"
+                // editable={isEmailEditable}
+              />
+              {errors.email && (
+                <Text style={styles.errorText}>{errors.email.message}</Text>
+              )}
+            </View>
+            <View style={styles.container}>
+              <Text style={styles.label}>Password</Text>
+              <PasswodTextInput
+                placeholder="Enter Your Password"
+                name={password}
+                control={control}
+                errors={Boolean(errors?.password)}
+                secureTextEntry
+              />
+              {errors.password && (
+                <Text style={styles.errorText}>{errors.password.message}</Text>
+              )}
+            </View>
+          </>
+        ) : null}
+        {/* ************* */}
       </ScrollView>
     </SafeAreaView>
   );

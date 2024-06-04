@@ -34,34 +34,34 @@ export const ProfileData = createAsyncThunk('auth/ProfileData', async () => {
 export const GoogleLogin = createAsyncThunk(
   'auth/GoogleLogin',
   async (data: any, {dispatch}: any) => {
-    console.log('////////////////////', data);
+    // console.log('////////////////////', data);
     try {
-      dispatch(activityLoaderStarted());
+      // dispatch(activityLoaderStarted());
       const response: any = await http.post('/auth/loginwithgoogle', data);
-      console.log('response', response.data.redirect);
+      // console.log('response', response.data.redirect);
       if (response.status === 200) {
         // if (response.data.redirect === 'Steps') {
         //   navigation('Register');
         // } else {
-        await AsyncStorage.setItem(
-          'authToken',
-          JSON.stringify(response?.data?.token),
-        );
-        await AsyncStorage.setItem(
-          'userId',
-          JSON.stringify(response?.data?._id),
-        );
-        console.log('dfjdfhjhjdf', response?.data, response?.data?._id);
-        dispatch(ProfileData());
-        dispatch(
-          toggleGlobalModal({
-            visible: true,
-            data: {
-              text: 'OK',
-              label: 'Login Successful',
-            },
-          }),
-        );
+        // await AsyncStorage.setItem(
+        //   'authToken',
+        //   JSON.stringify(response?.data?.token),
+        // );
+        // await AsyncStorage.setItem(
+        //   'userId',
+        //   JSON.stringify(response?.data?._id),
+        // );
+        // console.log('dfjdfhjhjdf', response?.data, response?.data?._id);
+        // dispatch(ProfileData());
+        // dispatch(
+        //   toggleGlobalModal({
+        //     visible: true,
+        //     data: {
+        //       text: 'OK',
+        //       label: 'Login Successful',
+        //     },
+        //   }),
+        // );
         // }
         return response.data;
       }
@@ -82,9 +82,10 @@ export const GoogleLogin = createAsyncThunk(
       } else {
         throw error;
       }
-    } finally {
-      dispatch(activityLoaderFinished());
     }
+    //  finally {
+    // dispatch(activityLoaderFinished());
+    // }
   },
 );
 export const AppleLogin = createAsyncThunk(
@@ -668,9 +669,11 @@ const Auth: any = createSlice({
       })
       .addCase(GoogleLogin.rejected, (state, action) => {
         state.loading = false;
+        console.log('1111111111111111');
       })
       .addCase(AppleLogin.pending, (state, action) => {
         state.loading = true;
+        console.log('2222222222222222');
       })
       .addCase(AppleLogin.fulfilled, (state, action) => {
         if (action.payload.data) {
@@ -680,6 +683,7 @@ const Auth: any = createSlice({
         } else {
           state.data.signInInfo = action.payload.error; // Assuming the error field is set properly on unsuccessful login
         }
+        console.log('3333333333333333');
       })
       .addCase(AppleLogin.rejected, (state, action) => {
         state.loading = false;

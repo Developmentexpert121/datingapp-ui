@@ -26,6 +26,11 @@ import {AppleLogin, GoogleLogin, ProfileData} from '../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getProfile} from '../../store/slice/myProfileSlice/myProfileAction';
 import {name} from '@stream-io/video-react-native-sdk';
+import {
+  activityLoaderFinished,
+  activityLoaderStarted,
+} from '../../store/Activity/activity';
+import Loader from '../../components/Loader/Loader';
 interface AppleAuthResponse {
   user: string;
   email: string | null;
@@ -43,6 +48,10 @@ const LoginHomeScreen: React.FC<Props> = () => {
   const [msg, setMsg] = useState<string | undefined>('');
   const [loader, setLoader] = useState<boolean>(false);
   // **************
+  const dataToSend = {
+    email: 86,
+    otherParam: 'anything you want here',
+  };
   // **************
 
   const handleNavigation = (response: any) => {
@@ -85,50 +94,46 @@ const LoginHomeScreen: React.FC<Props> = () => {
         // Dispatch the user sign-up action with the login payload
         setLoader(true);
         dispatch(GoogleLogin({...loginPayload}))
-          .then((response: any) => {
-            console.log('response>>>>>>>', response.payload.redirect);
-            if (response.payload.redirect !== 'Steps') {
-              console.log('00.......................00');
-              navigation.navigate('Login');
-              console.log('11.......................00');
-            } else {
-              if (response.payload?.code === 200) {
-                let token: string = response?.payload?.data?.accessToken;
-                setLocalStorage('token', token);
-                console.log('..............', token);
-                //
-                AsyncStorage.setItem(
-                  'authToken',
-                  JSON.stringify(response?.data?.token),
-                );
-                AsyncStorage.setItem(
-                  'userId',
-                  JSON.stringify(response?.data?._id),
-                );
-                console.log('dfjdfhjhjdf', response?.data, response?.data?._id);
-                dispatch(ProfileData());
+          .then(async (response: any) => {
+            console.log('response>>>>>>>', response?.payload?.redirect);
+            if (response?.payload?.redirect === 'Steps') {
+              await navigation.navigate('Register');
+            } else if (response?.payload?.redirect === 'Dashboard') {
+              dispatch(activityLoaderStarted());
+              let token: string = response?.payload?.token;
+              setLocalStorage('token', token);
+              console.log('..............', token);
+              await AsyncStorage.setItem(
+                'authToken',
+                JSON.stringify(response?.payload?.token),
+              );
+              await AsyncStorage.setItem(
+                'userId',
+                JSON.stringify(response?.payload?._id),
+              );
+              console.log('dfj', response?.payload?._id);
+              dispatch(ProfileData());
 
-                // If sign-up is successful, call the function to handle the navigation
-                handleNavigation(response);
-              } else {
-                // If there is an error in sign-up, check if there is an error message and set it
-                if (response.payload?.message) {
-                  setMsg(response.payload?.message);
-                }
-                // Show the modal with the error message
-                setActiveModal(true);
+              // If sign-up is successful, call the function to handle the navigation
+              handleNavigation(response);
+              dispatch(activityLoaderFinished());
+            } else {
+              // If there is an error in sign-up, check if there is an error message and set it
+              if (response?.payload?.message) {
+                setMsg(response?.payload?.message);
               }
+              // Show the modal with the error message
+              setActiveModal(true);
             }
 
             setLoader(false);
           })
-
           .catch((error: any) => {
+            console.error('.......error', error);
             // If there is an error in the promise chain, set the error message and show the modal
             setMsg(error?.payload?.message);
             setActiveModal(true);
           });
-
         setLoader(false);
       }
     } catch (error) {
@@ -165,7 +170,7 @@ const LoginHomeScreen: React.FC<Props> = () => {
                 const token = response.payload?.data?.accessToken;
                 setLocalStorage('token', token);
                 // Call the function to handle the navigation based on the response
-                handleNavigation(response);
+                // handleNavigation(response);
               } else {
                 // If there is an error in sign-up, set the error message and show the modal
                 setMsg(response.payload?.message);
@@ -294,6 +299,7 @@ const LoginHomeScreen: React.FC<Props> = () => {
           </Text>
         </View>
       </View>
+      {loader && <Loader />}
     </SafeAreaView>
   );
 };

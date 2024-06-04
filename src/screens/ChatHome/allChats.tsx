@@ -63,7 +63,7 @@ const ChatSection = () => {
             // console.log('timestamp chat:', timestamp);
           });
         } else {
-          console.log('No users found in response');
+          // console.log('No users found in response');
         }
       } catch (error) {
         // console.error('Error fetching data:', error);

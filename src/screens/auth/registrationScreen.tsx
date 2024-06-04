@@ -20,10 +20,16 @@ import {RootStackParamList} from '../../types';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {
   EmailVerification,
+  GoogleLogin,
+  ProfileData,
   RegisterSignUp,
   VerifyOtp,
 } from '../../store/Auth/auth';
-import {otpModal, toggleGlobalModal} from '../../store/reducer/authSliceState';
+import {
+  otpModal,
+  setAuthentication,
+  toggleGlobalModal,
+} from '../../store/reducer/authSliceState';
 
 import ZeroStepScreen from './Registration/zeroStepScreen';
 import FirstStepScreen from './Registration/firstStepScreen';
@@ -40,6 +46,15 @@ import OtpModal from '../../components/OtpModal/OtpModal';
 import Loader from '../../components/Loader/Loader';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {
+  activityLoaderFinished,
+  activityLoaderStarted,
+} from '../../store/Activity/activity';
+import {googleLogin} from '../../store/Auth/socialLogin';
+import {useNavigation} from '@react-navigation/native';
+import {setLocalStorage} from '../../api/storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {getProfile} from '../../store/slice/myProfileSlice/myProfileAction';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Register'>;
 
@@ -86,6 +101,29 @@ const defaultValues = {
   profilePercentage: '60',
 };
 
+const schemawith = yup.object().shape({
+  name: yup.string().trim().required('Name is required'),
+  phone: yup
+    .string()
+    .matches(/^[0-9]+$/, 'Phone must contain only digits')
+    .min(8, 'Phone must be at least 8 digits long')
+    .required('Phone is required'),
+  // email: yup.string().email('Invalid email').required('Email is required'),
+  // *************
+  // country: yup.string().trim().required('Country, State, and City is required'),
+  // state: yup.string().trim().required('State is required'),
+  // city: yup.string().trim().required('City is required'),
+  // *************
+  gender: yup.string().trim().required('Gender is required'),
+  // password: yup
+  //   .string()
+  //   .required('Please Enter your password')
+  //   .matches(
+  //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})/,
+  //     'Must Contain 6 Characters, One Uppercase, One Lowercase, One Number and one special case character',
+  //   ),
+  dob: yup.string().trim().required('DOB is required'),
+});
 const schema = yup.object().shape({
   name: yup.string().trim().required('Name is required'),
   phone: yup
@@ -150,10 +188,11 @@ const schema7 = yup.object().shape({
   hobbies: yup.string().trim().required('Photos are required'),
 });
 
-const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
+const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
   const otpVerified = useAppSelector(
     (state: any) => state?.Auth?.data?.otpVerified,
   );
+  const navigation = useNavigation();
   const [steps, setSteps] = React.useState(0);
   const [dateStr, setDateStr] = useState<any>(null);
   const [location, setLocation] = useState<any>(null);
@@ -165,24 +204,25 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   const [otp, setOtp] = useState<string[]>(['', '', '', '', '', '']);
   const [loader, setLoader] = useState<boolean>(false);
   const [phone, setPhone] = useState<object>({});
+  // console.log(phone);
   const [country, setSelectedCountry] = useState<string | null>(null);
   const [state, setSelectedState] = useState<string | null>(null);
   const [city, setSelectedCity] = useState<string | null>(null);
   const [dob, setDob] = useState('');
   const [email, setEmail] = useState('');
-  // console.log('.......1', dob);
-  // console.log('.......2', country);
-  // console.log('.......3', state);
-  // console.log('.......4', phone);
-
+  const [msg, setMsg] = useState<string | undefined>('');
+  const [activeModal, setActiveModal] = useState<boolean>(false);
   const dispatch: any = useAppDispatch();
 
   // Introduce a state variable to track whether email has been verified
   const [isEmailVerified, setIsEmailVerified] = useState(false);
+  const loginwithgoogle: any = useAppSelector(
+    (state: any) => state?.Auth?.data?.loginwithgoogle,
+  );
 
   const Schemas = (steps: any) => {
     if (steps === 0) {
-      return yupResolver<any>(schema);
+      return yupResolver<any>(loginwithgoogle.email ? schemawith : schema);
     } else if (steps === 1) {
       return yupResolver<any>(schema1);
     } else if (steps === 2) {
@@ -210,137 +250,27 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     control,
     handleSubmit,
     reset,
+    setValue,
     formState: {errors},
   } = useForm<RegisterForm>({
     defaultValues,
     resolver: Schemas(steps),
   });
-  // ******************************
-  // const getLocationAndRegister = async (data: RegisterForm) => {
-  //   console.log('hite2');
-
-  //   try {
-  //     console.log('hite2.5');
-  //     const position = await new Promise((resolve, reject) => {
-  //       Geolocation.getCurrentPosition(resolve, reject, {
-  //         enableHighAccuracy: true,
-  //         timeout: 17000,
-  //         maximumAge: 10000,
-  //       });
-  //     });
-  //     console.log('hite3');
-  //     console.log('hite3');
-  //     const {latitude, longitude} = position.coords;
-  //     setLocation({latitude, longitude});
-  //     setPermissionStatus('granted');
-  //     console.log('hite4');
-
-  //     // Call registration API here
-  //     dispatch(
-  //       RegisterSignUp({
-  //         ...data,
-  //         phoneNumber: phone,
-  //         locationData: {latitude, longitude},
-  //         distance: `${distance}mi`,
-  //         profilePic: profileImages?.join(','),
-  //         dob: dob,
-  //         country: country,
-  //         state: state,
-  //         city: city,
-  //       }),
-  //     );
-
-  //     // Reset form data
-  //     reset();
-
-  //     // Navigate to Loginhome
-  //     navigate('Loginhome');
-  //   } catch (err: any) {
-  //     // Handle errors from Geolocation API
-  //     setError(err.message);
-  //     setPermissionStatus('denied');
-  //   }
-  // };
-
-  // ***************************************************************************************
-
-  // const getLocationAndRegister = async (data: RegisterForm) => {
-  //   console.log('hite1');
-  //   await Geolocation.getCurrentPosition(
-  //     async position => {
-  //       console.log('hite2');
-  //       const {latitude, longitude} = await position.coords;
-  //       setLocation({latitude, longitude});
-  //       setPermissionStatus('granted');
-  //       console.log('hite3');
-  //       // Call registration API here
-  //       dispatch(
-  //         RegisterSignUp({
-  //           ...data,
-  //           phoneNumber: phone,
-  //           location: {latitude, longitude},
-  //           distance: `${distance}mi`,
-  //           profilePic: profileImages?.join(','),
-  //           dob: dob,
-  //           country: country,
-  //           state: state,
-  //           city: city,
-  //         }),
-  //       );
-  //       reset();
-  //       navigate('Login');
-  //     },
-  //     err => {
-  //       console.log('arrr error', err);
-  //       setError(err.message);
-  //       setPermissionStatus('denied');
-  //     },
-  //     {enableHighAccuracy: true, timeout: 5000, maximumAge: 1000},
-  //   );
-  // };
-
-  // const requestLocationPermission = (data: RegisterForm) => {
-  //   console.log('hite');
-  //   Geolocation.requestAuthorization();
-  //   getLocationAndRegister(data);
-  // };
-
-  // const showPermissionPopup = (data: RegisterForm) => {
-  //   Alert.alert(
-  //     'Location Permission',
-  //     'This app needs access to your location to provide the service.',
-  //     [
-  //       {
-  //         text: 'Cancel',
-  //         onPress: () => {
-  //           setPermissionStatus('denied');
-  //           dispatch(
-  //             RegisterSignUp({
-  //               ...data,
-  //               phoneNumber: phone,
-  //               // location: {latitude, longitude},
-  //               distance: `${distance}mi`,
-  //               profilePic: profileImages?.join(','),
-  //               dob: dob,
-  //               country: country,
-  //               state: state,
-  //               city: city,
-  //             }),
-  //           );
-  //           reset();
-  //           navigate('Loginhome');
-  //         },
-  //         style: 'cancel',
-  //       },
-  //       {text: 'Allow', onPress: () => requestLocationPermission(data)},
-  //     ],
-  //   );
-  // };
-
-  //******************************************** */
-  //
-
+  const handleNavigation = (response: any) => {
+    if (!response.payload?.data.otpVerified) {
+      navigation.navigate('Loginhome');
+    } else if (!response.payload?.data?.isProfileCompleted) {
+      navigation.navigate('Loginhome');
+    } else {
+      setLocalStorage('isProfileCompleted', true);
+      dispatch(setAuthentication(true));
+    }
+    dispatch(getProfile());
+  };
   const getLocationAndRegister = async (data: RegisterForm) => {
+    if (loginwithgoogle.email) {
+      setValue('email', loginwithgoogle.email);
+    }
     console.log('................', data);
     Geolocation.getCurrentPosition(
       async (position: any) => {
@@ -351,17 +281,30 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
         setPermissionStatus('granted');
         // Call registration API here
         dispatch(
-          RegisterSignUp({
-            ...data,
-            phoneNumber: phone,
-            location: {latitude, longitude},
-            distance: `${distance}mi`,
-            profilePic: profileImages?.join(','),
-            dob: dob,
-            country: country,
-            state: state,
-            city: city,
-          }),
+          loginwithgoogle.email
+            ? RegisterSignUp({
+                ...data,
+                phoneNumber: phone,
+                location: {latitude, longitude},
+                distance: `${distance}mi`,
+                profilePic: profileImages?.join(','),
+                dob: dob,
+                country: country,
+                state: state,
+                city: city,
+                email: loginwithgoogle.email,
+              })
+            : RegisterSignUp({
+                ...data,
+                phoneNumber: phone,
+                location: {latitude, longitude},
+                distance: `${distance}mi`,
+                profilePic: profileImages?.join(','),
+                dob: dob,
+                country: country,
+                state: state,
+                city: city,
+              }),
         );
         reset();
       },
@@ -397,18 +340,79 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
           onPress: async () => {
             await requestLocationPermission(data);
             dispatch(
-              RegisterSignUp({
-                ...data,
-                phoneNumber: phone,
-                distance: `${distance}mi`,
-                profilePic: profileImages?.join(','),
-                dob: dob,
-                country: country,
-                state: state,
-                city: city,
-              }),
-            );
-            navigate('Loginhome');
+              loginwithgoogle.email
+                ? RegisterSignUp({
+                    ...data,
+                    phoneNumber: phone,
+                    distance: `${distance}mi`,
+                    profilePic: profileImages?.join(','),
+                    dob: dob,
+                    country: country,
+                    state: state,
+                    city: city,
+                    email: loginwithgoogle.email,
+                  })
+                : RegisterSignUp({
+                    ...data,
+                    phoneNumber: phone,
+                    distance: `${distance}mi`,
+                    profilePic: profileImages?.join(','),
+                    dob: dob,
+                    country: country,
+                    state: state,
+                    city: city,
+                  }),
+            )
+              .unwrap()
+              // .then(res => console.log('res------', res));
+              // ***************************
+              // dispatch(googleLogin())
+              // .unwrap()
+              .then(async (response: any) => {
+                console.log('response>>>>>>>', response);
+                if (response?.payload?.redirect === 'Steps') {
+                  await navigation.navigate('Register');
+                } else if (response?.redirect === 'Dashboard') {
+                  dispatch(activityLoaderStarted());
+                  let token: string = response?.token;
+                  setLocalStorage('token', token);
+                  console.log('..............', token);
+                  await AsyncStorage.setItem(
+                    'authToken',
+                    JSON.stringify(response?.token),
+                  );
+                  await AsyncStorage.setItem(
+                    'userId',
+                    JSON.stringify(response?._id),
+                  );
+                  console.log('dfj', response?._id);
+                  dispatch(ProfileData());
+
+                  // If sign-up is successful, call the function to handle the navigation
+                  handleNavigation(response);
+                  dispatch(activityLoaderFinished());
+                } else {
+                  // If there is an error in sign-up, check if there is an error message and set it
+                  if (response?.payload?.message) {
+                    setMsg(response?.payload?.message);
+                  }
+                  // Show the modal with the error message
+                  setActiveModal(true);
+                }
+
+                setLoader(false);
+              })
+              .catch((error: any) => {
+                console.error('.......error', error);
+                // If there is an error in the promise chain, set the error message and show the modal
+                setMsg(error?.payload?.message);
+                setActiveModal(true);
+              });
+            setLoader(false);
+            // **********************
+            dispatch(GoogleLogin({}));
+            reset();
+            // navigate('Loginhome');
             // navigate('Home');
           },
         },
@@ -437,36 +441,19 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
       setSteps(prev => prev + 1);
       return;
     }
-    if (steps === 0 && !otpVerified) {
-      setLoader(true);
-      console.log('first', otpVerified);
-      try {
-        await dispatch(
-          EmailVerification({
-            email: data.email,
-          }),
-        ).unwrap();
-        setIsEmailVerified(true);
-        setLoader(false);
-        setPhone({
-          countryCode: callingCode,
-          number: data.phone,
-        });
-        return;
-      } catch (error) {
-        console.error(error);
-        setLoader(false);
-      }
+    //  {loginwithgoogle.email ? (setSteps(prev => prev + 1)) : (schema)}
+    if (loginwithgoogle.email) {
+      setSteps(prev => prev + 1);
     } else {
-      if (data.email !== email) {
+      if (steps === 0 && !otpVerified) {
         setLoader(true);
+        console.log('first', otpVerified);
         try {
           await dispatch(
             EmailVerification({
               email: data.email,
             }),
           ).unwrap();
-
           setIsEmailVerified(true);
           setLoader(false);
           setPhone({
@@ -479,9 +466,31 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
           setLoader(false);
         }
       } else {
-        setSteps(prev => prev + 1);
+        if (data.email !== email) {
+          setLoader(true);
+          try {
+            await dispatch(
+              EmailVerification({
+                email: data.email,
+              }),
+            ).unwrap();
+
+            setIsEmailVerified(true);
+            setLoader(false);
+            setPhone({
+              countryCode: callingCode,
+              number: data.phone,
+            });
+            return;
+          } catch (error) {
+            console.error(error);
+            setLoader(false);
+          }
+        } else {
+          setSteps(prev => prev + 1);
+        }
+        return;
       }
-      return;
     }
   };
 
@@ -521,7 +530,10 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
         }
       });
   };
-
+  const onClick = () => {
+    dispatch(GoogleLogin({}));
+    goBack();
+  };
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
@@ -557,6 +569,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate}}) => {
           <View style={{flexGrow: 1}}>
             {steps === 0 ? (
               <ZeroStepScreen
+                BackClick={onClick}
                 countryCode="countryCode"
                 phone="phone"
                 name="name"

@@ -24,7 +24,7 @@ export const googleLogin = async () => {
     await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
     console.log('00000000', GoogleSignin);
     const userInfo = await GoogleSignin.signIn();
-    console.log('111111111111', userInfo);
+    // console.log('111111111111', userInfo);
     return userInfo?.user;
   } catch (error) {
     console.log('error NETWORK_ERROR', error);
@@ -33,61 +33,8 @@ export const googleLogin = async () => {
 
 ///// ************************  Apple Login //
 
-// export async function onAppleButtonPress() {
-//   console.log('111111111111');
-//   try {
-//     // Perform login request with requested scopes
-//     const appleAuthRequestResponse = await appleAuth.performRequest({
-//       requestedOperation: appleAuth.Operation.LOGIN,
-//       requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
-//     });
-
-//     // Log the response for debugging purposes
-//     console.log('appleAuth:', appleAuth);
-
-//     console.log('AppleAuthRequestResponse:', appleAuthRequestResponse);
-
-//     // Decode identity token if available
-//     if (appleAuthRequestResponse?.identityToken) {
-//       const userInfo = jwtDecode(appleAuthRequestResponse.identityToken); // Correct function usage
-//       console.log('User Info:', userInfo);
-//       return userInfo;
-//     } else {
-//       throw new Error('No identity token returned');
-//     }
-//   } catch (error: any) {
-//     console.error('Apple Authentication Error:', error);
-//     if (error.code) {
-//       switch (error.code) {
-//         case appleAuth.Error.CANCELED:
-//           console.log('User canceled the sign-in request');
-//           break;
-//         case appleAuth.Error.UNKNOWN:
-//           console.log('Unknown error occurred during Apple Sign-In');
-//           break;
-//         case appleAuth.Error.INVALID_RESPONSE:
-//           console.log('Invalid response from Apple Sign-In');
-//           break;
-//         case appleAuth.Error.NOT_HANDLED:
-//           console.log('Sign-In request not handled');
-//           break;
-//         case appleAuth.Error.FAILED:
-//           console.log('Sign-In request failed');
-//           break;
-//         default:
-//           console.log('Unhandled error code:', error.code);
-//           break;
-//       }
-//     } else {
-//       console.log('Unhandled error:', error);
-//     }
-
-//     return null; // Handle the error as appropriate for your app
-//   }
-// }
-
 export async function onAppleButtonPress() {
-  console.log('111111111111');
+  // console.log('111111111111');
   try {
     // Perform login request with requested scopes
     const appleAuthRequestResponse = await appleAuth.performRequest({
