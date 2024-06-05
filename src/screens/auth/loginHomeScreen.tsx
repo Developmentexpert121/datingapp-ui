@@ -95,14 +95,14 @@ const LoginHomeScreen: React.FC<Props> = () => {
         setLoader(true);
         dispatch(GoogleLogin({...loginPayload}))
           .then(async (response: any) => {
-            console.log('response>>>>>>>', response?.payload?.redirect);
+            // console.log('response>>>>>>>', response?.payload?.redirect);
             if (response?.payload?.redirect === 'Steps') {
               await navigation.navigate('Register');
             } else if (response?.payload?.redirect === 'Dashboard') {
               dispatch(activityLoaderStarted());
               let token: string = response?.payload?.token;
               setLocalStorage('token', token);
-              console.log('..............', token);
+              // console.log('..............', token);
               await AsyncStorage.setItem(
                 'authToken',
                 JSON.stringify(response?.payload?.token),
@@ -111,7 +111,7 @@ const LoginHomeScreen: React.FC<Props> = () => {
                 'userId',
                 JSON.stringify(response?.payload?._id),
               );
-              console.log('dfj', response?.payload?._id);
+              // console.log('dfj', response?.payload?._id);
               dispatch(ProfileData());
 
               // If sign-up is successful, call the function to handle the navigation
@@ -164,16 +164,36 @@ const LoginHomeScreen: React.FC<Props> = () => {
 
           // Dispatch the user sign-up action with the login payload
           dispatch(AppleLogin({...loginPayload}))
-            .then((response: any) => {
-              if (response.payload?.code === 200) {
-                // If sign-up is successful, extract the access token and store it in local storage
-                const token = response.payload?.data?.accessToken;
+            .then(async (response: any) => {
+              // console.log('response>>>>>>>', response);
+              // console.log('response>>>>>>>', response?.payload?.redirect);
+              if (response?.payload?.redirect === 'Steps') {
+                await navigation.navigate('Register');
+              } else if (response?.payload?.redirect === 'Dashboard') {
+                dispatch(activityLoaderStarted());
+                let token: string = response?.payload?.token;
                 setLocalStorage('token', token);
-                // Call the function to handle the navigation based on the response
-                // handleNavigation(response);
+                // console.log('..............', token);
+                await AsyncStorage.setItem(
+                  'authToken',
+                  JSON.stringify(response?.payload?.token),
+                );
+                await AsyncStorage.setItem(
+                  'userId',
+                  JSON.stringify(response?.payload?._id),
+                );
+                console.log('dfj', response?.payload?._id);
+                dispatch(ProfileData());
+
+                // If sign-up is successful, call the function to handle the navigation
+                handleNavigation(response);
+                dispatch(activityLoaderFinished());
               } else {
-                // If there is an error in sign-up, set the error message and show the modal
-                setMsg(response.payload?.message);
+                // If there is an error in sign-up, check if there is an error message and set it
+                if (response?.payload?.message) {
+                  setMsg(response?.payload?.message);
+                }
+                // Show the modal with the error message
                 setActiveModal(true);
               }
             })

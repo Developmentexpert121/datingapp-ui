@@ -69,7 +69,7 @@ const BottomDrawer = ({
     (state: any) => state?.Auth?.data?.profileData,
   );
   const [phone, setPhone] = useState<object>({});
-  console.log('................phone', phone);
+  // console.log('................phone', phone);
   const Data = [
     {id: 1, text: 'Lodo'},
     {id: 2, text: 'Cricket'},

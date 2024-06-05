@@ -91,31 +91,30 @@ export const GoogleLogin = createAsyncThunk(
 export const AppleLogin = createAsyncThunk(
   'auth/AppleLogin',
   async (data: any, {dispatch}: any) => {
-    console.log('////////////////////', data);
     try {
-      dispatch(activityLoaderStarted());
+      // dispatch(activityLoaderStarted());
       const response: any = await http.post('/auth/loginwithapple', data);
-      console.log(':::::::::', response);
+      // console.log(':::::::::', response);
       if (response.status === 200) {
-        await AsyncStorage.setItem(
-          'authToken',
-          JSON.stringify(response?.data?.token),
-        );
-        await AsyncStorage.setItem(
-          'userId',
-          JSON.stringify(response?.data?._id),
-        );
-        console.log('dfjdfhjhjdf', response?.data, response?.data?._id);
-        dispatch(ProfileData());
-        dispatch(
-          toggleGlobalModal({
-            visible: true,
-            data: {
-              text: 'OK',
-              label: 'Login Successful',
-            },
-          }),
-        );
+        // await AsyncStorage.setItem(
+        //   'authToken',
+        //   JSON.stringify(response?.data?.token),
+        // );
+        // await AsyncStorage.setItem(
+        //   'userId',
+        //   JSON.stringify(response?.data?._id),
+        // );
+        // console.log('dfjdfhjhjdf', response?.data, response?.data?._id);
+        // dispatch(ProfileData());
+        // dispatch(
+        //   toggleGlobalModal({
+        //     visible: true,
+        //     data: {
+        //       text: 'OK',
+        //       label: 'Login Successful',
+        //     },
+        //   }),
+        // );
         return response.data;
       }
     } catch (error: any) {
@@ -135,9 +134,10 @@ export const AppleLogin = createAsyncThunk(
       } else {
         throw error;
       }
-    } finally {
-      dispatch(activityLoaderFinished());
     }
+    // finally {
+    //   dispatch(activityLoaderFinished());
+    // }
   },
 );
 
@@ -353,7 +353,7 @@ export const updateProfileData = createAsyncThunk(
   async (data: any, {dispatch}: any) => {
     try {
       //  dispatch(activityLoaderStarted());
-      console.log('Updating Data', data);
+      // console.log('Updating Data', data);
       const response = await http.patch('/user/update-profile', data);
       if (response.status === 200) {
         dispatch(ProfileData());
@@ -647,7 +647,6 @@ const initialState = {
 const Auth: any = createSlice({
   name: 'auth',
   initialState,
-  // reducers: {},
   reducers: {
     resetAuth(state) {
       return initialState;
@@ -655,6 +654,7 @@ const Auth: any = createSlice({
   },
   extraReducers: builder => {
     builder
+      // GoogleLogin
       .addCase(GoogleLogin.pending, (state, action) => {
         state.loading = true;
       })
@@ -669,25 +669,25 @@ const Auth: any = createSlice({
       })
       .addCase(GoogleLogin.rejected, (state, action) => {
         state.loading = false;
-        console.log('1111111111111111');
       })
+      // AppleLogin
       .addCase(AppleLogin.pending, (state, action) => {
         state.loading = true;
-        console.log('2222222222222222');
+        // console.log('2222222222222222');
       })
       .addCase(AppleLogin.fulfilled, (state, action) => {
         if (action.payload.data) {
           // Check if data is present in the payload
-          state.data.loginwithapple = action.payload.data;
+          state.data.loginwithgoogle = action.payload.data;
           state.isAuthenticated = true;
         } else {
           state.data.signInInfo = action.payload.error; // Assuming the error field is set properly on unsuccessful login
         }
-        console.log('3333333333333333');
       })
       .addCase(AppleLogin.rejected, (state, action) => {
         state.loading = false;
       })
+      // LoginSignIn
       .addCase(LoginSignIn.pending, (state, action) => {
         state.loading = true;
       })
@@ -703,7 +703,7 @@ const Auth: any = createSlice({
       .addCase(LoginSignIn.rejected, (state, action) => {
         state.loading = false;
       })
-
+      // RegisterSignUp
       .addCase(RegisterSignUp.pending, (state, action) => {
         state.loading = true;
       })
@@ -714,7 +714,7 @@ const Auth: any = createSlice({
       .addCase(RegisterSignUp.rejected, (state, action) => {
         state.loading = false;
       })
-
+      // ProfileData
       .addCase(ProfileData.fulfilled, (state, action) => {
         state.data.profileData = action.payload.data;
 
@@ -726,7 +726,7 @@ const Auth: any = createSlice({
       .addCase(ProfileData.rejected, (state, action) => {
         state.loading = false;
       })
-
+      // getAllUsers
       .addCase(getAllUsers.pending, (state, action) => {
         state.loading = true;
       })
@@ -737,6 +737,7 @@ const Auth: any = createSlice({
       .addCase(getAllUsers.rejected, (state, action) => {
         state.loading = false;
       })
+      // getChatUsersList
       .addCase(getChatUsersList.pending, (state, action) => {
         state.loading = true;
       })
@@ -747,6 +748,7 @@ const Auth: any = createSlice({
       .addCase(getChatUsersList.rejected, (state, action) => {
         state.loading = false;
       })
+      // getNotifications
       .addCase(getNotifications.pending, (state, action) => {
         state.loading = true;
       })
@@ -757,6 +759,7 @@ const Auth: any = createSlice({
       .addCase(getNotifications.rejected, (state, action) => {
         state.loading = false;
       })
+      // VerifyOtp
       .addCase(VerifyOtp.fulfilled, (state, action) => {
         // console.log('/////////', action.payload);
         state.data.otpVerified = action.payload.success;

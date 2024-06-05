@@ -71,7 +71,7 @@ const UpdateProfile = () => {
   const [keyboardShown, setKeyboardShown] = useState(false);
   const [marginBottom, setMarginBottom] = useState(0);
 
-  console.log('title', value);
+  // console.log('title', value);
 
   const handleSliderChange = (value: any) => {
     setHeight(value);

@@ -204,7 +204,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
   const [otp, setOtp] = useState<string[]>(['', '', '', '', '', '']);
   const [loader, setLoader] = useState<boolean>(false);
   const [phone, setPhone] = useState<object>({});
-  // console.log(phone);
+  console.log(phone);
   const [country, setSelectedCountry] = useState<string | null>(null);
   const [state, setSelectedState] = useState<string | null>(null);
   const [city, setSelectedCity] = useState<string | null>(null);
@@ -426,6 +426,10 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
     console.log('onSubmitfirst', data);
     setDob(data.dob);
     setEmail(data.email);
+    setPhone({
+      countryCode: callingCode,
+      number: data.phone,
+    });
 
     if (steps === 7) {
       if (profileImages.length > 0) {
@@ -456,10 +460,10 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
           ).unwrap();
           setIsEmailVerified(true);
           setLoader(false);
-          setPhone({
-            countryCode: callingCode,
-            number: data.phone,
-          });
+          // setPhone({
+          //   countryCode: callingCode,
+          //   number: data.phone,
+          // });
           return;
         } catch (error) {
           console.error(error);

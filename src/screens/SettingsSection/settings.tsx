@@ -68,8 +68,8 @@ const SettingsSection = () => {
   const [title, setTitle] = useState<string>('');
   const [values, setValues] = useState<string>('');
   const [phone, setPhone] = useState<object>({});
-  console.log('title', title);
-  console.log('values', values);
+  // console.log('title', title);
+  // console.log('values', values);
   const {
     reset,
     formState: {errors},
