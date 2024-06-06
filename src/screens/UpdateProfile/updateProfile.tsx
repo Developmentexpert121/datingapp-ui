@@ -5,8 +5,6 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
-  KeyboardAvoidingView,
-  Platform,
   Keyboard,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
@@ -60,8 +58,11 @@ const UpdateProfile = () => {
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
+  // console.log('/333', profileData?.partnerType);
+  // console.log('/333', profileData?.habits2[0]?.selectedText);
+
   const dispatch: any = useAppDispatch();
-  const [height, setHeight] = useState(parseInt(profileData?.height) || 0);
+  const [height, setHeight] = useState(parseInt(profileData?.height) || 100);
   const [title, setTitle] = useState<string>('');
   const [value, setValue] = useState<string>('');
   const [profileImages, setProfileImages] = useState<any>(
@@ -89,7 +90,7 @@ const UpdateProfile = () => {
 
   const dataArr = [
     {title: 'Work', name: profileData?.work},
-    {title: 'Education', name: profileData?.education},
+    {title: 'Education', name: profileData?.habits2[0]?.selectedText},
     {title: 'Interests', name: profileData?.allInterests},
     {title: 'Relationship Goals', name: profileData?.partnerType},
   ];
@@ -107,28 +108,28 @@ const UpdateProfile = () => {
     setValue(item?.name);
     setIsDrawerOpen(true);
   };
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      () => {
-        setKeyboardShown(true);
-        setMarginBottom(300);
-      },
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      () => {
-        setKeyboardShown(false);
-        setMarginBottom(0);
-      },
-    );
+  // useEffect(() => {
+  //   const keyboardDidShowListener = Keyboard.addListener(
+  //     'keyboardDidShow',
+  //     () => {
+  //       setKeyboardShown(true);
+  //       setMarginBottom(300);
+  //     },
+  //   );
+  //   const keyboardDidHideListener = Keyboard.addListener(
+  //     'keyboardDidHide',
+  //     () => {
+  //       setKeyboardShown(false);
+  //       setMarginBottom(0);
+  //     },
+  //   );
 
-    // Clean up listeners
-    return () => {
-      keyboardDidShowListener.remove();
-      keyboardDidHideListener.remove();
-    };
-  }, []);
+  //   // Clean up listeners
+  //   return () => {
+  //     keyboardDidShowListener.remove();
+  //     keyboardDidHideListener.remove();
+  //   };
+  // }, []);
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -141,16 +142,16 @@ const UpdateProfile = () => {
         <View style={[styles.boxContainer, {marginTop: 28}]}>
           <View style={styles.distance}>
             <Text style={styles.textName}>Height</Text>
-            <Text style={{fontFamily: 'Sansation-Regular'}}>{height} MT</Text>
+            <Text style={{fontFamily: 'Sansation-Regular'}}>{height} CM</Text>
           </View>
           <View style={styles.line} />
           <Slider
             style={styles.slider}
-            minimumValue={2}
-            maximumValue={12}
+            minimumValue={100}
+            maximumValue={250}
             value={height}
             onSlidingComplete={handleSliderChange}
-            step={1}
+            // step={1}
             thumbTintColor="#AC25AC"
             minimumTrackTintColor="#AC25AC"
             maximumTrackTintColor="gray"

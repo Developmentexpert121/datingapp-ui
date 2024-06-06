@@ -100,6 +100,7 @@ const PhoneInput = ({
                 editable={editable}
                 style={{flex: 1, fontSize: 16}}
                 placeholder="Enter Phone Number"
+                placeholderTextColor={Colors.darkText}
                 value={value}
                 returnKeyType="done"
                 onChangeText={onChange}

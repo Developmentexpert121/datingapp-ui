@@ -40,7 +40,7 @@ const AppTextInputEmail = (Props: any) => {
             },
             textstyle,
           ]}
-          keyboardType={Props.keyboardType}
+          // keyboardType={Props.keyboardType}
           placeholderTextColor={Colors.darkText}
           onFocus={() => setFocused(true)}
           onBlur={() => (onBlur(), setFocused(false))}

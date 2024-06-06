@@ -173,7 +173,7 @@ const LoginHomeScreen: React.FC<Props> = () => {
                 dispatch(activityLoaderStarted());
                 let token: string = response?.payload?.token;
                 setLocalStorage('token', token);
-                // console.log('..............', token);
+                console.log('..............', token);
                 await AsyncStorage.setItem(
                   'authToken',
                   JSON.stringify(response?.payload?.token),

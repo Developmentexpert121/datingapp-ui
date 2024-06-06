@@ -40,29 +40,6 @@ export const GoogleLogin = createAsyncThunk(
       const response: any = await http.post('/auth/loginwithgoogle', data);
       // console.log('response', response.data.redirect);
       if (response.status === 200) {
-        // if (response.data.redirect === 'Steps') {
-        //   navigation('Register');
-        // } else {
-        // await AsyncStorage.setItem(
-        //   'authToken',
-        //   JSON.stringify(response?.data?.token),
-        // );
-        // await AsyncStorage.setItem(
-        //   'userId',
-        //   JSON.stringify(response?.data?._id),
-        // );
-        // console.log('dfjdfhjhjdf', response?.data, response?.data?._id);
-        // dispatch(ProfileData());
-        // dispatch(
-        //   toggleGlobalModal({
-        //     visible: true,
-        //     data: {
-        //       text: 'OK',
-        //       label: 'Login Successful',
-        //     },
-        //   }),
-        // );
-        // }
         return response.data;
       }
     } catch (error: any) {
@@ -96,25 +73,6 @@ export const AppleLogin = createAsyncThunk(
       const response: any = await http.post('/auth/loginwithapple', data);
       // console.log(':::::::::', response);
       if (response.status === 200) {
-        // await AsyncStorage.setItem(
-        //   'authToken',
-        //   JSON.stringify(response?.data?.token),
-        // );
-        // await AsyncStorage.setItem(
-        //   'userId',
-        //   JSON.stringify(response?.data?._id),
-        // );
-        // console.log('dfjdfhjhjdf', response?.data, response?.data?._id);
-        // dispatch(ProfileData());
-        // dispatch(
-        //   toggleGlobalModal({
-        //     visible: true,
-        //     data: {
-        //       text: 'OK',
-        //       label: 'Login Successful',
-        //     },
-        //   }),
-        // );
         return response.data;
       }
     } catch (error: any) {

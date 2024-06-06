@@ -8,8 +8,15 @@ import Root from './src/navigation/Root';
 import GlobalModal from './src/components/Modals/GlobalModal';
 import Loader from './src/components/Loader/Loader';
 import io from 'socket.io-client';
-import {ProfileData} from './src/store/Auth/auth';
 import {requestNotifications} from 'react-native-permissions';
+// import PushNotification from 'react-native-push-notification';
+
+// PushNotification.configure({
+//   onNotification: function (notification) {
+//     console.log('NOTIFICATION:', notification);
+//   },
+//   requestPermissions: true,
+// });
 
 const socket = io('https://datingapp-api.onrender.com');
 
@@ -36,11 +43,6 @@ const App = () => {
   // console.log('........profileData', profileData);
   useEffect(() => {
     // console.log('........profileData111111', profileData?._id);
-
-    // dispatch(ProfileData())
-    //   .unwrap()
-    //   .then((res: any) => {
-    // console.log(';s;s;s;s;s;s', res.data._id);
     if (profileData?._id) {
       socket.emit('user_connected', profileData?._id);
       socket.on('connect', () => {
@@ -49,21 +51,6 @@ const App = () => {
         socket.emit('user_connected', userId);
       });
     }
-
-    // });
-
-    // socket.on('chat message', msg => {
-    //   // Handle incoming messages
-    //   console.log('App Received message:', msg);
-    //   // Update chatMessages state accordingly
-    //   if (msg.sender !== profileData._id) {
-    //     setChatMessages((prevMessages: any) => [...prevMessages, msg]);
-    //   }
-    // });
-
-    // return () => {
-    //   socket.disconnect();
-    // };
   }, [profileData._id]);
 
   socket.on('user_online', userId => {

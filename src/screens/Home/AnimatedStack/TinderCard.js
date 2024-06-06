@@ -1,4 +1,11 @@
-import {View, Text, Dimensions, Image, Animated} from 'react-native';
+import {
+  View,
+  Text,
+  Dimensions,
+  Image,
+  Animated,
+  StyleSheet,
+} from 'react-native';
 import React, {useCallback} from 'react';
 import TinderLike from './TinderLike';
 import LinearGradient from 'react-native-linear-gradient';
@@ -45,8 +52,8 @@ const TinderCard = ({item, isFirst, swipe, ...rest}) => {
           width: width - 20,
           height: height - 200,
           position: 'absolute',
-          top: 50,
-          justifyContent: 'center',
+          // top: 50,
+          // justifyContent: 'center',
           alignItems: 'center',
           alignSelf: 'center',
         },
@@ -57,30 +64,80 @@ const TinderCard = ({item, isFirst, swipe, ...rest}) => {
       {...rest}>
       <Image
         source={item.image}
-        style={{width: '100%', height: '100%', borderRadius: 20}}
+        style={{
+          width: '100%',
+          // height: '80%',
+          height: 320,
+          borderRadius: 20,
+          borderWidth: 1,
+        }}
       />
       {isFirst && renderChoice()}
       <LinearGradient
         colors={['transparent', 'transparent', 'rgba(0,0,0,0.5)']}
         style={{
           width: '100%',
-          height: '100%',
+          // height: '100%',
+          height: 320,
           position: 'absolute',
           borderRadius: 20,
         }}>
-        <Text
-          style={{
-            position: 'absolute',
-            bottom: 20,
-            left: 30,
-            fontSize: 40,
-            color: '#FFF',
-          }}>
-          {item.title}
-        </Text>
+        <View style={styles.cardInner}>
+          <Text style={styles.name}>dasd</Text>
+          <Text style={styles.bio}>hobbies</Text>
+        </View>
       </LinearGradient>
     </Animated.View>
   );
 };
 
 export default TinderCard;
+const styles = StyleSheet.create({
+  card: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 10,
+    backgroundColor: '#fefefe',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.36,
+    shadowRadius: 6.68,
+    borderWidth: 0,
+  },
+  image: {
+    width: '100%',
+    height: '120%',
+    borderRadius: 10,
+    overflow: 'hidden',
+    justifyContent: 'flex-end',
+  },
+  gradient: {
+    ...StyleSheet.absoluteFillObject,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    top: '50%', // Adjust the position of the gradient
+    height: '50%',
+  },
+  cardInner: {
+    paddingHorizontal: 24,
+    // paddingBottom: 20,
+    justifyContent: 'flex-end',
+    // borderWidth: 1,
+    position: 'absolute',
+    bottom: 20,
+  },
+  name: {
+    fontSize: 26,
+    color: 'white',
+    fontFamily: 'Sansation-Bold',
+  },
+  bio: {
+    fontSize: 18,
+    color: 'white',
+    lineHeight: 25,
+    fontFamily: 'Sansation-Regular',
+  },
+});

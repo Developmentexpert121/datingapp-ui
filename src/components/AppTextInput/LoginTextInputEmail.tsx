@@ -40,7 +40,7 @@ const LoginTextInputEmail = (Props: any) => {
           <TextInput
             {...textInputProps}
             style={[styles.textInput1, textstyle]}
-            keyboardType={Props.keyboardType}
+            // keyboardType={Props.keyboardType}
             placeholderTextColor={Colors.darkText}
             // onFocus={() => setFocused(true)}
             // onBlur={() => (onBlur(), setFocused(false))}

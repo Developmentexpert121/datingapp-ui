@@ -6,6 +6,7 @@
 #import <SafariServices/SafariServices.h> // <- Add This Import
 #import <FBSDKCoreKit/FBSDKCoreKit-Swift.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
+//#import <React/RCTPushNotificationManager.h>
 
 @implementation AppDelegate
 
@@ -23,6 +24,10 @@
   [RNSplashScreen hide];
   return [super application:application didFinishLaunchingWithOptions:launchOptions]	;
 }
+//- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+//{
+//  [RCTPushNotificationManager didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+//}
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
   return [[FBSDKApplicationDelegate sharedInstance] application:app openURL:url options:options];
 }
