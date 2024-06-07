@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, ScrollView} from 'react-native';
+import {View, StyleSheet, ScrollView, Text} from 'react-native';
 import Card from '../../components/Dashboard/homeCard/homeCard';
 import AnimatedStack from './AnimatedStack/animatedStack';
 import HeaderComponent from '../../components/Dashboard/header/header';
@@ -8,6 +8,8 @@ import {ProfileData, getAllUsers} from '../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FilterSection from '../FilterSection/filterSection';
 import NotificationScreen from '../Notification/notification';
+import TinderSwipe from './AnimatedStack/TinderSwipe';
+import TinderCard from './AnimatedStack/TinderCard';
 
 const getUserId = async () => {
   try {
@@ -33,19 +35,17 @@ const HomeScreen = () => {
   );
   const [low, setLow] = useState<number>(18);
   const [high, setHigh] = useState<number>(56);
-  // console.log('profileData0', profileData);
   const [showIn, setShowIn] = useState(profileData?.showInDistance);
-  // console.log('showIn Me', showIn);
   const [distance, setDistance] = useState(
     parseInt(profileData?.distance) || 50,
   );
-  // console.log('distance', distance);
   const isAuthenticated = useAppSelector(
     (state: any) => state?.Auth?.isAuthenticated,
   );
   const [currentIndex, setCurrentIndex] = useState(0);
+  console.log(currentIndex, 'LLLLLLLL');
   const [data, setData] = useState<any>([]);
-  // console.log('first data', data);
+  console.log('first data', data);
   const [checkedInterests, setCheckedInterests] = useState(
     profileData?.interests || 'everyone',
   );
@@ -125,22 +125,30 @@ const HomeScreen = () => {
         activeScreen={activeScreen}
       />
       {activeScreen === 'HOME' ? (
-        <>
-          <ScrollView
-            style={styles.pageContainer2}
-            showsVerticalScrollIndicator={false}>
-            <View style={{marginTop: 20}}>
-              <AnimatedStack
-                data={data}
-                renderItem={({item}: any) => <Card user={item} />}
-                currentIndex={currentIndex}
-                setData={setData}
-                setCurrentIndex={setCurrentIndex}
-                profileData={profileData}
-              />
-            </View>
-          </ScrollView>
-        </>
+        <View
+          style={styles.pageContainer2}
+          // showsVerticalScrollIndicator={false}
+        >
+          <View style={{marginTop: 20, borderWidth: 0}}>
+            {/* <AnimatedStack
+              data={data}
+              renderItem={({item}: any) => <Card user={item} />}
+              // renderItem={({item}: any) => <TinderCard user={item} />}
+              currentIndex={currentIndex}
+              setData={setData}
+              setCurrentIndex={setCurrentIndex}
+              profileData={profileData}
+            /> */}
+            <TinderSwipe
+              data={data}
+              setData={setData}
+              // renderItem={({item}: any) => <Card user={item} />}
+              currentIndex={currentIndex}
+              setCurrentIndex={setCurrentIndex}
+              profileData={profileData}
+            />
+          </View>
+        </View>
       ) : activeScreen === 'Filters' ? (
         <FilterSection
           showIn={showIn}
@@ -166,11 +174,14 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     backgroundColor: '#ededed',
+    borderWidth: 0,
   },
   pageContainer2: {
-    flex: 1,
+    // flex: 1,
     width: '100%',
+    height: '85%',
     backgroundColor: '#ededed',
+    // borderWidth: 2,
   },
   icons: {
     flexDirection: 'row',

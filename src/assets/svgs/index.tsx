@@ -39,6 +39,7 @@ import LockIC from './Lock.svg';
 import UnlockIC from './Unlock.svg';
 import CrossIconIC from './CrossIcon.svg';
 import DoubleTickIC from './DoubleTick.svg';
+import EditTextIC from './EditText.svg';
 
 export {
   FireIC,
@@ -82,4 +83,5 @@ export {
   UnlockIC,
   CrossIconIC,
   DoubleTickIC,
+  EditTextIC,
 };

@@ -11,16 +11,27 @@ const OtpComponent: FC = () => {
     useRef<TextInput>(null),
     useRef<TextInput>(null),
   ];
+
   const handleOTPChange = (txt: string, index: number) => {
     const newOtp = [...otp];
-    newOtp[index] = txt;
-    setOtp(newOtp);
-    if (txt.length >= 1 && index < otp.length - 1) {
-      inputRefs[index + 1].current?.focus();
-    } else if (txt.length === 0 && index > 0) {
+    if (txt.length <= 1) {
+      newOtp[index] = txt;
+      setOtp(newOtp);
+
+      if (txt.length === 1 && index < otp.length - 1) {
+        inputRefs[index + 1].current?.focus();
+      } else if (txt.length === 0 && index > 0) {
+        inputRefs[index - 1].current?.focus();
+      }
+    }
+  };
+
+  const handleKeyPress = (e: any, index: number) => {
+    if (e.nativeEvent.key === 'Backspace' && otp[index] === '' && index > 0) {
       inputRefs[index - 1].current?.focus();
     }
   };
+
   return (
     <View style={styles.otpContainer}>
       {otp.map((value, index) => (
@@ -32,6 +43,7 @@ const OtpComponent: FC = () => {
           keyboardType="numeric"
           maxLength={1}
           ref={inputRefs[index]}
+          onKeyPress={e => handleKeyPress(e, index)}
         />
       ))}
     </View>

@@ -16,6 +16,7 @@ import {useAppDispatch, useAppSelector} from '../../store/store';
 import {updateProfileData} from '../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BottomDrawer from './BottomDrawer';
+import {EditTextIC} from '../../assets/svgs';
 
 interface UpdateForm {
   work: string;
@@ -58,11 +59,12 @@ const UpdateProfile = () => {
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-  // console.log('/333', profileData?.partnerType);
-  // console.log('/333', profileData?.habits2[0]?.selectedText);
+  console.log('/333', profileData);
+  console.log('/333', profileData?.habits2[2]?.selectedText);
 
   const dispatch: any = useAppDispatch();
   const [height, setHeight] = useState(parseInt(profileData?.height) || 100);
+  // console.log('kjfjdsfg', height);
   const [title, setTitle] = useState<string>('');
   const [value, setValue] = useState<string>('');
   const [profileImages, setProfileImages] = useState<any>(
@@ -73,20 +75,26 @@ const UpdateProfile = () => {
   const [marginBottom, setMarginBottom] = useState(0);
 
   // console.log('title', value);
+  const getFirstThreeDigits = (number: number) => {
+    // Convert number to string, slice the first three digits, then convert back to number
+    return parseFloat(number.toFixed(3));
+  };
+
+  const formattedHeight = getFirstThreeDigits(height);
 
   const handleSliderChange = (value: any) => {
     setHeight(value);
   };
 
-  useEffect(() => {
-    dispatch(
-      updateProfileData({
-        field: 'height',
-        value: height,
-        id: getUserId(),
-      }),
-    );
-  }, [height]);
+  // useEffect(() => {
+  //   dispatch(
+  //     updateProfileData({
+  //       field: 'height',
+  //       value: height,
+  //       id: getUserId(),
+  //     }),
+  //   );
+  // }, [height]);
 
   const dataArr = [
     {title: 'Work', name: profileData?.work},
@@ -142,7 +150,9 @@ const UpdateProfile = () => {
         <View style={[styles.boxContainer, {marginTop: 28}]}>
           <View style={styles.distance}>
             <Text style={styles.textName}>Height</Text>
-            <Text style={{fontFamily: 'Sansation-Regular'}}>{height} CM</Text>
+            <Text style={{fontFamily: 'Sansation-Regular'}}>
+              {formattedHeight} CM
+            </Text>
           </View>
           <View style={styles.line} />
           <Slider
@@ -161,9 +171,20 @@ const UpdateProfile = () => {
         {dataArr &&
           dataArr.map((item, index) => (
             <View style={styles.boxContainer} key={index}>
-              <Text style={styles.textName}>{item.title}</Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                }}>
+                <View style={{width: 20}}></View>
+                <Text style={styles.textName}>{item.title}</Text>
+                <EditTextIC
+                  // style={{right: 1}}
+                  onPress={() => handleModal(item)}
+                />
+              </View>
               <View style={styles.line} />
-              <View>
+              <View style={{}}>
                 <TouchableOpacity
                   style={styles.textField}
                   onPress={() => handleModal(item)}>

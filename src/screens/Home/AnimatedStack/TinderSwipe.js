@@ -30,6 +30,18 @@ const TinderSwipe = ({
   const currentProfile = data[currentIndex];
 
   const [nextIndex, setNextIndex] = useState(currentIndex + 1);
+  console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%', data);
+  useEffect(() => {
+    if (!data.length) {
+      setData([data]);
+    }
+  }, [data.length]);
+  useEffect(() => {
+    if (currentIndex === data.length) {
+      setCurrentIndex(0);
+    }
+    setNextIndex(currentIndex + 1);
+  }, [currentIndex, data.length, setCurrentIndex]);
   const swipe = useRef(new Animated.ValueXY()).current;
   const panResponder = PanResponder.create({
     onMoveShouldSetPanResponder: () => true,
@@ -57,7 +69,7 @@ const TinderSwipe = ({
   });
 
   const allUsers = useAppSelector(state => state.Auth.data.allUsers);
-  console.log('/////////////////////', allUsers);
+  // console.log('/////////////////////', allUsers);
   const onSwipeRight = async () => {
     await dispatch(
       likedAUser({
@@ -95,100 +107,102 @@ const TinderSwipe = ({
         height: '100%',
         width: '100%',
       }}>
-      {/* {currentProfile ? (
-        <> */}
-      <View style={{height: 340}}>
-        {data
-          .map((item, index) => {
-            const isFirst = index === 0;
-            const dragHandlers = isFirst ? panResponder.panHandlers : {};
-            return (
-              <TinderCard
-                swipe={swipe}
-                item={currentProfile}
-                isFirst={isFirst}
-                {...dragHandlers}
+      {!data.length == 0 ? (
+        <>
+          <View style={{height: 340}}>
+            {data
+              .map((item, index) => {
+                const isFirst = index === 0;
+                const dragHandlers = isFirst ? panResponder.panHandlers : {};
+                return (
+                  <TinderCard
+                    swipe={swipe}
+                    item={item}
+                    // profilePic={}
+                    isFirst={isFirst}
+                    {...dragHandlers}
+                  />
+                );
+              })
+              .reverse()}
+          </View>
+          <View style={styles.icons}>
+            <TouchableOpacity
+              onPress={() => {
+                handleChoiceButtons(-1);
+              }}>
+              <Image
+                source={require('../../../assets/images/Cross.png')}
+                style={styles.icons3}
               />
-            );
-          })
-          .reverse()}
-      </View>
-      <View style={styles.icons}>
-        <TouchableOpacity
-          onPress={() => {
-            handleChoiceButtons(-1);
-          }}>
-          <Image
-            source={require('../../../assets/images/Cross.png')}
-            style={styles.icons3}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            handleChoiceButtons(1);
-          }}>
-          <Image
-            source={require('../../../assets/images/Heart.png')}
-            style={styles.icons3}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Image
-            source={require('../../../assets/images/Star.png')}
-            style={styles.icons3}
-          />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.locText}>
-        <Ionicons name="location-sharp" size={20} color="#AC25AC" />
-        <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
-          {profileData.location && allUsers[currentIndex]?.location
-            ? `${Math.round(
-                calculateDistance(
-                  profileData.location.latitude,
-                  profileData.location.longitude,
-                  allUsers[currentIndex].location.latitude,
-                  allUsers[currentIndex].location.longitude,
-                ),
-              ).toFixed(0)} miles away`
-            : 'Distance information unavailable'}
-        </Text>
-      </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                handleChoiceButtons(1);
+              }}>
+              <Image
+                source={require('../../../assets/images/Heart.png')}
+                style={styles.icons3}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Image
+                source={require('../../../assets/images/Star.png')}
+                style={styles.icons3}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.locText}>
+            <Ionicons name="location-sharp" size={20} color="#AC25AC" />
+            <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
+              {profileData.location && allUsers[currentIndex]?.location
+                ? `${Math.round(
+                    calculateDistance(
+                      profileData.location.latitude,
+                      profileData.location.longitude,
+                      allUsers[currentIndex].location.latitude,
+                      allUsers[currentIndex].location.longitude,
+                    ),
+                  ).toFixed(0)} miles away`
+                : 'Distance information unavailable'}
+            </Text>
+          </View>
 
-      <View style={styles.container}>
-        {allUsers[currentIndex]?.habits1?.map((item, index) => {
-          let imagePath;
-          switch (item.imagePath) {
-            case 'src/assets/images/bottleofchampagne.png':
-              imagePath = require('../../../assets/images/bottleofchampagne.png');
-              break;
-            case 'src/assets/images/smoking.png':
-              imagePath = require('../../../assets/images/smoking.png');
-              break;
-            case 'src/assets/images/Mandumbbells.png':
-              imagePath = require('../../../assets/images/Mandumbbells.png');
-              break;
-            case 'src/assets/images/dogheart.png':
-              imagePath = require('../../../assets/images/dogheart.png');
-              break;
-            case 'src/assets/images/datestep.png':
-              imagePath = require('../../../assets/images/datestep.png');
-              break;
-          }
-          return (
-            <View key={index} style={styles.item}>
-              {imagePath && (
-                <Image source={imagePath} style={{height: 20, width: 20}} />
-              )}
-              <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
-                {item.selectedText}
-              </Text>
-            </View>
-          );
-        })}
-      </View>
-      {/* </> */}
-      {/* ) : (
+          <View style={styles.container}>
+            {allUsers[currentIndex]?.habits1?.map((item, index) => {
+              let imagePath;
+              switch (item.imagePath) {
+                case 'src/assets/images/bottleofchampagne.png':
+                  imagePath = require('../../../assets/images/bottleofchampagne.png');
+                  break;
+                case 'src/assets/images/smoking.png':
+                  imagePath = require('../../../assets/images/smoking.png');
+                  break;
+                case 'src/assets/images/Mandumbbells.png':
+                  imagePath = require('../../../assets/images/Mandumbbells.png');
+                  break;
+                case 'src/assets/images/dogheart.png':
+                  imagePath = require('../../../assets/images/dogheart.png');
+                  break;
+                case 'src/assets/images/datestep.png':
+                  imagePath = require('../../../assets/images/datestep.png');
+                  break;
+              }
+              return (
+                <View key={index} style={styles.item}>
+                  {imagePath && (
+                    <Image source={imagePath} style={{height: 20, width: 20}} />
+                  )}
+                  <Text
+                    style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
+                    {item.selectedText}
+                  </Text>
+                </View>
+              );
+            })}
+          </View>
+        </>
+      ) : (
         <Text
           style={{
             fontFamily: 'Sansation-Bold',
@@ -201,7 +215,7 @@ const TinderSwipe = ({
           You have viewed all profiles! Or no profile matches your applied
           filters!
         </Text>
-      )} */}
+      )}
     </View>
   );
 };

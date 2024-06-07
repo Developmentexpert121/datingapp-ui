@@ -108,20 +108,7 @@ const schemawith = yup.object().shape({
     .matches(/^[0-9]+$/, 'Phone must contain only digits')
     .min(8, 'Phone must be at least 8 digits long')
     .required('Phone is required'),
-  // email: yup.string().email('Invalid email').required('Email is required'),
-  // *************
-  // country: yup.string().trim().required('Country, State, and City is required'),
-  // state: yup.string().trim().required('State is required'),
-  // city: yup.string().trim().required('City is required'),
-  // *************
   gender: yup.string().trim().required('Gender is required'),
-  // password: yup
-  //   .string()
-  //   .required('Please Enter your password')
-  //   .matches(
-  //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})/,
-  //     'Must Contain 6 Characters, One Uppercase, One Lowercase, One Number and one special case character',
-  //   ),
   dob: yup.string().trim().required('DOB is required'),
 });
 const schema = yup.object().shape({
@@ -204,7 +191,6 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
   const [otp, setOtp] = useState<string[]>(['', '', '', '', '', '']);
   const [loader, setLoader] = useState<boolean>(false);
   const [phone, setPhone] = useState<object>({});
-  console.log(phone);
   const [country, setSelectedCountry] = useState<string | null>(null);
   const [state, setSelectedState] = useState<string | null>(null);
   const [city, setSelectedCity] = useState<string | null>(null);

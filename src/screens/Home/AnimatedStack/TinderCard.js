@@ -10,7 +10,15 @@ import React, {useCallback} from 'react';
 import TinderLike from './TinderLike';
 import LinearGradient from 'react-native-linear-gradient';
 const {height, width} = Dimensions.get('window');
-const TinderCard = ({item, isFirst, swipe, ...rest}) => {
+const TinderCard = ({
+  name,
+  profilePic,
+  hobbies,
+  item,
+  isFirst,
+  swipe,
+  ...rest
+}) => {
   const rotate = swipe.x.interpolate({
     inputRange: [-100, 0, 100],
     outputRange: ['8deg', '0deg', '-8deg'],
@@ -63,7 +71,9 @@ const TinderCard = ({item, isFirst, swipe, ...rest}) => {
       ]}
       {...rest}>
       <Image
-        source={item.image}
+        source={{
+          uri: item.profilePic,
+        }}
         style={{
           width: '100%',
           // height: '80%',
@@ -83,8 +93,8 @@ const TinderCard = ({item, isFirst, swipe, ...rest}) => {
           borderRadius: 20,
         }}>
         <View style={styles.cardInner}>
-          <Text style={styles.name}>dasd</Text>
-          <Text style={styles.bio}>hobbies</Text>
+          <Text style={styles.name}>{item.name}</Text>
+          <Text style={styles.bio}>{item.hobbies}</Text>
         </View>
       </LinearGradient>
     </Animated.View>

@@ -1,3 +1,4 @@
+import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -5,9 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   Modal,
-  Keyboard,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
 import Label from '../Label';
 import MainButton from '../ButtonComponent/MainButton';
 import {RootState, useAppDispatch, useAppSelector} from '../../store/store';
@@ -61,8 +60,6 @@ const OtpModal = ({
     setOtp(newOtp);
     if (txt.length >= 1 && index < otp.length - 1) {
       inputRefs.current[index + 1]?.focus();
-    } else if (txt.length === 0 && index > 0) {
-      inputRefs.current[index - 1]?.focus();
     }
     const isAllFieldsFilled = newOtp.every(field => field !== '');
     setIsOtpComplete(isAllFieldsFilled);
@@ -70,6 +67,12 @@ const OtpModal = ({
       setErrorMessage('Please fill in all OTP fields.');
     } else {
       setErrorMessage('');
+    }
+  };
+
+  const handleKeyPress = (e: any, index: number) => {
+    if (e.nativeEvent.key === 'Backspace' && otp[index] === '' && index > 0) {
+      inputRefs.current[index - 1]?.focus();
     }
   };
 
@@ -121,6 +124,7 @@ const OtpModal = ({
                 keyboardType="numeric"
                 maxLength={1}
                 ref={ref => (inputRefs.current[index] = ref)}
+                onKeyPress={e => handleKeyPress(e, index)}
               />
             ))}
           </View>
