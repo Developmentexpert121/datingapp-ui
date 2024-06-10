@@ -7,6 +7,7 @@ import {
   Dimensions,
   StyleSheet,
   Text,
+  ScrollView,
 } from 'react-native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import TinderCard from './TinderCard';
@@ -24,15 +25,7 @@ const TinderSwipe = ({
   setData,
 }) => {
   const dispatch = useAppDispatch();
-  const currentProfile = data[currentIndex];
-
   const [nextIndex, setNextIndex] = useState(currentIndex + 1);
-
-  useEffect(() => {
-    if (!data.length) {
-      setData([data]);
-    }
-  }, [data.length]);
 
   useEffect(() => {
     if (currentIndex === data.length) {
@@ -52,11 +45,7 @@ const TinderSwipe = ({
       const direction = Math.sign(dx);
       const isActionActive = Math.abs(dx) > 200;
       if (isActionActive) {
-        Animated.timing(swipe, {
-          toValue: {x: direction * 500, y: dy},
-          useNativeDriver: true,
-          duration: 500,
-        }).start(removeCard);
+        handleChoiceButtons1(direction);
       } else {
         Animated.spring(swipe, {
           toValue: {x: 0, y: 0},
@@ -67,8 +56,6 @@ const TinderSwipe = ({
     },
   });
 
-  const allUsers = useAppSelector(state => state.Auth.data.allUsers);
-
   const onSwipeRight = async () => {
     await dispatch(
       likedAUser({
@@ -76,7 +63,7 @@ const TinderSwipe = ({
         userIdBeingLiked: data[currentIndex]?._id,
       }),
     );
-    const targetX = hiddenTranslateX;
+    const targetX = hiddenTranslateX; // Assuming hiddenTranslateX is defined elsewhere
     translateX.value = withSpring(targetX);
     setTimeout(() => {
       const updatedUsers = [...data];
@@ -122,10 +109,10 @@ const TinderSwipe = ({
     },
     [removeCard, swipe.x, onSwipeRight, onSwipeLeft],
   );
-
+  console.log('..........................', data);
   return (
     <View style={{height: '100%', width: '100%'}}>
-      {data.length > 1 ? (
+      {data.length > 0 ? (
         <>
           <View style={{height: 340}}>
             {data
@@ -169,55 +156,59 @@ const TinderSwipe = ({
               />
             </TouchableOpacity>
           </View>
-          <View style={styles.locText}>
-            <Ionicons name="location-sharp" size={20} color="#AC25AC" />
-            <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
-              {profileData.location && data[currentIndex]?.location
-                ? `${Math.round(
-                    calculateDistance(
-                      profileData.location.latitude,
-                      profileData.location.longitude,
-                      data[currentIndex].location.latitude,
-                      data[currentIndex].location.longitude,
-                    ),
-                  ).toFixed(0)} miles away`
-                : 'Distance information unavailable'}
-            </Text>
-          </View>
-
-          <View style={styles.container}>
-            {data[currentIndex]?.habits1?.map((item, index) => {
-              let imagePath;
-              switch (item.imagePath) {
-                case 'src/assets/images/bottleofchampagne.png':
-                  imagePath = require('../../../assets/images/bottleofchampagne.png');
-                  break;
-                case 'src/assets/images/smoking.png':
-                  imagePath = require('../../../assets/images/smoking.png');
-                  break;
-                case 'src/assets/images/Mandumbbells.png':
-                  imagePath = require('../../../assets/images/Mandumbbells.png');
-                  break;
-                case 'src/assets/images/dogheart.png':
-                  imagePath = require('../../../assets/images/dogheart.png');
-                  break;
-                case 'src/assets/images/datestep.png':
-                  imagePath = require('../../../assets/images/datestep.png');
-                  break;
-              }
-              return (
-                <View key={index} style={styles.item}>
-                  {imagePath && (
-                    <Image source={imagePath} style={{height: 20, width: 20}} />
-                  )}
-                  <Text
-                    style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
-                    {item.selectedText}
-                  </Text>
-                </View>
-              );
-            })}
-          </View>
+          <ScrollView>
+            <View style={styles.locText}>
+              <Ionicons name="location-sharp" size={20} color="#AC25AC" />
+              <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
+                {profileData.location && data[currentIndex]?.location
+                  ? `${Math.round(
+                      calculateDistance(
+                        profileData.location.latitude,
+                        profileData.location.longitude,
+                        data[currentIndex].location.latitude,
+                        data[currentIndex].location.longitude,
+                      ),
+                    ).toFixed(0)} miles away`
+                  : 'Distance information unavailable'}
+              </Text>
+            </View>
+            <View style={styles.container}>
+              {data[currentIndex]?.habits1?.map((item, index) => {
+                let imagePath;
+                switch (item.imagePath) {
+                  case 'src/assets/images/bottleofchampagne.png':
+                    imagePath = require('../../../assets/images/bottleofchampagne.png');
+                    break;
+                  case 'src/assets/images/smoking.png':
+                    imagePath = require('../../../assets/images/smoking.png');
+                    break;
+                  case 'src/assets/images/Mandumbbells.png':
+                    imagePath = require('../../../assets/images/Mandumbbells.png');
+                    break;
+                  case 'src/assets/images/dogheart.png':
+                    imagePath = require('../../../assets/images/dogheart.png');
+                    break;
+                  case 'src/assets/images/datestep.png':
+                    imagePath = require('../../../assets/images/datestep.png');
+                    break;
+                }
+                return (
+                  <View key={index} style={styles.item}>
+                    {imagePath && (
+                      <Image
+                        source={imagePath}
+                        style={{height: 20, width: 20}}
+                      />
+                    )}
+                    <Text
+                      style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
+                      {item.selectedText}
+                    </Text>
+                  </View>
+                );
+              })}
+            </View>
+          </ScrollView>
         </>
       ) : (
         <Text

@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, ScrollView, Text} from 'react-native';
-import Card from '../../components/Dashboard/homeCard/homeCard';
-// import AnimatedStack from './AnimatedStack/animatedStack';
+import {View, StyleSheet} from 'react-native';
 import HeaderComponent from '../../components/Dashboard/header/header';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {ProfileData, getAllUsers} from '../../store/Auth/auth';
@@ -9,7 +7,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import FilterSection from '../FilterSection/filterSection';
 import NotificationScreen from '../Notification/notification';
 import TinderSwipe from './AnimatedStack/TinderSwipe';
-import TinderCard from './AnimatedStack/TinderCard';
 
 const getUserId = async () => {
   try {
@@ -45,7 +42,7 @@ const HomeScreen = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   // console.log(currentIndex, 'LLLLLLLL');
   const [data, setData] = useState<any>([]);
-  // console.log('first data', data);
+  console.log('first data', data);
   const [checkedInterests, setCheckedInterests] = useState(
     profileData?.interests || 'everyone',
   );
@@ -88,15 +85,6 @@ const HomeScreen = () => {
     setCheckedInterests(profileData?.interests);
   }, [profileData?.interests]);
 
-  // console.log('/////////sxfbjjs', profileData?.interests);
-  // console.log('checkedInterests', checkedInterests);
-
-  // useEffect(() => {
-
-  //   getId();
-  //   setCurrentIndex(0);
-  // }, [showIn, checkedInterests, distance, low, high]);
-
   const calculateDistance = (lat1: any, lon1: any, lat2: any, lon2: any) => {
     const R = 3958.8; // Earth radius in miles
     const dLat = toRadians(lat2 - lat1);
@@ -125,24 +113,11 @@ const HomeScreen = () => {
         activeScreen={activeScreen}
       />
       {activeScreen === 'HOME' ? (
-        <View
-          style={styles.pageContainer2}
-          // showsVerticalScrollIndicator={false}
-        >
+        <View style={styles.pageContainer2}>
           <View style={{marginTop: 20, borderWidth: 0}}>
-            {/* <AnimatedStack
-              data={data}
-              renderItem={({item}: any) => <Card user={item} />}
-              // renderItem={({item}: any) => <TinderCard user={item} />}
-              currentIndex={currentIndex}
-              setData={setData}
-              setCurrentIndex={setCurrentIndex}
-              profileData={profileData}
-            /> */}
             <TinderSwipe
               data={data}
               setData={setData}
-              // renderItem={({item}: any) => <Card user={item} />}
               currentIndex={currentIndex}
               setCurrentIndex={setCurrentIndex}
               profileData={profileData}
@@ -179,7 +154,7 @@ const styles = StyleSheet.create({
   pageContainer2: {
     // flex: 1,
     width: '100%',
-    height: '85%',
+    height: '90%',
     backgroundColor: '#ededed',
     // borderWidth: 2,
   },

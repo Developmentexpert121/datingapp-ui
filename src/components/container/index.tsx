@@ -9,12 +9,10 @@ import {
   Text,
   View,
   ViewStyle,
-} from "react-native";
-import React from "react";
-// import withTheme from "../../Theme/withTheme";
-// import { light } from "../../Theme";
-import { ScrollView } from "react-native-virtualized-view";
-import { findScrollEnd } from "../../utils/helper";
+} from 'react-native';
+import React from 'react';
+import {ScrollView} from 'react-native-virtualized-view';
+import {findScrollEnd} from '../../utils/helper';
 interface Iprops {
   children?: any;
   isScroll?: boolean;
@@ -31,43 +29,39 @@ function Container({
   customContainerStyle,
   onScrollEnd,
 }: Iprops) {
-  const bgColor = "#fff";
+  const bgColor = '#fff';
   return (
     <View
       style={[
         styles.container,
-        { backgroundColor: color ? color : bgColor, paddingHorizontal: 15 },
+        {backgroundColor: color ? color : bgColor, paddingHorizontal: 15},
         customContainerStyle,
-      ]}
-    >
-      <StatusBar barStyle={"dark-content"} />
+      ]}>
+      <StatusBar barStyle={'dark-content'} />
       <View
         style={[
           styles.container,
           ,
-          { backgroundColor: color ? color : bgColor },
+          {backgroundColor: color ? color : bgColor},
           innerContainerStyle,
-        ]}
-      >
+        ]}>
         {isScroll ? (
           <KeyboardAvoidingView
             style={[
               styles.container,
               ,
-              { backgroundColor: color ? color : bgColor },
+              {backgroundColor: color ? color : bgColor},
               innerContainerStyle,
             ]}
-            behavior={Platform.OS === "ios" ? "padding" : undefined}
-            enabled
-          >
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+            enabled>
             <ScrollView
-              style={{ flexGrow: 1 }}
+              style={{flexGrow: 1}}
               nestedScrollEnabled
               showsVerticalScrollIndicator={false}
-              onMomentumScrollEnd={({ nativeEvent }) =>
+              onMomentumScrollEnd={({nativeEvent}) =>
                 onScrollEnd && onScrollEnd(findScrollEnd(nativeEvent))
-              }
-            >
+              }>
               {children}
             </ScrollView>
           </KeyboardAvoidingView>
