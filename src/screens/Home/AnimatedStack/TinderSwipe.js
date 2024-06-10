@@ -12,7 +12,6 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import TinderCard from './TinderCard';
 import {useAppDispatch, useAppSelector} from '../../../store/store';
 import {likedAUser} from '../../../store/Auth/auth';
-
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const {height, width} = Dimensions.get('window');
@@ -28,18 +27,22 @@ const TinderSwipe = ({
   const currentProfile = data[currentIndex];
 
   const [nextIndex, setNextIndex] = useState(currentIndex + 1);
+
   useEffect(() => {
     if (!data.length) {
       setData([data]);
     }
   }, [data.length]);
+
   useEffect(() => {
     if (currentIndex === data.length) {
       setCurrentIndex(0);
     }
     setNextIndex(currentIndex + 1);
   }, [currentIndex, data.length, setCurrentIndex]);
+
   const swipe = useRef(new Animated.ValueXY()).current;
+
   const panResponder = PanResponder.create({
     onMoveShouldSetPanResponder: () => true,
     onPanResponderMove: (_, {dx, dy}) => {
@@ -65,12 +68,17 @@ const TinderSwipe = ({
   });
 
   const allUsers = useAppSelector(state => state.Auth.data.allUsers);
+
   const onSwipeRight = async () => {
+    console.log('000000000000000000000');
     await dispatch(
       likedAUser({
         likerId: profileData?._id,
         userIdBeingLiked: data[currentIndex]?._id,
       }),
+      console.log('likerId', profileData?._id),
+      console.log('userIdBeingLiked', userIdBeingLiked),
+      console.log('likedAUserlikedAUserlikedAUserlikedAUser', likedAUser),
     );
     const targetX = hiddenTranslateX;
     translateX.value = withSpring(targetX);
@@ -80,6 +88,13 @@ const TinderSwipe = ({
       setData(updatedUsers);
     }, 10);
   };
+
+  console.log('............................', onSwipeRight);
+
+  const onSwipeLeft = async () => {
+    // Implement your onSwipeLeft logic here if needed
+  };
+
   const removeCard = useCallback(() => {
     setData(prevState => prevState.slice(1));
     swipe.setValue({x: 0, y: 0});
@@ -96,30 +111,36 @@ const TinderSwipe = ({
     [removeCard, swipe.x],
   );
 
-  // Logging the data in the required format
-  // console.log(
-  //   '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%',
-  //   data.map(user => ({
-  //     ...user,
-  //     habits1: user.habits1
-  //       ? user.habits1.map(habit => ({
-  //           ...habit,
-  //         }))
-  //       : [],
-  //   })),
-  // );
+  const handleChoiceButtons1 = useCallback(
+    direction => {
+      Animated.timing(swipe.x, {
+        toValue: direction * width,
+        duration: 500,
+        useNativeDriver: true,
+      }).start(() => {
+        if (direction > 0) {
+          onSwipeRight();
+        } else {
+          onSwipeLeft();
+        }
+        removeCard();
+      });
+    },
+    [removeCard, swipe.x, onSwipeRight, onSwipeLeft],
+  );
 
+  console.log('dsifgjuadgskluadytluygdfglyuadsfg', handleChoiceButtons1);
+  console.log('5647641654698765479746', data);
   return (
-    <View
-      style={{
-        height: '100%',
-        width: '100%',
-      }}>
-      {data.length ? (
+    <View style={{height: '100%', width: '100%'}}>
+      {data.length > 1 ? (
         <>
           <View style={{height: 340}}>
             {data
               .map((item, index) => {
+                {
+                  console.log('98745698745698', item);
+                }
                 const isFirst = index === 0;
                 const dragHandlers = isFirst ? panResponder.panHandlers : {};
                 return (
@@ -145,7 +166,7 @@ const TinderSwipe = ({
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                handleChoiceButtons(1);
+                handleChoiceButtons1(1);
               }}>
               <Image
                 source={require('../../../assets/images/Heart.png')}
@@ -162,13 +183,13 @@ const TinderSwipe = ({
           <View style={styles.locText}>
             <Ionicons name="location-sharp" size={20} color="#AC25AC" />
             <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
-              {profileData.location && allUsers[currentIndex]?.location
+              {profileData.location && data[currentIndex]?.location
                 ? `${Math.round(
                     calculateDistance(
                       profileData.location.latitude,
                       profileData.location.longitude,
-                      allUsers[currentIndex].location.latitude,
-                      allUsers[currentIndex].location.longitude,
+                      data[currentIndex].location.latitude,
+                      data[currentIndex].location.longitude,
                     ),
                   ).toFixed(0)} miles away`
                 : 'Distance information unavailable'}
@@ -176,7 +197,7 @@ const TinderSwipe = ({
           </View>
 
           <View style={styles.container}>
-            {allUsers[currentIndex]?.habits1?.map((item, index) => {
+            {data[currentIndex]?.habits1?.map((item, index) => {
               let imagePath;
               switch (item.imagePath) {
                 case 'src/assets/images/bottleofchampagne.png':
@@ -230,30 +251,6 @@ const TinderSwipe = ({
 export default TinderSwipe;
 
 const styles = StyleSheet.create({
-  root: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: 1,
-    width: '100%',
-  },
-  cardContainer: {
-    alignItems: 'center',
-    flex: 1,
-  },
-  animatedCard: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  nextCardContainer: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  like: {
-    width: 150,
-    height: 150,
-    position: 'absolute',
-  },
   icons: {
     flexDirection: 'row',
     justifyContent: 'space-around',

@@ -12,7 +12,7 @@ import VideoCallInterface from './chatVideoInterface';
 
 const VideoCallRedirect = () => {
   const user: any = useAppSelector((state: any) => state?.ActivityLoader?.user);
-  console.log('use ruser user user ', user);
+  // console.log('use ruser user user ', user);
 
   const dispatch: any = useAppDispatch();
 
@@ -21,30 +21,30 @@ const VideoCallRedirect = () => {
   );
 
   const [callId, setCallId] = useState<any>('');
-  console.log('callId?????', callId);
+  // console.log('callId?????', callId);
 
   const [enableCamera, setEnableCamera] = useState<boolean>(true);
 
   const [activeScreen, setActiveScreen] = useState('home');
-  console.log('activeScreen...', activeScreen);
+  // console.log('activeScreen...', activeScreen);
 
   const [client, setClient] = useState<StreamVideoClient | null>(null);
-  console.log('1111client......', client);
+  // console.log('1111client......', client);
   // console.log('----------------.????setClient', setClient);
 
   const [call, setCall] = useState<Call>();
-  console.log('call????????????', call);
+  // console.log('call????????????', call);
 
   useEffect(() => {
     const callId: any = uuid.v4();
-    console.log('callId--------', callId);
+    // console.log('callId--------', callId);
     setCallId(callId);
     const apiKey = 'xxbhmm34dcx3';
     const tokenProvider = async () => {
       const token = await dispatch(videoCallToken({id: profileData?._id}))
         .unwrap()
         .then((response: any) => response.token);
-      console.log('::::::::::::', token);
+      // console.log('::::::::::::', token);
       return token;
     };
 
@@ -70,7 +70,7 @@ const VideoCallRedirect = () => {
     setActiveScreen('call-screen');
     if (!client) return;
     const myCall = client.call('default', callId);
-    console.log('......myCall', myCall);
+    // console.log('......myCall', myCall);
     myCall
       .getOrCreate({
         ring: true,
@@ -88,7 +88,7 @@ const VideoCallRedirect = () => {
         console.error(`Failed to join the call`, err);
       });
     setCall(myCall);
-    console.log('myCall2222222', myCall);
+    // console.log('myCall2222222', myCall);
     return () => {
       setCall(undefined);
       myCall.leave().catch(err => {

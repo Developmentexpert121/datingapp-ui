@@ -75,7 +75,7 @@ const FilterSection = ({
   //   profileData?.interests,
   // );
 
-  console.log(checkedInterests, 'checkedInterestscheckedInterests9090');
+  // console.log(checkedInterests, 'checkedInterestscheckedInterests9090');
 
   useEffect(() => {
     setCheckedInterests(profileData?.interests);
@@ -212,7 +212,6 @@ const FilterSection = ({
         <View style={styles.line} />
         <View>
           {options2.map(item => {
-            console.log(item, '90900');
             return (
               <View key={item?.value} style={styles.radio}>
                 <Controller
@@ -240,7 +239,6 @@ const FilterSection = ({
                       <TouchableOpacity
                         onPress={() => {
                           setCheckedInterests(item?.value);
-                          // console.log('setCheckedInterests', setCheckedInterests);
                           dispatch(
                             updateProfileData({
                               field: 'interests',
@@ -249,7 +247,6 @@ const FilterSection = ({
                             }),
                           );
                         }}>
-                        {console.log(checkedInterests, item?.value, '9090')}
                         <Ionicons
                           name={
                             checkedInterests === item?.value

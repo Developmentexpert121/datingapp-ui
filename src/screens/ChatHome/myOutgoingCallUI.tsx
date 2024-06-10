@@ -4,7 +4,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import {useAppSelector} from '../../store/store';
 
 export default function MyOutgoingCallUI({call, goToHomeScreen}: any) {
-  console.log(']]]]]]]]]]call', call);
+  // console.log(']]]]]]]]]]call', call);
 
   const user: any = useAppSelector((state: any) => state?.ActivityLoader?.user);
   return (

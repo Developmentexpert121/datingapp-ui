@@ -72,14 +72,15 @@ const TinderCard = ({
       {...rest}>
       <Image
         source={{
-          uri: item.profilePic,
+          uri: item.profilePic ? item.profilePic : null,
         }}
         style={{
           width: '100%',
           // height: '80%',
           height: 320,
           borderRadius: 20,
-          borderWidth: 1,
+          // borderWidth: 1,
+          backgroundColor: 'gray',
         }}
       />
       {isFirst && renderChoice()}
@@ -103,27 +104,6 @@ const TinderCard = ({
 
 export default TinderCard;
 const styles = StyleSheet.create({
-  card: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 10,
-    backgroundColor: '#fefefe',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowOpacity: 0.36,
-    shadowRadius: 6.68,
-    borderWidth: 0,
-  },
-  image: {
-    width: '100%',
-    height: '120%',
-    borderRadius: 10,
-    overflow: 'hidden',
-    justifyContent: 'flex-end',
-  },
   gradient: {
     ...StyleSheet.absoluteFillObject,
     borderBottomLeftRadius: 10,

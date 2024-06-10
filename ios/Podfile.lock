@@ -1247,10 +1247,6 @@ PODS:
     - Firebase/Auth (= 10.24.0)
     - React-Core
     - RNFBApp
-  - RNGestureHandler (2.16.2):
-    - glog
-    - RCT-Folly (= 2022.05.16.00)
-    - React-Core
   - RNGoogleSignin (11.0.1):
     - GoogleSignIn (~> 7.0.0)
     - React-Core
@@ -1271,7 +1267,7 @@ PODS:
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
     - React-RCTImage
-  - RNSVG (14.2.0):
+  - RNSVG (15.3.0):
     - React-Core
   - RNVectorIcons (10.1.0):
     - glog
@@ -1283,7 +1279,7 @@ PODS:
   - stream-react-native-webrtc (118.0.1):
     - JitsiWebRTC (~> 118.0.0)
     - React-Core
-  - stream-video-react-native (0.5.17):
+  - stream-video-react-native (0.7.27):
     - React-Core
     - stream-react-native-webrtc
   - Yoga (1.14.0)
@@ -1362,7 +1358,6 @@ DEPENDENCIES:
   - "RNFBAnalytics (from `../node_modules/@react-native-firebase/analytics`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
-  - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - "RNNotifee (from `../node_modules/@notifee/react-native`)"
   - RNPermissions (from `../node_modules/react-native-permissions`)
@@ -1539,8 +1534,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/app"
   RNFBAuth:
     :path: "../node_modules/@react-native-firebase/auth"
-  RNGestureHandler:
-    :path: "../node_modules/react-native-gesture-handler"
   RNGoogleSignin:
     :path: "../node_modules/@react-native-google-signin/google-signin"
   RNNotifee:
@@ -1657,18 +1650,17 @@ SPEC CHECKSUMS:
   RNFBAnalytics: 74eebc66e5f2475f2ed3a63822ef6bc913c4b4ff
   RNFBApp: de81f7eb68c1e6107574f2b102b0dee92a9862fa
   RNFBAuth: 40b9953bc9a8e2e207843e424aa82aa84bf34057
-  RNGestureHandler: a51b249f3c779e38a5d9ec45cb107d8780b39fb2
   RNGoogleSignin: 24d3b3261f78b0fae0aa013f8ab6f8d25e369b0c
   RNNotifee: 8e2d3df3f0e9ce8f5d1fe4c967431138190b6175
   RNPermissions: 294531ede5a64d1528463e88fffef05675842042
   RNReanimated: 171ea2d5b01b7e4a67faaaced8078898525b295b
   RNScreens: 35f3344904f6bba888c0e61532278436e275de3c
-  RNSVG: 963a95f1f5d512a13d11ffd50d351c87fb5c6890
+  RNSVG: a48668fd382115bc89761ce291a81c4ca5f2fd2e
   RNVectorIcons: 9282eb0aef2f7d4747f621aa6c586ce910de23b1
   RNVoipPushNotification: 543e18f83089134a35e7f1d2eba4c8b1f7776b08
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   stream-react-native-webrtc: 31fe9ee69d5b4fc191380a78efa292377494b7ac
-  stream-video-react-native: 170df9bdf51319aa63f98e74f9441427db416ba7
+  stream-video-react-native: af40249ac0b972e7d18a77dab6fc714b59f2d0d4
   Yoga: 4f53dc50008d626fa679c7a1cb4bed898f8c0bde
 
 PODFILE CHECKSUM: 41b4064532f375df63bff1e593fe7c6c14ce42c5
