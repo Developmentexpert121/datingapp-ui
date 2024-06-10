@@ -596,6 +596,7 @@ const initialState = {
     allUsers: [],
     chatUsersList: [],
     allNotifications: [],
+    userLike: [],
     signInInfo: '',
     otpVerified: false,
   },
@@ -715,6 +716,17 @@ const Auth: any = createSlice({
         state.loading = false;
       })
       .addCase(getNotifications.rejected, (state, action) => {
+        state.loading = false;
+      })
+      // likedAUser
+      .addCase(likedAUser.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(likedAUser.fulfilled, (state, action) => {
+        state.data.userLike = action.payload.notifications;
+        state.loading = false;
+      })
+      .addCase(likedAUser.rejected, (state, action) => {
         state.loading = false;
       })
       // VerifyOtp

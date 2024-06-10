@@ -70,15 +70,11 @@ const TinderSwipe = ({
   const allUsers = useAppSelector(state => state.Auth.data.allUsers);
 
   const onSwipeRight = async () => {
-    console.log('000000000000000000000');
     await dispatch(
       likedAUser({
         likerId: profileData?._id,
         userIdBeingLiked: data[currentIndex]?._id,
       }),
-      console.log('likerId', profileData?._id),
-      console.log('userIdBeingLiked', userIdBeingLiked),
-      console.log('likedAUserlikedAUserlikedAUserlikedAUser', likedAUser),
     );
     const targetX = hiddenTranslateX;
     translateX.value = withSpring(targetX);
@@ -88,8 +84,6 @@ const TinderSwipe = ({
       setData(updatedUsers);
     }, 10);
   };
-
-  console.log('............................', onSwipeRight);
 
   const onSwipeLeft = async () => {
     // Implement your onSwipeLeft logic here if needed
@@ -129,8 +123,6 @@ const TinderSwipe = ({
     [removeCard, swipe.x, onSwipeRight, onSwipeLeft],
   );
 
-  console.log('dsifgjuadgskluadytluygdfglyuadsfg', handleChoiceButtons1);
-  console.log('5647641654698765479746', data);
   return (
     <View style={{height: '100%', width: '100%'}}>
       {data.length > 1 ? (
@@ -138,9 +130,6 @@ const TinderSwipe = ({
           <View style={{height: 340}}>
             {data
               .map((item, index) => {
-                {
-                  console.log('98745698745698', item);
-                }
                 const isFirst = index === 0;
                 const dragHandlers = isFirst ? panResponder.panHandlers : {};
                 return (
