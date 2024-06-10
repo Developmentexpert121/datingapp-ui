@@ -43,9 +43,9 @@ const HomeScreen = () => {
     (state: any) => state?.Auth?.isAuthenticated,
   );
   const [currentIndex, setCurrentIndex] = useState(0);
-  console.log(currentIndex, 'LLLLLLLL');
+  // console.log(currentIndex, 'LLLLLLLL');
   const [data, setData] = useState<any>([]);
-  console.log('first data', data);
+  // console.log('first data', data);
   const [checkedInterests, setCheckedInterests] = useState(
     profileData?.interests || 'everyone',
   );
@@ -130,7 +130,7 @@ const HomeScreen = () => {
           // showsVerticalScrollIndicator={false}
         >
           <View style={{marginTop: 20, borderWidth: 0}}>
-            {/* <AnimatedStack
+            <AnimatedStack
               data={data}
               renderItem={({item}: any) => <Card user={item} />}
               // renderItem={({item}: any) => <TinderCard user={item} />}
@@ -138,15 +138,15 @@ const HomeScreen = () => {
               setData={setData}
               setCurrentIndex={setCurrentIndex}
               profileData={profileData}
-            /> */}
-            <TinderSwipe
+            />
+            {/* <TinderSwipe
               data={data}
               setData={setData}
               // renderItem={({item}: any) => <Card user={item} />}
               currentIndex={currentIndex}
               setCurrentIndex={setCurrentIndex}
               profileData={profileData}
-            />
+            /> */}
           </View>
         </View>
       ) : activeScreen === 'Filters' ? (

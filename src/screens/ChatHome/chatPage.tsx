@@ -49,13 +49,6 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
 
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
-  // const handleSendMessage = () => {
-  //   // Implement logic to send the message
-  //   // Example:
-  //   console.log('Sending message:', inputMessage);
-  //   setInputMessage(''); // Clear the input field after sending
-  // };
-
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
@@ -84,26 +77,6 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
   }, [scrollViewRef /* Add any dependencies */]);
 
   useEffect(() => {
-    // socket.on('connect', () => {
-    //   const userId = profileData?._id;
-    //   console.log('userId userId', userId);
-    //   socket.emit('user_connected', userId);
-    // });
-
-    // socket.on('user_online', userId => {
-    //   setOnlineUsers(prevOnlineUsers => [...prevOnlineUsers, userId]);
-    // });
-
-    // socket.on('user_offline', userId => {
-    //   setOnlineUsers(prevOnlineUsers =>
-    //     prevOnlineUsers.filter(user => user !== userId),
-    //   );
-    // });
-
-    // socket.on('disconnect', () => {
-    //   console.log('Disconnected from server');
-    // });
-
     socket.on('chat message', msg => {
       // Handle incoming messages
       console.log('Received message:', msg);
@@ -112,10 +85,6 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
         setChatMessages((prevMessages: any) => [...prevMessages, msg]);
       }
     });
-    // console.log(',,,,,,,', onlineUsers);
-    // return () => {
-    //   socket.disconnect();
-    // };
   }, []);
 
   useEffect(() => {

@@ -17,10 +17,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const {height, width} = Dimensions.get('window');
 
-// type UnknownAction = {type: string; payload?: any};
 const TinderSwipe = ({
   data,
-  //   renderItem,
   currentIndex,
   setCurrentIndex,
   profileData,
@@ -30,7 +28,6 @@ const TinderSwipe = ({
   const currentProfile = data[currentIndex];
 
   const [nextIndex, setNextIndex] = useState(currentIndex + 1);
-  console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%', data);
   useEffect(() => {
     if (!data.length) {
       setData([data]);
@@ -50,12 +47,11 @@ const TinderSwipe = ({
     },
     onPanResponderRelease: (_, {dx, dy}) => {
       const direction = Math.sign(dx);
-      const isActionActiove = Math.abs(dx) > 200;
-      if (isActionActiove) {
+      const isActionActive = Math.abs(dx) > 200;
+      if (isActionActive) {
         Animated.timing(swipe, {
           toValue: {x: direction * 500, y: dy},
           useNativeDriver: true,
-
           duration: 500,
         }).start(removeCard);
       } else {
@@ -69,7 +65,6 @@ const TinderSwipe = ({
   });
 
   const allUsers = useAppSelector(state => state.Auth.data.allUsers);
-  // console.log('/////////////////////', allUsers);
   const onSwipeRight = async () => {
     await dispatch(
       likedAUser({
@@ -100,14 +95,27 @@ const TinderSwipe = ({
     },
     [removeCard, swipe.x],
   );
+
+  // Logging the data in the required format
+  // console.log(
+  //   '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%',
+  //   data.map(user => ({
+  //     ...user,
+  //     habits1: user.habits1
+  //       ? user.habits1.map(habit => ({
+  //           ...habit,
+  //         }))
+  //       : [],
+  //   })),
+  // );
+
   return (
     <View
       style={{
-        // flex: 1,
         height: '100%',
         width: '100%',
       }}>
-      {!data.length == 0 ? (
+      {data.length ? (
         <>
           <View style={{height: 340}}>
             {data
@@ -118,7 +126,6 @@ const TinderSwipe = ({
                   <TinderCard
                     swipe={swipe}
                     item={item}
-                    // profilePic={}
                     isFirst={isFirst}
                     {...dragHandlers}
                   />
@@ -252,7 +259,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     width: '70%',
-    // marginTop: 60,
     alignSelf: 'center',
   },
   locText: {

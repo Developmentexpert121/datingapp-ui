@@ -26,10 +26,10 @@ const VideoCallRedirect = () => {
   const [enableCamera, setEnableCamera] = useState<boolean>(true);
 
   const [activeScreen, setActiveScreen] = useState('home');
-  console.log('activeScreen activeScreen activeScreen', activeScreen);
+  console.log('activeScreen...', activeScreen);
 
   const [client, setClient] = useState<StreamVideoClient | null>(null);
-  console.log('.????1111111111111client', client);
+  console.log('1111client......', client);
   // console.log('----------------.????setClient', setClient);
 
   const [call, setCall] = useState<Call>();
@@ -70,7 +70,7 @@ const VideoCallRedirect = () => {
     setActiveScreen('call-screen');
     if (!client) return;
     const myCall = client.call('default', callId);
-    console.log('myCall myCall myCall myCall', myCall);
+    console.log('......myCall', myCall);
     myCall
       .getOrCreate({
         ring: true,
@@ -88,7 +88,7 @@ const VideoCallRedirect = () => {
         console.error(`Failed to join the call`, err);
       });
     setCall(myCall);
-    console.log('myCall myCall myCall myCall2222222', myCall);
+    console.log('myCall2222222', myCall);
     return () => {
       setCall(undefined);
       myCall.leave().catch(err => {

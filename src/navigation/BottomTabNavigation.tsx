@@ -22,6 +22,7 @@ import ProfileScreen from '../screens/Profile/profileScreen';
 import FilterSection from '../screens/FilterSection/filterSection';
 import ChatHome from '../screens/ChatHome/chatHome';
 import VideoCallRedirect from '../screens/ChatHome/chatVideoRedirect';
+import ProfileSection from '../screens/Profile/profileSection';
 
 export type HomeStackParamList = {
   HomeScreen: undefined;
@@ -44,6 +45,7 @@ export type BottomTabParamList = {
   ProfileScreen: undefined;
   ChatHome: undefined;
   VideoCallRedirect: undefined;
+  ProfileSection: undefined;
 };
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 const Stack = createNativeStackNavigator<ProfileStackParamList>();
@@ -57,15 +59,15 @@ const HomeStack = () => {
     </HStack.Navigator>
   );
 };
-const ChatStack = () => {
-  return (
-    <NStack.Navigator screenOptions={{headerShown: false}}>
-      <NStack.Screen name="ChatSection" component={ChatSection} />
-      <NStack.Screen name="ChatHome" component={ChatHome} />
-      {/* <Stack.Screen name="VideoCallRedirect" component={VideoCallRedirect} /> */}
-    </NStack.Navigator>
-  );
-};
+// const ChatStack = () => {
+//   return (
+//     <NStack.Navigator screenOptions={{headerShown: false}}>
+//       {/* <NStack.Screen name="ChatSection" component={ChatSection} /> */}
+//       {/* <NStack.Screen name="ChatHome" component={ChatHome} /> */}
+//       {/* <Stack.Screen name="VideoCallRedirect" component={VideoCallRedirect} /> */}
+//     </NStack.Navigator>
+//   );
+// };
 const ProfileStack = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
@@ -115,7 +117,7 @@ const BottomTabNavigation = () => {
       />
       <Tab.Screen
         name="ChatSection"
-        component={ChatStack}
+        component={ChatSection}
         options={{
           tabBarIcon: ({focused, color, size}) =>
             focused ? <ChatpressIC /> : <ChatIC />,
@@ -123,8 +125,8 @@ const BottomTabNavigation = () => {
         }}
       />
       <Tab.Screen
-        name="ProfileScreen"
-        component={ProfileStack}
+        name="ProfileSection"
+        component={ProfileSection}
         options={{
           tabBarIcon: ({focused, color, size}) =>
             focused ? <ProfilepressIC /> : <ProfileIC />,

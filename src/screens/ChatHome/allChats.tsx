@@ -25,13 +25,10 @@ const ChatSection = () => {
     (state: any) => state?.Auth?.data?.profileData,
   );
   const [chatListData, setChatListData] = useState<any>([]);
-  // console.log('chatListDatadata List', chatListData);
-  // console.log('data List', chatListData.data?.[0].chat);
 
   const goToChatWith = async (user: any) => {
     await dispatch(videoCallUser({user: user}));
     navigation.navigate('VideoCallRedirect');
-    // navigation.navigate('VideoCallInterface');
   };
 
   // Search Function

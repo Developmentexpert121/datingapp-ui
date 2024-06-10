@@ -49,7 +49,7 @@ const AnimatedStack: React.FC<AnimatedStackProps> = ({
   const [nextIndex, setNextIndex] = useState(currentIndex + 1);
 
   const currentProfile = data[currentIndex];
-  console.log('===============', currentProfile);
+  // console.log('===============', currentProfile);
   const nextProfile = data[nextIndex];
 
   const {width: screenWidth} = useWindowDimensions();

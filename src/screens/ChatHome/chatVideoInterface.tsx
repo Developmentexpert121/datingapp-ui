@@ -29,7 +29,7 @@ const VideoCallInterface = ({
   const [incomingCall] = incomingCalls;
   if (incomingCall) {
     return (
-      <StreamCall call={incomingCall} key={incomingCall?.cid}>
+      <StreamCall call={incomingCall}>
         <MyIncomingCallUI call={incomingCall} goToHomeScreen={goToHomeScreen} />
       </StreamCall>
     );
