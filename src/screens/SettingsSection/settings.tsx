@@ -12,7 +12,6 @@ import CommonBackbutton from '../../components/commonBackbutton/CommonBackbutton
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useForm} from 'react-hook-form';
 import * as yup from 'yup';
-import AppTextInput from '../../components/AppTextInput/AppTextInput';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../store/store';
@@ -23,7 +22,6 @@ import {
   updateProfileData,
 } from '../../store/Auth/auth';
 import Geolocation from '@react-native-community/geolocation';
-import MainButton from '../../components/ButtonComponent/MainButton';
 import {EmailIC, LocationIC, PhoneIC} from '../../assets/svgs';
 import BottomDrawer from './BottomDrawer';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';

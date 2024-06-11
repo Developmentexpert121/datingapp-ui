@@ -12,10 +12,10 @@ const LoginTextInputEmail = (Props: any) => {
     borderWidth,
     marginLeft,
     textstyle,
-    autoCapitalize,
+    // autoCapitalize,
     viewStyle,
     rightIcon,
-    secureTextEntry,
+    // secureTextEntry,
     ...textInputProps
   } = Props;
   const hasError = errors;
@@ -47,7 +47,7 @@ const LoginTextInputEmail = (Props: any) => {
             onChangeText={text => onChange(removeSpaces(text))}
             value={value}
             error={Boolean(errors)}
-            autoCapitalize={autoCapitalize}
+            // autoCapitalize={autoCapitalize}
           />
         </View>
       )}

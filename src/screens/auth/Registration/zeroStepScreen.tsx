@@ -215,7 +215,7 @@ const ZeroStepScreen = ({
                 control={control}
                 errors={Boolean(errors?.email)}
                 autoCapitalize="none"
-                keyboardType="email-address"
+                // keyboardType="email-address"
                 // editable={isEmailEditable}
               />
               {errors.email && (

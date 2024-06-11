@@ -24,6 +24,7 @@ const VideoCallRedirect = () => {
   // console.log('callId?????', callId);
 
   const [enableCamera, setEnableCamera] = useState<boolean>(true);
+  const [enableCamera1, setEnableCamera1] = useState<boolean>(false);
 
   const [activeScreen, setActiveScreen] = useState('home');
   // console.log('activeScreen...', activeScreen);
@@ -112,6 +113,7 @@ const VideoCallRedirect = () => {
             user={user}
             goToCallScreen={goToCallScreen}
             setEnableCamera={setEnableCamera}
+            setEnableCamera1={setEnableCamera1}
             activeScreen={activeScreen}
             setActiveScreen={setActiveScreen}
           />

@@ -16,6 +16,7 @@ const VideoCallInterface = ({
   goToCallScreen,
   goToHomeScreen,
   setEnableCamera,
+  setEnableCamera1,
   activeScreen,
 }: any) => {
   const calls = useCalls();
@@ -52,6 +53,7 @@ const VideoCallInterface = ({
           user={user}
           goToCallScreen={goToCallScreen}
           setEnableCamera={setEnableCamera}
+          setEnableCamera1={setEnableCamera1}
         />
       )}
     </SafeAreaView>

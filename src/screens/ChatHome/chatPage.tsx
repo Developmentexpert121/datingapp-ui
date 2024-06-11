@@ -26,11 +26,17 @@ const socket = io('https://datingapp-api.onrender.com');
 type Props = {
   goToCallScreen: () => void;
   setEnableCamera: any;
+  setEnableCamera1: any;
 
   user: any;
 };
 
-const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
+const ChatPage = ({
+  user,
+  goToCallScreen,
+  setEnableCamera,
+  setEnableCamera1,
+}: Props) => {
   // const scrollViewRef: any = useRef(null);
 
   const navigation = useNavigation();
@@ -210,8 +216,8 @@ const ChatPage = ({user, goToCallScreen, setEnableCamera}: Props) => {
               <View style={{flexDirection: 'row', marginEnd: 10, width: '25%'}}>
                 <TouchableOpacity
                   onPress={() => {
-                    // setEnableCamera(false);
-                    // goToCallScreen();
+                    setEnableCamera1(false);
+                    goToCallScreen();
                   }}>
                   <View style={styles.editIcon}>
                     {/* <PhoneCallIC /> */}
