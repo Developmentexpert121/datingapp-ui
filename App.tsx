@@ -40,22 +40,18 @@ const App = () => {
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-  // console.log('........profileData', profileData);
   useEffect(() => {
-    // console.log('........profileData111111', profileData?._id);
     if (profileData?._id) {
       socket.emit('user_connected', profileData?._id);
       socket.on('connect', () => {
+        console.log('App Connected from server');
         const userId = profileData?._id;
-        // console.log('----------------------', userId);
         socket.emit('user_connected', userId);
       });
     }
   }, [profileData._id]);
 
   socket.on('user_online', userId => {
-    // console.log('userIduserIduserId', userId);
-
     setOnlineUsers((prevOnlineUsers: any) => {
       // Check if userId already exists in the array
       if (!prevOnlineUsers.includes(userId)) {
@@ -74,9 +70,7 @@ const App = () => {
   socket.on('disconnect', () => {
     console.log('App Disconnected from server');
   });
-
-  // console.log(',,,,,,,onlineUsers', onlineUsers);
-
+  console.log(',,,,,,,onlineUsers', onlineUsers);
   const isLoading = useAppSelector(
     (state: any) => state.ActivityLoader.loading,
   );
@@ -89,7 +83,6 @@ const App = () => {
         <NavigationContainer>
           <Root />
           <GlobalModal />
-          {/* {isLoading && <LoadingSpinner />} */}
         </NavigationContainer>
       )}
     </SafeAreaProvider>

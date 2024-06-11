@@ -73,6 +73,7 @@ const HomeScreen = () => {
     )
       .unwrap()
       .then((response: any) => {
+        // console.log('..........', response.users);
         setData(response.users);
       });
   };

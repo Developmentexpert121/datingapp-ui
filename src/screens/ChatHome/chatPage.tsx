@@ -21,6 +21,12 @@ import {reciveMessages, sendAMessage} from '../../store/Auth/auth';
 import io from 'socket.io-client';
 import {PhoneCallIC, SendIC, VideoIC} from '../../assets/svgs';
 
+import {
+  launchImageLibrary,
+  ImageLibraryOptions,
+  Asset,
+} from 'react-native-image-picker';
+
 const socket = io('https://datingapp-api.onrender.com');
 
 type Props = {
@@ -154,6 +160,7 @@ const ChatPage = ({
       <ActivityIndicator size="large" color="#AC25AC" />
     </View>
   );
+  // *****************************
   const handleImageSelect = useCallback(
     (selectedImage: any) => {
       const newMessage = {
@@ -169,17 +176,57 @@ const ChatPage = ({
     [dispatch],
   );
 
+  //     new new new new new new new
+
+  const handleMediaSelection = () => {
+    const options: ImageLibraryOptions = {
+      mediaType: 'mixed', // Choose 'photo' for images, 'video' for videos, or 'mixed' for both
+    };
+
+    launchImageLibrary(options, response => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.errorCode) {
+        console.error('ImagePicker Error: ', response.errorMessage);
+      } else if (response.assets && response.assets.length > 0) {
+        handleFileSend(response.assets[0]);
+      }
+    });
+  };
+
+  const handleFileSend = (file: Asset) => {
+    const newMessage = {
+      sender: profileData._id,
+      receiver: user?._id,
+      fileType: file.type || 'unknown',
+      uri: file.uri || '',
+      name: file.fileName || 'unknown',
+      timestamp: new Date().toISOString(),
+    };
+
+    socket.emit('chat message', newMessage);
+    setChatMessages((prevMessages: any) => [...prevMessages, newMessage]);
+
+    // Dispatch an action to save the message
+    dispatch(
+      sendAMessage({
+        senderId: profileData?._id,
+        receiverId: user?._id,
+        message: file.fileName || 'unknown',
+        fileUri: file.uri || '',
+        fileType: file.type || 'unknown',
+      }),
+    );
+  };
+
+  // *****************************
+
   return (
     <>
-      <KeyboardAvoidingView
-        // behavior="padding"
-        style={{flex: 1}}
-        // behavior={Platform.OS === 'ios' ? 'padding' : null}
-        behavior="padding"
-        // keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
-      >
+      <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={{flex: 1}}>
+            {/* *****************************Header */}
             <View style={styles.container}>
               <View
                 style={{
@@ -293,7 +340,6 @@ const ChatPage = ({
                           marginHorizontal: 10,
                           borderRadius: 8,
                           maxWidth: 260,
-
                           borderBottomRightRadius:
                             messageItem?.sender === profileData._id ? 0 : 8,
                           borderBottomLeftRadius:
@@ -326,7 +372,7 @@ const ChatPage = ({
                 })}
               </ScrollView>
             </View>
-
+            {/* TextInput *************************** */}
             <View
               style={[
                 styles.inputView,
@@ -340,7 +386,7 @@ const ChatPage = ({
                   placeholder="Type your message..."
                   style={styles.input}
                 />
-                <TouchableOpacity onPress={() => ''}>
+                <TouchableOpacity onPress={handleMediaSelection}>
                   <Image
                     source={require('../../assets/images/documentUpload.png')}
                     style={{height: 40, width: 40, alignSelf: 'center'}}
@@ -367,21 +413,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     alignItems: 'center',
   },
-  sendButton: {
-    // padding: 10,
-    // backgroundColor: '#AC25AC',
-    // borderRadius: 8,
-  },
-  containerMain: {
-    flex: 1,
-    justifyContent: 'center',
-    textAlign: 'center',
-  },
-  sendButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontFamily: 'Sansation-Bold',
-  },
+  sendButton: {},
   input: {
     flex: 1,
     height: 40,
@@ -420,7 +452,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
     fontFamily: 'Sansation-Bold',
   },
-
   editIcon: {
     marginRight: 12,
     height: 40,

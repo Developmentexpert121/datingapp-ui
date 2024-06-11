@@ -67,8 +67,6 @@ const LoginHomeScreen: React.FC<Props> = () => {
   };
 
   const handleGoogleLogin = async () => {
-    // console.log('zzzzzzzzzzzzz');
-    // crashlytics().log('google-login');
     try {
       let userInfo = await googleLogin();
       if (userInfo) {

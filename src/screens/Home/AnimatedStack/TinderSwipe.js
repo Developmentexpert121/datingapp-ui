@@ -69,7 +69,7 @@ const TinderSwipe = ({
       const updatedUsers = [...data];
       updatedUsers.splice(currentIndex, 1);
       setData(updatedUsers);
-    }, 10);
+    }, 100);
   };
 
   const onSwipeLeft = async () => {
@@ -109,7 +109,7 @@ const TinderSwipe = ({
     },
     [removeCard, swipe.x, onSwipeRight, onSwipeLeft],
   );
-  console.log('..........................', data);
+  // console.log('..........................', data);
   return (
     <View style={{height: '100%', width: '100%'}}>
       {data.length > 0 ? (
@@ -156,7 +156,7 @@ const TinderSwipe = ({
               />
             </TouchableOpacity>
           </View>
-          <ScrollView>
+          <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.locText}>
               <Ionicons name="location-sharp" size={20} color="#AC25AC" />
               <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
@@ -208,6 +208,7 @@ const TinderSwipe = ({
                 );
               })}
             </View>
+            <View style={{height: 50}}></View>
           </ScrollView>
         </>
       ) : (

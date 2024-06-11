@@ -15,6 +15,7 @@ import {useAppDispatch, useAppSelector} from '../../../store/store';
 import {updateProfileData, uploadImages} from '../../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../../../components/Loader/Loader';
+import ImageResizer from 'react-native-image-resizer'; // Add this library for image resizing
 
 const getUserId = async () => {
   try {
@@ -28,6 +29,7 @@ const getUserId = async () => {
     return null;
   }
 };
+
 const SeventhStepScreen = ({
   profileImages,
   setProfileImages,
@@ -44,6 +46,7 @@ const SeventhStepScreen = ({
   const [uploadError, setUploadError] = useState<boolean>(false);
   const [loader, setLoader] = useState<boolean>(false);
   const dispatch: any = useAppDispatch();
+
   const requestPermissions = async () => {
     if (Platform.OS === 'android') {
       await requestAndroidPermissions();
@@ -51,9 +54,11 @@ const SeventhStepScreen = ({
       await requestIOSPermissions();
     }
   };
+
   useEffect(() => {
     requestPermissions();
   }, []);
+
   const requestAndroidPermissions = async () => {
     try {
       const granted = await PermissionsAndroid.requestMultiple([
@@ -66,9 +71,9 @@ const SeventhStepScreen = ({
         granted['android.permission.WRITE_EXTERNAL_STORAGE'] === 'granted' &&
         granted['android.permission.READ_EXTERNAL_STORAGE'] === 'granted'
       ) {
-        // console.log('Permissions granted ......');
+        // Permissions granted
       } else {
-        // console.log('Permissions denied.....0');
+        // Permissions denied
       }
     } catch (err) {
       console.warn(err);
@@ -81,9 +86,9 @@ const SeventhStepScreen = ({
       const photoPermission = await request(PERMISSIONS.IOS.PHOTO_LIBRARY);
 
       if (cameraPermission === 'granted' && photoPermission === 'granted') {
-        // console.log('Permissions granted');
+        // Permissions granted
       } else {
-        // console.log('Permissions denied');
+        // Permissions denied
       }
     } catch (err) {
       console.warn(err);
@@ -108,50 +113,56 @@ const SeventhStepScreen = ({
       if (!response?.didCancel && !response?.errorMessage) {
         setLoader(true);
 
-        // Simulating longer loading time using setTimeout
-        setTimeout(async () => {
-          if (response?.assets && response.assets.length > 0) {
-            try {
-              const asset = response.assets[0];
-              const formData = new FormData();
-              formData.append('image', {
-                name: asset.fileName,
-                fileName: asset.fileName,
-                type: asset.type,
-                uri: asset.uri,
-              });
+        if (response?.assets && response.assets.length > 0) {
+          try {
+            const asset: any = response.assets[0];
 
-              const uploadedImageUrl = await dispatch(uploadImages(formData))
-                .unwrap()
-                .then((response: any) => response.secureUrl);
+            // Resize the image
+            const resizedImage = await ImageResizer.createResizedImage(
+              asset.uri,
+              800, // new width
+              800, // new height
+              'JPEG',
+              80, // quality
+            );
 
-              setProfileImages((prevImages: any) => [
-                ...prevImages,
-                uploadedImageUrl,
-              ]);
-              setUploadError(false);
-            } catch (error) {
-              console.error('Error uploading image:', error);
-              setUploadError(true);
-            }
-          } else {
+            const formData = new FormData();
+            formData.append('image', {
+              name: resizedImage.name,
+              fileName: resizedImage.name,
+              type: asset.type,
+              uri: resizedImage.uri,
+            });
+
+            const uploadedImageUrl = await dispatch(uploadImages(formData))
+              .unwrap()
+              .then((response: any) => response.secureUrl);
+
+            setProfileImages((prevImages: any) => [
+              ...prevImages,
+              uploadedImageUrl,
+            ]);
+            setUploadError(false);
+          } catch (error) {
+            console.error('Error uploading image:', error);
             setUploadError(true);
           }
-          setLoader(false);
-        }, 200);
+        } else {
+          setUploadError(true);
+        }
+        setLoader(false);
       }
     });
   };
 
   const handleRemoveImage = async (index: number) => {
-    // If there's only one image left, open the image picker for replacement
     if (profileImages.length === 0) {
       try {
         launchImageLibrary({mediaType: 'photo'}, async response => {
           if (!response?.didCancel && !response?.errorMessage) {
             if (response?.assets && response.assets.length > 0) {
               try {
-                const asset = response.assets[1]; // Assuming you want to upload only the first selected image
+                const asset = response.assets[0];
                 const formData = new FormData();
                 formData.append('image', {
                   name: asset.fileName,
@@ -171,19 +182,21 @@ const SeventhStepScreen = ({
                 setUploadError(true);
               }
             } else {
-              setUploadError(true); // Set error if no images are selected
+              setUploadError(true);
             }
           }
         });
-      } catch (error) {}
+      } catch (error) {
+        console.error('Error handling image removal:', error);
+      }
     } else {
-      // If there are multiple images, remove the selected image
       const updatedImages = [...profileImages];
       updatedImages?.splice(index, 1);
       setProfileImages(updatedImages);
       setUploadError(false);
     }
   };
+
   return (
     <View style={styles.container}>
       <Text style={styles.headerText}>Add Photos</Text>
@@ -216,7 +229,6 @@ const SeventhStepScreen = ({
                 source={require('../../../assets/images/Plus.png')}
                 style={{width: 28, height: 28}}
               />
-              {/* <PlusIC /> */}
             </View>
           </TouchableOpacity>
         ))}
@@ -268,21 +280,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: -8,
     right: -8,
-    // backgroundColor: '#AC25AC',
     justifyContent: 'center',
     alignItems: 'center',
-    // width: 26,
-    // height: 26,
-    // borderRadius: 13,
-    // shadowColor: '#AC25AC',
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 10,
-    // },
-    // shadowOpacity: 0.51,
-    // shadowRadius: 13.16,
     elevation: 20,
-    // borderWidth: 1,
   },
   headerText: {
     color: 'black',

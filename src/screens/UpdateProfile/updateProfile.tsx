@@ -59,8 +59,8 @@ const UpdateProfile = () => {
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-  console.log('/333', profileData);
-  console.log('/333', profileData?.habits2[2]?.selectedText);
+  // console.log('/333', profileData);
+  // console.log('/333', profileData?.habits2[2]?.selectedText);
 
   const dispatch: any = useAppDispatch();
   const [height, setHeight] = useState(parseInt(profileData?.height) || 100);
