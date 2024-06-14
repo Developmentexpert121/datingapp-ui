@@ -17,6 +17,7 @@ interface authData {
 }
 
 export const ProfileData = createAsyncThunk('auth/ProfileData', async () => {
+  // console.log('ProfileData API');
   try {
     const response: any = await http.get(`/user/profile`);
     if (response.status === 200) {
@@ -24,7 +25,7 @@ export const ProfileData = createAsyncThunk('auth/ProfileData', async () => {
     }
   } catch (error: any) {
     if (error.response && error.response.status === 400) {
-      console.log('12345', error);
+      console.error('12345', error);
 
       return {error: 'Bad Request'};
     }
@@ -43,7 +44,7 @@ export const GoogleLogin = createAsyncThunk(
         return response.data;
       }
     } catch (error: any) {
-      console.log('first error', error);
+      console.error('first error', error);
       if (error.response && error.response.status === 400) {
         dispatch(
           toggleGlobalModal({
@@ -76,7 +77,7 @@ export const AppleLogin = createAsyncThunk(
         return response.data;
       }
     } catch (error: any) {
-      console.log('first error', error);
+      console.error('first error', error);
       if (error.response && error.response.status === 400) {
         dispatch(
           toggleGlobalModal({
@@ -110,7 +111,7 @@ export const LoginSignIn = createAsyncThunk(
           'authToken',
           JSON.stringify(response?.data?.token),
         );
-        console.log('token Login', response?.data?.token);
+        // console.log('token Login', response?.data?.token);
         await AsyncStorage.setItem(
           'userId',
           JSON.stringify(response?.data?._id),
@@ -129,7 +130,7 @@ export const LoginSignIn = createAsyncThunk(
         return response.data;
       }
     } catch (error: any) {
-      console.log('first error', error);
+      console.error('first error', error);
       if (error.response && error.response.status === 400) {
         dispatch(
           toggleGlobalModal({
@@ -155,7 +156,7 @@ export const RegisterSignUp = createAsyncThunk(
   'auth/RegisterSignUp',
   async (data: any, {dispatch}: any) => {
     try {
-      console.log('RegisterSignUp Data', data);
+      // console.log('RegisterSignUp Data', data);
       const response = await http.post('/user/signup', data);
       if (response.status === 200) {
         dispatch(
@@ -163,14 +164,14 @@ export const RegisterSignUp = createAsyncThunk(
             visible: true,
             data: {
               text: 'OK',
-              label: 'Registration Successful, Please Login now.',
+              label: 'Registration Successful.',
             },
           }),
         );
         return response.data;
       }
     } catch (error: any) {
-      console.log('RegisterSignUp', error);
+      console.error('RegisterSignUp', error);
       dispatch(
         toggleGlobalModal({
           visible: true,
@@ -207,7 +208,7 @@ export const EmailVerification = createAsyncThunk(
         return response.data;
       }
     } catch (error: any) {
-      console.log('EmailVerification', error);
+      console.error('EmailVerification', error);
       if (error.response && error.response.status === 400) {
         dispatch(
           toggleGlobalModal({
@@ -233,7 +234,7 @@ export const VerifyOtp = createAsyncThunk(
   async (data: any, {dispatch}: any) => {
     try {
       const response = await http.post('/user/verifyOtp', data);
-      console.log(response.data);
+      // console.log(response.data);
       if (response.status === 200) {
         response.data.success &&
           dispatch(
@@ -311,7 +312,7 @@ export const updateProfileData = createAsyncThunk(
   async (data: any, {dispatch}: any) => {
     try {
       //  dispatch(activityLoaderStarted());
-      // console.log('Updating Data', data);
+      console.log('Updating Data', data);
       const response = await http.patch('/user/update-profile', data);
       if (response.status === 200) {
         dispatch(ProfileData());
@@ -593,6 +594,7 @@ const initialState = {
     signup: {},
     data: {},
     profileData: {},
+    updateprofileData: {},
     allUsers: [],
     chatUsersList: [],
     allNotifications: [],
@@ -632,7 +634,6 @@ const Auth: any = createSlice({
       // AppleLogin
       .addCase(AppleLogin.pending, (state, action) => {
         state.loading = true;
-        // console.log('2222222222222222');
       })
       .addCase(AppleLogin.fulfilled, (state, action) => {
         if (action.payload.data) {
@@ -676,13 +677,23 @@ const Auth: any = createSlice({
       // ProfileData
       .addCase(ProfileData.fulfilled, (state, action) => {
         state.data.profileData = action.payload.data;
-
         state.loading = false;
       })
       .addCase(ProfileData.pending, (state, action) => {
         state.loading = true;
       })
       .addCase(ProfileData.rejected, (state, action) => {
+        state.loading = false;
+      })
+      // updateProfileData
+      .addCase(updateProfileData.fulfilled, (state, action) => {
+        state.data.updateprofileData = action.payload.data;
+        state.loading = false;
+      })
+      .addCase(updateProfileData.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(updateProfileData.rejected, (state, action) => {
         state.loading = false;
       })
       // getAllUsers
@@ -731,7 +742,6 @@ const Auth: any = createSlice({
       })
       // VerifyOtp
       .addCase(VerifyOtp.fulfilled, (state, action) => {
-        // console.log('/////////', action.payload);
         state.data.otpVerified = action.payload.success;
       })
       .addCase(updateAuthentication.fulfilled, (state, action) => {

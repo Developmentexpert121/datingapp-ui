@@ -59,12 +59,9 @@ const UpdateProfile = () => {
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-  // console.log('/333', profileData);
-  // console.log('/333', profileData?.habits2[2]?.selectedText);
 
   const dispatch: any = useAppDispatch();
   const [height, setHeight] = useState(parseInt(profileData?.height) || 100);
-  // console.log('kjfjdsfg', height);
   const [title, setTitle] = useState<string>('');
   const [value, setValue] = useState<string>('');
   const [profileImages, setProfileImages] = useState<any>(
@@ -72,40 +69,38 @@ const UpdateProfile = () => {
   );
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [keyboardShown, setKeyboardShown] = useState(false);
-  const [marginBottom, setMarginBottom] = useState(0);
 
-  // console.log('title', value);
   const getFirstThreeDigits = (number: number) => {
     // Convert number to string, slice the first three digits, then convert back to number
-    return parseFloat(number.toFixed(3));
+    return Math.round(number);
   };
 
   const formattedHeight = getFirstThreeDigits(height);
-
   const handleSliderChange = (value: any) => {
     setHeight(value);
   };
 
-  // useEffect(() => {
-  //   dispatch(
-  //     updateProfileData({
-  //       field: 'height',
-  //       value: height,
-  //       id: getUserId(),
-  //     }),
-  //   );
-  // }, [height]);
+  useEffect(() => {
+    dispatch(
+      updateProfileData({
+        field: 'height',
+        value: height,
+        id: getUserId(),
+      }),
+    );
+  }, [height]);
 
   const dataArr = [
     {title: 'Work', name: profileData?.work},
-    {title: 'Education', name: profileData?.habits2[0]?.selectedText},
+    {
+      title: 'Education',
+      name: profileData?.habits2[2]?.selectedText
+        ? profileData?.habits2[2]?.selectedText
+        : '',
+    },
     {title: 'Interests', name: profileData?.allInterests},
-    {title: 'Relationship Goals', name: profileData?.partnerType},
+    // {title: 'Relationship Goals', name: profileData?.partnerType},
   ];
-
-  const openDrawer = () => {
-    setIsDrawerOpen(true);
-  };
 
   const closeDrawer = () => {
     setIsDrawerOpen(false);
@@ -116,28 +111,6 @@ const UpdateProfile = () => {
     setValue(item?.name);
     setIsDrawerOpen(true);
   };
-  // useEffect(() => {
-  //   const keyboardDidShowListener = Keyboard.addListener(
-  //     'keyboardDidShow',
-  //     () => {
-  //       setKeyboardShown(true);
-  //       setMarginBottom(300);
-  //     },
-  //   );
-  //   const keyboardDidHideListener = Keyboard.addListener(
-  //     'keyboardDidHide',
-  //     () => {
-  //       setKeyboardShown(false);
-  //       setMarginBottom(0);
-  //     },
-  //   );
-
-  //   // Clean up listeners
-  //   return () => {
-  //     keyboardDidShowListener.remove();
-  //     keyboardDidHideListener.remove();
-  //   };
-  // }, []);
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -178,10 +151,7 @@ const UpdateProfile = () => {
                 }}>
                 <View style={{width: 20}}></View>
                 <Text style={styles.textName}>{item.title}</Text>
-                <EditTextIC
-                  // style={{right: 1}}
-                  onPress={() => handleModal(item)}
-                />
+                <EditTextIC onPress={() => handleModal(item)} />
               </View>
               <View style={styles.line} />
               <View style={{}}>

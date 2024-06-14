@@ -12,40 +12,24 @@ import VideoCallInterface from './chatVideoInterface';
 
 const VideoCallRedirect = () => {
   const user: any = useAppSelector((state: any) => state?.ActivityLoader?.user);
-  // console.log('use ruser user user ', user);
-
   const dispatch: any = useAppDispatch();
-
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
 
-  const [callId, setCallId] = useState<any>('');
-  // console.log('callId?????', callId);
-
+  const [callId, setCallId] = useState<any>(uuid.v4());
   const [enableCamera, setEnableCamera] = useState<boolean>(true);
   const [enableCamera1, setEnableCamera1] = useState<boolean>(false);
-
   const [activeScreen, setActiveScreen] = useState('home');
-  // console.log('activeScreen...', activeScreen);
-
   const [client, setClient] = useState<StreamVideoClient | null>(null);
-  // console.log('1111client......', client);
-  // console.log('----------------.????setClient', setClient);
-
-  const [call, setCall] = useState<Call>();
-  // console.log('call????????????', call);
+  const [call, setCall] = useState<Call | null>(null);
 
   useEffect(() => {
-    const callId: any = uuid.v4();
-    // console.log('callId--------', callId);
-    setCallId(callId);
     const apiKey = 'xxbhmm34dcx3';
     const tokenProvider = async () => {
       const token = await dispatch(videoCallToken({id: profileData?._id}))
         .unwrap()
         .then((response: any) => response.token);
-      // console.log('::::::::::::', token);
       return token;
     };
 
@@ -60,46 +44,64 @@ const VideoCallRedirect = () => {
       user: userMain,
       tokenProvider,
     });
+
     setClient(myClient);
+
     return () => {
       myClient.disconnectUser();
       setClient(null);
     };
+  }, [dispatch, profileData?._id, profileData?.name, profileData?.profilePic]);
+
+  const handleCallEnd = useCallback(() => {
+    setActiveScreen('home');
+    setCall(null);
   }, []);
 
   const goToCallScreen = useCallback(() => {
-    setActiveScreen('call-screen');
     if (!client) return;
+
     const myCall = client.call('default', callId);
-    // console.log('......myCall', myCall);
+    myCall.on('call.left', event => {
+      console.log('User left the call:', event.user.id);
+      if (event.user.id !== profileData._id) {
+        handleCallEnd();
+      }
+    });
+
+    myCall.on('call.ended', event => {
+      console.log('Call ended:', event);
+      handleCallEnd();
+    });
+
     myCall
       .getOrCreate({
         ring: true,
         data: {
-          members: [
-            // include self
-            {user_id: profileData._id},
-            // include the userId of the callee
-            {user_id: user._id},
-          ],
+          members: [{user_id: profileData._id}, {user_id: user._id}],
         },
       })
       .catch(err => {
-        console.error(`Failed to join the call`, err);
-        console.error(`Failed to join the call`, err);
+        console.error('Failed to join the call', err);
       });
+
     setCall(myCall);
-    // console.log('myCall2222222', myCall);
+    setActiveScreen('call-screen');
+
     return () => {
-      setCall(undefined);
       myCall.leave().catch(err => {
-        console.error(`Failed to leave the call`, err);
+        console.error('Failed to leave the call', err);
       });
     };
-  }, [client, user]);
+  }, [client, callId, profileData._id, user._id, handleCallEnd]);
 
   const goToHomeScreen = () => {
-    setActiveScreen('home');
+    if (call) {
+      call.leave();
+      handleCallEnd();
+    } else {
+      setActiveScreen('home');
+    }
   };
 
   return (

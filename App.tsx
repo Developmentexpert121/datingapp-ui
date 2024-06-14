@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {useAppDispatch, useAppSelector} from './src/store/store';
+import {RootState, useAppDispatch, useAppSelector} from './src/store/store';
 import messaging from '@react-native-firebase/messaging';
 // import {requestNotifications} from 'react-native-permissions';
 import Root from './src/navigation/Root';
@@ -9,6 +9,7 @@ import GlobalModal from './src/components/Modals/GlobalModal';
 import Loader from './src/components/Loader/Loader';
 import io from 'socket.io-client';
 import {requestNotifications} from 'react-native-permissions';
+import {onlineUser} from './src/store/reducer/authSliceState';
 // import PushNotification from 'react-native-push-notification';
 
 // PushNotification.configure({
@@ -18,9 +19,13 @@ import {requestNotifications} from 'react-native-permissions';
 //   requestPermissions: true,
 // });
 
-const socket = io('https://datingapp-api.onrender.com');
+const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 
 const App = () => {
+  const {showOnlineUser} = useAppSelector(
+    (state: RootState) => state.authSliceState,
+  );
+
   const dispatch: any = useAppDispatch();
   async function requestUserPermission() {
     await requestNotifications(['alert', 'sound']);
@@ -36,7 +41,6 @@ const App = () => {
   // *********************
 
   const [onlineUsers, setOnlineUsers] = useState<any>([]);
-  const [chatMessages, setChatMessages] = useState<any>([]);
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
@@ -52,6 +56,7 @@ const App = () => {
   }, [profileData._id]);
 
   socket.on('user_online', userId => {
+    dispatch(onlineUser(onlineUsers));
     setOnlineUsers((prevOnlineUsers: any) => {
       // Check if userId already exists in the array
       if (!prevOnlineUsers.includes(userId)) {

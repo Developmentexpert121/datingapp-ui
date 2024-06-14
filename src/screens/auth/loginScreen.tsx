@@ -117,7 +117,7 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
               <LoginTextInputEmail
                 placeholder="Enter Your Email"
                 name="email"
-                // autoCapitalize="none"
+                autoCapitalize="none"
                 control={control}
                 errors={Boolean(errors?.email)}
               />

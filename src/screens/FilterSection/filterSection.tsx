@@ -95,9 +95,9 @@ const FilterSection = ({
     {label: 'Transgender', value: 'fourth'},
   ];
   const options2 = [
-    {value: 'Men', label: 'Men'},
-    {value: 'Women', label: 'Women'},
-    {value: 'Everyone', label: 'Everyone'},
+    {value: 'Male', label: 'Men'},
+    {value: 'Female', label: 'Women'},
+    {value: 'everyone', label: 'Everyone'},
   ];
 
   const [checked, setChecked] = React.useState(profileData?.gender);

@@ -12,7 +12,7 @@ const LoginTextInputEmail = (Props: any) => {
     borderWidth,
     marginLeft,
     textstyle,
-    // autoCapitalize,
+    autoCapitalize,
     viewStyle,
     rightIcon,
     // secureTextEntry,
@@ -47,7 +47,7 @@ const LoginTextInputEmail = (Props: any) => {
             onChangeText={text => onChange(removeSpaces(text))}
             value={value}
             error={Boolean(errors)}
-            // autoCapitalize={autoCapitalize}
+            autoCapitalize={autoCapitalize}
           />
         </View>
       )}

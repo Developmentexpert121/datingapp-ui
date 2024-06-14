@@ -14,6 +14,7 @@ import TinderCard from './TinderCard';
 import {useAppDispatch, useAppSelector} from '../../../store/store';
 import {likedAUser} from '../../../store/Auth/auth';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Loader from '../../../components/Loader/Loader';
 
 const {height, width} = Dimensions.get('window');
 
@@ -26,6 +27,8 @@ const TinderSwipe = ({
 }) => {
   const dispatch = useAppDispatch();
   const [nextIndex, setNextIndex] = useState(currentIndex + 1);
+  const [loader, setLoader] = useState(false);
+  const [noProfilesLoader, setNoProfilesLoader] = useState(false);
 
   useEffect(() => {
     if (currentIndex === data.length) {
@@ -33,6 +36,16 @@ const TinderSwipe = ({
     }
     setNextIndex(currentIndex + 1);
   }, [currentIndex, data.length, setCurrentIndex]);
+
+  useEffect(() => {
+    if (data.length === 0) {
+      setNoProfilesLoader(true);
+      const timer = setTimeout(() => {
+        setNoProfilesLoader(false);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [data.length]);
 
   const swipe = useRef(new Animated.ValueXY()).current;
 
@@ -69,7 +82,7 @@ const TinderSwipe = ({
       const updatedUsers = [...data];
       updatedUsers.splice(currentIndex, 1);
       setData(updatedUsers);
-    }, 100);
+    }, 1000);
   };
 
   const onSwipeLeft = async () => {
@@ -109,123 +122,131 @@ const TinderSwipe = ({
     },
     [removeCard, swipe.x, onSwipeRight, onSwipeLeft],
   );
-  // console.log('..........................', data);
+
   return (
-    <View style={{height: '100%', width: '100%'}}>
-      {data.length > 0 ? (
-        <>
-          <View style={{height: 340}}>
-            {data
-              .map((item, index) => {
-                const isFirst = index === 0;
-                const dragHandlers = isFirst ? panResponder.panHandlers : {};
-                return (
-                  <TinderCard
-                    swipe={swipe}
-                    item={item}
-                    isFirst={isFirst}
-                    {...dragHandlers}
-                  />
-                );
-              })
-              .reverse()}
-          </View>
-          <View style={styles.icons}>
-            <TouchableOpacity
-              onPress={() => {
-                handleChoiceButtons(-1);
-              }}>
-              <Image
-                source={require('../../../assets/images/Cross.png')}
-                style={styles.icons3}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                handleChoiceButtons1(1);
-              }}>
-              <Image
-                source={require('../../../assets/images/Heart.png')}
-                style={styles.icons3}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Image
-                source={require('../../../assets/images/Star.png')}
-                style={styles.icons3}
-              />
-            </TouchableOpacity>
-          </View>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.locText}>
-              <Ionicons name="location-sharp" size={20} color="#AC25AC" />
-              <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
-                {profileData.location && data[currentIndex]?.location
-                  ? `${Math.round(
-                      calculateDistance(
-                        profileData.location.latitude,
-                        profileData.location.longitude,
-                        data[currentIndex].location.latitude,
-                        data[currentIndex].location.longitude,
-                      ),
-                    ).toFixed(0)} miles away`
-                  : 'Distance information unavailable'}
-              </Text>
+    <>
+      <View style={{height: '100%', width: '100%'}}>
+        {data.length > 0 ? (
+          <>
+            <View style={{height: 340}}>
+              {data
+                .map((item, index) => {
+                  const isFirst = index === 0;
+                  const dragHandlers = isFirst ? panResponder.panHandlers : {};
+                  return (
+                    <TinderCard
+                      swipe={swipe}
+                      item={item}
+                      isFirst={isFirst}
+                      {...dragHandlers}
+                    />
+                  );
+                })
+                .reverse()}
             </View>
-            <View style={styles.container}>
-              {data[currentIndex]?.habits1?.map((item, index) => {
-                let imagePath;
-                switch (item.imagePath) {
-                  case 'src/assets/images/bottleofchampagne.png':
-                    imagePath = require('../../../assets/images/bottleofchampagne.png');
-                    break;
-                  case 'src/assets/images/smoking.png':
-                    imagePath = require('../../../assets/images/smoking.png');
-                    break;
-                  case 'src/assets/images/Mandumbbells.png':
-                    imagePath = require('../../../assets/images/Mandumbbells.png');
-                    break;
-                  case 'src/assets/images/dogheart.png':
-                    imagePath = require('../../../assets/images/dogheart.png');
-                    break;
-                  case 'src/assets/images/datestep.png':
-                    imagePath = require('../../../assets/images/datestep.png');
-                    break;
-                }
-                return (
-                  <View key={index} style={styles.item}>
-                    {imagePath && (
-                      <Image
-                        source={imagePath}
-                        style={{height: 20, width: 20}}
-                      />
-                    )}
-                    <Text
-                      style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
-                      {item.selectedText}
-                    </Text>
-                  </View>
-                );
-              })}
+            <View style={styles.icons}>
+              <TouchableOpacity
+                onPress={() => {
+                  handleChoiceButtons(-1);
+                }}>
+                <Image
+                  source={require('../../../assets/images/Cross.png')}
+                  style={styles.icons3}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  handleChoiceButtons1(1);
+                }}>
+                <Image
+                  source={require('../../../assets/images/Heart.png')}
+                  style={styles.icons3}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Image
+                  source={require('../../../assets/images/Star.png')}
+                  style={styles.icons3}
+                />
+              </TouchableOpacity>
             </View>
-            <View style={{height: 50}}></View>
-          </ScrollView>
-        </>
-      ) : (
-        <Text
-          style={{
-            fontFamily: 'Sansation-Bold',
-            fontSize: 26,
-            textAlign: 'center',
-            paddingHorizontal: 20,
-            marginTop: 100,
-            alignSelf: 'center',
-          }}>
-          You have viewed all profiles! Or no profile matches your applied
-          filters!
-        </Text>
-      )}
-    </View>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <View style={styles.locText}>
+                <Ionicons name="location-sharp" size={20} color="#AC25AC" />
+                <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
+                  {profileData.location && data[currentIndex]?.location
+                    ? `${Math.round(
+                        calculateDistance(
+                          profileData.location.latitude,
+                          profileData.location.longitude,
+                          data[currentIndex].location.latitude,
+                          data[currentIndex].location.longitude,
+                        ),
+                      ).toFixed(0)} miles away`
+                    : 'Distance information unavailable'}
+                </Text>
+              </View>
+              <View style={styles.container}>
+                {data[currentIndex]?.habits1?.map((item, index) => {
+                  let imagePath;
+                  switch (item.imagePath) {
+                    case 'src/assets/images/bottleofchampagne.png':
+                      imagePath = require('../../../assets/images/bottleofchampagne.png');
+                      break;
+                    case 'src/assets/images/smoking.png':
+                      imagePath = require('../../../assets/images/smoking.png');
+                      break;
+                    case 'src/assets/images/Mandumbbells.png':
+                      imagePath = require('../../../assets/images/Mandumbbells.png');
+                      break;
+                    case 'src/assets/images/dogheart.png':
+                      imagePath = require('../../../assets/images/dogheart.png');
+                      break;
+                    case 'src/assets/images/datestep.png':
+                      imagePath = require('../../../assets/images/datestep.png');
+                      break;
+                  }
+                  return (
+                    <View key={index} style={styles.item}>
+                      {imagePath && (
+                        <Image
+                          source={imagePath}
+                          style={{height: 20, width: 20}}
+                        />
+                      )}
+                      <Text
+                        style={{
+                          fontFamily: 'Sansation-Regular',
+                          color: 'black',
+                        }}>
+                        {item.selectedText}
+                      </Text>
+                    </View>
+                  );
+                })}
+              </View>
+              <View style={{height: 50}}></View>
+            </ScrollView>
+          </>
+        ) : noProfilesLoader ? (
+          <Loader />
+        ) : (
+          <Text
+            style={{
+              fontFamily: 'Sansation-Bold',
+              fontSize: 26,
+              textAlign: 'center',
+              paddingHorizontal: 20,
+              marginTop: 100,
+              alignSelf: 'center',
+            }}>
+            You have viewed all profiles! Or no profile matches your applied
+            filters!
+          </Text>
+        )}
+      </View>
+      {loader ? <Loader /> : null}
+    </>
   );
 };
 

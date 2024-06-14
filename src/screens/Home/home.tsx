@@ -40,9 +40,7 @@ const HomeScreen = () => {
     (state: any) => state?.Auth?.isAuthenticated,
   );
   const [currentIndex, setCurrentIndex] = useState(0);
-  // console.log(currentIndex, 'LLLLLLLL');
   const [data, setData] = useState<any>([]);
-  console.log('first data', data);
   const [checkedInterests, setCheckedInterests] = useState(
     profileData?.interests || 'everyone',
   );
@@ -50,19 +48,16 @@ const HomeScreen = () => {
   const getProfileData = async () => {
     try {
       let responseData = await dispatch(ProfileData());
-      // console.log(responseData, 'responseDataresponseData');
-      let data = await getId();
-      // console.log('data data data data', data);
+      // let data = await getId();
     } catch (error) {
-      console.log(error, 'responseDataresponseData');
+      console.error(error, 'responseDataresponseData');
     }
   };
 
-  const getId = async () => {
-    const userId = await getUserId();
+  useEffect(() => {
     dispatch(
       getAllUsers({
-        userId: userId,
+        userId: profileData?._id,
         checkedInterests: checkedInterests,
         showIn: showIn,
         distance: distance,
@@ -76,7 +71,7 @@ const HomeScreen = () => {
         // console.log('..........', response.users);
         setData(response.users);
       });
-  };
+  }, [checkedInterests]);
 
   useEffect(() => {
     getProfileData();
@@ -85,21 +80,6 @@ const HomeScreen = () => {
   useEffect(() => {
     setCheckedInterests(profileData?.interests);
   }, [profileData?.interests]);
-
-  const calculateDistance = (lat1: any, lon1: any, lat2: any, lon2: any) => {
-    const R = 3958.8; // Earth radius in miles
-    const dLat = toRadians(lat2 - lat1);
-    const dLon = toRadians(lon2 - lon1);
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(toRadians(lat1)) *
-        Math.cos(toRadians(lat2)) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = R * c;
-    return distance;
-  };
 
   // Function to convert degrees to radians
   const toRadians = (degrees: any) => {

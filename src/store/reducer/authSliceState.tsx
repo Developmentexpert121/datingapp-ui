@@ -3,6 +3,7 @@ import {createSlice} from '@reduxjs/toolkit';
 export interface Iprops {
   showGlobalModal?: boolean;
   modalData?: {text?: string; label?: string; cancel: boolean};
+  showOnlineUser?: [];
   showOtpModal?: boolean;
   showLoader?: boolean;
   isNavigate?: string;
@@ -11,6 +12,7 @@ export interface Iprops {
 const initialState: Iprops = {
   showGlobalModal: false,
   modalData: {text: '', label: '', cancel: false},
+  showOnlineUser: [],
   showOtpModal: false,
   showLoader: false,
   isNavigate: '',
@@ -36,6 +38,14 @@ export const authSice = createSlice({
     setAuthentication: (state, {payload}) => {
       state.isLoggedin = payload;
     },
+    onlineUser: (state, {payload}) => {
+      console.log('lswfreiqhfitehifgtjruae', payload);
+      state.showOnlineUser = payload;
+    },
+    // onlineUser: (state, action) => {
+    //   state.showOnlineUser = action.payload.visible;
+    // },
+
     resetSlice: state => {
       // state.userSignUpData = {
       //   loginType: 'EMAIL',
@@ -67,5 +77,6 @@ export const {
   globaLoader,
   navigation,
   setAuthentication,
+  onlineUser,
 } = authSice.actions;
 export default authSice.reducer;

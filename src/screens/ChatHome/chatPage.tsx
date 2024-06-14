@@ -16,7 +16,7 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Avatar} from 'react-native-elements';
-import {useAppDispatch, useAppSelector} from '../../store/store';
+import {RootState, useAppDispatch, useAppSelector} from '../../store/store';
 import {reciveMessages, sendAMessage} from '../../store/Auth/auth';
 import io from 'socket.io-client';
 import {PhoneCallIC, SendIC, VideoIC} from '../../assets/svgs';
@@ -27,7 +27,7 @@ import {
   Asset,
 } from 'react-native-image-picker';
 
-const socket = io('https://datingapp-api.onrender.com');
+const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 
 type Props = {
   goToCallScreen: () => void;
@@ -51,6 +51,10 @@ const ChatPage = ({
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
+  const {showOnlineUser} = useAppSelector(
+    (state: RootState) => state.authSliceState,
+  );
+  console.log('showOeUser', showOnlineUser);
 
   const [inputMessage, setInputMessage] = useState('');
   const [chatMessages, setChatMessages] = useState<any>([]);

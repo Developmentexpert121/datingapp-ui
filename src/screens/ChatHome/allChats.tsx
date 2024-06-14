@@ -25,6 +25,7 @@ const ChatSection = () => {
     (state: any) => state?.Auth?.data?.profileData,
   );
   const [chatListData, setChatListData] = useState<any>([]);
+  console.log('kogreg', chatListData);
 
   const goToChatWith = async (user: any) => {
     await dispatch(videoCallUser({user: user}));
@@ -55,15 +56,11 @@ const ChatSection = () => {
           allUsers.forEach((user: any) => {
             const lastChat = user.chat?.message;
             const timestamp = user.chat?.timestamp;
-            // console.log('User:', user);
-            // console.log('Last chat:', lastChat);
-            // console.log('timestamp chat:', timestamp);
           });
         } else {
-          // console.log('No users found in response');
         }
       } catch (error) {
-        // console.error('Error fetching data:', error);
+        console.error('Error fetching data:', error);
       }
     };
     const intervalId = setInterval(fetchData, 5000); // Poll every 5 seconds
@@ -73,13 +70,10 @@ const ChatSection = () => {
   // Time Funcation
   const getTimeAgo = (timestamp: string) => {
     const timeNow = new Date();
-    // console.log(timeNow);
     const timeSent = new Date(timestamp);
-    // console.log(timeSent);
     const differenceInSeconds = Math.floor(
       (timeNow.getTime() - timeSent.getTime()) / 1000,
     );
-    // console.log('differenceInSeconds', differenceInSeconds);
     if (differenceInSeconds < 60) {
       return `${differenceInSeconds} sec ago`;
     } else if (differenceInSeconds < 3600) {

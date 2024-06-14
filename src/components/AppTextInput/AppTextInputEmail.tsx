@@ -13,7 +13,7 @@ const AppTextInputEmail = (Props: any) => {
     borderWidth,
     marginLeft,
     textstyle,
-    // autoCapitalize,
+    autoCapitalize,
     // editable,
     ...textInputProps
   } = Props;
@@ -47,7 +47,7 @@ const AppTextInputEmail = (Props: any) => {
           onChangeText={text => onChange(removeSpaces(text))}
           value={value}
           error={Boolean(errors)}
-          // autoCapitalize={autoCapitalize}
+          autoCapitalize={autoCapitalize}
           // editable={editable}
         />
       )}

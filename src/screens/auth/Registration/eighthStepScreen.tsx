@@ -31,10 +31,6 @@ const EighthStepScreen = () => {
     }
   };
 
-  useEffect(() => {
-    Geolocation.requestAuthorization();
-  }, []);
-
   return (
     <View style={styles.container}>
       <View style={styles.contentContainer}>

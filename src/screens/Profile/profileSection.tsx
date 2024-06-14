@@ -127,7 +127,7 @@ const ProfileSection: React.FC = () => {
       }),
     );
   }, [
-    profileData?.phone,
+    // profileData?.phone,
     profileData?.email,
     profileData?.location?.longitude,
     profileData?.location?.longitude,

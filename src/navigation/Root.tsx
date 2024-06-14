@@ -47,7 +47,6 @@ const Root = () => {
 
   const navigation: any = useNavigation();
   useEffect(() => {
-    // configureGoogleSignIn();
     setTimeout(() => {
       setLoading(false);
       SplashScreen.hide();
@@ -102,16 +101,6 @@ const Root = () => {
     // user?.token && dispatch(getUserDetails({userId: isAuthenticated?.id}));
     return;
   }, []);
-  // useEffect(() => {
-  //   if (authToken === null) {
-  //     navigation.reset({
-  //       index: 0,
-  //       routes: [{name: 'Loginhome'}],
-  //     });
-  //   } else {
-  //     setIsAuthenticated(true);
-  //   }
-  // }, [authToken]);
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       {isAuthenticated ? (
