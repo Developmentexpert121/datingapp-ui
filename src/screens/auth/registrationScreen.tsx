@@ -195,6 +195,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
   const [state, setSelectedState] = useState<string | null>(null);
   const [city, setSelectedCity] = useState<string | null>(null);
   const [dob, setDob] = useState('');
+  console.log('..........', dob);
   const [email, setEmail] = useState('');
   const [msg, setMsg] = useState<string | undefined>('');
   const [activeModal, setActiveModal] = useState<boolean>(false);
@@ -308,7 +309,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
   };
 
   const showPermissionPopup = (data: RegisterForm) => {
-    console.log('................0', data);
+    // console.log('................0', data);
     Alert.alert(
       'Location Permission',
       'This app needs access to your location to provide the service.',

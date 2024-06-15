@@ -30,6 +30,7 @@ const HomeScreen = () => {
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
+  // console.log('profileData', profileData);
   const [low, setLow] = useState<number>(18);
   const [high, setHigh] = useState<number>(56);
   const [showIn, setShowIn] = useState(profileData?.showInDistance);
@@ -71,7 +72,7 @@ const HomeScreen = () => {
         // console.log('..........', response.users);
         setData(response.users);
       });
-  }, [checkedInterests]);
+  }, [checkedInterests, low, high, showIn, distance]);
 
   useEffect(() => {
     getProfileData();

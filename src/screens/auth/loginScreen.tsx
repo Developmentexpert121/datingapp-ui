@@ -141,6 +141,13 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
                 ButtonName={'Log In'}
               />
             </View>
+            <View style={{width: '80%'}}>
+              <Text
+                onPress={() => navigation.navigate('ForgotPassword')}
+                style={{textAlign: 'right'}}>
+                Forgot Password?
+              </Text>
+            </View>
           </View>
         </View>
       </KeyboardAwareScrollView>

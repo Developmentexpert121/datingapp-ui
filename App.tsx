@@ -56,7 +56,6 @@ const App = () => {
   }, [profileData._id]);
 
   socket.on('user_online', userId => {
-    dispatch(onlineUser(onlineUsers));
     setOnlineUsers((prevOnlineUsers: any) => {
       // Check if userId already exists in the array
       if (!prevOnlineUsers.includes(userId)) {
@@ -75,6 +74,7 @@ const App = () => {
   socket.on('disconnect', () => {
     console.log('App Disconnected from server');
   });
+  dispatch(onlineUser(onlineUsers));
   console.log(',,,,,,,onlineUsers', onlineUsers);
   const isLoading = useAppSelector(
     (state: any) => state.ActivityLoader.loading,

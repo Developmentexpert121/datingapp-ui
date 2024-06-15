@@ -1,3 +1,4 @@
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -12,7 +13,6 @@ import {
   ActivityIndicator,
   ScrollView,
 } from 'react-native';
-import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Avatar} from 'react-native-elements';
@@ -20,7 +20,6 @@ import {RootState, useAppDispatch, useAppSelector} from '../../store/store';
 import {reciveMessages, sendAMessage} from '../../store/Auth/auth';
 import io from 'socket.io-client';
 import {PhoneCallIC, SendIC, VideoIC} from '../../assets/svgs';
-
 import {
   launchImageLibrary,
   ImageLibraryOptions,
@@ -33,7 +32,6 @@ type Props = {
   goToCallScreen: () => void;
   setEnableCamera: any;
   setEnableCamera1: any;
-
   user: any;
 };
 
@@ -43,8 +41,6 @@ const ChatPage = ({
   setEnableCamera,
   setEnableCamera1,
 }: Props) => {
-  // const scrollViewRef: any = useRef(null);
-
   const navigation = useNavigation();
   const dispatch: any = useAppDispatch();
 
@@ -54,17 +50,17 @@ const ChatPage = ({
   const {showOnlineUser} = useAppSelector(
     (state: RootState) => state.authSliceState,
   );
-  console.log('showOeUser', showOnlineUser);
+  console.log('----------------', showOnlineUser);
 
   const [inputMessage, setInputMessage] = useState('');
   const [chatMessages, setChatMessages] = useState<any>([]);
   const [messageCount, setMessageCount] = useState(0);
-  const [limit, setLimit] = useState(10); // Number of messages to fetch per request
+  const [limit, setLimit] = useState(10);
   const [skip, setSkip] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
+
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
@@ -86,17 +82,13 @@ const ChatPage = ({
   }, []);
 
   useEffect(() => {
-    // Scroll to the end of the ScrollView whenever new content is added
     if (scrollViewRef.current) {
       scrollViewRef.current.scrollToEnd({animated: true});
     }
-  }, [scrollViewRef /* Add any dependencies */]);
+  }, [scrollViewRef]);
 
   useEffect(() => {
     socket.on('chat message', msg => {
-      // Handle incoming messages
-      console.log('Received message:', msg);
-      // Update chatMessages state accordingly
       if (msg.sender !== profileData._id) {
         setChatMessages((prevMessages: any) => [...prevMessages, msg]);
       }
@@ -123,7 +115,7 @@ const ChatPage = ({
       } catch (error) {
         console.error('Error fetching messages:', error);
       } finally {
-        setIsLoading(false); // Stop loading indicator
+        setIsLoading(false);
       }
     };
 
@@ -136,7 +128,7 @@ const ChatPage = ({
         sender: profileData._id,
         receiver: user?._id,
         message: inputMessage,
-        timestamp: new Date().toISOString(), // You may need to adjust the timestamp format
+        timestamp: new Date().toISOString(),
       };
       socket.emit('chat message', newMessage);
       setChatMessages((prevMessages: any) => [...prevMessages, newMessage]);
@@ -153,7 +145,6 @@ const ChatPage = ({
 
   const handleScroll = ({nativeEvent}: any) => {
     if (nativeEvent.contentOffset.y === 0 && messageCount === limit) {
-      // If scrolled to the top and there are more messages to fetch
       setIsLoading(true);
       setSkip(prevSkip => prevSkip + limit);
     }
@@ -164,7 +155,7 @@ const ChatPage = ({
       <ActivityIndicator size="large" color="#AC25AC" />
     </View>
   );
-  // *****************************
+
   const handleImageSelect = useCallback(
     (selectedImage: any) => {
       const newMessage = {
@@ -174,17 +165,13 @@ const ChatPage = ({
         name: selectedImage.name,
         createdAt: new Date(),
       };
-      // dispatch(sendMessageAction({newMessage}));
-      // setMessage('');
     },
     [dispatch],
   );
 
-  //     new new new new new new new
-
   const handleMediaSelection = () => {
     const options: ImageLibraryOptions = {
-      mediaType: 'mixed', // Choose 'photo' for images, 'video' for videos, or 'mixed' for both
+      mediaType: 'mixed',
     };
 
     launchImageLibrary(options, response => {
@@ -211,7 +198,6 @@ const ChatPage = ({
     socket.emit('chat message', newMessage);
     setChatMessages((prevMessages: any) => [...prevMessages, newMessage]);
 
-    // Dispatch an action to save the message
     dispatch(
       sendAMessage({
         senderId: profileData?._id,
@@ -223,14 +209,13 @@ const ChatPage = ({
     );
   };
 
-  // *****************************
-
+  const isUserOnline = showOnlineUser?.includes(user?._id);
+  console.log('sdhfisdifisfiusgdfiugfisudfg', user?._id);
   return (
     <>
       <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={{flex: 1}}>
-            {/* *****************************Header */}
             <View style={styles.container}>
               <View
                 style={{
@@ -260,7 +245,7 @@ const ChatPage = ({
                       marginStart: 12,
                       color: '#6D6D6D',
                     }}>
-                    online
+                    {isUserOnline ? 'online' : 'offline'}
                   </Text>
                 </View>
               </View>
@@ -271,7 +256,6 @@ const ChatPage = ({
                     goToCallScreen();
                   }}>
                   <View style={styles.editIcon}>
-                    {/* <PhoneCallIC /> */}
                     <Image
                       source={require('../../assets/images/Phone.png/')}
                       style={{height: 40, width: 40}}
@@ -282,10 +266,8 @@ const ChatPage = ({
                   onPress={() => {
                     setEnableCamera(true);
                     goToCallScreen();
-                    // navigation.navigate('VideoCall');
                   }}>
                   <View style={styles.editIcon}>
-                    {/* <VideoIC /> */}
                     <Image
                       source={require('../../assets/images/Video.png/')}
                       style={{height: 40, width: 40}}
@@ -376,7 +358,6 @@ const ChatPage = ({
                 })}
               </ScrollView>
             </View>
-            {/* TextInput *************************** */}
             <View
               style={[
                 styles.inputView,
@@ -397,9 +378,7 @@ const ChatPage = ({
                   />
                 </TouchableOpacity>
               </View>
-              <TouchableOpacity
-                // onPress={handleSendMessage}
-                style={styles.sendButton}>
+              <TouchableOpacity style={styles.sendButton}>
                 <SendIC onPress={handleSendMessage} />
               </TouchableOpacity>
             </View>
@@ -422,7 +401,6 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 40,
     borderColor: 'gray',
-    // borderWidth: 1,
     marginRight: 10,
     paddingHorizontal: 10,
   },
@@ -434,7 +412,6 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 4,
     alignItems: 'center',
-    // borderWidth: 2,
   },
   circularImage: {
     width: 20,
@@ -442,15 +419,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   backPress: {
-    // width: '10%',
     marginEnd: 10,
   },
   backPressIcon: {
     color: '#AC25AC',
   },
   stepsText: {
-    // flex: 1,
-    // width: '60%',
     color: 'black',
     fontSize: 20,
     marginHorizontal: 12,

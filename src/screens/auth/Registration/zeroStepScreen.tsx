@@ -60,10 +60,6 @@ const ZeroStepScreen = ({
   const loginwithgoogle: any = useAppSelector(
     (state: any) => state?.Auth?.data?.loginwithgoogle,
   );
-  // console.log('(???????????????????????????)', loginwithgoogle.email);
-  // const {itemId, otherParam} = route.params;
-  // *****************************
-  // Check otpVerified state
   const otpVerified = useAppSelector(
     (state: any) => state?.Auth?.data?.otpVerified,
   );

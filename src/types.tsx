@@ -21,7 +21,8 @@ export type RootStackParamList = {
   UpdateProfile: undefined;
   ChatPage: undefined;
   VideoCallRedirect: undefined;
-  OtpScreen:undefined;
+  OtpScreen: undefined;
+  ForgotPassword: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
