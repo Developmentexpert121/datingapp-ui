@@ -25,7 +25,6 @@ const ChatSection = () => {
     (state: any) => state?.Auth?.data?.profileData,
   );
   const [chatListData, setChatListData] = useState<any>([]);
-  // console.log('kogreg', chatListData);
 
   const goToChatWith = async (user: any) => {
     await dispatch(videoCallUser({user: user}));
@@ -107,7 +106,11 @@ const ChatSection = () => {
         onPress={() => goToChatWith(item)}>
         <View style={{width: '15%'}}>
           {item.profilePic ? (
-            <Avatar size={60} source={{uri: item?.profilePic}} rounded />
+            <Avatar
+              size={60}
+              source={{uri: item.profilePic.split(',')[0]}}
+              rounded
+            />
           ) : (
             <SmallLoader />
           )}

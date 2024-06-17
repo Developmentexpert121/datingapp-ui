@@ -31,8 +31,8 @@ const ForgotPassword = ({navigation: {}}) => {
           placeholder="Enter Your Email"
           name="email"
           autoCapitalize="none"
-          //   control={control}
-          //   errors={Boolean(errors?.email)}
+          // control={control}
+          // errors={Boolean(errors?.email)}
         />
       </View>
     </SafeAreaView>

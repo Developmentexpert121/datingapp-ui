@@ -35,7 +35,9 @@ const LikedScreen = () => {
 
   const renderGridItem = ({item}: any) => (
     <TouchableOpacity onPress={() => goToChatWith(item)} style={styles.card}>
-      <ImageBackground source={{uri: item.profilePic}} style={styles.image}>
+      <ImageBackground
+        source={{uri: item.profilePic.split(',')[0]}}
+        style={styles.image}>
         <LinearGradient
           colors={['rgba(0,0,0,0)', 'rgba(0,0,0,0.8)']}
           style={styles.gradient}></LinearGradient>

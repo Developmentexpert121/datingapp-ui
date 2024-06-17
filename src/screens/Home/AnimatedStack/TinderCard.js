@@ -72,7 +72,7 @@ const TinderCard = ({
       {...rest}>
       <Image
         source={{
-          uri: item.profilePic,
+          uri: item.profilePic.split(',')[0],
         }}
         style={{
           width: '100%',

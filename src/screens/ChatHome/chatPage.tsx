@@ -50,7 +50,7 @@ const ChatPage = ({
   const {showOnlineUser} = useAppSelector(
     (state: RootState) => state.authSliceState,
   );
-  console.log('----------------', showOnlineUser);
+  // console.log('----------------', showOnlineUser);
 
   const [inputMessage, setInputMessage] = useState('');
   const [chatMessages, setChatMessages] = useState<any>([]);
@@ -210,7 +210,6 @@ const ChatPage = ({
   };
 
   const isUserOnline = showOnlineUser?.includes(user?._id);
-  console.log('sdhfisdifisfiusgdfiugfisudfg', user?._id);
   return (
     <>
       <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
@@ -233,7 +232,11 @@ const ChatPage = ({
                     size={30}
                   />
                 </Pressable>
-                <Avatar source={{uri: user?.profilePic}} rounded size={50} />
+                <Avatar
+                  source={{uri: user?.profilePic?.split(',')[0]}}
+                  rounded
+                  size={50}
+                />
                 <View style={{flexDirection: 'column', flex: 1}}>
                   <Text numberOfLines={1} style={styles.stepsText}>
                     {user?.name}

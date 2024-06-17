@@ -135,6 +135,7 @@ const TinderSwipe = ({
                   const dragHandlers = isFirst ? panResponder.panHandlers : {};
                   return (
                     <TinderCard
+                      key={index} // Add key prop here
                       swipe={swipe}
                       item={item}
                       isFirst={isFirst}
