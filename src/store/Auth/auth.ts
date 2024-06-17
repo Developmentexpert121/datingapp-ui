@@ -116,7 +116,7 @@ export const LoginSignIn = createAsyncThunk(
           'userId',
           JSON.stringify(response?.data?._id),
         );
-        console.log('dfjdfhjhjdf', response?.data, response?.data?._id);
+        // console.log('dfjdfhjhjdf', response?.data, response?.data?._id);
         dispatch(ProfileData());
         dispatch(
           toggleGlobalModal({
@@ -234,7 +234,7 @@ export const VerifyOtp = createAsyncThunk(
   async (data: any, {dispatch}: any) => {
     try {
       const response = await http.post('/user/verifyOtp', data);
-      // console.log(response.data);
+      console.log(response.data);
       if (response.status === 200) {
         response.data.success &&
           dispatch(
@@ -252,6 +252,75 @@ export const VerifyOtp = createAsyncThunk(
         throw error;
       }
     } finally {
+    }
+  },
+);
+
+export const ResetPassword = createAsyncThunk(
+  'auth/ForgotPassword',
+  async (data: any, {dispatch}: any) => {
+    console.log('.........dddddd');
+    try {
+      const response = await http.post('/user/forgetPassword', data);
+      if (response.status === 200) {
+        response.data.success &&
+          dispatch(
+            otpModal({
+              visible: true,
+            }),
+          );
+        return response.data;
+      }
+    } catch (error: any) {
+      console.error('EmailVerification', error);
+      if (error.response && error.response.status === 400) {
+        dispatch(
+          toggleGlobalModal({
+            visible: true,
+            data: {
+              text: 'OK',
+              label: 'User already exists',
+            },
+          }),
+        );
+        return {error: 'Bad Request'};
+      } else {
+        throw error;
+      }
+    } finally {
+      // dispatch(activityLoaderFinished());
+    }
+  },
+);
+export const NewPasswordAdd = createAsyncThunk(
+  'auth/NewPassword',
+  async (data: any, {dispatch}: any) => {
+    console.log('000000000000');
+    try {
+      const response = await http.post('/user/resetPassword', data);
+      if (response.status === 200) {
+        response.data.success;
+        console.log('first.......', response.data.success);
+        return response.data;
+      }
+    } catch (error: any) {
+      console.error('resetPassword', error);
+      if (error.response && error.response.status === 400) {
+        dispatch(
+          toggleGlobalModal({
+            visible: true,
+            data: {
+              text: 'OK',
+              label: 'User already exists',
+            },
+          }),
+        );
+        return {error: 'Bad Request'};
+      } else {
+        throw error;
+      }
+    } finally {
+      // dispatch(activityLoaderFinished());
     }
   },
 );
@@ -450,6 +519,7 @@ export const handleNotificationRead = createAsyncThunk(
 export const sendAMessage = createAsyncThunk(
   'auth/sendAMessage',
   async (data: any) => {
+    console.log('iegtrwhygiothersogheirsudhgu8erswygty', data);
     try {
       const response: any = await http.post(`/user/send-message`, data);
       if (response.status === 200) {

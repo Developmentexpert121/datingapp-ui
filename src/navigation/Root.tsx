@@ -19,6 +19,7 @@ import {useNavigation} from '@react-navigation/native';
 import VideoCall from '../components/videoCall';
 import VideoCallInterface from '../screens/ChatHome/chatVideoInterface';
 import ForgotPassword from '../screens/auth/forgotPassword';
+import NewPassword from '../screens/auth/newPassword';
 // import {configureGoogleSignIn} from '../store/Auth/socialLogin';
 export type RegisterType = {};
 export type RootStackParamList = {
@@ -40,6 +41,7 @@ export type RootStackParamList = {
   BottomTabNavigation: undefined;
   FilterSection: undefined;
   ForgotPassword: undefined;
+  NewPassword: undefined;
 };
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Root = () => {
@@ -131,6 +133,7 @@ const Root = () => {
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Register" component={RegisterScreen} />
           <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+          <Stack.Screen name="NewPassword" component={NewPassword} />
         </Stack.Group>
       )}
     </Stack.Navigator>

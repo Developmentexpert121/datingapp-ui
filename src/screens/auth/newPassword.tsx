@@ -1,39 +1,46 @@
+// In NewPassword.tsx
+
 import {View, Text, StyleSheet, SafeAreaView, Image} from 'react-native';
 import React, {useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../types';
 import {BackIC} from '../../assets/svgs';
-import AppTextInputEmail from '../../components/AppTextInput/AppTextInputEmail';
+import PasswodTextInput from '../../components/AppTextInput/PasswodTextInput';
 import {useForm} from 'react-hook-form';
 import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
 import MainButton from '../../components/ButtonComponent/MainButton';
 import {useAppDispatch} from '../../store/store';
-import {ResetPassword, VerifyOtp} from '../../store/Auth/auth';
-import OtpModal from '../../components/OtpModal/OtpModal';
-import {otpModal, toggleGlobalModal} from '../../store/reducer/authSliceState';
-import Loader from '../../components/Loader/Loader';
+import {NewPasswordAdd} from '../../store/Auth/auth';
 
 interface RegisterForm {
+  newPassword: string;
   email: string;
 }
 
 const defaultValues = {
+  newPassword: '',
   email: '',
 };
 
 const schema = yup.object().shape({
-  email: yup.string().email('Invalid email').required('Email is required'),
+  password: yup
+    .string()
+    .required('Please Enter your password')
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})/,
+      'Must Contain 6 Characters, One Uppercase, One Lowercase, One Number and one special case character',
+    ),
 });
 
-type Props = NativeStackScreenProps<RootStackParamList, 'ForgotPassword'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'NewPassword'>;
 
-const ForgotPassword: React.FC<Props> = ({navigation}) => {
+const NewPassword: React.FC<Props> = ({navigation, route}) => {
+  const {email} = route.params; // Retrieve the email from params
+  console.log('first....', email);
   const dispatch: any = useAppDispatch();
-  const [email, setEmail] = useState('');
+  const [newPassword, setNewPassword] = useState('');
   const [loader, setLoader] = useState<boolean>(false);
-  const [isEmailVerified, setIsEmailVerified] = useState(false);
-  const [otp, setOtp] = useState<string[]>(['', '', '', '', '', '']);
 
   const {
     control,
@@ -45,72 +52,33 @@ const ForgotPassword: React.FC<Props> = ({navigation}) => {
   });
 
   const onSubmit: any = async (data: RegisterForm) => {
-    console.log('onSubmit', data);
-    setEmail(data.email);
-    setLoader(true);
+    console.log('onSubmitdfgdasg');
+    setNewPassword(data.newPassword);
     try {
-      await dispatch(ResetPassword(data)).unwrap();
-      setIsEmailVerified(true);
+      await dispatch(
+        NewPasswordAdd({
+          email,
+          newPassword: data.newPassword,
+        }),
+      ).unwrap();
+      navigation.navigate('Login');
       setLoader(false);
+      return;
     } catch (error) {
       console.error(error);
       setLoader(false);
     }
-  };
 
-  const resendOTP = () => {
-    dispatch(
-      ResetPassword({
-        email: email,
-      }),
-    );
-  };
-
-  const otpVerify = () => {
-    const concatenatedString = otp.join('');
-    dispatch(
-      VerifyOtp({
-        email: email,
-        otp: concatenatedString,
-      }),
-    )
-      .unwrap()
-      .then((res: any) => {
-        if (res.success) {
-          navigation.navigate('NewPassword', {email: email});
-          setOtp(['', '', '', '', '', '']);
-        } else {
-          dispatch(
-            toggleGlobalModal({
-              visible: true,
-              data: {
-                text: 'OK',
-                label: 'Invalid OTP',
-              },
-            }),
-          );
-          setOtp(['', '', '', '', '', '']);
-        }
-      });
-  };
-
-  const handleCloseModal = () => {
-    dispatch(
-      otpModal({
-        visible: false,
-      }),
-    );
-    setOtp(['', '', '', '', '', '']);
+    return;
   };
 
   return (
     <SafeAreaView style={{flex: 1, alignItems: 'center'}}>
       <View style={styles.topView}>
         <BackIC onPress={() => navigation.goBack()} />
-        <Text style={styles.headerLabel}>Forgot Password</Text>
+        <Text style={styles.headerLabel}>New Password</Text>
         <View style={styles.blankview}></View>
       </View>
-
       <View
         style={{
           flex: 1,
@@ -123,39 +91,29 @@ const ForgotPassword: React.FC<Props> = ({navigation}) => {
           style={{height: 150, width: 150, top: 10}}
         />
         <View style={styles.container}>
-          <Text style={styles.label}>Email</Text>
-          <AppTextInputEmail
-            placeholder="Enter Your Email"
-            name="email"
+          <Text style={styles.label}>New Password</Text>
+          <PasswodTextInput
+            placeholder="Enter Your Password"
+            name="newPassword"
             control={control}
-            errors={Boolean(errors?.email)}
-            autoCapitalize="none"
+            errors={Boolean(errors?.newPassword)}
+            secureTextEntry
           />
-          {errors.email && (
-            <Text style={styles.errorText}>{errors.email.message}</Text>
+          {errors.newPassword && (
+            <Text style={styles.errorText}>{errors.newPassword.message}</Text>
           )}
         </View>
         <MainButton
           buttonStyle={{width: '90%'}}
-          ButtonName={'Next'}
+          ButtonName={'Done'}
           onPress={handleSubmit(onSubmit)}
         />
       </View>
-      {isEmailVerified && (
-        <OtpModal
-          onPress={otpVerify}
-          otp={otp}
-          setOtp={setOtp}
-          handleResendOTP={resendOTP}
-          onClose={handleCloseModal}
-        />
-      )}
-      {loader && <Loader />}
     </SafeAreaView>
   );
 };
 
-export default ForgotPassword;
+export default NewPassword;
 
 const styles = StyleSheet.create({
   container: {

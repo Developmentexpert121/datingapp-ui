@@ -8,19 +8,6 @@ import FilterSection from '../FilterSection/filterSection';
 import NotificationScreen from '../Notification/notification';
 import TinderSwipe from './AnimatedStack/TinderSwipe';
 
-const getUserId = async () => {
-  try {
-    const userId: any = await AsyncStorage.getItem('userId');
-
-    if (userId !== null) {
-      return JSON.parse(userId);
-    } else {
-      return null;
-    }
-  } catch (error) {
-    return null;
-  }
-};
 const HomeScreen = () => {
   const [activeScreen, setActiveScreen] = useState('HOME');
   const dispatch: any = useAppDispatch();
@@ -42,6 +29,7 @@ const HomeScreen = () => {
   );
   const [currentIndex, setCurrentIndex] = useState(0);
   const [data, setData] = useState<any>([]);
+  // console.log('fgjdgjdjgdjkgdhgkdhgkdhksfkshfskfjskdf', data);
   const [checkedInterests, setCheckedInterests] = useState(
     profileData?.interests || 'everyone',
   );

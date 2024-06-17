@@ -23,6 +23,7 @@ export type RootStackParamList = {
   VideoCallRedirect: undefined;
   OtpScreen: undefined;
   ForgotPassword: undefined;
+  NewPassword: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =

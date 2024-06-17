@@ -195,7 +195,6 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
   const [state, setSelectedState] = useState<string | null>(null);
   const [city, setSelectedCity] = useState<string | null>(null);
   const [dob, setDob] = useState('');
-  console.log('..........', dob);
   const [email, setEmail] = useState('');
   const [msg, setMsg] = useState<string | undefined>('');
   const [activeModal, setActiveModal] = useState<boolean>(false);

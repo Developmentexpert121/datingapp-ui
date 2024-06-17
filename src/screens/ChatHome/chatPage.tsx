@@ -210,6 +210,7 @@ const ChatPage = ({
   };
 
   const isUserOnline = showOnlineUser?.includes(user?._id);
+  console.log('................', isUserOnline);
   return (
     <>
       <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
@@ -312,7 +313,7 @@ const ChatPage = ({
                           }}>
                           <Image
                             source={{
-                              uri: user?.profilePic,
+                              uri: user?.profilePic?.split(',')[0],
                             }}
                             style={styles.circularImage}
                           />
@@ -351,7 +352,9 @@ const ChatPage = ({
                             marginBottom: 'auto',
                           }}>
                           <Image
-                            source={{uri: profileData?.profilePic}}
+                            source={{
+                              uri: profileData?.profilePic?.split(',')[0],
+                            }}
                             style={styles.circularImage}
                           />
                         </View>
