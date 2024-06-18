@@ -279,7 +279,7 @@ export const ResetPassword = createAsyncThunk(
             visible: true,
             data: {
               text: 'OK',
-              label: 'User already exists',
+              label: 'User not exists',
             },
           }),
         );
@@ -299,8 +299,16 @@ export const NewPasswordAdd = createAsyncThunk(
     try {
       const response = await http.post('/user/resetPassword', data);
       if (response.status === 200) {
+        dispatch(
+          toggleGlobalModal({
+            visible: true,
+            data: {
+              text: 'OK',
+              label: 'Password Reset Successful',
+            },
+          }),
+        );
         response.data.success;
-        console.log('first.......', response.data.success);
         return response.data;
       }
     } catch (error: any) {
@@ -311,7 +319,7 @@ export const NewPasswordAdd = createAsyncThunk(
             visible: true,
             data: {
               text: 'OK',
-              label: 'User already exists',
+              label: 'Same Password',
             },
           }),
         );

@@ -6,7 +6,6 @@ import {
   StyleSheet,
   TextInput,
   SafeAreaView,
-  Image,
 } from 'react-native';
 import {ListItem, Avatar} from 'react-native-elements';
 import CommonBackbutton from '../../components/commonBackbutton/CommonBackbutton';
@@ -17,6 +16,7 @@ import {getChatUsersList, getReceivers} from '../../store/Auth/auth';
 import {videoCallUser} from '../../store/Activity/activity';
 import SmallLoader from '../../components/Loader/SmallLoader';
 import {DoubleTickIC} from '../../assets/svgs';
+import BlockModal from '../../components/Modals/BlockModal';
 
 const ChatSection = () => {
   const navigation: any = useNavigation();
@@ -25,10 +25,23 @@ const ChatSection = () => {
     (state: any) => state?.Auth?.data?.profileData,
   );
   const [chatListData, setChatListData] = useState<any>([]);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [selectedUser, setSelectedUser] = useState<any>(null);
 
   const goToChatWith = async (user: any) => {
     await dispatch(videoCallUser({user: user}));
     navigation.navigate('VideoCallRedirect');
+  };
+
+  const handleLongPress = (user: any) => {
+    setSelectedUser(user);
+    setModalVisible(true);
+  };
+
+  const handleBlockUser = () => {
+    // Add your block user logic here
+    console.log('Blocking user:', selectedUser);
+    setModalVisible(false);
   };
 
   // Search Function
@@ -103,7 +116,8 @@ const ChatSection = () => {
     return (
       <ListItem
         containerStyle={styles.listItemContainer}
-        onPress={() => goToChatWith(item)}>
+        onPress={() => goToChatWith(item)}
+        onLongPress={() => handleLongPress(item)}>
         <View style={{width: '15%'}}>
           {item.profilePic ? (
             <Avatar
@@ -173,6 +187,16 @@ const ChatSection = () => {
           renderItem={renderItem}
         />
       </View>
+
+      {/* Modal for blocking user */}
+      <BlockModal
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+        visible={modalVisible}
+        onPress={handleBlockUser}
+        onPress1={() => setModalVisible(!modalVisible)}
+      />
     </SafeAreaView>
   );
 };

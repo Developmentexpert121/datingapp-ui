@@ -122,25 +122,37 @@ const TinderSwipe = ({
     },
     [removeCard, swipe.x, onSwipeRight, onSwipeLeft],
   );
-  const calculateDistance = () =>
-    // lat1: number,
-    // lon1: number,
-    // lat2: number,
-    // lon2: number,
-    {
-      const R = 3958.8; // Earth radius in miles
-      const dLat = toRadians(lat2 - lat1);
-      const dLon = toRadians(lon2 - lon1);
-      const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(toRadians(lat1)) *
-          Math.cos(toRadians(lat2)) *
-          Math.sin(dLon / 2) *
-          Math.sin(dLon / 2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      const distance = R * c;
-      return distance;
-    };
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 3958.8; // Earth radius in miles
+    const dLat = toRadians(lat2 - lat1);
+    const dLon = toRadians(lon2 - lon1);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(toRadians(lat1)) *
+        Math.cos(toRadians(lat2)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c;
+    return distance;
+  };
+  const toRadians = degrees => {
+    return (degrees * Math.PI) / 180;
+  };
+
+  const habits1 = {
+    'src/assets/images/bottleofchampagne.png': require('../../../assets/images/bottleofchampagne.png'),
+    'src/assets/images/smoking.png': require('../../../assets/images/smoking.png'),
+    'src/assets/images/Mandumbbells.png': require('../../../assets/images/Mandumbbells.png'),
+    'src/assets/images/dogheart.png': require('../../../assets/images/dogheart.png'),
+    'src/assets/images/datestep.png': require('../../../assets/images/datestep.png'),
+  };
+  const habits2 = {
+    1: require('../../../assets/images/chat-balloon.png'),
+    2: require('../../../assets/images/love.png'),
+    3: require('../../../assets/images/abroad.png'),
+    4: require('../../../assets/images/moon.png'),
+  };
   return (
     <>
       <View style={{height: '100%', width: '100%'}}>
@@ -205,26 +217,35 @@ const TinderSwipe = ({
                     : 'Distance information unavailable'}
                 </Text>
               </View>
+              {/* habits1 */}
               <View style={styles.container}>
                 {data[currentIndex]?.habits1?.map((item, index) => {
-                  let imagePath;
-                  switch (item.imagePath) {
-                    case 'src/assets/images/bottleofchampagne.png':
-                      imagePath = require('../../../assets/images/bottleofchampagne.png');
-                      break;
-                    case 'src/assets/images/smoking.png':
-                      imagePath = require('../../../assets/images/smoking.png');
-                      break;
-                    case 'src/assets/images/Mandumbbells.png':
-                      imagePath = require('../../../assets/images/Mandumbbells.png');
-                      break;
-                    case 'src/assets/images/dogheart.png':
-                      imagePath = require('../../../assets/images/dogheart.png');
-                      break;
-                    case 'src/assets/images/datestep.png':
-                      imagePath = require('../../../assets/images/datestep.png');
-                      break;
-                  }
+                  const imagePath = habits1[item.imagePath];
+
+                  return (
+                    <View key={index} style={styles.item}>
+                      {imagePath && (
+                        <Image
+                          source={imagePath}
+                          style={{height: 20, width: 20}}
+                        />
+                      )}
+                      <Text
+                        style={{
+                          fontFamily: 'Sansation-Regular',
+                          color: 'black',
+                        }}>
+                        {item.selectedText}
+                      </Text>
+                    </View>
+                  );
+                })}
+              </View>
+              {/* habits2 */}
+              <View style={styles.container}>
+                {data[currentIndex]?.habits2?.map((item, index) => {
+                  const imagePath = habits2[item.id];
+
                   return (
                     <View key={index} style={styles.item}>
                       {imagePath && (

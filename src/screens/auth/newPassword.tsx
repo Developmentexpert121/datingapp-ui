@@ -12,6 +12,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import MainButton from '../../components/ButtonComponent/MainButton';
 import {useAppDispatch} from '../../store/store';
 import {NewPasswordAdd} from '../../store/Auth/auth';
+import Loader from '../../components/Loader/Loader';
 
 interface RegisterForm {
   newPassword: string;
@@ -24,7 +25,7 @@ const defaultValues = {
 };
 
 const schema = yup.object().shape({
-  password: yup
+  newPassword: yup
     .string()
     .required('Please Enter your password')
     .matches(
@@ -109,6 +110,7 @@ const NewPassword: React.FC<Props> = ({navigation, route}) => {
           onPress={handleSubmit(onSubmit)}
         />
       </View>
+      {loader && <Loader />}
     </SafeAreaView>
   );
 };

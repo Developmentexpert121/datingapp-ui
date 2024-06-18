@@ -41,6 +41,7 @@ const defaultValues = {
   interests: '',
   gender: '',
   showInDistance: '',
+  relationShip: '',
 };
 
 interface UpdateForm {
@@ -49,17 +50,18 @@ interface UpdateForm {
   interests: string;
   gender: string;
   showInDistance: string;
+  relationShip: string;
 }
 
-const schema = yup.object().shape({
-  // gender: yup.string().required('gender is required'),
-});
+const schema = yup.object().shape({});
 
 const FilterSection = ({
   showIn,
   setShowIn,
   checkedInterests,
   setCheckedInterests,
+  checkedRelationShip,
+  setCheckedRelationShip,
   distance,
   setDistance,
   low,
@@ -71,15 +73,13 @@ const FilterSection = ({
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-  // const [checkedInterests, setCheckedInterests] = useState(
-  //   profileData?.interests,
-  // );
-
-  // console.log(checkedInterests, 'checkedInterestscheckedInterests9090');
 
   useEffect(() => {
     setCheckedInterests(profileData?.interests);
   }, [profileData?.interests]);
+  useEffect(() => {
+    setCheckedRelationShip(profileData?.relationShip);
+  }, [profileData?.relationShip]);
   // console.log('firstprofileDataprofileData', profileData);
   const {
     control,
@@ -93,6 +93,14 @@ const FilterSection = ({
     {label: 'Female', value: 'second'},
     {label: 'Non-Binary', value: 'third'},
     {label: 'Transgender', value: 'fourth'},
+  ];
+  const RelationShip = [
+    {label: 'Long-term partner', value: 'first'},
+    {label: 'Long-term open to short', value: 'second'},
+    {label: 'Short-term open to long', value: 'third'},
+    {label: 'Short term fun', value: 'fourth'},
+    {label: 'New friends', value: 'fifth'},
+    {label: 'Still figuring it out', value: 'sixth'},
   ];
   const options2 = [
     {value: 'Male', label: 'Men'},
@@ -289,6 +297,60 @@ const FilterSection = ({
           renderNotch={renderNotch}
           onSliderTouchEnd={handleValueChange}
         />
+      </View>
+      {/* RelationShip goals */}
+      <View style={styles.boxContainer}>
+        <Text style={styles.textName}>RelationShip Goals</Text>
+        <View style={styles.line} />
+        {RelationShip.map(item => (
+          <View key={item.value} style={styles.radio}>
+            <Controller
+              name={'relationShip'}
+              control={control}
+              render={() => (
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}>
+                  <Text
+                    style={[
+                      {
+                        color: errors?.relationShip ? 'red' : 'black',
+                        fontFamily: 'Sansation-Regular',
+                        paddingBottom: 8,
+                      },
+                    ]}>
+                    {item.label}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setCheckedRelationShip(item.label);
+                      dispatch(
+                        updateProfileData({
+                          field: 'relationShip',
+                          value: item.label,
+                          id: getUserId(),
+                        }),
+                      );
+                    }}>
+                    <Ionicons
+                      name={
+                        checkedRelationShip === item.label
+                          ? 'radio-button-on'
+                          : 'radio-button-off'
+                      }
+                      size={20}
+                      color="#AC25AC"
+                    />
+                  </TouchableOpacity>
+                </View>
+              )}
+            />
+          </View>
+        ))}
       </View>
       {/* Gender */}
       <View style={styles.boxContainer}>

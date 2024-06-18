@@ -95,10 +95,14 @@ const NotificationScreen = () => {
 
   const renderNotificationItem = ({item}: any) => {
     const user = allUsers.find((u: any) => u._id === item.senderUserId);
+    console.log('.........cdfsf', user?.profilePic);
     return (
       <View style={styles.notificationItem}>
         <View style={{alignSelf: 'flex-start'}}>
-          <Image source={{uri: user?.profilePic}} style={styles.userImage} />
+          <Image
+            source={{uri: user?.profilePic?.split(',')[0]}}
+            style={styles.userImage}
+          />
         </View>
         <View
           style={{

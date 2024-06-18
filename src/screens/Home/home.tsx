@@ -33,6 +33,9 @@ const HomeScreen = () => {
   const [checkedInterests, setCheckedInterests] = useState(
     profileData?.interests || 'everyone',
   );
+  const [checkedRelationShip, setCheckedRelationShip] = useState(
+    profileData?.interests || 'everyone',
+  );
 
   const getProfileData = async () => {
     try {
@@ -100,6 +103,8 @@ const HomeScreen = () => {
           setShowIn={setShowIn}
           checkedInterests={checkedInterests}
           setCheckedInterests={setCheckedInterests}
+          checkedRelationShip={checkedRelationShip}
+          setCheckedRelationShip={setCheckedRelationShip}
           distance={distance}
           setDistance={setDistance}
           low={low}
