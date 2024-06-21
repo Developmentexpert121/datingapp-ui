@@ -111,7 +111,7 @@ export const LoginSignIn = createAsyncThunk(
           'authToken',
           JSON.stringify(response?.data?.token),
         );
-        // console.log('token Login', response?.data?.token);
+        console.log('token Login', response?.data?.token);
         await AsyncStorage.setItem(
           'userId',
           JSON.stringify(response?.data?._id),
@@ -156,7 +156,7 @@ export const RegisterSignUp = createAsyncThunk(
   'auth/RegisterSignUp',
   async (data: any, {dispatch}: any) => {
     try {
-      // console.log('RegisterSignUp Data', data);
+      console.log('RegisterSignUp Data', data);
       const response = await http.post('/user/signup', data);
       if (response.status === 200) {
         dispatch(
@@ -388,11 +388,10 @@ export const updateProfileData = createAsyncThunk(
   'auth/updateProfileData',
   async (data: any, {dispatch}: any) => {
     try {
-      //  dispatch(activityLoaderStarted());
-      // console.log('Updating Data', data);
       const response = await http.patch('/user/update-profile', data);
       if (response.status === 200) {
         dispatch(ProfileData());
+        console.log('>>>>>>>>>>>>>>', response?.config?.data);
         return response.data;
       }
     } catch (error: any) {
@@ -402,7 +401,6 @@ export const updateProfileData = createAsyncThunk(
         throw error;
       }
     } finally {
-      //  dispatch(activityLoaderFinished());
     }
   },
 );
@@ -527,7 +525,7 @@ export const handleNotificationRead = createAsyncThunk(
 export const sendAMessage = createAsyncThunk(
   'auth/sendAMessage',
   async (data: any) => {
-    console.log('iegtrwhygiothersogheirsudhgu8erswygty', data);
+    // console.log('iegtrwhdfgegkotewrjotjwertwty', data);
     try {
       const response: any = await http.post(`/user/send-message`, data);
       if (response.status === 200) {
@@ -546,6 +544,7 @@ export const sendAMessage = createAsyncThunk(
 export const reciveMessages = createAsyncThunk(
   'auth/reciveMessages',
   async (data: any, {dispatch}: any) => {
+    console.log('kjihdjbswfhuweufguwbgf..>>>..........>...>...', data);
     try {
       const response = await http.get(
         `/user/messages?senderId=${data.senderId}&receiverId=${data.receiverId}&limit=${data.limit}&skip=${data.skip}`,
@@ -585,8 +584,8 @@ export const getReceivers = createAsyncThunk(
   },
 );
 
-export const deleteUser = createAsyncThunk(
-  'auth/deleteUser',
+export const logoutUser = createAsyncThunk(
+  'auth/logoutUser',
   async (data: any, {dispatch}: any) => {
     console.log('data', data.senderId);
     try {
@@ -601,6 +600,7 @@ export const deleteUser = createAsyncThunk(
         return response.data;
       }
     } catch (error: any) {
+      console.log('Login error', error);
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
       } else {
@@ -611,21 +611,25 @@ export const deleteUser = createAsyncThunk(
     }
   },
 );
-export const logoutUser = createAsyncThunk(
+export const deleteUser = createAsyncThunk(
   'auth/deleteUser',
   async (data: any, {dispatch}: any) => {
     console.log('data', data.senderId);
     try {
+      console.log('swjdfguwgyduwye');
       dispatch(activityLoaderStarted());
-      // const response = await http.delete(
-      //   `/user/delete-account?userId=${data.senderId}`,
-      // );
-      // console.log('response', response);
-      // if (response.status === 200) {
-      //   dispatch(updateAuthentication());
-      //   return response.data;
-      // }
+      const response = await http.delete(
+        `/user/delete-account?userId=${data.senderId}`,
+      );
+      console.log('11!!!!!!!!!!!!');
+      if (response.status === 200) {
+        console.log('________________-', response);
+        dispatch(updateAuthentication());
+        return response.data;
+      }
+      console.log('response', response);
     } catch (error: any) {
+      console.error('error deleteUser:', error);
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
       } else {
@@ -633,6 +637,26 @@ export const logoutUser = createAsyncThunk(
       }
     } finally {
       dispatch(activityLoaderFinished());
+    }
+  },
+);
+export const deactivateUser = createAsyncThunk(
+  'auth/deleteUser',
+  async (data: any, {dispatch}: any) => {
+    try {
+      const response = await http.post('/user/deactivateAccount', data);
+      if (response.status === 200) {
+        console.log('999999999', response?.data?.message);
+        return response.data;
+      }
+      console.log('response', response);
+    } catch (error: any) {
+      console.error('error:', error);
+      if (error.response && error.response.status === 400) {
+        return {error: 'Bad Request'};
+      } else {
+        throw error;
+      }
     }
   },
 );

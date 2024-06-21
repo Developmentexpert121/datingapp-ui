@@ -50,7 +50,6 @@ const ChatPage = ({
   const {showOnlineUser} = useAppSelector(
     (state: RootState) => state.authSliceState,
   );
-  // console.log('----------------', showOnlineUser);
 
   const [inputMessage, setInputMessage] = useState('');
   const [chatMessages, setChatMessages] = useState<any>([]);
@@ -156,19 +155,6 @@ const ChatPage = ({
     </View>
   );
 
-  const handleImageSelect = useCallback(
-    (selectedImage: any) => {
-      const newMessage = {
-        selfMessage: true,
-        fileType: selectedImage.type,
-        uri: selectedImage.uri,
-        name: selectedImage.name,
-        createdAt: new Date(),
-      };
-    },
-    [dispatch],
-  );
-
   const handleMediaSelection = () => {
     const options: ImageLibraryOptions = {
       mediaType: 'mixed',
@@ -210,7 +196,8 @@ const ChatPage = ({
   };
 
   const isUserOnline = showOnlineUser?.includes(user?._id);
-  console.log('................', isUserOnline);
+  console.log('+++++++++++++', isUserOnline);
+
   return (
     <>
       <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
@@ -292,6 +279,7 @@ const ChatPage = ({
                 <View style={{flexGrow: 1}} />
                 {isLoading && <LoadingIndicator />}
                 {chatMessages.map((messageItem: any, index: any) => {
+                  const isTextMessage = !messageItem.uri;
                   return (
                     <View
                       key={index}
@@ -335,15 +323,22 @@ const ChatPage = ({
                           borderBottomLeftRadius:
                             messageItem?.sender === profileData._id ? 8 : 0,
                         }}>
-                        <Text
-                          style={{
-                            color:
-                              messageItem?.sender === profileData._id
-                                ? 'white'
-                                : 'black',
-                          }}>
-                          {messageItem?.message}
-                        </Text>
+                        {isTextMessage ? (
+                          <Text
+                            style={{
+                              color:
+                                messageItem?.sender === profileData._id
+                                  ? 'white'
+                                  : 'black',
+                            }}>
+                            {messageItem?.message}
+                          </Text>
+                        ) : (
+                          <Image
+                            source={{uri: messageItem.uri}}
+                            style={styles.sharedImage}
+                          />
+                        )}
                       </View>
                       {messageItem?.sender === profileData._id && (
                         <View
@@ -452,5 +447,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  sharedImage: {
+    width: 150,
+    height: 150,
+    borderRadius: 8,
   },
 });

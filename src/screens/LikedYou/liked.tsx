@@ -25,6 +25,7 @@ const LikedScreen = () => {
   const likedUsers = allUsers.filter((user: any) =>
     profileData?.likedBy.includes(user?._id),
   );
+  console.log('djsfgdjksgaehjg', profileData?.likedBy);
 
   const dispatch: any = useAppDispatch();
   const goToChatWith = async (user: any) => {

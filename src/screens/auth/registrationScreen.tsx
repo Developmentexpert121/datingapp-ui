@@ -74,7 +74,7 @@ interface RegisterForm {
   password: string;
   confirmPassword: string;
   distance: string;
-  location: string;
+  // location: string;
   profilePic: string;
   dob: string;
   profilePercentage: string;
@@ -95,7 +95,7 @@ const defaultValues = {
   hobbies: '',
   password: '',
   distance: '',
-  location: '',
+  // location: '',
   profilePic: '',
   dob: '',
   profilePercentage: '60',
@@ -253,25 +253,30 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
     }
     dispatch(getProfile());
   };
-  const getLocationAndRegister = async (data: RegisterForm) => {
+
+  const getLocationAndRegister = (data: RegisterForm) => {
     if (loginwithgoogle.email) {
       setValue('email', loginwithgoogle.email);
     }
     console.log('................', data);
+    setLoader(true);
     Geolocation.getCurrentPosition(
-      async (position: any) => {
-        const {latitude, longitude} = await position.coords;
+      (position: any) => {
+        console.log('........11111');
+        const {latitude, longitude} = position.coords;
         setLocation({latitude, longitude});
         console.log('latitude', latitude);
         console.log('longitude', longitude);
         setPermissionStatus('granted');
+
+        console.log('........22222222');
         // Call registration API here
         dispatch(
           loginwithgoogle.email
             ? RegisterSignUp({
                 ...data,
                 phoneNumber: phone,
-                location: {latitude, longitude},
+                locationData: {latitude, longitude},
                 distance: `${distance}mi`,
                 profilePic: profileImages?.join(','),
                 dob: dob,
@@ -283,7 +288,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
             : RegisterSignUp({
                 ...data,
                 phoneNumber: phone,
-                location: {latitude, longitude},
+                locationData: {latitude, longitude},
                 distance: `${distance}mi`,
                 profilePic: profileImages?.join(','),
                 dob: dob,
@@ -291,40 +296,76 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
                 state: state,
                 city: city,
               }),
-        );
+        )
+          .unwrap()
+          .then(async (response: any) => {
+            console.log('response>>>>>>>', response);
+            if (response?.payload?.redirect === 'Steps') {
+              await navigation.navigate('Register');
+            } else if (response?.redirect === 'Dashboard') {
+              dispatch(activityLoaderStarted());
+              let token: string = response?.token;
+              setLocalStorage('token', token);
+              // console.log('..............', token);
+              await AsyncStorage.setItem(
+                'authToken',
+                JSON.stringify(response?.token),
+              );
+              await AsyncStorage.setItem(
+                'userId',
+                JSON.stringify(response?._id),
+              );
+              // console.log('dfj', response?._id);
+              dispatch(ProfileData());
+              // If sign-up is successful, call the function to handle the navigation
+              handleNavigation(response);
+              dispatch(activityLoaderFinished());
+            } else {
+              // If there is an error in sign-up, check if there is an error message and set it
+              if (response?.payload?.message) {
+                setMsg(response?.payload?.message);
+              }
+              // Show the modal with the error message
+              setActiveModal(true);
+            }
+            setLoader(false);
+
+            console.log('..........DDDDDDD');
+          })
+
+          .catch((error: any) => {
+            console.error('.......error', error);
+            // If there is an error in the promise chain, set the error message and show the modal
+            setMsg(error?.payload?.message);
+            setActiveModal(true);
+          });
+
+        dispatch(GoogleLogin({}));
         reset();
       },
-      (err: any) => {
+      err => {
+        console.error('Error fetching location:', err);
         setError(err.message);
-        setPermissionStatus('denied.');
+        setPermissionStatus('denied');
       },
-      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+      {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}, // Increased timeout to 30000ms (30 seconds)
     );
   };
 
-  const requestLocationPermission = async (data: RegisterForm) => {
-    await Geolocation.requestAuthorization();
-    await getLocationAndRegister(data);
+  const requestLocationPermission = (data: RegisterForm) => {
+    Geolocation.requestAuthorization();
+    getLocationAndRegister(data);
   };
 
   const showPermissionPopup = (data: RegisterForm) => {
-    // console.log('................0', data);
+    console.log('................0', data);
     Alert.alert(
       'Location Permission',
       'This app needs access to your location to provide the service.',
       [
         {
           text: 'Cancel',
-          onPress: () => {
-            setPermissionStatus('denied');
-            // reset();
-          },
-          style: 'cancel',
-        },
-        {
-          text: 'Allow',
           onPress: async () => {
-            await requestLocationPermission(data);
             dispatch(
               loginwithgoogle.email
                 ? RegisterSignUp({
@@ -350,19 +391,15 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
                   }),
             )
               .unwrap()
-              // .then(res => console.log('res------', res));
-              // ***************************
-              // dispatch(googleLogin())
-              // .unwrap()
               .then(async (response: any) => {
-                console.log('response>>>>>>>', response);
+                // console.log('response>>>>>>>', response);
                 if (response?.payload?.redirect === 'Steps') {
                   await navigation.navigate('Register');
                 } else if (response?.redirect === 'Dashboard') {
                   dispatch(activityLoaderStarted());
                   let token: string = response?.token;
                   setLocalStorage('token', token);
-                  console.log('..............', token);
+                  // console.log('..............', token);
                   await AsyncStorage.setItem(
                     'authToken',
                     JSON.stringify(response?.token),
@@ -371,9 +408,8 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
                     'userId',
                     JSON.stringify(response?._id),
                   );
-                  console.log('dfj', response?._id);
+                  // console.log('dfj', response?._id);
                   dispatch(ProfileData());
-
                   // If sign-up is successful, call the function to handle the navigation
                   handleNavigation(response);
                   dispatch(activityLoaderFinished());
@@ -395,12 +431,14 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
                 setActiveModal(true);
               });
             setLoader(false);
-            // **********************
             dispatch(GoogleLogin({}));
             reset();
-            // navigate('Loginhome');
-            // navigate('Home');
           },
+          style: 'cancel',
+        },
+        {
+          text: 'Allow',
+          onPress: () => requestLocationPermission(data),
         },
       ],
     );
@@ -437,7 +475,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
     } else {
       if (steps === 0 && !otpVerified) {
         setLoader(true);
-        console.log('first', otpVerified);
+        // console.log('first', otpVerified);
         try {
           await dispatch(
             EmailVerification({

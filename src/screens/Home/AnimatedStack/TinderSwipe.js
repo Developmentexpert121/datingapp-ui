@@ -76,7 +76,7 @@ const TinderSwipe = ({
         userIdBeingLiked: data[currentIndex]?._id,
       }),
     );
-    const targetX = hiddenTranslateX; // Assuming hiddenTranslateX is defined elsewhere
+    const targetX = hiddenTranslateX;
     translateX.value = withSpring(targetX);
     setTimeout(() => {
       const updatedUsers = [...data];
@@ -122,6 +122,7 @@ const TinderSwipe = ({
     },
     [removeCard, swipe.x, onSwipeRight, onSwipeLeft],
   );
+
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
     const R = 3958.8; // Earth radius in miles
     const dLat = toRadians(lat2 - lat1);
@@ -136,6 +137,7 @@ const TinderSwipe = ({
     const distance = R * c;
     return distance;
   };
+
   const toRadians = degrees => {
     return (degrees * Math.PI) / 180;
   };
@@ -147,12 +149,14 @@ const TinderSwipe = ({
     'src/assets/images/dogheart.png': require('../../../assets/images/dogheart.png'),
     'src/assets/images/datestep.png': require('../../../assets/images/datestep.png'),
   };
+
   const habits2 = {
     1: require('../../../assets/images/chat-balloon.png'),
     2: require('../../../assets/images/love.png'),
     3: require('../../../assets/images/abroad.png'),
     4: require('../../../assets/images/moon.png'),
   };
+
   return (
     <>
       <View style={{height: '100%', width: '100%'}}>
@@ -264,6 +268,20 @@ const TinderSwipe = ({
                     </View>
                   );
                 })}
+              </View>
+              {/* RelationShip */}
+              <View style={styles.container}>
+                {data[currentIndex]?.partnerType && (
+                  <View style={styles.item}>
+                    <Text
+                      style={{
+                        fontFamily: 'Sansation-Regular',
+                        color: 'black',
+                      }}>
+                      {data[currentIndex].partnerType}
+                    </Text>
+                  </View>
+                )}
               </View>
               <View style={{height: 50}}></View>
             </ScrollView>

@@ -5,18 +5,16 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
-  Keyboard,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import CommonBackbutton from '../../components/commonBackbutton/CommonBackbutton';
 import {Slider} from 'react-native-elements';
 import SeventhStepScreen from '../auth/Registration/seventhStepScreen';
-import * as yup from 'yup';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {updateProfileData} from '../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import BottomDrawer from './BottomDrawer';
 import {EditTextIC} from '../../assets/svgs';
+import BottomModalUpdate from './BottomModalUpdate';
 
 interface UpdateForm {
   work: string;
@@ -51,14 +49,11 @@ const getUserId = async () => {
   }
 };
 
-const schema = yup.object().shape({
-  // name: yup.string().required('Name is required'),
-});
-
 const UpdateProfile = () => {
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
+  // console.log('dsfhkshdfis', profileData);
 
   const dispatch: any = useAppDispatch();
   const [height, setHeight] = useState(parseInt(profileData?.height) || 100);
@@ -99,8 +94,9 @@ const UpdateProfile = () => {
         : '',
     },
     {title: 'Interests', name: profileData?.allInterests},
-    // {title: 'Relationship Goals', name: profileData?.partnerType},
+    {title: 'Relationship Goals', name: profileData?.partnerType},
   ];
+  console.log('first', dataArr);
 
   const closeDrawer = () => {
     setIsDrawerOpen(false);
@@ -165,7 +161,7 @@ const UpdateProfile = () => {
               </View>
             </View>
           ))}
-        <BottomDrawer
+        <BottomModalUpdate
           isOpen={isDrawerOpen}
           onClose={closeDrawer}
           title={title}

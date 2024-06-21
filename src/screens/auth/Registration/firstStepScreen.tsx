@@ -9,7 +9,11 @@ import {
 import {useForm, Controller} from 'react-hook-form';
 
 const FirstStepScreen = ({interests, control, errors}: any) => {
-  const options = [{value: 'Women'}, {value: 'Men'}, {value: 'Everyone'}];
+  const options = [
+    {value: 'Male', label: 'Male'},
+    {value: 'Female', label: 'Female'},
+    {value: 'Everyone', label: 'Everyone'},
+  ];
   const [checked, setChecked] = useState('');
 
   return (
@@ -40,7 +44,7 @@ const FirstStepScreen = ({interests, control, errors}: any) => {
                     styles.buttonText,
                     {color: value === item.value ? 'white' : 'black'},
                   ]}>
-                  {item.value}
+                  {item.label}
                 </Text>
               </TouchableOpacity>
             )}

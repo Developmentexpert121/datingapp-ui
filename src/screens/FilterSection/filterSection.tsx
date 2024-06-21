@@ -41,7 +41,7 @@ const defaultValues = {
   interests: '',
   gender: '',
   showInDistance: '',
-  relationShip: '',
+  partnerType: '',
 };
 
 interface UpdateForm {
@@ -50,7 +50,7 @@ interface UpdateForm {
   interests: string;
   gender: string;
   showInDistance: string;
-  relationShip: string;
+  partnerType: string;
 }
 
 const schema = yup.object().shape({});
@@ -77,10 +77,13 @@ const FilterSection = ({
   useEffect(() => {
     setCheckedInterests(profileData?.interests);
   }, [profileData?.interests]);
+
   useEffect(() => {
-    setCheckedRelationShip(profileData?.relationShip);
-  }, [profileData?.relationShip]);
-  // console.log('firstprofileDataprofileData', profileData);
+    setCheckedRelationShip(profileData?.partnerType);
+  }, [profileData?.partnerType]);
+  console.log('firstprofileDataprofileData', profileData?.partnerType);
+  // console.log('++++++++++++aprofileData', setCheckedRelationShip);
+  // console.log('++++++++++++aprofileData', setCheckedRelationShip);
   const {
     control,
     formState: {errors},
@@ -95,17 +98,17 @@ const FilterSection = ({
     {label: 'Transgender', value: 'fourth'},
   ];
   const RelationShip = [
-    {label: 'Long-term partner', value: 'first'},
-    {label: 'Long-term open to short', value: 'second'},
-    {label: 'Short-term open to long', value: 'third'},
-    {label: 'Short term fun', value: 'fourth'},
-    {label: 'New friends', value: 'fifth'},
-    {label: 'Still figuring it out', value: 'sixth'},
+    {id: '1', text: 'Long term partner'},
+    {id: '2', text: 'Long term open to short'},
+    {id: '3', text: 'Short term open to long'},
+    {id: '4', text: 'Short term fun'},
+    {id: '5', text: 'New friends'},
+    {id: '6', text: 'Still figuring it out'},
   ];
   const options2 = [
-    {value: 'Male', label: 'Men'},
-    {value: 'Female', label: 'Women'},
-    {value: 'everyone', label: 'Everyone'},
+    {value: 'Male', label: 'Male'},
+    {value: 'Female', label: 'Female'},
+    {value: 'Everyone', label: 'Everyone'},
   ];
 
   const [checked, setChecked] = React.useState(profileData?.gender);
@@ -303,9 +306,9 @@ const FilterSection = ({
         <Text style={styles.textName}>RelationShip Goals</Text>
         <View style={styles.line} />
         {RelationShip.map(item => (
-          <View key={item.value} style={styles.radio}>
+          <View key={item.id} style={styles.radio}>
             <Controller
-              name={'relationShip'}
+              name={'partnerType'}
               control={control}
               render={() => (
                 <View
@@ -318,27 +321,27 @@ const FilterSection = ({
                   <Text
                     style={[
                       {
-                        color: errors?.relationShip ? 'red' : 'black',
+                        color: errors?.partnerType ? 'red' : 'black',
                         fontFamily: 'Sansation-Regular',
                         paddingBottom: 8,
                       },
                     ]}>
-                    {item.label}
+                    {item.text}
                   </Text>
                   <TouchableOpacity
                     onPress={() => {
-                      setCheckedRelationShip(item.label);
+                      setCheckedRelationShip(item.text);
                       dispatch(
                         updateProfileData({
                           field: 'relationShip',
-                          value: item.label,
+                          value: item.text,
                           id: getUserId(),
                         }),
                       );
                     }}>
                     <Ionicons
                       name={
-                        checkedRelationShip === item.label
+                        checkedRelationShip === item.text
                           ? 'radio-button-on'
                           : 'radio-button-off'
                       }

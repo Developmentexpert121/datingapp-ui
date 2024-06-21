@@ -17,6 +17,7 @@ import {videoCallUser} from '../../store/Activity/activity';
 import SmallLoader from '../../components/Loader/SmallLoader';
 import {DoubleTickIC} from '../../assets/svgs';
 import BlockModal from '../../components/Modals/BlockModal';
+import Loader from '../../components/Loader/Loader';
 
 const ChatSection = () => {
   const navigation: any = useNavigation();
@@ -27,6 +28,7 @@ const ChatSection = () => {
   const [chatListData, setChatListData] = useState<any>([]);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<any>(null);
+  const [loader, setLoader] = useState<boolean>(false);
 
   const goToChatWith = async (user: any) => {
     await dispatch(videoCallUser({user: user}));
@@ -75,7 +77,7 @@ const ChatSection = () => {
         console.error('Error fetching data:', error);
       }
     };
-    const intervalId = setInterval(fetchData, 5000); // Poll every 5 seconds
+    const intervalId = setInterval(fetchData, 500); // Poll every 5 seconds
     fetchData(); // Fetch data immediately on component mount
     return () => clearInterval(intervalId);
   }, []);
@@ -197,6 +199,8 @@ const ChatSection = () => {
         onPress={handleBlockUser}
         onPress1={() => setModalVisible(!modalVisible)}
       />
+
+      {loader && <Loader />}
     </SafeAreaView>
   );
 };

@@ -68,7 +68,12 @@ const App = () => {
     });
 
     socket.on('disconnect', () => {
+      console.log('111111111111111');
+      console.log('111111111111111');
       console.log('App Disconnected from server');
+      console.log('111111111111111');
+      console.log('111111111111111');
+      console.log('111111111111111');
     });
 
     return () => {

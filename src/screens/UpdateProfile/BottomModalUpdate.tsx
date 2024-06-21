@@ -15,7 +15,6 @@ interface UpdateForm {
   interest: string;
   language: string;
   name: string;
-  email: string;
   password: string;
 }
 const defaultValues = {
@@ -24,7 +23,6 @@ const defaultValues = {
   interest: '',
   language: '',
   name: '',
-  email: '',
   password: '',
 };
 // const getUserId = async () => {
@@ -44,7 +42,7 @@ const defaultValues = {
 const schema = yup.object().shape({
   //name: yup.string().required('Name is required'),
 });
-const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
+const BottomModalUpdate = ({isOpen, onClose, title, value}: any) => {
   const dispatch: any = useAppDispatch();
   const profileData = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
@@ -117,14 +115,14 @@ const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
     if (title.toLowerCase() === 'interests') {
       field = 'allInterests';
       fieldValue = interests.join(',');
-      // } else if (title.toLowerCase() === 'education') {
-      //   field = 'partnerType';
-      //   fieldValue = education;
+    } else if (title.toLowerCase() === 'education') {
+      field = 'education';
+      fieldValue = education;
     } else if (title.toLowerCase() === 'relationship goals') {
       field = 'partnerType';
       fieldValue = selectedAvatar;
     } else {
-      // Extract "email" from the title string
+      // Extract "" from the title string
       field = title?.toLowerCase().split(' ')[0];
       fieldValue = data[title];
     }
@@ -173,13 +171,18 @@ const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
   const [interests, setInterests] = useState(
     profileData?.allInterests?.split(', ') || [],
   );
+
+  console.log('=======', interests);
   const [education, setEducation] = useState<string>('');
+  console.log('++++++++++', education);
   const [selectedAvatar, setSelectedAvatar] = useState<string>('');
+  console.log('____________', selectedAvatar);
 
   const toggleChip = (interest: string) => {
     if (education === interest) {
       setEducation('');
     } else {
+      console.log('wwwwwwwwwwwwwwwwwwwwwCalled');
       setEducation(interest);
     }
     if (selectedAvatar === interest) {
@@ -195,8 +198,8 @@ const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
       setInterests(updatedInterests);
     } else {
       // If interest is not selected, add it
-      const updatedInterests = [...interests, interest];
-      setInterests(updatedInterests);
+      // const updatedInterests = [...interests, interest];
+      // setInterests(updatedInterests);
     }
   };
 
@@ -217,10 +220,8 @@ const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
               <View
                 style={{
                   flexDirection: 'row',
-                  // width: 'auto',
                   borderRadius: 15,
                   backgroundColor: '#AC25AC',
-                  // paddingVertical: 6,
                   paddingHorizontal: 12,
                 }}>
                 <Text
@@ -263,34 +264,34 @@ const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
                 })}
               </View>
             </View>
+          ) : title === 'Relationship Goals' ? (
+            <View style={{marginHorizontal: 40, rowGap: 10, marginTop: 10}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  borderRadius: 15,
+                  backgroundColor: '#AC25AC',
+                  paddingHorizontal: 12,
+                }}>
+                <Text
+                  style={{
+                    color: 'white',
+                    paddingVertical: 6,
+                    fontFamily: 'Sansation-Regular',
+                  }}>
+                  {selectedAvatar}
+                </Text>
+              </View>
+              <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+                {avatars.map((item, index) => {
+                  if (!selectedAvatar.includes(item.text)) {
+                    return <ListItem2 key={index} item={item.text} />;
+                  }
+                  return null; // Don't render the chip if it's already selected
+                })}
+              </View>
+            </View>
           ) : (
-            // ) : title === 'Relationship Goals' ? (
-            //   <View style={{marginHorizontal: 40, rowGap: 10, marginTop: 10}}>
-            //     <View
-            //       style={{
-            //         flexDirection: 'row',
-            //         borderRadius: 15,
-            //         backgroundColor: '#AC25AC',
-            //         paddingHorizontal: 12,
-            //       }}>
-            //       <Text
-            //         style={{
-            //           color: 'white',
-            //           paddingVertical: 6,
-            //           fontFamily: 'Sansation-Regular',
-            //         }}>
-            //         {selectedAvatar}
-            //       </Text>
-            //     </View>
-            //     <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-            //       {avatars.map((item, index) => {
-            //         if (!selectedAvatar.includes(item.text)) {
-            //           return <ListItem2 key={index} item={item.text} />;
-            //         }
-            //         return null; // Don't render the chip if it's already selected
-            //       })}
-            //     </View>
-            //   </View>
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
               <AppTextInput
                 placeholder={'Enter Your ' + title.split(' ')[0]}
@@ -311,7 +312,7 @@ const BottomDrawer = ({isOpen, onClose, title, value}: any) => {
   );
 };
 
-export default BottomDrawer;
+export default BottomModalUpdate;
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,

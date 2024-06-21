@@ -34,8 +34,10 @@ const HomeScreen = () => {
     profileData?.interests || 'everyone',
   );
   const [checkedRelationShip, setCheckedRelationShip] = useState(
-    profileData?.interests || 'everyone',
+    profileData?.partnerType,
   );
+  // console.log('----------q', checkedRelationShip);
+  // console.log('----------ss', profileData?.partnerType);
 
   const getProfileData = async () => {
     try {
@@ -55,8 +57,8 @@ const HomeScreen = () => {
         distance: distance,
         low: low,
         high: high,
+        checkedRelationShip: checkedRelationShip,
       }),
-      // console.log('??????????', getAllUsers),
     )
       .unwrap()
       .then((response: any) => {

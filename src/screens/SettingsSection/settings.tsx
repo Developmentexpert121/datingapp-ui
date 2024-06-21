@@ -16,6 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {
+  deactivateUser,
   deleteUser,
   logoutUser,
   resetAuth,
@@ -25,6 +26,7 @@ import Geolocation from '@react-native-community/geolocation';
 import {EmailIC, LocationIC, PhoneIC} from '../../assets/svgs';
 import BottomDrawer from './BottomDrawer';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import Loader from '../../components/Loader/Loader';
 
 interface UpdateForm {
   name: string;
@@ -61,13 +63,12 @@ const SettingsSection = () => {
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
+  // console.log('_____________', profileData?.language);
   const dispatch: any = useAppDispatch();
   const navigation: any = useNavigation();
+  const [loader, setLoader] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('');
   const [values, setValues] = useState<string>('');
-  const [phone, setPhone] = useState<object>({});
-  // console.log('title', title);
-  // console.log('values', values);
   const {
     reset,
     formState: {errors},
@@ -82,26 +83,6 @@ const SettingsSection = () => {
   const [address, setAddress] = useState('');
   const [location, setLocation] = useState<any>(null);
 
-  //
-  const handleLogout = async () => {
-    try {
-      await AsyncStorage.removeItem('authToken');
-
-      dispatch(resetAuth());
-      console.log('handleLogout', resetAuth);
-      // Reset navigation stack and navigate to the root screen (LoginHomeScreen)
-      navigation.reset({
-        index: 0,
-        routes: [{name: 'LoginHomeScreen'}],
-      });
-    } catch (error) {
-      console.error('Error during logout:', error);
-    }
-  };
-
-  //
-
-  //
   useEffect(() => {
     const getAddressFromCoordinates = async (latitude: any, longitude: any) => {
       try {
@@ -135,7 +116,7 @@ const SettingsSection = () => {
       title: 'Location',
       name: address,
     },
-    {title: 'Language I Know', name: profileData?.language},
+    {title: 'Language I Know', name: profileData?.languageData},
   ];
   const openDrawer = () => {
     setIsDrawerOpen(true);
@@ -157,12 +138,7 @@ const SettingsSection = () => {
 
   const authTokenRemove: any = async () => {
     try {
-      const token: any = await AsyncStorage.removeItem('authToken');
-      // if (token !== null) {
-      //   return JSON.parse(token);
-      // } else {
-      //   return null;
-      // }
+      await AsyncStorage.removeItem('authToken');
     } catch (error) {
       return null;
     }
@@ -174,10 +150,10 @@ const SettingsSection = () => {
     Geolocation.getCurrentPosition(
       position => {
         const {latitude, longitude} = position.coords;
-        console.log(latitude);
-        console.log(longitude);
+        console.log('latitude:', latitude);
+        console.log('Longitude:', longitude);
+        setLoader(false);
         setPermissionStatus('granted');
-        // Call registration API here
         dispatch(
           updateProfileData({
             field: 'location',
@@ -189,16 +165,19 @@ const SettingsSection = () => {
         reset();
       },
       err => {
+        console.error('Error fetching location:', err);
+        setLoader(false);
         setError(err.message);
         setPermissionStatus('denied');
       },
-      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+      {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}, // Increased timeout to 30000ms (30 seconds)
     );
   };
 
   const requestLocationPermission = () => {
     Geolocation.requestAuthorization();
     getLocationAndRegister();
+    setLoader(true);
   };
 
   const showPermissionPopup = () => {
@@ -210,7 +189,6 @@ const SettingsSection = () => {
           text: 'Cancel',
           onPress: () => {
             setPermissionStatus('denied');
-
             reset();
           },
           style: 'cancel',
@@ -220,21 +198,44 @@ const SettingsSection = () => {
     );
   };
 
-  const deleteUserButton = async () => {
+  const logoutUserButton = async () => {
     try {
       const isSignedIn = await GoogleSignin.isSignedIn();
       if (isSignedIn) {
         await GoogleSignin.signOut();
       }
-      dispatch(deleteUser({senderId: profileData._id}));
+      dispatch(logoutUser({senderId: profileData._id}));
       await authTokenRemove();
     } catch (error) {
-      console.log(error, 'error');
+      console.error(error, 'error');
     }
   };
-  const logoutUserButton = async () => {
-    dispatch(logoutUser({senderId: profileData._id}));
-    await authTokenRemove();
+  const deleteUserButton = async () => {
+    dispatch(deleteUser({senderId: profileData._id}))
+      .unwrap()
+      .then(async (res: any) => {
+        console.log('Delete User res', res);
+
+        try {
+          const isSignedIn = await GoogleSignin.isSignedIn();
+          if (isSignedIn) {
+            await GoogleSignin.signOut();
+          }
+          dispatch(logoutUser({senderId: profileData._id}));
+          await authTokenRemove();
+        } catch (error) {
+          console.error(error, 'error');
+        }
+      });
+    //
+  };
+  const deactivateUserButton = async () => {
+    dispatch(
+      deactivateUser({
+        userId: profileData?._id,
+        action: profileData?.deactivate,
+      }),
+    );
   };
 
   return (
@@ -282,16 +283,25 @@ const SettingsSection = () => {
         <TouchableOpacity
           style={styles.boxContainer}
           // onPress={handleLogout}
-          onPress={deleteUserButton}>
+          onPress={logoutUserButton}>
           <Text style={[styles.textName, {color: '#AC25AC'}]}>Log Out</Text>
         </TouchableOpacity>
-        {/* <TouchableOpacity style={styles.boxContainer}>
+        <TouchableOpacity style={styles.boxContainer}>
           <Text
             style={[styles.textName, {color: '#AC25AC'}]}
             onPress={deleteUserButton}>
             Delete Account
           </Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.boxContainer}>
+          <Text
+            style={[styles.textName, {color: '#AC25AC'}]}
+            onPress={deactivateUserButton}
+            //
+          >
+            Deactivate
+          </Text>
+        </TouchableOpacity>
         <BottomDrawer
           isOpen={isDrawerOpen}
           onClose={closeDrawer}
@@ -303,6 +313,7 @@ const SettingsSection = () => {
           // zxcv={`${profileData?.phone?.number}`}
         />
       </ScrollView>
+      {loader && <Loader />}
     </SafeAreaView>
   );
 };
