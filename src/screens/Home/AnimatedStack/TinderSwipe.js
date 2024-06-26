@@ -141,13 +141,25 @@ const TinderSwipe = ({
   const toRadians = degrees => {
     return (degrees * Math.PI) / 180;
   };
+  const currentUserLocation = currentIndex?.location;
+
+  // users = users.filter(user => {
+  //   const userDistance = calculateDistance(
+  //     currentUserLocation?.latitude,
+  //     currentUserLocation?.longitude,
+  //     user?.location?.latitude,
+  //     user?.location?.longitude,
+  //   );
+  //   return userDistance <= distance;
+  // });
+  // console.log('?//////////////', currentUserLocation);
 
   const habits1 = {
-    'src/assets/images/bottleofchampagne.png': require('../../../assets/images/bottleofchampagne.png'),
-    'src/assets/images/smoking.png': require('../../../assets/images/smoking.png'),
-    'src/assets/images/Mandumbbells.png': require('../../../assets/images/Mandumbbells.png'),
-    'src/assets/images/dogheart.png': require('../../../assets/images/dogheart.png'),
-    'src/assets/images/datestep.png': require('../../../assets/images/datestep.png'),
+    1: require('../../../assets/images/bottleofchampagne.png'),
+    2: require('../../../assets/images/smoking.png'),
+    3: require('../../../assets/images/Mandumbbells.png'),
+    4: require('../../../assets/images/dogheart.png'),
+    5: require('../../../assets/images/datestep.png'),
   };
 
   const habits2 = {
@@ -224,7 +236,7 @@ const TinderSwipe = ({
               {/* habits1 */}
               <View style={styles.container}>
                 {data[currentIndex]?.habits1?.map((item, index) => {
-                  const imagePath = habits1[item.imagePath];
+                  const imagePath = habits1[item.id];
 
                   return (
                     <View key={index} style={styles.item}>

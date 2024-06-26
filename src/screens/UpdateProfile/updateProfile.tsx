@@ -53,7 +53,7 @@ const UpdateProfile = () => {
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-  // console.log('dsfhkshdfis', profileData);
+  console.log('dsfhkshdfis', profileData);
 
   const dispatch: any = useAppDispatch();
   const [height, setHeight] = useState(parseInt(profileData?.height) || 100);
@@ -87,12 +87,12 @@ const UpdateProfile = () => {
 
   const dataArr = [
     {title: 'Work', name: profileData?.work},
-    {
-      title: 'Education',
-      name: profileData?.habits2[2]?.selectedText
-        ? profileData?.habits2[2]?.selectedText
-        : '',
-    },
+    // {
+    //   title: 'Education',
+    //   name: profileData?.habits2[2]?.selectedText
+    //     ? profileData?.habits2[2]?.selectedText
+    //     : '',
+    // },
     {title: 'Interests', name: profileData?.allInterests},
     {title: 'Relationship Goals', name: profileData?.partnerType},
   ];

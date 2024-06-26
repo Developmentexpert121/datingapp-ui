@@ -243,7 +243,7 @@ const ChatPage = ({
               <View style={{flexDirection: 'row', marginEnd: 10, width: '25%'}}>
                 <TouchableOpacity
                   onPress={() => {
-                    setEnableCamera1(false);
+                    // setEnableCamera1(false);
                     goToCallScreen();
                   }}>
                   <View style={styles.editIcon}>

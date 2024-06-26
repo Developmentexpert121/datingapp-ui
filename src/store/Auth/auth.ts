@@ -425,6 +425,31 @@ export const likedAUser = createAsyncThunk(
   },
 );
 
+export const likedMe = createAsyncThunk(
+  'auth/likedMe',
+  async (data: any, {dispatch}: any) => {
+    try {
+      const response = await http.get('/user/likedUsers', {
+        params: {
+          id: data.id,
+        },
+      });
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error: any) {
+      console.error('error LikidMe', error);
+      if (error.response && error.response.status === 400) {
+        return {error: 'Bad Request'};
+      } else {
+        // console.log(error.response);
+        console.log('------------------');
+        throw error;
+      }
+    }
+  },
+);
+
 export const getAllUsers = createAsyncThunk(
   'auth/getAllUsers',
   async (
@@ -450,6 +475,7 @@ export const getAllUsers = createAsyncThunk(
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
       } else {
+        console.log(error);
         throw error;
       }
     } finally {
@@ -621,7 +647,7 @@ export const deleteUser = createAsyncThunk(
       const response = await http.delete(
         `/user/delete-account?userId=${data.senderId}`,
       );
-      console.log('11!!!!!!!!!!!!');
+      // console.log('11!!!!!!!!!!!!');
       if (response.status === 200) {
         console.log('________________-', response);
         dispatch(updateAuthentication());
@@ -701,6 +727,7 @@ const initialState = {
     chatUsersList: [],
     allNotifications: [],
     userLike: [],
+    meLike: [],
     signInInfo: '',
     otpVerified: false,
   },
@@ -834,13 +861,30 @@ const Auth: any = createSlice({
       // likedAUser
       .addCase(likedAUser.pending, (state, action) => {
         state.loading = true;
+        // console.log('1111111111');
       })
       .addCase(likedAUser.fulfilled, (state, action) => {
         state.data.userLike = action.payload.notifications;
         state.loading = false;
+        // console.log('222222222');
       })
       .addCase(likedAUser.rejected, (state, action) => {
         state.loading = false;
+        // console.log('333333333');
+      })
+      // likedMe
+      .addCase(likedMe.pending, (state, action) => {
+        state.loading = true;
+        // console.log('1111111111');
+      })
+      .addCase(likedMe.fulfilled, (state, action) => {
+        // state.data.meLike = action.payload.notifications;
+        state.loading = false;
+        // console.log('222222222');
+      })
+      .addCase(likedMe.rejected, (state, action) => {
+        state.loading = false;
+        // console.log('333333333');
       })
       // VerifyOtp
       .addCase(VerifyOtp.fulfilled, (state, action) => {

@@ -10,6 +10,8 @@ import io from 'socket.io-client';
 import {requestNotifications} from 'react-native-permissions';
 import {onlineUser} from './src/store/reducer/authSliceState';
 
+// import PushNotification from 'react-native-push-notification';
+
 const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 
 const App = () => {
@@ -30,6 +32,16 @@ const App = () => {
       // console.log('Authorization status:', authStatus);
     }
   }
+  // useEffect(() => {
+  //   // crashlytics().log("App Mount....");
+  //   PushNotification.createChannel(
+  //     {
+  //       channelId: 'hatti-app',
+  //       channelName: 'Hatti',
+  //     },
+  //     created => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
+  //   );
+  // }, []);
 
   const [onlineUsers, setOnlineUsers] = useState<any>([]);
   const profileData: any = useAppSelector(
@@ -68,12 +80,7 @@ const App = () => {
     });
 
     socket.on('disconnect', () => {
-      console.log('111111111111111');
-      console.log('111111111111111');
       console.log('App Disconnected from server');
-      console.log('111111111111111');
-      console.log('111111111111111');
-      console.log('111111111111111');
     });
 
     return () => {

@@ -16,8 +16,6 @@ import SplashScreen from 'react-native-splash-screen';
 import {requestNotifications} from 'react-native-permissions';
 import FilterSection from '../screens/FilterSection/filterSection';
 import {useNavigation} from '@react-navigation/native';
-import VideoCall from '../components/videoCall';
-import VideoCallInterface from '../screens/ChatHome/chatVideoInterface';
 import ForgotPassword from '../screens/auth/forgotPassword';
 import NewPassword from '../screens/auth/newPassword';
 // import {configureGoogleSignIn} from '../store/Auth/socialLogin';
@@ -62,11 +60,14 @@ const Root = () => {
   async function requestUserPermission() {
     await requestNotifications(['alert', 'sound']);
     const authStatus = await messaging().requestPermission();
+    const token = await messaging().getToken();
     const enabled =
       authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
       authStatus === messaging.AuthorizationStatus.PROVISIONAL;
     if (enabled) {
       console.log('Authorization status:', authStatus);
+      // console.log('Device Token', token);
+      // dispatch(storeToken(token));
     }
   }
   const getToken = async () => {
@@ -121,10 +122,6 @@ const Root = () => {
           <Stack.Screen
             name="VideoCallRedirect"
             component={VideoCallRedirect}
-          />
-          <Stack.Screen
-            name="VideoCallInterface"
-            component={VideoCallInterface}
           />
         </Stack.Group>
       ) : (

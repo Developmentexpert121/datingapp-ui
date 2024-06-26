@@ -75,11 +75,6 @@ const HomeScreen = () => {
     setCheckedInterests(profileData?.interests);
   }, [profileData?.interests]);
 
-  // Function to convert degrees to radians
-  const toRadians = (degrees: any) => {
-    return (degrees * Math.PI) / 180;
-  };
-
   return (
     <View style={styles.pageContainer}>
       <HeaderComponent

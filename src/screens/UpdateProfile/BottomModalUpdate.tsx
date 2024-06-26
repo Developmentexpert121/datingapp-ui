@@ -63,11 +63,11 @@ const BottomModalUpdate = ({isOpen, onClose, title, value}: any) => {
   ];
 
   const dataEducation = [
-    {text: 'Bachelors'},
-    {text: 'In college'},
-    {text: 'High school'},
-    {text: 'PHD'},
-    {text: 'Masters'},
+    {id: '1', text: 'In college'},
+    {id: '2', text: 'Bachelors'},
+    {id: '3', text: 'High school'},
+    {id: '4', text: 'PHD'},
+    {id: '5', text: 'Masters'},
   ];
   const avatars = [
     {id: '1', text: 'Long term partner'},
@@ -115,9 +115,9 @@ const BottomModalUpdate = ({isOpen, onClose, title, value}: any) => {
     if (title.toLowerCase() === 'interests') {
       field = 'allInterests';
       fieldValue = interests.join(',');
-    } else if (title.toLowerCase() === 'education') {
-      field = 'education';
-      fieldValue = education;
+      // } else if (title.toLowerCase() === 'education') {
+      //   field = 'education';
+      //   fieldValue = education;
     } else if (title.toLowerCase() === 'relationship goals') {
       field = 'partnerType';
       fieldValue = selectedAvatar;
@@ -179,12 +179,12 @@ const BottomModalUpdate = ({isOpen, onClose, title, value}: any) => {
   console.log('____________', selectedAvatar);
 
   const toggleChip = (interest: string) => {
-    if (education === interest) {
-      setEducation('');
-    } else {
-      console.log('wwwwwwwwwwwwwwwwwwwwwCalled');
-      setEducation(interest);
-    }
+    // if (education === interest) {
+    //   setEducation('');
+    // } else {
+    //   console.log('wwwwwwwwwwwwwwwwwwwwwCalled');
+    //   setEducation(interest);
+    // }
     if (selectedAvatar === interest) {
       setSelectedAvatar('');
     } else {
@@ -198,8 +198,8 @@ const BottomModalUpdate = ({isOpen, onClose, title, value}: any) => {
       setInterests(updatedInterests);
     } else {
       // If interest is not selected, add it
-      // const updatedInterests = [...interests, interest];
-      // setInterests(updatedInterests);
+      const updatedInterests = [...interests, interest];
+      setInterests(updatedInterests);
     }
   };
 
@@ -215,92 +215,97 @@ const BottomModalUpdate = ({isOpen, onClose, title, value}: any) => {
         onPress={onClose}>
         <View style={styles.drawer}>
           <Text style={styles.drawerText}>{title}</Text>
-          {title === 'Education' ? (
-            <View style={{marginHorizontal: 40, rowGap: 10, marginTop: 10}}>
+          {
+            //
+            // title === 'Education' ? (
+            //   <View style={{marginHorizontal: 40, rowGap: 10, marginTop: 10}}>
+            //     <View
+            //       style={{
+            //         flexDirection: 'row',
+            //         borderRadius: 15,
+            //         backgroundColor: '#AC25AC',
+            //         paddingHorizontal: 12,
+            //       }}>
+            //       <Text
+            //         style={{
+            //           color: 'white',
+            //           paddingVertical: 6,
+            //           fontFamily: 'Sansation-Regular',
+            //         }}>
+            //         {education}
+            //       </Text>
+            //     </View>
+            //     <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+            //       {dataEducation.map((item, index) => {
+            //         if (!education.includes(item.text)) {
+            //           return <ListItem2 key={index} item={item.text} />;
+            //         }
+            //         return null; // Don't render the chip if it's already selected
+            //       })}
+            //     </View>
+            //   </View>
+            // ) :
+            //
+            title === 'Interests' ? (
               <View
                 style={{
-                  flexDirection: 'row',
-                  borderRadius: 15,
-                  backgroundColor: '#AC25AC',
-                  paddingHorizontal: 12,
+                  marginHorizontal: 35,
+                  rowGap: 10,
                 }}>
-                <Text
-                  style={{
-                    color: 'white',
-                    paddingVertical: 6,
-                    fontFamily: 'Sansation-Regular',
-                  }}>
-                  {education}
-                </Text>
-              </View>
-              <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-                {dataEducation.map((item, index) => {
-                  if (!education.includes(item.text)) {
-                    return <ListItem2 key={index} item={item.text} />;
-                  }
-                  return null; // Don't render the chip if it's already selected
-                })}
-              </View>
-            </View>
-          ) : title === 'Interests' ? (
-            <View
-              style={{
-                marginHorizontal: 35,
-                rowGap: 10,
-              }}>
-              <View>
+                <View>
+                  <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+                    {interests?.map((item: string, index: number) => (
+                      <ListItem key={index} item={item} />
+                    ))}
+                  </View>
+                </View>
                 <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-                  {interests?.map((item: string, index: number) => (
-                    <ListItem key={index} item={item} />
-                  ))}
+                  {Data.map((item, index) => {
+                    if (!interests.includes(item.text)) {
+                      return <ListItem2 key={index} item={item.text} />;
+                    }
+                    return null; // Don't render the chip if it's already selected
+                  })}
                 </View>
               </View>
-              <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-                {Data.map((item, index) => {
-                  if (!interests.includes(item.text)) {
-                    return <ListItem2 key={index} item={item.text} />;
-                  }
-                  return null; // Don't render the chip if it's already selected
-                })}
-              </View>
-            </View>
-          ) : title === 'Relationship Goals' ? (
-            <View style={{marginHorizontal: 40, rowGap: 10, marginTop: 10}}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  borderRadius: 15,
-                  backgroundColor: '#AC25AC',
-                  paddingHorizontal: 12,
-                }}>
-                <Text
+            ) : title === 'Relationship Goals' ? (
+              <View style={{marginHorizontal: 40, rowGap: 10, marginTop: 10}}>
+                <View
                   style={{
-                    color: 'white',
-                    paddingVertical: 6,
-                    fontFamily: 'Sansation-Regular',
+                    flexDirection: 'row',
+                    borderRadius: 15,
+                    backgroundColor: '#AC25AC',
+                    paddingHorizontal: 12,
                   }}>
-                  {selectedAvatar}
-                </Text>
+                  <Text
+                    style={{
+                      color: 'white',
+                      paddingVertical: 6,
+                      fontFamily: 'Sansation-Regular',
+                    }}>
+                    {selectedAvatar}
+                  </Text>
+                </View>
+                <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+                  {avatars.map((item, index) => {
+                    if (!selectedAvatar.includes(item.text)) {
+                      return <ListItem2 key={index} item={item.text} />;
+                    }
+                    return null; // Don't render the chip if it's already selected
+                  })}
+                </View>
               </View>
-              <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-                {avatars.map((item, index) => {
-                  if (!selectedAvatar.includes(item.text)) {
-                    return <ListItem2 key={index} item={item.text} />;
-                  }
-                  return null; // Don't render the chip if it's already selected
-                })}
+            ) : (
+              <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                <AppTextInput
+                  placeholder={'Enter Your ' + title.split(' ')[0]}
+                  name={title}
+                  control={control}
+                  errors={Boolean(errors?.work)}
+                />
               </View>
-            </View>
-          ) : (
-            <View style={{justifyContent: 'center', alignItems: 'center'}}>
-              <AppTextInput
-                placeholder={'Enter Your ' + title.split(' ')[0]}
-                name={title}
-                control={control}
-                errors={Boolean(errors?.work)}
-              />
-            </View>
-          )}
+            )
+          }
           <MainButton
             buttonStyle={{width: '80%'}}
             onPress={handleSubmit(onSubmit)}

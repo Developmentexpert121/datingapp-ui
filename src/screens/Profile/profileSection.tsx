@@ -59,6 +59,10 @@ const data2 = [
   {service: 'Unlimited likes', icon: <UnlockIC />},
 ];
 
+const premium = () => {
+  return <></>;
+};
+
 const Box = ({item, isActive}: any) => (
   <LinearGradient
     colors={[
@@ -70,7 +74,7 @@ const Box = ({item, isActive}: any) => (
     style={[styles.box]}>
     <Text style={styles.boxTitle}>{item.title}</Text>
     <Text style={styles.boxDescription}>{item.description}</Text>
-    <TouchableOpacity>
+    <TouchableOpacity onPress={premium}>
       <Text style={styles.upgradeButton}>Upgrade from {item.price}</Text>
     </TouchableOpacity>
   </LinearGradient>

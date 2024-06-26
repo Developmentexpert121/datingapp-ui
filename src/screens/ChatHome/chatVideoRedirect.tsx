@@ -79,6 +79,11 @@ const VideoCallRedirect = () => {
         ring: true,
         data: {
           members: [{user_id: profileData._id}, {user_id: user._id}],
+          // custom: {color: '#AA22AA'},
+          // settings_override: {
+          //   audio: {mic_default_on: false},
+          //   video: {camera_default_on: false},
+          // },
         },
       })
       .catch(err => {

@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -14,6 +14,7 @@ import CommonBackbutton from '../../components/commonBackbutton/CommonBackbutton
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import LinearGradient from 'react-native-linear-gradient';
 import {videoCallUser} from '../../store/Activity/activity';
+import {likedMe} from '../../store/Auth/auth';
 const LikedScreen = () => {
   const allUsers: any = useAppSelector(
     (state: any) => state?.Auth?.data?.allUsers,
@@ -22,38 +23,53 @@ const LikedScreen = () => {
     (state: any) => state?.Auth?.data?.profileData,
   );
 
-  const likedUsers = allUsers.filter((user: any) =>
-    profileData?.likedBy.includes(user?._id),
-  );
-  console.log('djsfgdjksgaehjg', profileData?.likedBy);
-
   const dispatch: any = useAppDispatch();
+
+  const [likeData, setLikeData] = useState<any>([]);
+  console.log('likeData??????????', likeData);
+
   const goToChatWith = async (user: any) => {
     await dispatch(videoCallUser({user: user}));
     navigation.navigate('VideoCallRedirect');
   };
   const navigation = useNavigation();
 
-  const renderGridItem = ({item}: any) => (
-    <TouchableOpacity onPress={() => goToChatWith(item)} style={styles.card}>
-      <ImageBackground
-        source={{uri: item.profilePic.split(',')[0]}}
-        style={styles.image}>
-        <LinearGradient
-          colors={['rgba(0,0,0,0)', 'rgba(0,0,0,0.8)']}
-          style={styles.gradient}></LinearGradient>
-        <View style={styles.cardInner}>
-          <Text style={styles.name}>{item.name}</Text>
-          <Text style={styles.bio}>{item.hobbies}</Text>
-        </View>
-      </ImageBackground>
-    </TouchableOpacity>
-  );
+  const LikedUser = async () => {
+    try {
+      const response = await dispatch(likedMe({id: profileData._id})).unwrap();
+      setLikeData(response);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  useEffect(() => {
+    LikedUser();
+  }, []);
+
+  const renderGridItem = ({item, index}: any) => {
+    console.log("source={{uri: item.profilePic.split(',')[0]}}", item);
+    return (
+      <TouchableOpacity onPress={() => goToChatWith(item)} style={styles.card}>
+        <ImageBackground
+          source={{uri: item.profilePic.split(',')[0]}}
+          style={styles.image}>
+          <LinearGradient
+            colors={['rgba(0,0,0,0)', 'rgba(0,0,0,0.8)']}
+            style={styles.gradient}></LinearGradient>
+          <View style={styles.cardInner}>
+            <Text style={styles.name}>{item.name}</Text>
+            <Text style={styles.bio}>{item.hobbies}</Text>
+          </View>
+        </ImageBackground>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <CommonBackbutton title="Liked You" />
-      {likedUsers.length === 0 ? (
+      {likeData.length === 0 ? (
         <View
           style={{
             flex: 1,
@@ -73,7 +89,7 @@ const LikedScreen = () => {
           }}>
           <FlatList
             showsVerticalScrollIndicator={false}
-            data={likedUsers}
+            data={likeData}
             renderItem={renderGridItem}
             keyExtractor={item => item._id}
             numColumns={2}
@@ -107,6 +123,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     overflow: 'hidden',
     height: 200,
+    borderWidth: 1,
   },
   cardInner: {
     flex: 1,
