@@ -198,6 +198,7 @@ const ChatPage = ({
   const isUserOnline = showOnlineUser?.includes(user?._id);
   console.log('+++++++++++++', isUserOnline);
 
+  console.log('user user.........', user);
   return (
     <>
       <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
@@ -359,30 +360,44 @@ const ChatPage = ({
                 })}
               </ScrollView>
             </View>
-            <View
-              style={[
-                styles.inputView,
-                isKeyboardVisible && {marginBottom: 40},
-              ]}>
+            {user?.deactivate === false && user?.isBlocked === false ? (
               <View
-                style={{borderWidth: 1, width: '88%', flexDirection: 'row'}}>
-                <TextInput
-                  value={inputMessage}
-                  onChangeText={setInputMessage}
-                  placeholder="Type your message..."
-                  style={styles.input}
-                />
-                <TouchableOpacity onPress={handleMediaSelection}>
-                  <Image
-                    source={require('../../assets/images/documentUpload.png')}
-                    style={{height: 40, width: 40, alignSelf: 'center'}}
+                style={[
+                  styles.inputView,
+                  isKeyboardVisible && {marginBottom: 40},
+                ]}>
+                <View
+                  style={{borderWidth: 1, width: '88%', flexDirection: 'row'}}>
+                  <TextInput
+                    value={inputMessage}
+                    onChangeText={setInputMessage}
+                    placeholder="Type your message..."
+                    style={styles.input}
                   />
+                  <TouchableOpacity onPress={handleMediaSelection}>
+                    <Image
+                      source={require('../../assets/images/documentUpload.png')}
+                      style={{height: 40, width: 40, alignSelf: 'center'}}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <TouchableOpacity style={styles.sendButton}>
+                  <SendIC onPress={handleSendMessage} />
                 </TouchableOpacity>
               </View>
-              <TouchableOpacity style={styles.sendButton}>
-                <SendIC onPress={handleSendMessage} />
-              </TouchableOpacity>
-            </View>
+            ) : (
+              <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                <Text
+                  style={{
+                    fontFamily: 'Sansation-Regular',
+                    color: 'red',
+                    fontSize: 20,
+                  }}>
+                  This user is {user?.deactivate === true && 'Deactivate '}
+                  {user?.isBlocked === true && ' Blocked'}
+                </Text>
+              </View>
+            )}
           </View>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>

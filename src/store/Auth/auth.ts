@@ -647,7 +647,6 @@ export const deleteUser = createAsyncThunk(
       const response = await http.delete(
         `/user/delete-account?userId=${data.senderId}`,
       );
-      // console.log('11!!!!!!!!!!!!');
       if (response.status === 200) {
         console.log('________________-', response);
         dispatch(updateAuthentication());
@@ -669,6 +668,7 @@ export const deleteUser = createAsyncThunk(
 export const deactivateUser = createAsyncThunk(
   'auth/deleteUser',
   async (data: any, {dispatch}: any) => {
+    console.log('deactivateUser', data);
     try {
       const response = await http.post('/user/deactivateAccount', data);
       if (response.status === 200) {
@@ -709,6 +709,43 @@ export const videoCallToken = createAsyncThunk(
       } else {
         throw error;
       }
+    }
+  },
+);
+export const blockAUser = createAsyncThunk(
+  'auth/likedAUser',
+  async (data: any, {dispatch}: any) => {
+    try {
+      const response = await http.post('/user/blockUser', data);
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        return {error: 'Bad Request'};
+      } else {
+        throw error;
+      }
+    } finally {
+    }
+  },
+);
+export const UnBlockAUser = createAsyncThunk(
+  'auth/likedAUser',
+  async (data: any, {dispatch}: any) => {
+    console.log('selectedUser._id', data);
+    try {
+      const response = await http.post('/user/unBlockUser', data);
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        return {error: 'Bad Request'};
+      } else {
+        throw error;
+      }
+    } finally {
     }
   },
 );

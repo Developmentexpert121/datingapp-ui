@@ -23,10 +23,11 @@ import {
   updateProfileData,
 } from '../../store/Auth/auth';
 import Geolocation from '@react-native-community/geolocation';
-import {EmailIC, LocationIC, PhoneIC} from '../../assets/svgs';
+import {EditTextIC, EmailIC, LocationIC, PhoneIC} from '../../assets/svgs';
 import BottomDrawer from './BottomDrawer';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import Loader from '../../components/Loader/Loader';
+import GlobalModal from '../../components/Modals/GlobalModal';
 
 interface UpdateForm {
   name: string;
@@ -63,7 +64,8 @@ const SettingsSection = () => {
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-  // console.log('_____________', profileData?.language);
+  console.log('_____________', profileData?.language);
+
   const dispatch: any = useAppDispatch();
   const navigation: any = useNavigation();
   const [loader, setLoader] = useState<boolean>(false);
@@ -116,7 +118,7 @@ const SettingsSection = () => {
       title: 'Location',
       name: address,
     },
-    {title: 'Language I Know', name: profileData?.languageData},
+    {title: 'Language I Know', name: profileData?.language},
   ];
   const openDrawer = () => {
     setIsDrawerOpen(true);
@@ -230,12 +232,22 @@ const SettingsSection = () => {
     //
   };
   const deactivateUserButton = async () => {
-    dispatch(
-      deactivateUser({
-        userId: profileData?._id,
-        action: profileData?.deactivate,
-      }),
-    );
+    dispatch(deactivateUser({userId: profileData?._id}))
+      .unwrap()
+      .then(async (res: any) => {
+        console.log('Delete User res', res);
+
+        try {
+          const isSignedIn = await GoogleSignin.isSignedIn();
+          if (isSignedIn) {
+            await GoogleSignin.signOut();
+          }
+          dispatch(logoutUser({senderId: profileData._id}));
+          await authTokenRemove();
+        } catch (error) {
+          console.error(error, 'error');
+        }
+      });
   };
 
   return (
@@ -246,19 +258,41 @@ const SettingsSection = () => {
         {dataArr &&
           dataArr.map((item, index) => (
             <View style={styles.boxContainer} key={index}>
-              <Text style={styles.textName}>{item.title}</Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                }}>
+                <View style={{width: 20}}></View>
+                <Text style={styles.textName}>{item.title}</Text>
+                {item.title === 'Location' ||
+                item.title === 'Language I Know' ? (
+                  <EditTextIC
+                    onPress={() => {
+                      if (item.title === 'Location') {
+                        showPermissionPopup();
+                      } else {
+                        handleModal(item);
+                      }
+                    }}
+                  />
+                ) : (
+                  <View style={{width: 20}} />
+                )}
+              </View>
               <View style={styles.line} />
               <View>
-                <TouchableOpacity
+                <View
                   style={styles.textField}
-                  disabled={index === 1 || index === 0}
-                  onPress={() => {
-                    if (item.title === 'Location') {
-                      showPermissionPopup();
-                    } else {
-                      handleModal(item);
-                    }
-                  }}>
+                  // disabled={index === 1 || index === 0}
+                  // onPress={() => {
+                  //   if (item.title === 'Location') {
+                  //     showPermissionPopup();
+                  //   } else {
+                  //     handleModal(item);
+                  //   }
+                  // }}
+                >
                   {index === 0 ? (
                     <PhoneIC />
                   ) : index === 1 ? (
@@ -275,7 +309,7 @@ const SettingsSection = () => {
                     }}>
                     {item.name}
                   </Text>
-                </TouchableOpacity>
+                </View>
               </View>
             </View>
           ))}
@@ -296,9 +330,7 @@ const SettingsSection = () => {
         <TouchableOpacity style={styles.boxContainer}>
           <Text
             style={[styles.textName, {color: '#AC25AC'}]}
-            onPress={deactivateUserButton}
-            //
-          >
+            onPress={deactivateUserButton}>
             Deactivate
           </Text>
         </TouchableOpacity>
@@ -307,13 +339,10 @@ const SettingsSection = () => {
           onClose={closeDrawer}
           title={title}
           value={values}
-          // callingCode={`${profileData?.phone?.countryCode}`}
-          // setCallingCode={`${profileData?.phone?.countryCode}`}
-          // abde={`${profileData?.phone?.number}`}
-          // zxcv={`${profileData?.phone?.number}`}
         />
       </ScrollView>
       {loader && <Loader />}
+      {<GlobalModal />}
     </SafeAreaView>
   );
 };

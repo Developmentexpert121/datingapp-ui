@@ -12,7 +12,12 @@ import CommonBackbutton from '../../components/commonBackbutton/CommonBackbutton
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../store/store';
-import {getChatUsersList, getReceivers} from '../../store/Auth/auth';
+import {
+  UnBlockAUser,
+  blockAUser,
+  getChatUsersList,
+  getReceivers,
+} from '../../store/Auth/auth';
 import {videoCallUser} from '../../store/Activity/activity';
 import SmallLoader from '../../components/Loader/SmallLoader';
 import {DoubleTickIC} from '../../assets/svgs';
@@ -26,6 +31,7 @@ const ChatSection = () => {
     (state: any) => state?.Auth?.data?.profileData,
   );
   const [chatListData, setChatListData] = useState<any>([]);
+  // console.log('first', chatListData);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const [loader, setLoader] = useState<boolean>(false);
@@ -41,8 +47,11 @@ const ChatSection = () => {
   };
 
   const handleBlockUser = () => {
-    // Add your block user logic here
-    console.log('Blocking user:', selectedUser);
+    BlockData();
+    setModalVisible(false);
+  };
+  const handleUnBlockUser = () => {
+    UnBlockData();
     setModalVisible(false);
   };
 
@@ -113,6 +122,33 @@ const ChatSection = () => {
       return ``;
     }
   };
+
+  const BlockData = async () => {
+    try {
+      const response = await dispatch(
+        blockAUser({
+          userId: profileData._id,
+          userIdBeingBlocked: selectedUser._id,
+        }),
+      ).unwrap();
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  const UnBlockData = async () => {
+    try {
+      console.log(';;;;;;;;;;;;');
+      const response = await dispatch(
+        UnBlockAUser({
+          userId: profileData._id,
+          userIdBeingUnblocked: selectedUser._id,
+        }),
+      ).unwrap();
+    } catch (error) {
+      console.error('Error UnBlockData', error);
+    }
+  };
+
   //
   const renderItem = ({item}: {item: any}) => {
     return (
@@ -131,7 +167,7 @@ const ChatSection = () => {
             <SmallLoader />
           )}
         </View>
-        <View style={{width: '65%'}}>
+        <View style={{width: '60%'}}>
           <Text
             style={{
               fontFamily: 'Sansation-Bold',
@@ -148,21 +184,36 @@ const ChatSection = () => {
             {item.chat?.message}
           </Text>
         </View>
+
         <View
           style={{
             flex: 1,
             rowGap: 4,
-            width: '20%',
+            width: '25%',
+            // borderWidth: 1,
+            alignItems: 'center',
           }}>
-          <Text
-            style={{
-              fontFamily: 'Sansation-Regular',
-              fontSize: 10,
-              color: 'black',
-            }}>
-            {getTimeAgo(item.chat?.timestamp)}
-          </Text>
-          {item.chat?.message ? <DoubleTickIC /> : null}
+          {item.isBlocked === true ? (
+            <Text
+              style={{
+                fontFamily: 'Sansation-Regular',
+                color: 'red',
+              }}>
+              Unbolck
+            </Text>
+          ) : (
+            <>
+              <Text
+                style={{
+                  fontFamily: 'Sansation-Regular',
+                  fontSize: 10,
+                  color: 'black',
+                }}>
+                {getTimeAgo(item.chat?.timestamp)}
+              </Text>
+              {item.chat?.message ? <DoubleTickIC /> : null}
+            </>
+          )}
         </View>
       </ListItem>
     );
@@ -196,14 +247,19 @@ const ChatSection = () => {
           setModalVisible(!modalVisible);
         }}
         visible={modalVisible}
-        onPress={handleBlockUser}
-        onPress1={() => setModalVisible(!modalVisible)}
+        onPress={
+          selectedUser?.isBlocked === true ? handleUnBlockUser : handleBlockUser
+        }
+        onPressCancel={() => setModalVisible(!modalVisible)}
+        blockText={selectedUser?.isBlocked === true ? 'Unblock' : 'Block'}
       />
 
       {loader && <Loader />}
     </SafeAreaView>
   );
 };
+
+export default ChatSection;
 
 const styles = StyleSheet.create({
   container: {
@@ -250,5 +306,3 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
 });
-
-export default ChatSection;

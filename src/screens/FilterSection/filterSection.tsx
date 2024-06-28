@@ -154,7 +154,7 @@ const FilterSection = ({
   };
 
   return (
-    <ScrollView style={{marginTop: 10}}>
+    <ScrollView style={{marginTop: 10}} showsVerticalScrollIndicator={false}>
       {/* Distance Preference */}
       <View style={styles.boxContainer}>
         <View style={styles.distance}>
@@ -209,7 +209,7 @@ const FilterSection = ({
                   name={
                     showIn === true ? 'radio-button-on' : 'radio-button-off'
                   }
-                  size={16}
+                  size={25}
                   color="#AC25AC"
                 />
               </TouchableOpacity>
@@ -264,7 +264,7 @@ const FilterSection = ({
                               ? 'radio-button-on'
                               : 'radio-button-off'
                           }
-                          size={20}
+                          size={25}
                           color="#AC25AC"
                         />
                       </TouchableOpacity>
@@ -345,7 +345,7 @@ const FilterSection = ({
                           ? 'radio-button-on'
                           : 'radio-button-off'
                       }
-                      size={20}
+                      size={25}
                       color="#AC25AC"
                     />
                   </TouchableOpacity>
@@ -400,7 +400,7 @@ const FilterSection = ({
                           ? 'radio-button-on'
                           : 'radio-button-off'
                       }
-                      size={20}
+                      size={25}
                       color="#AC25AC"
                     />
                   </TouchableOpacity>

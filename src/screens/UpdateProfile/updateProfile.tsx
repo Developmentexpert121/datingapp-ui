@@ -66,7 +66,6 @@ const UpdateProfile = () => {
   const [keyboardShown, setKeyboardShown] = useState(false);
 
   const getFirstThreeDigits = (number: number) => {
-    // Convert number to string, slice the first three digits, then convert back to number
     return Math.round(number);
   };
 
@@ -145,19 +144,20 @@ const UpdateProfile = () => {
                   flexDirection: 'row',
                   justifyContent: 'space-between',
                 }}>
-                <View style={{width: 20}}></View>
+                <View style={{width: 20}} />
                 <Text style={styles.textName}>{item.title}</Text>
                 <EditTextIC onPress={() => handleModal(item)} />
               </View>
               <View style={styles.line} />
               <View style={{}}>
-                <TouchableOpacity
+                <View
                   style={styles.textField}
-                  onPress={() => handleModal(item)}>
+                  // onPress={() => handleModal(item)}
+                >
                   <Text style={{fontFamily: 'Sansation-Regular'}}>
                     {item.name}
                   </Text>
-                </TouchableOpacity>
+                </View>
               </View>
             </View>
           ))}
@@ -234,46 +234,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: 20,
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-  },
-  overlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'flex-end',
-  },
-  drawer: {
-    backgroundColor: '#FFFFFF',
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
-    paddingVertical: 32,
-  },
-  drawerText: {
-    fontSize: 20,
-    marginBottom: 5,
-    marginLeft: 40,
-    color: 'black',
-    fontFamily: 'Sansation-Bold',
-  },
-  listItem: {
-    backgroundColor: '#AC25AC',
-    marginRight: 4,
-    borderRadius: 38,
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-
-  listItem2: {
-    borderWidth: 1,
-    backgroundColor: '#ffffff',
-    borderColor: 'grey',
-    marginRight: 4,
-    borderRadius: 38,
-    alignItems: 'center',
-    marginBottom: 10,
   },
 });

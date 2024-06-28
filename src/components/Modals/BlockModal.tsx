@@ -11,13 +11,15 @@ interface modalData {
   visible: any;
   onRequestClose: any;
   onPress: any;
-  onPress1: any;
+  onPressCancel: any;
+  blockText: any;
 }
 const BlockModal: React.FC<modalData> = ({
   visible,
   onRequestClose,
   onPress,
-  onPress1,
+  onPressCancel,
+  blockText,
 }) => {
   return (
     <Modal
@@ -29,11 +31,11 @@ const BlockModal: React.FC<modalData> = ({
         <View style={styles.modalView}>
           <Text style={styles.modalText}>Block User</Text>
           <TouchableOpacity style={styles.button} onPress={onPress}>
-            <Text style={styles.buttonText}>Block</Text>
+            <Text style={styles.buttonText}>{blockText}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.button, styles.buttonClose]}
-            onPress={onPress1}>
+            onPress={onPressCancel}>
             <Text style={styles.buttonText}>Cancel</Text>
           </TouchableOpacity>
         </View>

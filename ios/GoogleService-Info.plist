@@ -5,9 +5,11 @@
 	<key>CLIENT_ID</key>
 	<string>151623051367-evoer0qadv6g613aaiea5o2bd0s4sa3c.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>151623051367-evoer0qadv6g613aaiea5o2bd0s4sa3c.apps.googleusercontent.com</string>
+	<string>com.googleusercontent.apps.151623051367-evoer0qadv6g613aaiea5o2bd0s4sa3c</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>151623051367-b2le4n8q64cglgd1tfks2ci9hss1ia6d.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAtqa4_Lij6XREwsJ1zs-DKWHi7-Z1Rby0</string>
+	<string>AIzaSyCi6u1CdYdrkz48GcEJnAibU7qwkiH24aM</string>
 	<key>GCM_SENDER_ID</key>
 	<string>151623051367</string>
 	<key>PLIST_VERSION</key>
@@ -15,9 +17,9 @@
 	<key>BUNDLE_ID</key>
 	<string>com.toptierdating.app</string>
 	<key>PROJECT_ID</key>
-	<string>toptier-dating-a2942</string>
+	<string>toptier-dating-423403</string>
 	<key>STORAGE_BUCKET</key>
-	<string>toptier-dating-a2942.appspot.com</string>
+	<string>toptier-dating-423403.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:151623051367:ios:d44f955e7e2f68d88c3075</string>
+	<string>1:151623051367:ios:b6af088d3bd7d297d6ccc2</string>
 </dict>
 </plist>
