@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
+	<string></string>
 	<key>CFBundleDisplayName</key>
 	<string>DatingApp</string>
 	<key>CFBundleExecutable</key>
@@ -14,18 +14,36 @@
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>$(PRODUCT_NAME)</string>
-	<key>NSCameraUsageDescription</key>
-    <string>$(PRODUCT_NAME) would like to use your camera</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>$(PRODUCT_NAME) would like to use your microphone</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.151623051367-evoer0qadv6g613aaiea5o2bd0s4sa3c</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>FacebookAppID</key>
+	<string>1761035230974329</string>
+	<key>FacebookDisplayName</key>
+	<string>YOUR_APP_NAME</string>
+	<key>GIDClientID</key>
+	<string>151623051367-evoer0qadv6g613aaiea5o2bd0s4sa3c.apps.googleusercontent.com</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -35,8 +53,35 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>YOUR TEXT</string>
+	<key>NSCameraUsageDescription</key>
+	<string>TopTier Dating App uses camera to take photos.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>TopTier Dating app uses current location to get nearby another users.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string>TopTier Dating app using current location to get nearby another users.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>TopTier Dating app uses microphone to call.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>TopTier Dating App uses gallery to pick photos.</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>PassionOne-Black.ttf</string>
+		<string>PassionOne-Regular.ttf</string>
+		<string>Ionicons.ttf</string>
+		<string>Sansation-Bold-Italic.ttf</string>
+		<string>Sansation-Bold.ttf</string>
+		<string>Sansation-Italic.ttf</string>
+		<string>Sansation-Light-Italic.ttf</string>
+		<string>Sansation-Light.ttf</string>
+		<string>Sansation-Regular.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -51,17 +96,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>UIAppFonts</key>
-	<array>
-		<string>Sansation_Bold.ttf</string>
-		<string>Sansation_Bold_Italic.ttf</string>
-		<string>Sansation_Italic.ttf</string>
-		<string>Sansation_Light.ttf</string>
-		<string>Sansation_Light_Italic.ttf</string>
-		<string>Sansation_Regular.ttf</string>
-		<string>PassionOne-Black.ttf</string>
-		<string>PassionOne-Bold.ttf</string>
-		<string>PassionOne-Regular.ttf</string>
-	</array>
 </dict>
 </plist>

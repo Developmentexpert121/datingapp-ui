@@ -1,20 +1,26 @@
-import React, {useEffect} from 'react';
-
+import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-
-import {Platform, useColorScheme} from 'react-native';
-
-import {useSelector} from 'react-redux';
-import {AuthNavigator, MainNavigator} from './src/navigation/index';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useAppSelector} from './src/store/store';
-import LoadingSpinner from './src/services/spinner/spinner';
-import SplashScreen from 'react-native-splash-screen';
+import {RootState, useAppDispatch, useAppSelector} from './src/store/store';
 import messaging from '@react-native-firebase/messaging';
+import Root from './src/navigation/Root';
+import GlobalModal from './src/components/Modals/GlobalModal';
+import Loader from './src/components/Loader/Loader';
+import io from 'socket.io-client';
 import {requestNotifications} from 'react-native-permissions';
+import {onlineUser} from './src/store/reducer/authSliceState';
+
+// import PushNotification from 'react-native-push-notification';
+
+const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 
 const App = () => {
+  const {showOnlineUser} = useAppSelector(
+    (state: RootState) => state.authSliceState,
+  );
+
+  const dispatch = useAppDispatch();
+
   async function requestUserPermission() {
     await requestNotifications(['alert', 'sound']);
     const authStatus = await messaging().requestPermission();
@@ -23,59 +29,84 @@ const App = () => {
       authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
     if (enabled) {
-      console.log('Authorization status:', authStatus);
+      // console.log('Authorization status:', authStatus);
     }
   }
-  const getToken = async () => {
-    const token = await messaging().getToken();
-    console.log('Token:', token);
-  };
+  // useEffect(() => {
+  //   // crashlytics().log("App Mount....");
+  //   PushNotification.createChannel(
+  //     {
+  //       channelId: 'hatti-app',
+  //       channelName: 'Hatti',
+  //     },
+  //     created => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
+  //   );
+  // }, []);
+
+  const [onlineUsers, setOnlineUsers] = useState<any>([]);
+  const profileData: any = useAppSelector(
+    (state: any) => state?.Auth?.data?.profileData,
+  );
+
+  useEffect(() => {
+    if (profileData?._id) {
+      socket.emit('user_connected', profileData?._id);
+      socket.on('connect', () => {
+        console.log('App Connected from server');
+        const userId = profileData?._id;
+        socket.emit('user_connected', userId);
+      });
+    }
+
+    return () => {
+      socket.off('connect');
+    };
+  }, [profileData._id]);
+
+  useEffect(() => {
+    socket.on('user_online', userId => {
+      setOnlineUsers((prevOnlineUsers: any) => {
+        if (!prevOnlineUsers.includes(userId)) {
+          return [...prevOnlineUsers, userId];
+        }
+        return prevOnlineUsers;
+      });
+    });
+
+    socket.on('user_offline', userId => {
+      setOnlineUsers((prevOnlineUsers: any) =>
+        prevOnlineUsers.filter((user: any) => user !== userId),
+      );
+    });
+
+    socket.on('disconnect', () => {
+      console.log('App Disconnected from server');
+    });
+
+    return () => {
+      socket.off('user_online');
+      socket.off('user_offline');
+      socket.off('disconnect');
+    };
+  }, []);
+
+  useEffect(() => {
+    dispatch(onlineUser(onlineUsers));
+  }, [onlineUsers, dispatch]);
+  // console.log('onlineUsers', onlineUsers);
 
   const isLoading = useAppSelector(
     (state: any) => state.ActivityLoader.loading,
   );
-  const isDarkMode = useColorScheme() === 'dark';
-
-  // const backgroundStyle = {
-  //   backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  // };
-
-  const isAuthenticated = useSelector(
-    (state: any) => state?.Auth?.isAuthenticated,
-  );
-
-  useEffect(() => {
-    if (Platform.OS === 'android') {
-      SplashScreen.hide();
-    }
-    requestUserPermission();
-    getToken();
-  }, []);
-
-  const authToken: any = async () => {
-    try {
-      const token = await AsyncStorage.getItem('authToken');
-      if (token !== null) {
-        return JSON.parse(token);
-      } else {
-        return null;
-      }
-    } catch (error) {
-      return null;
-    }
-  };
 
   return (
     <SafeAreaProvider>
       {isLoading ? (
-        <LoadingSpinner />
+        <Loader />
       ) : (
         <NavigationContainer>
-          {isAuthenticated && authToken() ? (
-            <MainNavigator />
-          ) : (
-            <AuthNavigator />
-          )}
+          <Root />
+          <GlobalModal />
         </NavigationContainer>
       )}
     </SafeAreaProvider>

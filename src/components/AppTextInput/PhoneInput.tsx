@@ -32,23 +32,21 @@ interface Iprops {
   errors?: boolean;
   name?: any;
   control?: any;
+  callingCode?: any;
+  setCallingCode?: any;
 }
 const PhoneInput = ({
+  name,
+  control,
   label,
   code,
-  onCountryCode,
-  showError,
-  error,
-  onChangeText,
-  value,
   editable,
   countryDisable,
   errors,
-  name,
-  control,
+  callingCode,
+  setCallingCode,
 }: Iprops) => {
   const [show, setShow] = useState<boolean>(false);
-  const [callingCode, setCallingCode] = useState(code || '+91');
   const [countryFlag, setCountryFlag] = useState(
     findFlagByDialCode(code || '+91'),
   );
@@ -62,14 +60,10 @@ const PhoneInput = ({
       render={({field: {onChange, onBlur, value}}) => (
         <View style={styles.container}>
           <Label text={label} style={[styles.label]} />
-
           <View
             style={[
               // {
               styles.inputView,
-              //   borderColor: showError && error ? 'red' : 'transparent',
-              //   borderWidth: showError && error ? 2 : 2,
-              // },
               hasError
                 ? styles.errorBorder
                 : {borderWidth: 1, borderColor: 'rgba(0, 0, 0, 0.2)'},
@@ -81,7 +75,7 @@ const PhoneInput = ({
               <Label text={countryFlag || ''} />
               <Label
                 text={callingCode}
-                style={{marginHorizontal: 8, fontSize: 16}}
+                style={{marginHorizontal: 8, fontSize: 16, color: 'black'}}
               />
               <Down1IC />
             </Pressable>
@@ -89,9 +83,7 @@ const PhoneInput = ({
               show={show}
               onBackdropPress={() => setShow(false)}
               pickerButtonOnPress={item => {
-                console.log({item});
                 setCallingCode(item.dial_code);
-                onCountryCode && onCountryCode(item.dial_code);
                 setCountryFlag(item?.flag);
                 setShow(false);
               }}
@@ -108,21 +100,14 @@ const PhoneInput = ({
                 editable={editable}
                 style={{flex: 1, fontSize: 16}}
                 placeholder="Enter Phone Number"
+                placeholderTextColor={Colors.darkText}
                 value={value}
                 returnKeyType="done"
                 onChangeText={onChange}
                 keyboardType="phone-pad"
-                maxLength={25}
+                maxLength={12}
               />
             </View>
-          </View>
-          <View style={{height: 15, marginTop: 4}}>
-            {/* {showError && error ? (
-          <Label
-            text={'* ' + error}
-            style={{color: '#FD4755', fontSize: 10, textAlign: 'right'}}
-          />
-        ) : null} */}
           </View>
         </View>
       )}
@@ -150,12 +135,12 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 20,
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
     color: 'black',
     textAlign: 'center',
   },
   container: {
-    marginVertical: 5,
+    marginVertical: 10,
   },
   flagStyle: {
     marginRight: 10,

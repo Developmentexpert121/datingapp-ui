@@ -6,35 +6,31 @@
       "sha1": "8b2675552ba5e4af55205116e80909e929a0f12d"
     },
     {
-      "path": "src/assets/fonts/PassionOne-Bold.ttf",
-      "sha1": "8529424dcfb3c01d284434f45dc6331e0ef283f1"
-    },
-    {
       "path": "src/assets/fonts/PassionOne-Regular.ttf",
       "sha1": "5acf813f59c57f10555e64824fccbf588001b478"
     },
     {
-      "path": "src/assets/fonts/Sansation_Bold.ttf",
-      "sha1": "cb34aa6e1b227aea85452ec2170723d702529d45"
-    },
-    {
-      "path": "src/assets/fonts/Sansation_Bold_Italic.ttf",
+      "path": "src/assets/fonts/Sansation-Bold-Italic.ttf",
       "sha1": "d78e5f0d0fe5b82f52d8f10b19abb0370fc8886c"
     },
     {
-      "path": "src/assets/fonts/Sansation_Italic.ttf",
+      "path": "src/assets/fonts/Sansation-Bold.ttf",
+      "sha1": "cb34aa6e1b227aea85452ec2170723d702529d45"
+    },
+    {
+      "path": "src/assets/fonts/Sansation-Italic.ttf",
       "sha1": "b8db5b4e28642ccc9686dfff1e89481bea4609a3"
     },
     {
-      "path": "src/assets/fonts/Sansation_Light.ttf",
-      "sha1": "b238ba4e6e92afab7d1f4fee34cda9573ebfd547"
-    },
-    {
-      "path": "src/assets/fonts/Sansation_Light_Italic.ttf",
+      "path": "src/assets/fonts/Sansation-Light-Italic.ttf",
       "sha1": "339f19f40bc7d65d45a075b57a554d1a5b5802aa"
     },
     {
-      "path": "src/assets/fonts/Sansation_Regular.ttf",
+      "path": "src/assets/fonts/Sansation-Light.ttf",
+      "sha1": "b238ba4e6e92afab7d1f4fee34cda9573ebfd547"
+    },
+    {
+      "path": "src/assets/fonts/Sansation-Regular.ttf",
       "sha1": "cce586ccae3991a117fb36f80e4f71cc321fd670"
     }
   ]

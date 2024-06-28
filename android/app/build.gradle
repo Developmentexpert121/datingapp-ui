@@ -79,15 +79,26 @@ android {
         targetCompatibility JavaVersion.VERSION_11
     }
 
-    namespace "com.datingapp"
+    namespace "com.toptierdating"
     defaultConfig {
-        applicationId "com.datingapp"
+        applicationId "com.toptierdating"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
+        versionCode 5
         versionName "1.0"
+        resConfigs "en", "US"
+        manifestPlaceholders = [
+        appAuthRedirectScheme: 'com.toptierdating'
+    ]
+            missingDimensionStrategy 'store', 'play'
     }
     signingConfigs {
+        release {
+            storeFile file('playKeystore.keystore')
+            storePassword 'android'
+            keyAlias 'my-key-alias'
+            keyPassword 'android'
+        }
         debug {
             storeFile file('debug.keystore')
             storePassword 'android'
@@ -102,7 +113,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
@@ -115,6 +126,9 @@ dependencies {
     implementation("com.facebook.react:flipper-integration")
     implementation ("com.facebook.fresco:animated-gif:3.1.0")
     implementation project(':react-native-splash-screen')
+    implementation 'com.google.android.gms:play-services-auth:20.3.0'
+    implementation 'com.facebook.android:facebook-android-sdk:13.0.0'
+    // implementation project(':react-native-iap')
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
