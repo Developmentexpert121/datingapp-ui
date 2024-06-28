@@ -1,4 +1,4 @@
-//const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
+const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
 
 //for circle slider end
 
@@ -11,8 +11,6 @@
 // const config = {};
 
 // module.exports = mergeConfig(getDefaultConfig(__dirname), config);
-
-const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
 
 module.exports = async () => {
   const {

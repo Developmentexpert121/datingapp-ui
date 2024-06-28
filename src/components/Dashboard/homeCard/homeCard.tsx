@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.36,
     shadowRadius: 6.68,
+    borderWidth: 0,
   },
   image: {
     width: '100%',
@@ -58,13 +59,13 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 26,
     color: 'white',
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
   },
   bio: {
     fontSize: 18,
     color: 'white',
     lineHeight: 25,
-    fontFamily: 'Sansation_Regular',
+    fontFamily: 'Sansation-Regular',
   },
 });
 

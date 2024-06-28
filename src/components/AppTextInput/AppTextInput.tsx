@@ -1,18 +1,8 @@
-import {
-  NativeSyntheticEvent,
-  StyleSheet,
-  Text,
-  TextInput,
-  TextInputFocusEventData,
-  TextInputProps,
-  View,
-} from 'react-native';
+import {StyleSheet, TextInput} from 'react-native';
 import React, {useState} from 'react';
 import Colors from '../../constants/Colors';
-import Font from '../../constants/Fonts';
-import FontSize from '../../constants/FontSize';
 import Spacing from '../../constants/Spacing';
-import {Controller, FieldErrors, Control, FieldValues} from 'react-hook-form';
+import {Controller} from 'react-hook-form';
 
 const AppTextInput = (Props: any) => {
   const {
@@ -23,11 +13,12 @@ const AppTextInput = (Props: any) => {
     borderWidth,
     marginLeft,
     textstyle,
+    autoCapitalize,
+    editable,
     ...textInputProps
   } = Props;
   const [focused, setFocused] = useState<boolean>(false);
   const hasError = errors;
-
   return (
     <Controller
       name={name}
@@ -45,7 +36,6 @@ const AppTextInput = (Props: any) => {
             {
               width: '80%',
             },
-            ,
             textstyle,
           ]}
           keyboardType={Props.keyboardType}
@@ -55,6 +45,8 @@ const AppTextInput = (Props: any) => {
           onChangeText={onChange}
           value={value}
           error={Boolean(errors)}
+          autoCapitalize={autoCapitalize}
+          editable={editable}
         />
       )}
     />
@@ -62,17 +54,18 @@ const AppTextInput = (Props: any) => {
 };
 
 export default AppTextInput;
-
 const styles = StyleSheet.create({
   textInput1: {
-    fontFamily: 'Sansation_Regular',
+    height: 45,
+    fontFamily: 'Sansation-Regular',
     fontSize: 16,
     padding: Spacing,
     backgroundColor: Colors.onPrimary,
-    borderRadius: 13,
+    borderRadius: 10,
     marginVertical: 10,
+    borderWidth: 3,
+    textAlign: 'center',
   },
-
   errorBorder: {
     borderWidth: 2,
     borderColor: 'red',

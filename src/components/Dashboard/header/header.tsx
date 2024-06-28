@@ -1,4 +1,3 @@
-import 'react-native-gesture-handler';
 import React, {useState} from 'react';
 import {
   View,
@@ -7,11 +6,11 @@ import {
   SafeAreaView,
   Image,
   Text,
+  TouchableOpacity,
 } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {BackIC, FilterIC, NotificationIC} from '../../../assets/svgs';
 
 const HeaderComponent = (props: any) => {
   const handleFilter = () => {
@@ -21,64 +20,59 @@ const HeaderComponent = (props: any) => {
     props?.setActiveScreen('Notifications');
   };
   return (
-    <SafeAreaView style={styles.root}>
-      <View style={styles.pageContainer}>
-        <View style={styles.topNavigation}>
-          <Pressable>
-            {props.activeScreen !== 'HOME' ? (
-              <Ionicons
-                onPress={() => props?.setActiveScreen('HOME')}
-                style={styles.backPressIcon}
-                name="chevron-back-outline"
-                size={30}
-              />
-            ) : (
-              <Image
-                source={require('../../../assets/images/logIcon.png')}
-                style={styles.icon}
-              />
-            )}
+    <SafeAreaView style={styles.topNavigation}>
+      <Pressable>
+        {props.activeScreen !== 'HOME' ? (
+          <Ionicons
+            onPress={() => props?.setActiveScreen('HOME')}
+            style={styles.backPressIcon}
+            name="chevron-back-outline"
+            size={30}
+          />
+        ) : (
+          <Image
+            source={require('../../../assets/images/logIcon.png')}
+            style={styles.icon}
+          />
+        )}
+      </Pressable>
+      <Text style={styles.title}>
+        {props?.activeScreen === 'HOME'
+          ? 'Discover'
+          : props?.activeScreen === 'Notifications'
+          ? 'Notifications'
+          : 'Filters'}
+      </Text>
+
+      {props.activeScreen === 'HOME' ? (
+        <View style={{flexDirection: 'row', gap: 20, marginRight: 10}}>
+          <Pressable onPress={() => handleNotification()}>
+            <NotificationIC />
           </Pressable>
-          <Text style={styles.title}>
-            {props?.activeScreen === 'HOME'
-              ? 'Discover'
-              : props?.activeScreen === 'Notifications'
-              ? 'Notifications'
-              : 'Filters'}
-          </Text>
-
-          {props.activeScreen === 'HOME' ? (
-            <View style={{flexDirection: 'row', gap: 20, marginRight: 10}}>
-              <Pressable onPress={() => handleNotification()}>
-                <MaterialIcons
-                  name="notifications-on"
-                  size={30}
-                  style={{color: 'black'}}
-                />
-              </Pressable>
-
-              <Pressable onPress={() => handleFilter()}>
-                <Image
-                  source={require('../../../assets/images/filter.png')}
-                  style={{height: 30, width: 30}}
-                />
-              </Pressable>
-            </View>
-          ) : (
-            <View style={{height: 30, width: 30, marginRight: 50}} />
-          )}
+          <Pressable onPress={() => handleFilter()}>
+            <FilterIC />
+          </Pressable>
         </View>
-      </View>
+      ) : props?.activeScreen === 'Filters' ? (
+        <TouchableOpacity onPress={props?.applyClick} style={{marginRight: 30}}>
+          <Text
+            style={{
+              fontSize: 20,
+              fontFamily: 'Sansation-Bold',
+              color: '#AA22AA',
+            }}>
+            Apply
+          </Text>
+        </TouchableOpacity>
+      ) : (
+        <View style={{height: 30, width: 30, marginRight: 50}} />
+      )}
     </SafeAreaView>
   );
 };
 
+export default HeaderComponent;
 const styles = StyleSheet.create({
-  root: {},
-  pageContainer: {
-    alignItems: 'center',
-    marginTop: 20,
-  },
   topNavigation: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -95,7 +89,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 26,
-    fontFamily: 'Sansation_Bold',
+    fontFamily: 'Sansation-Bold',
     color: 'black',
   },
   backPressIcon: {
@@ -104,5 +98,3 @@ const styles = StyleSheet.create({
     color: '#AC25AC',
   },
 });
-
-export default HeaderComponent;

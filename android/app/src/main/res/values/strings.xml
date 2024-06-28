@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">DatingApp</string>
     <string name="title_activity_kimera">DatingApp</string>
+    <string name="facebook_app_id">1761035230974329</string>
+    <string name="fb_login_protocol_scheme">fb1761035230974329</string>
+    <string name="facebook_client_token">70b4efb07b58a00ee5143af1cddc073b</string>
 </resources>

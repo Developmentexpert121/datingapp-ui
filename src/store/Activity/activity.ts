@@ -1,6 +1,15 @@
 // activityLoaderSlice.js
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 
+export interface Iprops {
+  showGlobalModal?: boolean;
+  modalData?: {text?: string; label?: string; cancel: boolean};
+}
+const initialState: Iprops = {
+  showGlobalModal: false,
+  modalData: {text: '', label: '', cancel: false},
+};
+
 export const activityLoaderStarted = createAsyncThunk(
   'activityLoader/activityLoaderStarted',
   async () => {},
@@ -24,6 +33,16 @@ export const videoCallUser = createAsyncThunk(
     return data;
   },
 );
+export const authSice = createSlice({
+  name: 'auth',
+  initialState,
+  reducers: {
+    toggleGlobalModal: (state, action) => {
+      state.showGlobalModal = action.payload.visible;
+      state.modalData = action?.payload?.data || {text: '', label: ''};
+    },
+  },
+});
 
 const ActivityLoader: any = createSlice({
   name: 'activityLoader',
@@ -64,3 +83,5 @@ const ActivityLoader: any = createSlice({
 });
 
 export default ActivityLoader.reducer;
+export const {toggleGlobalModal} = authSice.actions;
+// export default authSice.reducer;

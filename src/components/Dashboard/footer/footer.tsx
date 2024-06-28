@@ -21,8 +21,19 @@ import FontAwesome2 from 'react-native-vector-icons/FontAwesome';
 import {useAppDispatch, useAppSelector} from '../../../store/store';
 import {footerStatus} from '../../../store/Activity/activity';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import {getReceivers,} from '../../../store/Auth/auth';
-import {ChatIC, ChatpressIC, FindIC, FindpressIc, FireIC, FirepressIC, LoveIC, LovepressIC, ProfileIC, ProfilepressIC} from '../../../assets/svgs';
+import {getReceivers} from '../../../store/Auth/auth';
+import {
+  ChatIC,
+  ChatpressIC,
+  FindIC,
+  FindpressIc,
+  FireIC,
+  FirepressIC,
+  LoveIC,
+  LovepressIC,
+  ProfileIC,
+  ProfilepressIC,
+} from '../../../assets/svgs';
 interface Receiver {
   senderMessages: any[]; // Assuming senderMessages is an array of any type
   // Define other properties if they exist in your receiver data
@@ -42,7 +53,6 @@ const FooterComponent = () => {
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-
 
   const navigation = useNavigation();
   const color = '#b5b5b5';
@@ -67,7 +77,7 @@ const FooterComponent = () => {
     };
 
     const calculateTotalSenderMessages = () => {
-      let total :any =null
+      let total: any = null;
       receiverData.forEach(receiver => {
         total += receiver.senderMessages.length;
       });
@@ -104,11 +114,11 @@ const FooterComponent = () => {
           </Pressable>
 
           <Pressable onPress={() => setActiveScreen('STAR')}>
-          <MaterialCommunityIcons
-            name="star-four-points"
-            size={34}
-            color={activeScreen === 'STAR' ? activeColor : color}
-          />
+            <MaterialCommunityIcons
+              name="star-four-points"
+              size={34}
+              color={activeScreen === 'STAR' ? activeColor : color}
+            />
           </Pressable>
 
           <Pressable
@@ -121,7 +131,7 @@ const FooterComponent = () => {
                 size={34}
                 color={activeScreen === 'EXPLORED' ? activeColor : color}
               />
-              
+
               {/* {activeScreen === 'EXPLORED' ? <FindpressIc /> : <FindIC />} */}
             </View>
           </Pressable>
@@ -136,7 +146,7 @@ const FooterComponent = () => {
                 size={34}
                 color={activeScreen === 'LIKED' ? activeColor : color}
               />
-              
+
               {/* {activeScreen === 'LIKED' ? <LovepressIC /> : <LoveIC />} */}
             </View>
           </Pressable>
@@ -152,7 +162,7 @@ const FooterComponent = () => {
                 size={34}
                 color={activeScreen === 'CHAT' ? activeColor : color}
               />
-              
+
               {/* {activeScreen === 'CHAT' ? <ChatpressIC /> : <ChatIC />} */}
             </View>
           </Pressable>
@@ -167,7 +177,7 @@ const FooterComponent = () => {
                 size={34}
                 color={activeScreen === 'PROFILE' ? activeColor : color}
               />
-              
+
               {/* {activeScreen === 'PROFILE' ? <ProfilepressIC /> : <ProfileIC />} */}
             </View>
           </Pressable>
