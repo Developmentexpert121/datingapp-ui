@@ -9,6 +9,8 @@ import Loader from './src/components/Loader/Loader';
 import io from 'socket.io-client';
 import {requestNotifications} from 'react-native-permissions';
 import {onlineUser} from './src/store/reducer/authSliceState';
+import {withIAPContext} from 'react-native-iap';
+// import {Subscriptions} from './src/screens/Profile/SubscriptionComponent/subscription';
 
 // import PushNotification from 'react-native-push-notification';
 
@@ -109,8 +111,10 @@ const App = () => {
           <GlobalModal />
         </NavigationContainer>
       )}
+
+      {/* <Subscriptions /> */}
     </SafeAreaProvider>
   );
 };
 
-export default App;
+export default withIAPContext(App);

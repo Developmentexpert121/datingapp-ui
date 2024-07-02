@@ -40,15 +40,6 @@ target 'DatingApp' do
   pod 'RNFBApp', :path => '../node_modules/@react-native-firebase/app'
   pod 'GoogleSignIn'
   permissions_path = '../node_modules/react-native-permissions/ios'
-  # pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways"
-  # pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse"
-  # pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
-  # pod 'Permission-Microphone', :path => "#{permissions_path}/Microphone"
-
-  # pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways/Permission-LocationAlways.podspec"
-  # pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse/Permission-LocationWhenInUse.podspec"
-  # pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
-  # pod 'Permission-Microphone', :path => "#{permissions_path}/Microphone"
 
   use_frameworks! :linkage => :static
   $RNFirebaseAsStaticFramework = true

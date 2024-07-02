@@ -391,7 +391,7 @@ export const updateProfileData = createAsyncThunk(
       const response = await http.patch('/user/update-profile', data);
       if (response.status === 200) {
         dispatch(ProfileData());
-        console.log('>>>>>>>>>>>>>>', response?.config?.data);
+        // console.log('>>>>>>>>>>>>>>', response?.config?.data);
         return response.data;
       }
     } catch (error: any) {

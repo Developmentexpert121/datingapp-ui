@@ -18,6 +18,7 @@ import FilterSection from '../screens/FilterSection/filterSection';
 import {useNavigation} from '@react-navigation/native';
 import ForgotPassword from '../screens/auth/forgotPassword';
 import NewPassword from '../screens/auth/newPassword';
+import Subscriptions from '../screens/Profile/SubscriptionComponent/Subscriptions';
 // import {configureGoogleSignIn} from '../store/Auth/socialLogin';
 export type RegisterType = {};
 export type RootStackParamList = {
@@ -33,6 +34,7 @@ export type RootStackParamList = {
   Explore: undefined;
   Settings: undefined;
   UpdateProfile: undefined;
+  Subscriptions: undefined;
   ChatPage: undefined;
   VideoCallRedirect: undefined;
   VideoCallInterface: undefined;
@@ -117,6 +119,7 @@ const Root = () => {
           />
           <Stack.Screen name="Settings" component={SettingsScreen} />
           <Stack.Screen name="UpdateProfile" component={UpdateProfileScreen} />
+          <Stack.Screen name="Subscriptions" component={Subscriptions} />
           <Stack.Screen name="ChatScreen" component={ChatSection} />
           <Stack.Screen name="FilterSection" component={FilterSection} />
           <Stack.Screen

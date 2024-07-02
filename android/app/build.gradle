@@ -84,7 +84,7 @@ android {
         applicationId "com.toptierdating"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 5
+        versionCode 7
         versionName "1.0"
         resConfigs "en", "US"
         manifestPlaceholders = [
@@ -128,7 +128,7 @@ dependencies {
     implementation project(':react-native-splash-screen')
     implementation 'com.google.android.gms:play-services-auth:20.3.0'
     implementation 'com.facebook.android:facebook-android-sdk:13.0.0'
-    // implementation project(':react-native-iap')
+    implementation project(':react-native-iap')
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")

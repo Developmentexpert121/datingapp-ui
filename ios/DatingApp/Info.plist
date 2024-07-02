@@ -57,6 +57,12 @@
 	<string>YOUR TEXT</string>
 	<key>NSCameraUsageDescription</key>
 	<string>TopTier Dating App uses camera to take photos.</string>
+    <key>NSBluetoothPeripheralUsageDescription</key>
+    <string>TopTier Dating app uses current bluetooth to get nearby.</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>[REASON]</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>[REASON]</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>TopTier Dating app uses current location to get nearby another users.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
