@@ -11,9 +11,9 @@ import TinderSwipe from './AnimatedStack/TinderSwipe';
 const HomeScreen = () => {
   const [activeScreen, setActiveScreen] = useState('HOME');
   const dispatch: any = useAppDispatch();
-  const allUsers: any = useAppSelector(
-    (state: any) => state?.Auth?.data?.allUsers,
-  );
+  // const allUsers: any = useAppSelector(
+  //   (state: any) => state?.Auth?.data?.allUsers,
+  // );
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
@@ -24,9 +24,9 @@ const HomeScreen = () => {
   const [distance, setDistance] = useState(
     parseInt(profileData?.distance) || 50,
   );
-  const isAuthenticated = useAppSelector(
-    (state: any) => state?.Auth?.isAuthenticated,
-  );
+  // const isAuthenticated = useAppSelector(
+  //   (state: any) => state?.Auth?.isAuthenticated,
+  // );
   const [currentIndex, setCurrentIndex] = useState(0);
   const [data, setData] = useState<any>([]);
   // console.log('fgjdgjdjgdjkgdhgkdhgkdhksfkshfskfjskdf', data);
@@ -42,9 +42,8 @@ const HomeScreen = () => {
   const getProfileData = async () => {
     try {
       let responseData = await dispatch(ProfileData());
-      // let data = await getId();
     } catch (error) {
-      console.error(error, 'responseDataresponseData');
+      console.log('iueswdfggsw', error);
     }
   };
 

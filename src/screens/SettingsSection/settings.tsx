@@ -28,6 +28,7 @@ import BottomDrawer from './BottomDrawer';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import Loader from '../../components/Loader/Loader';
 import GlobalModal from '../../components/Modals/GlobalModal';
+import ConfirmModal from '../../components/Modals/ConfirmModal';
 
 interface UpdateForm {
   name: string;
@@ -71,6 +72,9 @@ const SettingsSection = () => {
   const [loader, setLoader] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('');
   const [values, setValues] = useState<string>('');
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [actionType, setActionType] = useState<string | null>(null);
+
   const {
     reset,
     formState: {errors},
@@ -120,9 +124,6 @@ const SettingsSection = () => {
     },
     {title: 'Language I Know', name: profileData?.language},
   ];
-  const openDrawer = () => {
-    setIsDrawerOpen(true);
-  };
 
   const closeDrawer = () => {
     setIsDrawerOpen(false);
@@ -313,26 +314,34 @@ const SettingsSection = () => {
               </View>
             </View>
           ))}
-
+        {/* Logout */}
         <TouchableOpacity
           style={styles.boxContainer}
-          // onPress={handleLogout}
-          onPress={logoutUserButton}>
+          onPress={() => {
+            setActionType('logout');
+            setModalVisible(true);
+          }}>
           <Text style={[styles.textName, {color: '#AC25AC'}]}>Log Out</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.boxContainer}>
-          <Text
-            style={[styles.textName, {color: '#AC25AC'}]}
-            onPress={deleteUserButton}>
+        {/* Delete */}
+        <TouchableOpacity
+          style={styles.boxContainer}
+          onPress={() => {
+            setActionType('delete');
+            setModalVisible(true);
+          }}>
+          <Text style={[styles.textName, {color: '#AC25AC'}]}>
             Delete Account
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.boxContainer}>
-          <Text
-            style={[styles.textName, {color: '#AC25AC'}]}
-            onPress={deactivateUserButton}>
-            Deactivate
-          </Text>
+        {/* Deactivate */}
+        <TouchableOpacity
+          style={styles.boxContainer}
+          onPress={() => {
+            setActionType('deactivate');
+            setModalVisible(true);
+          }}>
+          <Text style={[styles.textName, {color: '#AC25AC'}]}>Deactivate</Text>
         </TouchableOpacity>
         <BottomDrawer
           isOpen={isDrawerOpen}
@@ -342,7 +351,30 @@ const SettingsSection = () => {
         />
       </ScrollView>
       {loader && <Loader />}
-      {<GlobalModal />}
+
+      <ConfirmModal
+        onRequestClose={() => {
+          setModalVisible(false);
+          setActionType(null);
+        }}
+        visible={modalVisible}
+        onPress={() => {
+          if (actionType === 'logout') {
+            logoutUserButton();
+          } else if (actionType === 'delete') {
+            deleteUserButton();
+          } else if (actionType === 'deactivate') {
+            deactivateUserButton();
+          }
+          setModalVisible(false);
+          setActionType(null);
+        }}
+        onPressCancel={() => {
+          setModalVisible(false);
+          setActionType(null);
+        }}
+        TextName={`Are you sure you want to ${actionType} your account?`}
+      />
     </SafeAreaView>
   );
 };

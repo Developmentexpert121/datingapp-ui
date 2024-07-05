@@ -54,13 +54,13 @@
             </intent-filter>
         </activity>
 
-        <service
+        <!-- <service
             android:name=".java.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-        </service>
+        </service> -->
 
         <uses-library android:name="org.apache.http.legacy" android:required="false"/>
     </application>

@@ -85,8 +85,24 @@ const TinderSwipe = ({
     }, 1000);
   };
 
+  const onSwipeTop = async () => {
+    await dispatch(
+      likedAUser({
+        likerId: profileData?._id,
+        userIdBeingLiked: data[currentIndex]?._id,
+      }),
+    );
+    const targetX = hiddenTranslateX;
+    translateX.value = withSpring(targetX);
+    setTimeout(() => {
+      const updatedUsers = [...data];
+      updatedUsers.splice(currentIndex, 1);
+      setData(updatedUsers);
+    }, 1000);
+  };
+
   const onSwipeLeft = async () => {
-    // Implement your onSwipeLeft logic here if needed
+    // Implement your  logic here if needed
   };
 
   const removeCard = useCallback(() => {
@@ -141,19 +157,6 @@ const TinderSwipe = ({
   const toRadians = degrees => {
     return (degrees * Math.PI) / 180;
   };
-  const currentUserLocation = currentIndex?.location;
-
-  // users = users.filter(user => {
-  //   const userDistance = calculateDistance(
-  //     currentUserLocation?.latitude,
-  //     currentUserLocation?.longitude,
-  //     user?.location?.latitude,
-  //     user?.location?.longitude,
-  //   );
-  //   return userDistance <= distance;
-  // });
-  // console.log('?//////////////', currentUserLocation);
-
   const habits1 = {
     1: require('../../../assets/images/bottleofchampagne.png'),
     2: require('../../../assets/images/smoking.png'),
@@ -201,18 +204,18 @@ const TinderSwipe = ({
                   style={styles.icons3}
                 />
               </TouchableOpacity>
+              <TouchableOpacity>
+                <Image
+                  source={require('../../../assets/images/Star.png')}
+                  style={styles.icons3}
+                />
+              </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
                   handleChoiceButtons1(1);
                 }}>
                 <Image
                   source={require('../../../assets/images/Heart.png')}
-                  style={styles.icons3}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Image
-                  source={require('../../../assets/images/Star.png')}
                   style={styles.icons3}
                 />
               </TouchableOpacity>

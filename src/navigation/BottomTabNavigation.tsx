@@ -14,19 +14,18 @@ import {
   ProfileIC,
   ProfilepressIC,
 } from '../assets/svgs';
-import HomeScreen from '../screens/Home/homeScreen';
 import ExploredScreen from '../screens/Explore/explored';
 import LikedScreen from '../screens/LikedYou/liked';
 import ChatSection from '../screens/ChatHome/allChats';
 import FilterSection from '../screens/FilterSection/filterSection';
 import ProfileSection from '../screens/Profile/profileSection';
+import HomeScreen from '../screens/Home/home';
 
 export type HomeStackParamList = {
   HomeScreen: undefined;
   FilterSection: undefined;
 };
 export type ChatStackParamList = {
-  ChatHome: undefined;
   ChatSection: undefined;
   VideoCallRedirect: undefined;
 };
@@ -36,7 +35,6 @@ export type BottomTabParamList = {
   LikedScreen: undefined;
   ChatSection: undefined;
   HomeScreen: undefined;
-  ChatHome: undefined;
   VideoCallRedirect: undefined;
   ProfileSection: undefined;
 };

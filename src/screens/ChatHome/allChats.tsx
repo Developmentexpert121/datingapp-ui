@@ -241,7 +241,7 @@ const ChatSection = () => {
         />
       </View>
 
-      {/* Modal for blocking user */}
+      {/* Modal for blocking  */}
       <BlockModal
         onRequestClose={() => {
           setModalVisible(!modalVisible);

@@ -1,3 +1,5 @@
+// 2393e794f5214bc59ab8387a8d2152c7
+
 import React, {useEffect, useState} from 'react';
 import {
   ScrollView,
@@ -25,13 +27,13 @@ const errorLog = ({message, error}) => {
 
 const isIos = Platform.OS === 'ios';
 
-//product id from appstoreconnect app->subscriptions
+// Product ID from App Store Connect app -> subscriptions
 const subscriptionSkus = Platform.select({
   ios: ['TopTierDatingMonthly15.99'],
+  android: ['15.99'],
 });
-
+console.log('44444444444444444', subscriptionSkus);
 const SubscriptionsScreen = ({navigation}) => {
-  console.log('hello111');
   const {
     connected,
     subscriptions,
@@ -41,61 +43,46 @@ const SubscriptionsScreen = ({navigation}) => {
     purchaseHistory,
     getPurchaseHistory,
   } = useIAP();
+  console.log('!!!!!!!!!!!!!!', subscriptions);
 
   const [loading, setLoading] = useState(false);
-  // const handleGetPurchaseHistory = async () => {
-  //   try {
-  //     await getPurchaseHistory();
-  //     console.log('Successfully fetched purchase history');
-  //   } catch (error) {
-  //     console.log('first99999');
-  //     errorLog({message: 'handleGetPurchaseHistory', error});
-  //     console.log('Error object:', error); // Log the error object for detailed information
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   handleGetPurchaseHistory();
-  // }, [connected]);
 
   const handleGetSubscriptions = async () => {
     try {
+      console.log('Fetching subscriptions...');
       await getSubscriptions({skus: subscriptionSkus});
+      console.log('Subscriptions fetched:');
     } catch (error) {
-      console.log('handleGetSubscriptions', error);
+      console.log('error error', error);
       errorLog({message: 'handleGetSubscriptions', error});
     }
   };
 
   useEffect(() => {
-    handleGetSubscriptions();
+    if (connected) {
+      handleGetSubscriptions();
+      getPurchaseHistory();
+      console.log('connected', connected);
+    } else {
+      console.log('Not connected to IAP');
+    }
   }, [connected]);
-
-  // useEffect(() => {
-  //   // ... listen if connected, purchaseHistory and subscriptions exist
-  //   if (
-  //     purchaseHistory.find(
-  //       x => x.productId === (subscriptionSkus[0] || subscriptionSkus[1]),
-  //     )
-  //   ) {
-  //     navigation.navigate('Home');
-  //   }
-  // }, [connected, purchaseHistory, subscriptions]);
 
   const handleBuySubscription = async productId => {
     try {
-      await requestSubscription({
-        sku: productId,
-      });
-      setLoading(false);
-      console.log('5555555555555');
+      console.log('Initiating purchase for:', productId);
+      setLoading(true);
+      await requestSubscription(productId);
+
+      // Adjusted here
     } catch (error) {
-      setLoading(false);
+      console.log('error handleBuySubscription', error);
       if (error instanceof PurchaseError) {
         errorLog({message: `[${error.code}]: ${error.message}`, error});
       } else {
         errorLog({message: 'handleBuySubscription', error});
       }
+      setLoading(false);
     }
   };
 
@@ -105,39 +92,41 @@ const SubscriptionsScreen = ({navigation}) => {
         try {
           const receipt = purchase.transactionReceipt;
           if (receipt) {
-            if (Platform.OS === 'ios') {
+            if (isIos) {
               const isTestEnvironment = __DEV__;
 
-              //send receipt body to apple server to validete
               const appleReceiptResponse = await validateReceiptIos(
                 {
                   'receipt-data': receipt,
-                  // password: ITUNES_SHARED_SECRET,
-                  password: '2393efasfafafadsfd2152c7',
+                  password: '', // Ensure this is the correct shared secret
                 },
                 isTestEnvironment,
               );
-              console.log('...........');
 
-              //if receipt is valid
-              if (appleReceiptResponse) {
-                const {status} = appleReceiptResponse;
-                if (status) {
-                  // navigation.navigate('Home');
-                }
+              if (appleReceiptResponse && appleReceiptResponse.status === 0) {
+                // Receipt is valid
+                await finishTransaction(purchase);
+                navigation.navigate('Home');
               }
-
-              return;
+            } else {
+              // Android receipt handling (if required)
+              await finishTransaction(purchase);
+              navigation.navigate('Home');
             }
           }
         } catch (error) {
-          console.log('error', error);
+          errorLog({message: 'checkCurrentPurchase', error});
+        } finally {
+          setLoading(false);
         }
       }
     };
-    checkCurrentPurchase(currentPurchase);
-  }, [currentPurchase, finishTransaction]);
-  console.log('..........', currentPurchase);
+
+    if (currentPurchase) {
+      checkCurrentPurchase(currentPurchase);
+    }
+  }, [currentPurchase, finishTransaction, navigation]);
+
   return (
     <SafeAreaView>
       <ScrollView>
@@ -147,15 +136,13 @@ const SubscriptionsScreen = ({navigation}) => {
             Subscribe to some cool stuff today.
           </Text>
           <Text
-            style={
-              (styles.listItem,
-              {
-                fontWeight: '500',
-                textAlign: 'center',
-                marginTop: 10,
-                fontSize: 18,
-              })
-            }>
+            style={{
+              ...styles.listItem,
+              fontWeight: '500',
+              textAlign: 'center',
+              marginTop: 10,
+              fontSize: 18,
+            }}>
             Choose your membership plan.
           </Text>
           <View style={{marginTop: 10}}>
@@ -163,13 +150,10 @@ const SubscriptionsScreen = ({navigation}) => {
               const owned = purchaseHistory.find(
                 s => s?.productId === subscription.productId,
               );
-              console.log('subscriptions', subscription?.productId);
               return (
                 <View style={styles.box} key={index}>
                   {subscription?.introductoryPriceSubscriptionPeriodIOS && (
-                    <>
-                      <Text style={styles.specialTag}>SPECIAL OFFER</Text>
-                    </>
+                    <Text style={styles.specialTag}>SPECIAL OFFER</Text>
                   )}
                   <View
                     style={{
@@ -206,39 +190,43 @@ const SubscriptionsScreen = ({navigation}) => {
                     {subscription?.description}
                   </Text>
                   {owned && (
-                    <Text style={{textAlign: 'center', marginBottom: 10}}>
-                      You are Subscribed to this plan!
-                    </Text>
-                  )}
-                  {owned && (
-                    <TouchableOpacity
-                      style={[styles.button, {backgroundColor: '#0071bc'}]}
-                      onPress={() => {
-                        navigation.navigate('Home');
-                      }}>
-                      <Text style={styles.buttonText}>Continue to App</Text>
-                    </TouchableOpacity>
+                    <>
+                      <Text style={{textAlign: 'center', marginBottom: 10}}>
+                        You are Subscribed to this plan!
+                      </Text>
+                      <TouchableOpacity
+                        style={[styles.button, {backgroundColor: '#0071bc'}]}
+                        onPress={() => navigation.navigate('Home')}>
+                        <Text style={styles.buttonText}>Continue to App</Text>
+                      </TouchableOpacity>
+                    </>
                   )}
                   {loading && <ActivityIndicator size="large" />}
-                  {!loading && !owned && isIos && (
+                  {!loading && !owned && (
                     <TouchableOpacity
                       style={styles.button}
-                      onPress={() => {
-                        setLoading(true);
-                        handleBuySubscription(subscription.productId);
-                      }}>
+                      onPress={() =>
+                        handleBuySubscription(subscription.productId)
+                      }>
                       <Text style={styles.buttonText}>Subscribe</Text>
                     </TouchableOpacity>
                   )}
                 </View>
               );
             })}
+            {subscriptions.length === 0 && (
+              <Text style={{textAlign: 'center', marginTop: 20}}>
+                No subscriptions available. Please check your Play Store
+                configuration.
+              </Text>
+            )}
           </View>
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
+
 export default SubscriptionsScreen;
 
 const styles = StyleSheet.create({
@@ -286,5 +274,3 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
 });
-
-// 2393e794f5214bc59ab8387a8d2152c7

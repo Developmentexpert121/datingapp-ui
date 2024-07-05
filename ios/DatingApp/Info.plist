@@ -55,20 +55,20 @@
 	</dict>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>YOUR TEXT</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>TopTier Dating app uses current bluetooth to get nearby.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>TopTier Dating App uses camera to take photos.</string>
-    <key>NSBluetoothPeripheralUsageDescription</key>
-    <string>TopTier Dating app uses current bluetooth to get nearby.</string>
-    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>[REASON]</string>
-    <key>NSPhotoLibraryAddUsageDescription</key>
-    <string>[REASON]</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>[REASON]</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>TopTier Dating app uses current location to get nearby another users.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>TopTier Dating app using current location to get nearby another users.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>TopTier Dating app uses microphone to call.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>[REASON]</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>TopTier Dating App uses gallery to pick photos.</string>
 	<key>UIAppFonts</key>

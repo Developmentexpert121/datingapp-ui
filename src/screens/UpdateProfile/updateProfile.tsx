@@ -63,7 +63,6 @@ const UpdateProfile = () => {
     profileData?.profilePic?.split(',') || [],
   );
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [keyboardShown, setKeyboardShown] = useState(false);
 
   const getFirstThreeDigits = (number: number) => {
     return Math.round(number);

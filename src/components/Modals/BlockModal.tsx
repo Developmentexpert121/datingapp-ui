@@ -36,7 +36,7 @@ const BlockModal: React.FC<modalData> = ({
           <TouchableOpacity
             style={[styles.button, styles.buttonClose]}
             onPress={onPressCancel}>
-            <Text style={styles.buttonText}>Cancel</Text>
+            <Text style={styles.buttonCancel}>Cancel</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -83,10 +83,15 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   buttonClose: {
-    backgroundColor: '#2196F3',
+    backgroundColor: '#FFFF',
+    borderWidth: 1,
   },
   buttonText: {
     color: 'white',
+    fontFamily: 'Sansation-Bold',
+    textAlign: 'center',
+  },
+  buttonCancel: {
     fontFamily: 'Sansation-Bold',
     textAlign: 'center',
   },

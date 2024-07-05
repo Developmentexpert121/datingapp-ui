@@ -10,9 +10,8 @@ import io from 'socket.io-client';
 import {requestNotifications} from 'react-native-permissions';
 import {onlineUser} from './src/store/reducer/authSliceState';
 import {withIAPContext} from 'react-native-iap';
-// import {Subscriptions} from './src/screens/Profile/SubscriptionComponent/subscription';
 
-// import PushNotification from 'react-native-push-notification';
+import PushNotification from 'react-native-push-notification';
 
 const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 
