@@ -29,6 +29,7 @@ const TinderSwipe = ({
   const [nextIndex, setNextIndex] = useState(currentIndex + 1);
   const [loader, setLoader] = useState(false);
   const [noProfilesLoader, setNoProfilesLoader] = useState(false);
+  const [isSuperLikeAnimating, setIsSuperLikeAnimating] = useState(false);
 
   useEffect(() => {
     if (currentIndex === data.length) {
@@ -61,7 +62,7 @@ const TinderSwipe = ({
       const isActionActiveY = Math.abs(dy) > 200;
 
       if (isActionActiveY && directionY < 0) {
-        handleChoiceSuperLike(directionY);
+        handleChoiceSuperLike();
       } else if (isActionActiveX) {
         handleChoiceHeart(directionX);
       } else {
@@ -81,7 +82,6 @@ const TinderSwipe = ({
         userIdBeingLiked: data[currentIndex]?._id,
       }),
     );
-    // console.log('djfbjdbvjdb');
     const targetX = hiddenTranslateX;
     translateX.value = withSpring(targetX);
     setTimeout(() => {
@@ -93,10 +93,6 @@ const TinderSwipe = ({
 
   const onSwipeTop = async () => {
     await dispatch();
-    // likedAUser({
-    //   likerId: profileData?._id,
-    //   userIdBeingLiked: data[currentIndex]?._id,
-    // }),
     const targetX = hiddenTranslateX;
     translateX.value = withSpring(targetX);
     setTimeout(() => {
@@ -113,6 +109,7 @@ const TinderSwipe = ({
   const removeCard = useCallback(() => {
     setData(prevState => prevState.slice(1));
     swipe.setValue({x: 0, y: 0});
+    setIsSuperLikeAnimating(false);
   }, [swipe]);
 
   const handleChoiceCross = useCallback(
@@ -144,38 +141,18 @@ const TinderSwipe = ({
     [removeCard, swipe.x, onSwipeRight, onSwipeLeft],
   );
 
-  const handleChoiceStar = useCallback(
-    direction => {
-      Animated.timing(swipe.x, {
-        toValue: direction * width,
-        duration: 500,
-        useNativeDriver: true,
-      }).start(() => {
-        if (direction > 0) {
-          onSwipeRight();
-        } else {
-          onSwipeLeft();
-        }
-        removeCard();
-      });
-    },
-    [removeCard, swipe.x, onSwipeRight, onSwipeLeft],
-  );
-
-  const handleChoiceSuperLike = useCallback(
-    direction => {
-      console.log('895766kwbefjuaegruygt');
-      Animated.timing(swipe.y, {
-        toValue: direction * height,
-        duration: 500,
-        useNativeDriver: true,
-      }).start(() => {
-        onSwipeTop();
-        removeCard();
-      });
-    },
-    [removeCard, swipe.y, onSwipeTop],
-  );
+  const handleChoiceSuperLike = useCallback(() => {
+    if (isSuperLikeAnimating) return; // Prevent multiple clicks
+    setIsSuperLikeAnimating(true);
+    Animated.timing(swipe.y, {
+      toValue: -height,
+      duration: 500,
+      useNativeDriver: true,
+    }).start(() => {
+      onSwipeTop();
+      removeCard();
+    });
+  }, [removeCard, swipe.y, onSwipeTop, isSuperLikeAnimating]);
 
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
     const R = 3958.8; // Earth radius in miles
@@ -210,8 +187,7 @@ const TinderSwipe = ({
     3: require('../../../assets/images/abroad.png'),
     4: require('../../../assets/images/moon.png'),
   };
-  // console.log('895766kwbefjuaegruygt', data);
-
+  console.log('kdfhguerwofghqrwh', data);
   return (
     <>
       <View style={{height: '100%', width: '100%'}}>
@@ -246,7 +222,7 @@ const TinderSwipe = ({
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  handleChoiceSuperLike(0);
+                  handleChoiceSuperLike();
                 }}>
                 <Image
                   source={require('../../../assets/images/Star.png')}
@@ -263,7 +239,6 @@ const TinderSwipe = ({
                 />
               </TouchableOpacity>
             </View>
-            {/* ssss */}
             <ScrollView showsVerticalScrollIndicator={false}>
               <View style={styles.locText}>
                 <Ionicons name="location-sharp" size={20} color="#AC25AC" />
@@ -280,7 +255,6 @@ const TinderSwipe = ({
                     : 'Distance information unavailable'}
                 </Text>
               </View>
-              {/* habits1 */}
               <View style={styles.container}>
                 {data[currentIndex]?.habits1?.map((item, index) => {
                   const imagePath = habits1[item.id];
@@ -304,7 +278,6 @@ const TinderSwipe = ({
                   );
                 })}
               </View>
-              {/* habits2 */}
               <View style={styles.container}>
                 {data[currentIndex]?.habits2?.map((item, index) => {
                   const imagePath = habits2[item.id];
@@ -328,7 +301,6 @@ const TinderSwipe = ({
                   );
                 })}
               </View>
-              {/* RelationShip */}
               <View style={styles.container}>
                 {data[currentIndex]?.partnerType && (
                   <View style={styles.item}>

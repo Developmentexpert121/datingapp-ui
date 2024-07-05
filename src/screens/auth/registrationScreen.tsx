@@ -456,7 +456,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
     });
 
     if (steps === 7) {
-      if (profileImages.length > 0) {
+      if (profileImages.length > 1) {
         setSteps(prev => prev + 1);
         return;
       } else {
