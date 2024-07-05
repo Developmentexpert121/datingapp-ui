@@ -55,10 +55,15 @@ const TinderSwipe = ({
       swipe.setValue({x: dx, y: dy});
     },
     onPanResponderRelease: (_, {dx, dy}) => {
-      const direction = Math.sign(dx);
-      const isActionActive = Math.abs(dx) > 200;
-      if (isActionActive) {
-        handleChoiceButtons1(direction);
+      const directionX = Math.sign(dx);
+      const directionY = Math.sign(dy);
+      const isActionActiveX = Math.abs(dx) > 200;
+      const isActionActiveY = Math.abs(dy) > 200;
+
+      if (isActionActiveY && directionY < 0) {
+        handleChoiceSuperLike(directionY);
+      } else if (isActionActiveX) {
+        handleChoiceHeart(directionX);
       } else {
         Animated.spring(swipe, {
           toValue: {x: 0, y: 0},
@@ -76,6 +81,7 @@ const TinderSwipe = ({
         userIdBeingLiked: data[currentIndex]?._id,
       }),
     );
+    // console.log('djfbjdbvjdb');
     const targetX = hiddenTranslateX;
     translateX.value = withSpring(targetX);
     setTimeout(() => {
@@ -86,12 +92,11 @@ const TinderSwipe = ({
   };
 
   const onSwipeTop = async () => {
-    await dispatch(
-      likedAUser({
-        likerId: profileData?._id,
-        userIdBeingLiked: data[currentIndex]?._id,
-      }),
-    );
+    await dispatch();
+    // likedAUser({
+    //   likerId: profileData?._id,
+    //   userIdBeingLiked: data[currentIndex]?._id,
+    // }),
     const targetX = hiddenTranslateX;
     translateX.value = withSpring(targetX);
     setTimeout(() => {
@@ -102,7 +107,7 @@ const TinderSwipe = ({
   };
 
   const onSwipeLeft = async () => {
-    // Implement your  logic here if needed
+    // Implement your logic here if needed
   };
 
   const removeCard = useCallback(() => {
@@ -110,7 +115,7 @@ const TinderSwipe = ({
     swipe.setValue({x: 0, y: 0});
   }, [swipe]);
 
-  const handleChoiceButtons = useCallback(
+  const handleChoiceCross = useCallback(
     direction => {
       Animated.timing(swipe.x, {
         toValue: direction * width,
@@ -121,7 +126,7 @@ const TinderSwipe = ({
     [removeCard, swipe.x],
   );
 
-  const handleChoiceButtons1 = useCallback(
+  const handleChoiceHeart = useCallback(
     direction => {
       Animated.timing(swipe.x, {
         toValue: direction * width,
@@ -137,6 +142,39 @@ const TinderSwipe = ({
       });
     },
     [removeCard, swipe.x, onSwipeRight, onSwipeLeft],
+  );
+
+  const handleChoiceStar = useCallback(
+    direction => {
+      Animated.timing(swipe.x, {
+        toValue: direction * width,
+        duration: 500,
+        useNativeDriver: true,
+      }).start(() => {
+        if (direction > 0) {
+          onSwipeRight();
+        } else {
+          onSwipeLeft();
+        }
+        removeCard();
+      });
+    },
+    [removeCard, swipe.x, onSwipeRight, onSwipeLeft],
+  );
+
+  const handleChoiceSuperLike = useCallback(
+    direction => {
+      console.log('895766kwbefjuaegruygt');
+      Animated.timing(swipe.y, {
+        toValue: direction * height,
+        duration: 500,
+        useNativeDriver: true,
+      }).start(() => {
+        onSwipeTop();
+        removeCard();
+      });
+    },
+    [removeCard, swipe.y, onSwipeTop],
   );
 
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
@@ -157,6 +195,7 @@ const TinderSwipe = ({
   const toRadians = degrees => {
     return (degrees * Math.PI) / 180;
   };
+
   const habits1 = {
     1: require('../../../assets/images/bottleofchampagne.png'),
     2: require('../../../assets/images/smoking.png'),
@@ -171,6 +210,7 @@ const TinderSwipe = ({
     3: require('../../../assets/images/abroad.png'),
     4: require('../../../assets/images/moon.png'),
   };
+  // console.log('895766kwbefjuaegruygt', data);
 
   return (
     <>
@@ -197,14 +237,17 @@ const TinderSwipe = ({
             <View style={styles.icons}>
               <TouchableOpacity
                 onPress={() => {
-                  handleChoiceButtons(-1);
+                  handleChoiceCross(-1);
                 }}>
                 <Image
                   source={require('../../../assets/images/Cross.png')}
                   style={styles.icons3}
                 />
               </TouchableOpacity>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  handleChoiceSuperLike(0);
+                }}>
                 <Image
                   source={require('../../../assets/images/Star.png')}
                   style={styles.icons3}
@@ -212,7 +255,7 @@ const TinderSwipe = ({
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  handleChoiceButtons1(1);
+                  handleChoiceHeart(1);
                 }}>
                 <Image
                   source={require('../../../assets/images/Heart.png')}
@@ -220,6 +263,7 @@ const TinderSwipe = ({
                 />
               </TouchableOpacity>
             </View>
+            {/* ssss */}
             <ScrollView showsVerticalScrollIndicator={false}>
               <View style={styles.locText}>
                 <Ionicons name="location-sharp" size={20} color="#AC25AC" />

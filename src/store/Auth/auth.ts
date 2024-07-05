@@ -412,10 +412,11 @@ export const likedAUser = createAsyncThunk(
     try {
       const response = await http.post('/user/likeUser', data);
       if (response.status === 200) {
-        console.log('Like by meeee', response);
+        // console.log('Like by meeee', response);
         return response.data;
       }
     } catch (error: any) {
+      console.log('error000000');
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
       } else {
@@ -499,7 +500,7 @@ export const getChatUsersList = createAsyncThunk(
         },
       });
       if (response.status === 200) {
-        console.log('//////first', response.data);
+        // console.log('//////first', response.data);
         return response.data;
       }
     } catch (error: any) {
