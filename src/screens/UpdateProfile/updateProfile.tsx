@@ -56,7 +56,7 @@ const UpdateProfile = () => {
   console.log('dsfhkshdfis', profileData);
 
   const dispatch: any = useAppDispatch();
-  const [height, setHeight] = useState(parseInt(profileData?.height) || 100);
+  const [height, setHeight] = useState(parseFloat(profileData?.height) || 3);
   const [title, setTitle] = useState<string>('');
   const [value, setValue] = useState<string>('');
   const [profileImages, setProfileImages] = useState<any>(
@@ -64,11 +64,14 @@ const UpdateProfile = () => {
   );
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  const getFirstThreeDigits = (number: number) => {
-    return Math.round(number);
+  const getHeightInFeetAndInches = (height: number) => {
+    const feet = Math.floor(height);
+    const inches = Math.round((height - feet) * 12);
+    return {feet, inches};
   };
 
-  const formattedHeight = getFirstThreeDigits(height);
+  const {feet, inches} = getHeightInFeetAndInches(height);
+
   const handleSliderChange = (value: any) => {
     setHeight(value);
   };
@@ -118,14 +121,14 @@ const UpdateProfile = () => {
           <View style={styles.distance}>
             <Text style={styles.textName}>Height</Text>
             <Text style={{fontFamily: 'Sansation-Regular'}}>
-              {formattedHeight} CM
+              {feet} FT {inches} IN
             </Text>
           </View>
           <View style={styles.line} />
           <Slider
             style={styles.slider}
-            minimumValue={100}
-            maximumValue={250}
+            minimumValue={3}
+            maximumValue={9}
             value={height}
             onSlidingComplete={handleSliderChange}
             // step={1}

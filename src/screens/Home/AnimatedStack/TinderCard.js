@@ -2,13 +2,15 @@ import {
   View,
   Text,
   Dimensions,
-  Image,
+  ImageBackground,
   Animated,
   StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
-import React, {useCallback} from 'react';
+import React, {useCallback, useState} from 'react';
 import TinderLike from './TinderLike';
 import LinearGradient from 'react-native-linear-gradient';
+import {LikeIC, NopeIC, SuperLikeIC} from '../../../assets/svgs';
 
 const {height, width} = Dimensions.get('window');
 
@@ -49,28 +51,48 @@ const TinderCard = ({
       <>
         <Animated.View
           style={[
-            {position: 'absolute', top: 100, left: 20},
+            {position: 'absolute', top: 5, left: 20},
             {opacity: likeOpacity},
           ]}>
-          <TinderLike type={'Like'} />
+          <LikeIC
+            width={250}
+            height={250}
+            style={{transform: [{rotate: '-45deg'}]}}
+          />
         </Animated.View>
         <Animated.View
           style={[
-            {position: 'absolute', top: 100, right: 20},
+            {position: 'absolute', top: 5, right: 20},
             {opacity: rejectOpacity},
           ]}>
-          <TinderLike type={'Nope'} />
+          <NopeIC
+            width={250}
+            height={250}
+            style={{transform: [{rotate: '45deg'}]}}
+          />
         </Animated.View>
         <Animated.View
           style={[
-            {position: 'absolute', top: 50, alignSelf: 'center'},
+            {position: 'absolute', top: 80, alignSelf: 'center'},
             {opacity: superLikeOpacity},
           ]}>
-          <TinderLike type={'Super Like'} />
+          <SuperLikeIC
+            width={250}
+            height={250}
+            style={{transform: [{rotate: '-5deg'}]}}
+          />
         </Animated.View>
       </>
     );
   }, [likeOpacity, rejectOpacity, superLikeOpacity]);
+
+  const images = [item.profilePic]; // Placeholder array, replace with your images array
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handleImageClick = () => {
+    console.log('Image clicked');
+    setCurrentIndex(prevIndex => (prevIndex + 1) % images.length);
+  };
 
   return (
     <Animated.View
@@ -87,18 +109,29 @@ const TinderCard = ({
         },
       ]}
       {...rest}>
-      <Image
+      <ImageBackground
         source={{
-          uri: item.profilePic.split(',')[0],
+          uri: images[currentIndex].split(',')[0],
         }}
         style={{
           width: '100%',
           height: 320,
           borderRadius: 20,
-          backgroundColor: 'gray',
-        }}
-      />
+          overflow: 'hidden',
+        }}>
+        <TouchableOpacity
+          onPress={handleImageClick}
+          style={{
+            width: '100%',
+            height: '100%',
+            borderRadius: 20,
+            backgroundColor: 'transparent',
+          }}
+        />
+      </ImageBackground>
+
       {isFirst && renderChoice()}
+
       <LinearGradient
         colors={['transparent', 'transparent', 'rgba(0,0,0,0.5)']}
         style={{

@@ -187,7 +187,7 @@ const TinderSwipe = ({
     3: require('../../../assets/images/abroad.png'),
     4: require('../../../assets/images/moon.png'),
   };
-  console.log('kdfhguerwofghqrwh', data);
+  // console.log('kdfhguerwofghqrwh', data);
   return (
     <>
       <View style={{height: '100%', width: '100%'}}>
