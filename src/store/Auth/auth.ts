@@ -17,7 +17,6 @@ interface authData {
 }
 
 export const ProfileData = createAsyncThunk('auth/ProfileData', async () => {
-  // console.log('ProfileData API');
   try {
     const response: any = await http.get(`/user/profile`);
     if (response.status === 200) {
@@ -35,11 +34,9 @@ export const ProfileData = createAsyncThunk('auth/ProfileData', async () => {
 export const GoogleLogin = createAsyncThunk(
   'auth/GoogleLogin',
   async (data: any, {dispatch}: any) => {
-    // console.log('////////////////////', data);
     try {
       // dispatch(activityLoaderStarted());
       const response: any = await http.post('/auth/loginwithgoogle', data);
-      // console.log('response', response.data.redirect);
       if (response.status === 200) {
         return response.data;
       }
@@ -72,7 +69,6 @@ export const AppleLogin = createAsyncThunk(
     try {
       // dispatch(activityLoaderStarted());
       const response: any = await http.post('/auth/loginwithapple', data);
-      // console.log(':::::::::', response);
       if (response.status === 200) {
         return response.data;
       }
@@ -111,12 +107,10 @@ export const LoginSignIn = createAsyncThunk(
           'authToken',
           JSON.stringify(response?.data?.token),
         );
-        console.log('token Login', response?.data?.token);
         await AsyncStorage.setItem(
           'userId',
           JSON.stringify(response?.data?._id),
         );
-        // console.log('dfjdfhjhjdf', response?.data, response?.data?._id);
         dispatch(ProfileData());
         dispatch(
           toggleGlobalModal({
@@ -412,6 +406,28 @@ export const likedAUser = createAsyncThunk(
     try {
       const response = await http.post('/user/likeUser', data);
       if (response.status === 200) {
+        console.log('Like by meeee', response);
+        return response.data;
+      }
+    } catch (error: any) {
+      console.log('error000000', error);
+      if (error.response && error.response.status === 400) {
+        return {error: 'Bad Request'};
+      } else {
+        throw error;
+      }
+    } finally {
+      //  dispatch(activityLoaderFinished());
+    }
+  },
+);
+export const superLiked = createAsyncThunk(
+  'auth/likedAUser',
+  async (data: any, {dispatch}: any) => {
+    console.log('.........dsfgvas', data);
+    try {
+      const response = await http.post('/user/superLike', data);
+      if (response.status === 200) {
         // console.log('Like by meeee', response);
         return response.data;
       }
@@ -517,10 +533,15 @@ export const getChatUsersList = createAsyncThunk(
 
 export const getNotifications = createAsyncThunk(
   'auth/getNotifications',
-  async (userId: any, {dispatch}: any) => {
+  async ({userId, deviceToken}: any, {dispatch}: any) => {
+    // console.log('wueyqierqgrqgrgrq', userId);
+    // console.log('salfgkhdsghksdf', deviceToken);
     try {
       const response = await http.get('/user/getNotification', {
-        params: {id: userId},
+        params: {
+          id: userId || '',
+          deviceToken: deviceToken,
+        },
       });
       if (response.status === 200) {
         return response.data;
@@ -577,7 +598,7 @@ export const sendAMessage = createAsyncThunk(
 export const reciveMessages = createAsyncThunk(
   'auth/reciveMessages',
   async (data: any, {dispatch}: any) => {
-    console.log('kjihdjbswfhuweufguwbgf..>>>..........>...>...', data);
+    // console.log('kjihdjbswfhuweufguwbgf..>>>..........>...>...', data);
     try {
       const response = await http.get(
         `/user/messages?senderId=${data.senderId}&receiverId=${data.receiverId}&limit=${data.limit}&skip=${data.skip}`,

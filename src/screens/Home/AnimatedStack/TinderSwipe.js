@@ -12,7 +12,7 @@ import {
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import TinderCard from './TinderCard';
 import {useAppDispatch, useAppSelector} from '../../../store/store';
-import {likedAUser} from '../../../store/Auth/auth';
+import {likedAUser, superLiked} from '../../../store/Auth/auth';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Loader from '../../../components/Loader/Loader';
 
@@ -92,7 +92,12 @@ const TinderSwipe = ({
   };
 
   const onSwipeTop = async () => {
-    await dispatch();
+    await dispatch(
+      superLiked({
+        likerId: profileData?._id,
+        userIdBeingLiked: data[currentIndex]?._id,
+      }),
+    );
     const targetX = hiddenTranslateX;
     translateX.value = withSpring(targetX);
     setTimeout(() => {

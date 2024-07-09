@@ -60,7 +60,6 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
 
   const onSubmit: any = (data: LoginForm) => {
     setLoader(true);
-    console.log('data user', data);
     dispatch(LoginSignIn(data));
     setLoader(false);
   };

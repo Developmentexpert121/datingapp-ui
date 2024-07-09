@@ -60,6 +60,7 @@ const HeaderComponent = (props: any) => {
               fontSize: 20,
               fontFamily: 'Sansation-Bold',
               color: '#AA22AA',
+              left: 20,
             }}>
             Apply
           </Text>

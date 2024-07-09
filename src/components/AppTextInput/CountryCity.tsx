@@ -117,7 +117,6 @@ const CountryCity: FC<CountryCityProps> = ({
       onSetScrollEnabled(!isOpen);
     }
   };
-  // console.log('::::', errors);
   return (
     <View style={styles.container}>
       {/* Country Dropdown */}

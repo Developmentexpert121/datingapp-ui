@@ -65,7 +65,7 @@ const SettingsSection = () => {
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-  console.log('_____________', profileData);
+  // console.log('_____________', profileData);
 
   const dispatch: any = useAppDispatch();
   const navigation: any = useNavigation();

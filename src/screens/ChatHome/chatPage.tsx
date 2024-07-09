@@ -88,7 +88,7 @@ const ChatPage = ({
 
   useEffect(() => {
     socket.on('chat message', msg => {
-      if (msg.sender !== profileData._id) {
+      if (msg.sender !== profileData?._id) {
         setChatMessages((prevMessages: any) => [...prevMessages, msg]);
       }
     });
@@ -100,7 +100,7 @@ const ChatPage = ({
       try {
         const response = await dispatch(
           reciveMessages({
-            senderId: profileData._id,
+            senderId: profileData?._id,
             receiverId: user?._id,
             limit,
             skip,
@@ -124,7 +124,7 @@ const ChatPage = ({
   const handleSendMessage = useCallback(() => {
     if (inputMessage !== '') {
       const newMessage = {
-        sender: profileData._id,
+        sender: profileData?._id,
         receiver: user?._id,
         message: inputMessage,
         timestamp: new Date().toISOString(),
@@ -196,9 +196,8 @@ const ChatPage = ({
   };
 
   const isUserOnline = showOnlineUser?.includes(user?._id);
-  console.log('+++++++++++++', isUserOnline);
-
-  console.log('user user.........', user);
+  // console.log('+++++++++++++', isUserOnline);
+  // console.log('user user.........', user);
   return (
     <>
       <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
@@ -279,7 +278,7 @@ const ChatPage = ({
                 onScroll={handleScroll}>
                 <View style={{flexGrow: 1}} />
                 {isLoading && <LoadingIndicator />}
-                {chatMessages.map((messageItem: any, index: any) => {
+                {chatMessages?.map((messageItem: any, index: any) => {
                   const isTextMessage = !messageItem.uri;
                   return (
                     <View
@@ -287,14 +286,14 @@ const ChatPage = ({
                       style={{
                         flexDirection: 'row',
                         alignSelf:
-                          messageItem?.sender === profileData._id
+                          messageItem?.sender === profileData?._id
                             ? 'flex-end'
                             : 'flex-start',
                         margin: 10,
                         marginBottom: 12,
                         alignItems: 'baseline',
                       }}>
-                      {messageItem?.sender !== profileData._id && (
+                      {messageItem?.sender !== profileData?._id && (
                         <View
                           style={{
                             alignSelf: 'flex-end',
@@ -312,7 +311,7 @@ const ChatPage = ({
                       <View
                         style={{
                           backgroundColor:
-                            messageItem?.sender === profileData._id
+                            messageItem?.sender === profileData?._id
                               ? '#AC25AC'
                               : '#D9D9D9',
                           padding: 10,
@@ -320,15 +319,15 @@ const ChatPage = ({
                           borderRadius: 8,
                           maxWidth: 260,
                           borderBottomRightRadius:
-                            messageItem?.sender === profileData._id ? 0 : 8,
+                            messageItem?.sender === profileData?._id ? 0 : 8,
                           borderBottomLeftRadius:
-                            messageItem?.sender === profileData._id ? 8 : 0,
+                            messageItem?.sender === profileData?._id ? 8 : 0,
                         }}>
                         {isTextMessage ? (
                           <Text
                             style={{
                               color:
-                                messageItem?.sender === profileData._id
+                                messageItem?.sender === profileData?._id
                                   ? 'white'
                                   : 'black',
                             }}>
@@ -341,7 +340,7 @@ const ChatPage = ({
                           />
                         )}
                       </View>
-                      {messageItem?.sender === profileData._id && (
+                      {messageItem?.sender === profileData?._id && (
                         <View
                           style={{
                             alignSelf: 'flex-end',

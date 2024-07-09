@@ -45,7 +45,6 @@ const ForgotPassword: React.FC<Props> = ({navigation}) => {
   });
 
   const onSubmit: any = async (data: RegisterForm) => {
-    console.log('onSubmit', data);
     setEmail(data.email);
     setLoader(true);
     try {

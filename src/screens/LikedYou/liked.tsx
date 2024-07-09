@@ -23,10 +23,10 @@ const LikedScreen = () => {
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-  console.log('first', profileData?.plan);
+  // console.log('first', profileData?._id);
   const dispatch: any = useAppDispatch();
   const [likeData, setLikeData] = useState<any>([]);
-  console.log('likeData??????????', likeData);
+  // console.log('likeData??????????', likeData);
   const navigation = useNavigation();
 
   const goToChatWith = async (user: any) => {
@@ -38,7 +38,7 @@ const LikedScreen = () => {
     try {
       const response = await dispatch(likedMe({id: profileData._id})).unwrap();
       setLikeData(response.users);
-      console.log('dsjkfhksdhfksjdf', response);
+      // console.log('dsjkfhksdhfksjdf', response);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -46,22 +46,21 @@ const LikedScreen = () => {
 
   useEffect(() => {
     LikedUser();
-  }, []);
+  });
 
   const likeByMe = async (item: any) => {
-    console.log('............item', item);
+    console.log('.......sdfjodsjfojo.....item', item.id);
+    console.log('.......sdfjodsjfojo.....item', item);
     await dispatch(
       likedAUser({
         likerId: profileData?._id,
-        userIdBeingLiked: item.id,
+        userIdBeingLiked: item?._id,
       }),
     );
     goToChatWith(item);
-    // () => navigation.navigate('Subscriptions')
-    // () => navigation.navigate('VideoCallRedirect');
   };
   const renderGridItem = ({item, index}: any) => {
-    console.log('>>>>>>>>>>item', item);
+    // console.log('>>>>>>>>>>item', item);
     return (
       <TouchableOpacity
         onPress={

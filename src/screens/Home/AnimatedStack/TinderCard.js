@@ -86,66 +86,70 @@ const TinderCard = ({
     );
   }, [likeOpacity, rejectOpacity, superLikeOpacity]);
 
-  const images = [item.profilePic]; // Placeholder array, replace with your images array
+  const images = item.profilePic.split(','); // Convert comma-separated URLs to array
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const handleImageClick = () => {
-    console.log('Image clicked');
+  const handleNextImage = () => {
     setCurrentIndex(prevIndex => (prevIndex + 1) % images.length);
   };
 
+  const handlePrevImage = () => {
+    setCurrentIndex(
+      prevIndex => (prevIndex - 1 + images.length) % images.length,
+    );
+  };
+
   return (
-    <Animated.View
-      style={[
-        {
-          width: width - 20,
-          height: height - 200,
-          position: 'absolute',
-          alignItems: 'center',
-          alignSelf: 'center',
-        },
-        isFirst && {
-          transform: [...swipe.getTranslateTransform(), {rotate: rotate}],
-        },
-      ]}
-      {...rest}>
-      <ImageBackground
-        source={{
-          uri: images[currentIndex].split(',')[0],
-        }}
-        style={{
-          width: '100%',
-          height: 320,
-          borderRadius: 20,
-          overflow: 'hidden',
-        }}>
-        <TouchableOpacity
-          onPress={handleImageClick}
+    <View style={{borderWidth: 0}}>
+      <Animated.View
+        style={[
+          {
+            width: width - 20,
+            height: height - 200,
+            position: 'absolute',
+            alignItems: 'center',
+            alignSelf: 'center',
+          },
+          isFirst && {
+            transform: [...swipe.getTranslateTransform(), {rotate: rotate}],
+          },
+        ]}
+        {...rest}>
+        <ImageBackground
+          source={{
+            uri: images[currentIndex],
+          }}
           style={{
             width: '100%',
-            height: '100%',
+            height: 320,
             borderRadius: 20,
-            backgroundColor: 'transparent',
-          }}
-        />
-      </ImageBackground>
+            overflow: 'hidden',
+            // borderWidth: 5,
+            backgroundColor: 'gray',
+          }}>
+          <View style={styles.imageOverlay}>
+            <TouchableOpacity onPress={handlePrevImage} style={styles.button} />
+            <TouchableOpacity onPress={handleNextImage} style={styles.button} />
+          </View>
 
-      {isFirst && renderChoice()}
+          <LinearGradient
+            colors={['transparent', 'transparent', 'rgba(0,0,0,0.5)']}
+            style={{
+              width: '100%',
+              height: 320,
+              position: 'absolute',
+              borderRadius: 20,
+            }}>
+            <View style={styles.cardInner}>
+              <Text style={styles.name}>{item.name}</Text>
+              <Text style={styles.bio}>{item.hobbies}</Text>
+            </View>
+          </LinearGradient>
+        </ImageBackground>
 
-      <LinearGradient
-        colors={['transparent', 'transparent', 'rgba(0,0,0,0.5)']}
-        style={{
-          width: '100%',
-          height: 320,
-          position: 'absolute',
-          borderRadius: 20,
-        }}>
-        <View style={styles.cardInner}>
-          <Text style={styles.name}>{item.name}</Text>
-          <Text style={styles.bio}>{item.hobbies}</Text>
-        </View>
-      </LinearGradient>
-    </Animated.View>
+        {isFirst && renderChoice()}
+      </Animated.View>
+    </View>
   );
 };
 
@@ -175,5 +179,20 @@ const styles = StyleSheet.create({
     color: 'white',
     lineHeight: 25,
     fontFamily: 'Sansation-Regular',
+  },
+  imageOverlay: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    height: '100%',
+    zIndex: 2,
+  },
+  button: {
+    width: '50%',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    // backgroundColor: 'rgba(0,0,0,0.5)',
+    borderRadius: 20,
+    // borderWidth: 8,
   },
 });
