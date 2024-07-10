@@ -10,7 +10,7 @@ export default class PushController extends Component {
           return notification.priority === 'high'; // Only show high priority notifications
         },
         onRegister: function (token) {
-          console.log('TOKEN:', token);
+          // console.log('TOKEN:', token);
         },
 
         // (required) Called when a remote or local notification is opened or received
@@ -88,7 +88,7 @@ export default class PushController extends Component {
         importance: 4, // (optional) default: 4. Int value of the importance
         vibrate: true, // (optional) default: true. Creates the default vibration pattern if true.
       },
-      created => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
+      // created => console.log(`createChannelreturned...'${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
     );
   };
   render() {

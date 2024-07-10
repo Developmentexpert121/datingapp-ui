@@ -6,6 +6,8 @@ import {
   Platform,
   ImageBackground,
   Linking,
+  Keyboard,
+  Animated,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import * as yup from 'yup';
@@ -58,6 +60,31 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
     resolver: yupResolver(schema),
   });
 
+  const [keyboardHeight] = useState(new Animated.Value(0));
+
+  useEffect(() => {
+    const keyboardWillShow = Keyboard.addListener('keyboardWillShow', event => {
+      Animated.timing(keyboardHeight, {
+        duration: event.duration,
+        toValue: event.endCoordinates.height,
+        useNativeDriver: false,
+      }).start();
+    });
+
+    const keyboardWillHide = Keyboard.addListener('keyboardWillHide', event => {
+      Animated.timing(keyboardHeight, {
+        duration: event.duration,
+        toValue: 0,
+        useNativeDriver: false,
+      }).start();
+    });
+
+    return () => {
+      keyboardWillShow.remove();
+      keyboardWillHide.remove();
+    };
+  }, []);
+
   const onSubmit: any = (data: LoginForm) => {
     setLoader(true);
     dispatch(LoginSignIn(data));
@@ -85,7 +112,7 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   }, []);
 
   return (
-    <>
+    <Animated.View style={[styles.container, {paddingBottom: keyboardHeight}]}>
       <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
         style={{flex: 1}}
@@ -168,7 +195,7 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
         </Text>
       </View>
       {loader ? <Loader /> : null}
-    </>
+    </Animated.View>
   );
 };
 

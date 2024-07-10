@@ -124,7 +124,6 @@ const TinderCard = ({
             height: 320,
             borderRadius: 20,
             overflow: 'hidden',
-            // borderWidth: 5,
             backgroundColor: 'gray',
           }}>
           <View style={styles.imageOverlay}>
@@ -148,6 +147,20 @@ const TinderCard = ({
         </ImageBackground>
 
         {isFirst && renderChoice()}
+
+        <View style={styles.imageCountContainer}>
+          {images.map((_, index) => (
+            <View
+              key={index}
+              style={[
+                styles.imageIndicator,
+                index === currentIndex
+                  ? styles.activeIndicator
+                  : styles.inactiveIndicator,
+              ]}
+            />
+          ))}
+        </View>
       </Animated.View>
     </View>
   );
@@ -189,10 +202,26 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '50%',
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    // backgroundColor: 'rgba(0,0,0,0.5)',
     borderRadius: 20,
-    // borderWidth: 8,
+  },
+  imageCountContainer: {
+    position: 'absolute',
+    top: 10,
+    left: 10,
+    flexDirection: 'row',
+    width: '95%',
+    justifyContent: 'center',
+  },
+  imageIndicator: {
+    width: 50,
+    height: 10,
+    borderRadius: 5,
+    marginHorizontal: 5,
+  },
+  activeIndicator: {
+    backgroundColor: '#AA22AA',
+  },
+  inactiveIndicator: {
+    backgroundColor: 'rgba(128, 128, 128, 0.5)',
   },
 });

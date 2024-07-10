@@ -6,11 +6,11 @@ import {
   StyleSheet,
   Button,
   Image,
-} from "react-native";
-import React, { useEffect, useState } from "react";
-import Label from "../Label";
-import NetInfo, { NetInfoStateType } from "@react-native-community/netinfo";
-import Modal from "react-native-modal";
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import Label from '../Label';
+import NetInfo, {NetInfoStateType} from '@react-native-community/netinfo';
+import Modal from 'react-native-modal';
 interface LoginFailModalProps {
   label?: string | undefined;
   onPress?: () => void | undefined;
@@ -47,17 +47,16 @@ const InternetModal: React.FC = ({
     <View>
       {isConnected ? null : (
         <Modal
-          animationIn={"slideInDown"}
+          animationIn={'slideInDown'}
           isVisible={modalVisible}
-          style={{ margin: 0 }}
-          onBackButtonPress={() => {}}
-        >
+          style={{margin: 0}}
+          onBackButtonPress={() => {}}>
           <View style={styles.modal}>
             <View style={styles.modalstyle}>
-              <Label text={label ?? "Oops!!!"} style={styles.textstyle} />
-              <Image source={require("../../assets/git/noInternet.gif")} />
+              <Label text={label ?? 'Oops!!!'} style={styles.textstyle} />
+              <Image source={require('../../assets/git/noln.gif')} />
               <Label
-                text={label ?? "No Internet Connection"}
+                text={label ?? 'No Internet Connection'}
                 style={styles.textstyle}
               />
 
@@ -79,24 +78,24 @@ const InternetModal: React.FC = ({
 export default InternetModal;
 const styles = StyleSheet.create({
   textstyle: {
-    width: "70%",
+    width: '70%',
     fontSize: 18,
     lineHeight: 36,
-    color: "#071731",
-    textAlign: "center",
+    color: '#FFF',
+    textAlign: 'center',
   },
   modalstyle: {
     height: 230,
-    width: "90%",
-    backgroundColor: "#FFF",
+    width: '90%',
+    backgroundColor: '#AA22AA',
     borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   modal: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#00000066",
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#00000066',
   },
 });

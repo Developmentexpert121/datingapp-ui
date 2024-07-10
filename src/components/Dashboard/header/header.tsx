@@ -54,13 +54,16 @@ const HeaderComponent = (props: any) => {
           </Pressable>
         </View>
       ) : props?.activeScreen === 'Filters' ? (
-        <TouchableOpacity onPress={props?.applyClick} style={{marginRight: 30}}>
+        <TouchableOpacity
+          onPress={props?.applyClick}
+          // onPress={() => props?.setActiveScreen('HOME')}
+          style={{marginRight: 30}}>
           <Text
             style={{
               fontSize: 20,
               fontFamily: 'Sansation-Bold',
               color: '#AA22AA',
-              left: 20,
+              left: 10,
             }}>
             Apply
           </Text>

@@ -56,7 +56,7 @@ const Root = () => {
   const dispatch: any = useAppDispatch();
   const [authToken, setAuthToken] = useState<any>(null);
   const [deviceToken, setDeciveToken] = useState<any>(null);
-  console.log('dtyrdjtudrudstudiyiiyidi', deviceToken);
+  console.log('deviceToken', deviceToken);
   const [loading, setLoading] = useState<boolean>(true);
 
   // const navigation: any = useNavigation();

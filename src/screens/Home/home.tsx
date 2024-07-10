@@ -80,7 +80,7 @@ const HomeScreen = () => {
         showNotifications={true}
         setActiveScreen={setActiveScreen}
         activeScreen={activeScreen}
-        // applyClick={''}
+        applyClick={() => setActiveScreen('HOME')}
       />
       {activeScreen === 'HOME' ? (
         <View style={styles.pageContainer2}>
