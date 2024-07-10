@@ -4,22 +4,15 @@ import {
   KeyboardAvoidingView,
   Platform,
   Pressable,
-  SafeAreaView,
   ScrollView,
   StatusBar,
   StyleProp,
   StyleSheet,
-  Text,
   TextStyle,
   View,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Alert,
 } from 'react-native';
 import React from 'react';
-// import { light } from "../../Theme";
 import Label from '../Label';
-// import { Back1WhiteIC } from "../../assets/svgs";
 import {useNavigation} from '@react-navigation/native';
 import {BackIC} from '../../assets/svgs';
 
@@ -100,14 +93,9 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   innerContainer: {
-    // flex: 1,
     width: '100%',
     backgroundColor: 'white',
-    // marginTop: 90,
-    // borderTopLeftRadius: 35,
-    // borderTopRightRadius: 35,
     paddingHorizontal: 20,
-    // paddingTop: 20,
     bottom: 20,
     position: 'absolute',
   },
@@ -115,11 +103,8 @@ const styles = StyleSheet.create({
     // backgroundColor:"red",
     position: 'absolute',
     opacity: 0.7,
-    // width:350,
     width: Dimensions.get('screen').width,
     height: 450,
-    // top:-Dimensions.get("screen").height+200,
-    // bottom:100
   },
   subTitleStyle: {
     marginBottom: 20,

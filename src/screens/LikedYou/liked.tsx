@@ -14,30 +14,31 @@ import CommonBackbutton from '../../components/commonBackbutton/CommonBackbutton
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import LinearGradient from 'react-native-linear-gradient';
 import {videoCallUser} from '../../store/Activity/activity';
-import {likedMe} from '../../store/Auth/auth';
+import {likedAUser, likedMe} from '../../store/Auth/auth';
+import {BlurView} from '@react-native-community/blur';
 const LikedScreen = () => {
-  const allUsers: any = useAppSelector(
-    (state: any) => state?.Auth?.data?.allUsers,
-  );
+  // const allUsers: any = useAppSelector(
+  //   (state: any) => state?.Auth?.data?.allUsers,
+  // );
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-
+  // console.log('first', profileData?._id);
   const dispatch: any = useAppDispatch();
-
   const [likeData, setLikeData] = useState<any>([]);
-  console.log('likeData??????????', likeData);
+  // console.log('likeData??????????', likeData);
+  const navigation = useNavigation();
 
   const goToChatWith = async (user: any) => {
     await dispatch(videoCallUser({user: user}));
     navigation.navigate('VideoCallRedirect');
   };
-  const navigation = useNavigation();
 
   const LikedUser = async () => {
     try {
       const response = await dispatch(likedMe({id: profileData._id})).unwrap();
-      setLikeData(response);
+      setLikeData(response.users);
+      // console.log('dsjkfhksdhfksjdf', response);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -45,15 +46,41 @@ const LikedScreen = () => {
 
   useEffect(() => {
     LikedUser();
-  }, []);
+  });
 
+  const likeByMe = async (item: any) => {
+    console.log('.......sdfjodsjfojo.....item', item.id);
+    console.log('.......sdfjodsjfojo.....item', item);
+    await dispatch(
+      likedAUser({
+        likerId: profileData?._id,
+        userIdBeingLiked: item?._id,
+      }),
+    );
+    goToChatWith(item);
+  };
   const renderGridItem = ({item, index}: any) => {
-    console.log("source={{uri: item.profilePic.split(',')[0]}}", item);
+    // console.log('>>>>>>>>>>item', item);
     return (
-      <TouchableOpacity onPress={() => goToChatWith(item)} style={styles.card}>
+      <TouchableOpacity
+        onPress={
+          profileData?.plan !== 'Free'
+            ? () => navigation.navigate('ChatPage')
+            : () => likeByMe(item)
+        }
+        style={styles.card}>
         <ImageBackground
-          source={{uri: item.profilePic.split(',')[0]}}
+          source={{uri: item.profilePic?.split(',')[0]}}
           style={styles.image}>
+          {profileData?.plan === 'Free' ? (
+            <BlurView
+              style={styles.absolute}
+              blurType="light"
+              blurAmount={10}
+              reducedTransparencyFallbackColor="white"
+            />
+          ) : null}
+
           <LinearGradient
             colors={['rgba(0,0,0,0)', 'rgba(0,0,0,0.8)']}
             style={styles.gradient}></LinearGradient>
@@ -158,6 +185,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 15,
     marginLeft: 80,
+  },
+  absolute: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
   },
 });
 

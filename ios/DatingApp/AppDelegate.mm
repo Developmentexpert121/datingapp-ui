@@ -12,13 +12,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [FIRApp configure];
+ [FIRApp configure];
   self.moduleName = @"DatingApp";
   // Custom initial props can be added in the dictionary below.
   self.initialProps = @{};
   
   [[FBSDKApplicationDelegate sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
-  [StreamVideoReactNative setup];
+ [StreamVideoReactNative setup];
   [super application:application didFinishLaunchingWithOptions:launchOptions];
   [RNSplashScreen hide];
   return YES;

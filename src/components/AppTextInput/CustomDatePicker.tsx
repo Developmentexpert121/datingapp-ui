@@ -53,7 +53,6 @@ const CustomDatePicker = ({
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState<string>('');
   const [dateError, setDateError] = useState<string | null>(null);
-  console.log(date);
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);

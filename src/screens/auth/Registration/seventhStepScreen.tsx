@@ -241,7 +241,7 @@ const SeventhStepScreen = ({
             fontFamily: 'Sansation_Regular',
             marginTop: 30,
           }}>
-          Please select any picture or select from gallery.
+          Please select minimum 2 pictures.
         </Text>
       )}
       {loader ? <Loader /> : null}

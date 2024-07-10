@@ -30,22 +30,25 @@ const NotificationScreen = () => {
   const allUsers: any = useAppSelector(
     (state: any) => state?.Auth?.data?.allUsers,
   );
+  const profileData: any = useAppSelector(
+    (state: any) => state?.Auth?.data?.profileData,
+  );
   const allNotifications: any = useAppSelector(
     (state: any) => state?.Auth?.data?.allNotifications,
   );
 
   const [allNotificationsPresent, setAllNotifications] = useState([]);
+  console.log('idsfghergugtuyerhgijdehghd', allNotificationsPresent);
 
   useEffect(() => {
     const getId = async () => {
       const userId = await getUserId();
-      dispatch(getNotifications(userId))
+      dispatch(getNotifications({userId: profileData?._id}))
         .unwrap()
         .then((response: any) => {
-          setAllNotifications(response.notifications);
+          setAllNotifications(response.newNotifications);
         });
     };
-
     getId();
   }, []);
 

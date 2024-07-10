@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {RootState, useAppDispatch, useAppSelector} from './src/store/store';
@@ -9,8 +9,14 @@ import Loader from './src/components/Loader/Loader';
 import io from 'socket.io-client';
 import {requestNotifications} from 'react-native-permissions';
 import {onlineUser} from './src/store/reducer/authSliceState';
+import {withIAPContext} from 'react-native-iap';
 
-// import PushNotification from 'react-native-push-notification';
+import PushNotification from 'react-native-push-notification';
+// import PushController from './src/screens/Notification/PushController';
+import {View} from 'react-native';
+import {Text} from 'react-native-elements';
+import InternetModal from './src/components/Modals/InternetModal';
+import PushController from './src/screens/Notification/PushController';
 
 const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 
@@ -100,17 +106,21 @@ const App = () => {
   );
 
   return (
-    <SafeAreaProvider>
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <NavigationContainer>
-          <Root />
-          <GlobalModal />
-        </NavigationContainer>
-      )}
-    </SafeAreaProvider>
+    <Fragment>
+      <SafeAreaProvider>
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <NavigationContainer>
+            <Root />
+            <GlobalModal />
+            <InternetModal />
+          </NavigationContainer>
+        )}
+      </SafeAreaProvider>
+      {/* <PushController /> */}
+    </Fragment>
   );
 };
 
-export default App;
+export default withIAPContext(App);

@@ -72,7 +72,7 @@ const LoginHomeScreen: React.FC<Props> = () => {
       if (userInfo) {
         // Extract the email and id from the user info
         const {email, id, name, photo} = userInfo;
-        console.log('User data///', userInfo);
+
         dispatch(
           userProfileDataChange({
             key: 'email',
@@ -93,14 +93,12 @@ const LoginHomeScreen: React.FC<Props> = () => {
         setLoader(true);
         dispatch(GoogleLogin({...loginPayload}))
           .then(async (response: any) => {
-            // console.log('response>>>>>>>', response?.payload?.redirect);
             if (response?.payload?.redirect === 'Steps') {
               await navigation.navigate('Register');
             } else if (response?.payload?.redirect === 'Dashboard') {
               dispatch(activityLoaderStarted());
               let token: string = response?.payload?.token;
               setLocalStorage('token', token);
-              // console.log('..............', token);
               await AsyncStorage.setItem(
                 'authToken',
                 JSON.stringify(response?.payload?.token),
@@ -109,7 +107,6 @@ const LoginHomeScreen: React.FC<Props> = () => {
                 'userId',
                 JSON.stringify(response?.payload?._id),
               );
-              // console.log('dfj', response?.payload?._id);
               dispatch(ProfileData());
 
               // If sign-up is successful, call the function to handle the navigation
@@ -148,7 +145,6 @@ const LoginHomeScreen: React.FC<Props> = () => {
       try {
         // Call the function to handle Apple button press and get user info
         const userInfo = await onAppleButtonPress();
-        // console.log('UserInfo:', userInfo);
 
         if (userInfo) {
           // Prepare the login payload for Apple login
@@ -163,15 +159,12 @@ const LoginHomeScreen: React.FC<Props> = () => {
           // Dispatch the user sign-up action with the login payload
           dispatch(AppleLogin({...loginPayload}))
             .then(async (response: any) => {
-              // console.log('response>>>>>>>', response);
-              // console.log('response>>>>>>>', response?.payload?.redirect);
               if (response?.payload?.redirect === 'Steps') {
                 await navigation.navigate('Register');
               } else if (response?.payload?.redirect === 'Dashboard') {
                 dispatch(activityLoaderStarted());
                 let token: string = response?.payload?.token;
                 setLocalStorage('token', token);
-                console.log('..............', token);
                 await AsyncStorage.setItem(
                   'authToken',
                   JSON.stringify(response?.payload?.token),
@@ -180,7 +173,6 @@ const LoginHomeScreen: React.FC<Props> = () => {
                   'userId',
                   JSON.stringify(response?.payload?._id),
                 );
-                console.log('dfj', response?.payload?._id);
                 dispatch(ProfileData());
 
                 // If sign-up is successful, call the function to handle the navigation

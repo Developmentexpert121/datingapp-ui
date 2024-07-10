@@ -18,6 +18,7 @@ export type RootStackParamList = {
   Filter: undefined;
   Explore: undefined;
   Settings: undefined;
+  Subscriptions: undefined;
   UpdateProfile: undefined;
   ChatPage: undefined;
   VideoCallRedirect: undefined;

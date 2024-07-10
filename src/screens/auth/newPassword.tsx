@@ -53,7 +53,6 @@ const NewPassword: React.FC<Props> = ({navigation, route}) => {
   });
 
   const onSubmit: any = async (data: RegisterForm) => {
-    console.log('onSubmitdfgdasg');
     setNewPassword(data.newPassword);
     try {
       await dispatch(

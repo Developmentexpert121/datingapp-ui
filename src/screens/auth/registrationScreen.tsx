@@ -258,18 +258,13 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
     if (loginwithgoogle.email) {
       setValue('email', loginwithgoogle.email);
     }
-    console.log('................', data);
     setLoader(true);
     Geolocation.getCurrentPosition(
       (position: any) => {
-        console.log('........11111');
         const {latitude, longitude} = position.coords;
         setLocation({latitude, longitude});
-        console.log('latitude', latitude);
-        console.log('longitude', longitude);
         setPermissionStatus('granted');
 
-        console.log('........22222222');
         // Call registration API here
         dispatch(
           loginwithgoogle.email
@@ -299,7 +294,6 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
         )
           .unwrap()
           .then(async (response: any) => {
-            console.log('response>>>>>>>', response);
             if (response?.payload?.redirect === 'Steps') {
               await navigation.navigate('Register');
             } else if (response?.redirect === 'Dashboard') {
@@ -456,7 +450,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
     });
 
     if (steps === 7) {
-      if (profileImages.length > 0) {
+      if (profileImages.length > 1) {
         setSteps(prev => prev + 1);
         return;
       } else {

@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {LockIC, UnlockIC} from '../../../assets/svgs';
+import {useNavigation} from '@react-navigation/native';
 
 const {width} = Dimensions.get('window');
 const eightyPercentWidth: number = width * 0.84;
@@ -39,33 +40,34 @@ const data2 = [
   {service: 'Unlimited likes', icon: <UnlockIC />},
 ];
 
-const premium = () => {
-  return <></>;
-};
-
-const Box = ({item, isActive}: any) => (
-  <LinearGradient
-    colors={[
-      item.title === 'Premium' ? '#AC25AC' : '#101010',
-      item.title === 'Premium' ? '#FF4FFF' : '#494949',
-    ]}
-    start={{x: 0, y: 0.5}}
-    end={{x: 1, y: 0.5}}
-    style={[styles.box]}>
-    <Text style={styles.boxTitle}>{item.title}</Text>
-    <Text style={styles.boxDescription}>{item.description}</Text>
-    <TouchableOpacity onPress={premium}>
-      <Text style={styles.upgradeButton}>Upgrade from {item.price}</Text>
-    </TouchableOpacity>
-  </LinearGradient>
-);
-
-const SubscriptionUi: React.FC = () => {
+const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {
+  const navigation = useNavigation();
   const [activeIndex, setActiveIndex] = useState(0);
   const flatListRef: any = useRef(null);
 
-  const renderBox = ({item, index}: any) => (
-    <Box item={item} isActive={index === activeIndex} />
+  const Box = ({item, isActive, onPress}: any) => (
+    <LinearGradient
+      colors={[
+        item.title === 'Premium' ? '#AC25AC' : '#101010',
+        item.title === 'Premium' ? '#FF4FFF' : '#494949',
+      ]}
+      start={{x: 0, y: 0.5}}
+      end={{x: 1, y: 0.5}}
+      style={[styles.box]}>
+      <Text style={styles.boxTitle}>{item.title}</Text>
+      <Text style={styles.boxDescription}>{item.description}</Text>
+      <TouchableOpacity onPress={onPress}>
+        <Text style={styles.upgradeButton}>Upgrade from {item.price}</Text>
+      </TouchableOpacity>
+    </LinearGradient>
+  );
+
+  const renderBox = ({item, index, onPress}: any) => (
+    <Box
+      item={item}
+      isActive={index === activeIndex}
+      onPress={() => navigation.navigate('Subscriptions')}
+    />
   );
 
   const handleDotPress = (index: any) => {

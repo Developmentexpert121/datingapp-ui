@@ -12,7 +12,7 @@ import VideoCallInterface from './chatVideoInterface';
 
 const VideoCallRedirect = () => {
   const user: any = useAppSelector((state: any) => state?.ActivityLoader?.user);
-  console.log('ashdfigsufgosudfgous', user?.deactivate);
+  // console.log('ashdfigsufgosudfgous', user?.deactivate);
   const dispatch: any = useAppDispatch();
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,

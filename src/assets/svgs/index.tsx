@@ -40,6 +40,9 @@ import UnlockIC from './Unlock.svg';
 import CrossIconIC from './CrossIcon.svg';
 import DoubleTickIC from './DoubleTick.svg';
 import EditTextIC from './EditText.svg';
+import LikeIC from './Like.svg';
+import NopeIC from './Nope.svg';
+import SuperLikeIC from './Super-Like.svg';
 
 export {
   FireIC,
@@ -84,4 +87,7 @@ export {
   CrossIconIC,
   DoubleTickIC,
   EditTextIC,
+  LikeIC,
+  NopeIC,
+  SuperLikeIC,
 };

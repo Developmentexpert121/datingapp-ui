@@ -500,7 +500,7 @@
 				CODE_SIGN_ENTITLEMENTS = DatingApp/DatingAppDebug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 21;
+				CURRENT_PROJECT_VERSION = 30;
 				DEVELOPMENT_TEAM = W83U5D6928;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = DatingApp/Info.plist;
@@ -538,7 +538,7 @@
 				CODE_SIGN_ENTITLEMENTS = DatingApp/DatingAppRelease.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 21;
+				CURRENT_PROJECT_VERSION = 30;
 				DEVELOPMENT_TEAM = W83U5D6928;
 				INFOPLIST_FILE = DatingApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "TopTier Dating";

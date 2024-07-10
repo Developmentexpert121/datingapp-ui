@@ -15,7 +15,7 @@
 //   const [visible, setVisible] = useState<boolean>(false);
 //   const [storeUrl, setstoreUrl] = useState<string>("");
 //   VersionCheck.needUpdate().then(async (res) => {
-//     console.log(res.isNeeded); // true
+//
 //     if (res.isNeeded) {
 //       setstoreUrl(res.storeUrl);
 //       setVisible(true);
