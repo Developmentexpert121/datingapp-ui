@@ -432,7 +432,7 @@ export const superLiked = createAsyncThunk(
         return response.data;
       }
     } catch (error: any) {
-      console.log('error000000');
+      console.log('error000000s');
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
       } else {
@@ -474,10 +474,28 @@ export const likedMe = createAsyncThunk(
 export const getAllUsers = createAsyncThunk(
   'auth/getAllUsers',
   async (
-    {userId, checkedInterests, showIn, distance, low, high}: any,
+    {
+      userId,
+      checkedInterests,
+      showIn,
+      distance,
+      low,
+      high,
+      checkedRelationShip,
+    }: any,
     {dispatch}: any,
   ) => {
     try {
+      console.log(
+        'hdsfkjhdksfhksdhkfs',
+        userId,
+        checkedInterests,
+        showIn,
+        distance,
+        low,
+        high,
+        checkedRelationShip,
+      );
       // console.log('.d;alfjlajgfladfsg;lad;gh;');
       const response = await http.get('/user/getUsers', {
         params: {
@@ -487,12 +505,13 @@ export const getAllUsers = createAsyncThunk(
           distance: distance,
           low: low,
           high: high,
+          partnerType: checkedRelationShip,
         },
       });
       if (response.status === 200) {
+        // console.log('getUsers', response.data);
         return response.data;
       }
-      console.log('getUsers', response);
     } catch (error: any) {
       console.error('error', error);
       if (error.response && error.response.status === 400) {

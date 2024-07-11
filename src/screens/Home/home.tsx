@@ -10,34 +10,27 @@ import TinderSwipe from './AnimatedStack/TinderSwipe';
 
 const HomeScreen = () => {
   const [activeScreen, setActiveScreen] = useState('HOME');
+  const [apply, setApply] = useState(false);
   const dispatch: any = useAppDispatch();
-  // const allUsers: any = useAppSelector(
-  //   (state: any) => state?.Auth?.data?.allUsers,
   // );
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-  // console.log('profileData', profileData);
   const [low, setLow] = useState<number>(18);
   const [high, setHigh] = useState<number>(56);
-  const [showIn, setShowIn] = useState(profileData?.showInDistance);
+  const [showIn, setShowIn] = useState(profileData?.showInDistance || false);
   const [distance, setDistance] = useState(
     parseInt(profileData?.distance) || 50,
   );
-  // const isAuthenticated = useAppSelector(
-  //   (state: any) => state?.Auth?.isAuthenticated,
-  // );
   const [currentIndex, setCurrentIndex] = useState(0);
   const [data, setData] = useState<any>([]);
-  // console.log('fgjdgjdjgdjkgdhgkdhgkdhksfkshfskfjskdf', data);
   const [checkedInterests, setCheckedInterests] = useState(
-    profileData?.interests || 'everyone',
+    profileData?.interests || 'Everyone',
   );
   const [checkedRelationShip, setCheckedRelationShip] = useState(
-    profileData?.partnerType,
+    profileData?.partnerType || '',
   );
-  // console.log('----------q', checkedRelationShip);
-  // console.log('----------ss', profileData?.partnerType);
+  console.log('----------q', checkedRelationShip);
 
   const getProfileData = async () => {
     try {
@@ -61,10 +54,10 @@ const HomeScreen = () => {
     )
       .unwrap()
       .then((response: any) => {
-        // console.log('..........', response.users);
         setData(response.users);
       });
-  }, [checkedInterests, low, high, showIn, distance]);
+    apply && setApply(false);
+  }, [apply]);
 
   useEffect(() => {
     getProfileData();
@@ -80,7 +73,10 @@ const HomeScreen = () => {
         showNotifications={true}
         setActiveScreen={setActiveScreen}
         activeScreen={activeScreen}
-        applyClick={() => setActiveScreen('HOME')}
+        setApply={() => setApply(true)}
+        applyClick={() => {
+          setActiveScreen('HOME');
+        }}
       />
       {activeScreen === 'HOME' ? (
         <View style={styles.pageContainer2}>
