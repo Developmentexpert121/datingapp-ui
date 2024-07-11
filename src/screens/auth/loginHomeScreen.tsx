@@ -269,12 +269,12 @@ const LoginHomeScreen: React.FC<Props> = () => {
           <TouchableOpacity onPress={handleGoogleLogin}>
             <GoogleIC />
           </TouchableOpacity>
-          <TouchableOpacity
+          {/* <TouchableOpacity
           // onPress={handleFacebookLogin}
           //
           >
             <FacebookIC />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           {Platform.OS === 'ios' && (
             <TouchableOpacity onPress={handleAppleLogin}>
               <AppleIC />

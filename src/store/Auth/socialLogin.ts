@@ -1,20 +1,17 @@
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-
 import {appleAuth} from '@invertase/react-native-apple-authentication';
-const jwtDecode = require('jwt-decode'); // Use CommonJS require syntax
-import jwt_decode from 'jwt-decode';
-import {Alert} from 'react-native';
+const jwtDecode = require('jwt-decode');
 // import {GOOGLE_WEB_CLIENT_ID, GOOGLE_CLIENT_ID_IOS} from '@env';
 
-export const configureGoogleSignIn = async () => {
+const configureGoogleSignIn = async () => {
   await GoogleSignin.configure({
     // scopes: googleScopes,
-    scopes: ['email', 'profile'],
+    // scopes: ['email', 'profile'],
     webClientId:
       '151623051367-b882b5sufigjbholkehodmi9ccn4hv6m.apps.googleusercontent.com',
-    offlineAccess: false,
-    hostedDomain: '',
-    accountName: '',
+    offlineAccess: true,
+    // hostedDomain: '',
+    // accountName: '',
   });
 };
 
@@ -24,7 +21,7 @@ export const googleLogin = async () => {
     await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
     console.log('00000000', GoogleSignin);
     const userInfo = await GoogleSignin.signIn();
-    // console.log('111111111111', userInfo);
+    console.log('111111111111', userInfo);
     return userInfo?.user;
   } catch (error) {
     console.log('error NETWORK_ERROR', error);

@@ -7,8 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import React, {useCallback, useState} from 'react';
-import TinderLike from './TinderLike';
+import React, {useCallback, useState, useEffect} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {LikeIC, NopeIC, SuperLikeIC} from '../../../assets/svgs';
 
@@ -89,6 +88,10 @@ const TinderCard = ({
   const images = item.profilePic.split(','); // Convert comma-separated URLs to array
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  useEffect(() => {
+    setCurrentIndex(0);
+  }, [item]);
+
   const handleNextImage = () => {
     setCurrentIndex(prevIndex => (prevIndex + 1) % images.length);
   };
@@ -100,69 +103,69 @@ const TinderCard = ({
   };
 
   return (
-    <View style={{borderWidth: 0}}>
-      <Animated.View
-        style={[
-          {
-            width: width - 20,
-            height: height - 200,
-            position: 'absolute',
-            alignItems: 'center',
-            alignSelf: 'center',
-          },
-          isFirst && {
-            transform: [...swipe.getTranslateTransform(), {rotate: rotate}],
-          },
-        ]}
-        {...rest}>
-        <ImageBackground
-          source={{
-            uri: images[currentIndex],
-          }}
+    // <View style={{borderWidth: 10}}>
+    <Animated.View
+      style={[
+        {
+          width: width - 20,
+          height: height - 400,
+          position: 'absolute',
+          alignItems: 'center',
+          alignSelf: 'center',
+        },
+        isFirst && {
+          transform: [...swipe.getTranslateTransform(), {rotate: rotate}],
+        },
+      ]}
+      {...rest}>
+      <ImageBackground
+        source={{
+          uri: images[currentIndex],
+        }}
+        style={{
+          width: '100%',
+          height: 320,
+          borderRadius: 20,
+          overflow: 'hidden',
+          backgroundColor: 'gray',
+        }}>
+        <View style={styles.imageOverlay}>
+          <TouchableOpacity onPress={handlePrevImage} style={styles.button} />
+          <TouchableOpacity onPress={handleNextImage} style={styles.button} />
+        </View>
+
+        <LinearGradient
+          colors={['transparent', 'transparent', 'rgba(0,0,0,0.5)']}
           style={{
             width: '100%',
             height: 320,
+            position: 'absolute',
             borderRadius: 20,
-            overflow: 'hidden',
-            backgroundColor: 'gray',
           }}>
-          <View style={styles.imageOverlay}>
-            <TouchableOpacity onPress={handlePrevImage} style={styles.button} />
-            <TouchableOpacity onPress={handleNextImage} style={styles.button} />
+          <View style={styles.cardInner}>
+            <Text style={styles.name}>{item.name}</Text>
+            <Text style={styles.bio}>{item.hobbies}</Text>
           </View>
+        </LinearGradient>
+      </ImageBackground>
 
-          <LinearGradient
-            colors={['transparent', 'transparent', 'rgba(0,0,0,0.5)']}
-            style={{
-              width: '100%',
-              height: 320,
-              position: 'absolute',
-              borderRadius: 20,
-            }}>
-            <View style={styles.cardInner}>
-              <Text style={styles.name}>{item.name}</Text>
-              <Text style={styles.bio}>{item.hobbies}</Text>
-            </View>
-          </LinearGradient>
-        </ImageBackground>
+      {isFirst && renderChoice()}
 
-        {isFirst && renderChoice()}
-
-        <View style={styles.imageCountContainer}>
-          {images.map((_, index) => (
-            <View
-              key={index}
-              style={[
-                styles.imageIndicator,
-                index === currentIndex
-                  ? styles.activeIndicator
-                  : styles.inactiveIndicator,
-              ]}
-            />
-          ))}
-        </View>
-      </Animated.View>
-    </View>
+      <View style={styles.imageCountContainer}>
+        {images.map((_, index) => (
+          <View
+            key={index}
+            style={[
+              styles.imageIndicator,
+              index === currentIndex
+                ? styles.activeIndicator
+                : styles.inactiveIndicator,
+            ]}
+          />
+        ))}
+      </View>
+    </Animated.View>
+    // </View>
   );
 };
 

@@ -73,17 +73,12 @@ const FilterSection = ({
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-
   useEffect(() => {
     setCheckedInterests(profileData?.interests);
   }, [profileData?.interests]);
-
   useEffect(() => {
     setCheckedRelationShip(profileData?.partnerType);
   }, [profileData?.partnerType]);
-  console.log('firstprofileDataprofileData', profileData?.partnerType);
-  // console.log('++++++++++++aprofileData', setCheckedRelationShip);
-  // console.log('++++++++++++aprofileData', setCheckedRelationShip);
   const {
     control,
     formState: {errors},
@@ -98,12 +93,30 @@ const FilterSection = ({
     {label: 'Transgender', value: 'fourth'},
   ];
   const RelationShip = [
-    {id: '1', text: 'Long term partner'},
-    {id: '2', text: 'Long term open to short'},
-    {id: '3', text: 'Short term open to long'},
-    {id: '4', text: 'Short term fun'},
-    {id: '5', text: 'New friends'},
-    {id: '6', text: 'Still figuring it out'},
+    {
+      id: '1',
+      name: 'Long term partner',
+    },
+    {
+      id: '2',
+      name: 'Long term open to short',
+    },
+    {
+      id: '3',
+      name: 'Short term open to long',
+    },
+    {
+      id: '4',
+      name: 'Short term fun',
+    },
+    {
+      id: '5',
+      name: 'New friends',
+    },
+    {
+      id: '6',
+      name: 'Still figuring it out',
+    },
   ];
   const options2 = [
     {value: 'Male', label: 'Male'},
@@ -326,22 +339,22 @@ const FilterSection = ({
                         paddingBottom: 8,
                       },
                     ]}>
-                    {item.text}
+                    {item.name}
                   </Text>
                   <TouchableOpacity
                     onPress={() => {
-                      setCheckedRelationShip(item.text);
+                      setCheckedRelationShip(item.name);
                       dispatch(
                         updateProfileData({
-                          field: 'relationShip',
-                          value: item.text,
+                          field: 'partnerType',
+                          value: item.name,
                           id: getUserId(),
                         }),
                       );
                     }}>
                     <Ionicons
                       name={
-                        checkedRelationShip === item.text
+                        checkedRelationShip === item.name
                           ? 'radio-button-on'
                           : 'radio-button-off'
                       }

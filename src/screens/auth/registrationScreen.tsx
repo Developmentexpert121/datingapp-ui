@@ -478,10 +478,6 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
           ).unwrap();
           setIsEmailVerified(true);
           setLoader(false);
-          // setPhone({
-          //   countryCode: callingCode,
-          //   number: data.phone,
-          // });
           return;
         } catch (error) {
           console.error(error);
