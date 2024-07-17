@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PushNotification from 'react-native-push-notification';
-// var PushNotification = require("react-native-push-notification");
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
 export default class PushController extends Component {
   componentDidMount() {
     PushNotification.configure(
@@ -10,7 +10,7 @@ export default class PushController extends Component {
           return notification.priority === 'high'; // Only show high priority notifications
         },
         onRegister: function (token) {
-          // console.log('TOKEN:', token);
+          console.log('TOKEN:', token);
         },
 
         // (required) Called when a remote or local notification is opened or received
@@ -35,7 +35,7 @@ export default class PushController extends Component {
 
         // (optional) Called when the user fails to register for remote notifications. Typically occurs when APNS is having issues, or the device is a simulator. (iOS)
         onRegistrationError: function (err) {
-          console.error(err.message, err);
+          console.error('error.', err.message, err);
         },
 
         // IOS ONLY (optional): default: all - Permissions to register.

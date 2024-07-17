@@ -152,7 +152,7 @@ const schema4 = yup.object().shape({
         selectedText: yup.string().required(),
       }),
     )
-    .min(1, 'At least one item must be selected in the first box'),
+    .min(5, 'At least five item must be selected in the first box'),
 });
 
 const schema5 = yup.object().shape({
@@ -164,7 +164,7 @@ const schema5 = yup.object().shape({
         selectedText: yup.string().required(),
       }),
     )
-    .min(1, 'At least one item must be selected in the second box'),
+    .min(4, 'At least four item must be selected in the second box'),
 });
 
 const schema6 = yup.object().shape({
@@ -339,6 +339,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
       },
       err => {
         console.error('Error fetching location:', err);
+        setLoader(false);
         setError(err.message);
         setPermissionStatus('denied');
       },

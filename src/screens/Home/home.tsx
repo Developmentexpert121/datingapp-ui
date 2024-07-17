@@ -30,7 +30,7 @@ const HomeScreen = () => {
   const [checkedRelationShip, setCheckedRelationShip] = useState(
     profileData?.partnerType || '',
   );
-  console.log('----------q', checkedRelationShip);
+  // console.log('----------q', checkedRelationShip);
 
   const getProfileData = async () => {
     try {

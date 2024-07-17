@@ -196,13 +196,13 @@ const ChatPage = ({
   };
 
   const isUserOnline = showOnlineUser?.includes(user?._id);
-  // console.log('+++++++++++++', isUserOnline);
-  // console.log('user user.........', user);
+
   return (
     <>
       <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={{flex: 1}}>
+            {/* header */}
             <View style={styles.container}>
               <View
                 style={{
@@ -243,7 +243,7 @@ const ChatPage = ({
               <View style={{flexDirection: 'row', marginEnd: 10, width: '25%'}}>
                 <TouchableOpacity
                   onPress={() => {
-                    // setEnableCamera1(false);
+                    setEnableCamera1(false);
                     goToCallScreen();
                   }}>
                   <View style={styles.editIcon}>
@@ -267,6 +267,7 @@ const ChatPage = ({
                 </TouchableOpacity>
               </View>
             </View>
+            {/* center */}
             <View style={{marginTop: 10, flex: 1, borderWidth: 0}}>
               <ScrollView
                 ref={scrollViewRef}
@@ -359,6 +360,8 @@ const ChatPage = ({
                 })}
               </ScrollView>
             </View>
+
+            {/* footer */}
             {user?.deactivate === false && user?.isBlocked === false ? (
               <View
                 style={[
@@ -427,6 +430,7 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 4,
     alignItems: 'center',
+    // borderWidth: 1,
   },
   circularImage: {
     width: 20,

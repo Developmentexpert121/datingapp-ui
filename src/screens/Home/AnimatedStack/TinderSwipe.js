@@ -43,7 +43,7 @@ const TinderSwipe = ({
       setNoProfilesLoader(true);
       const timer = setTimeout(() => {
         setNoProfilesLoader(false);
-      }, 900);
+      }, 2000);
       return () => clearTimeout(timer);
     }
   }, [data.length]);

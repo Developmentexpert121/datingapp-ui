@@ -9,19 +9,16 @@ import VideoCallRedirect from '../screens/ChatHome/chatVideoRedirect';
 import SettingsScreen from '../screens/SettingsSection/settings';
 import UpdateProfileScreen from '../screens/UpdateProfile/updateProfile';
 import {useAppDispatch, useAppSelector} from '../store/store';
-// import {ProfileData, getNotifications} from '../store/Auth/auth';
 import {ProfileData, getNotifications} from '../store/Auth/auth';
 import BottomTabNavigation from './BottomTabNavigation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from 'react-native-splash-screen';
-import {requestNotifications} from 'react-native-permissions';
 import FilterSection from '../screens/FilterSection/filterSection';
-import {useNavigation} from '@react-navigation/native';
 import ForgotPassword from '../screens/auth/forgotPassword';
 import NewPassword from '../screens/auth/newPassword';
 import Subscriptions from '../screens/Profile/SubscriptionComponent/Subscriptions';
-import PushNotification from 'react-native-push-notification';
-// import {configureGoogleSignIn} from '../store/Auth/socialLogin';
+import {Platform} from 'react-native';
+
 export type RegisterType = {};
 export type RootStackParamList = {
   Loginhome: undefined;
@@ -52,42 +49,43 @@ const Root = () => {
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-  // console.log('jdeghidhighdfkhgiodhp', profileData?._id);
   const dispatch: any = useAppDispatch();
   const [authToken, setAuthToken] = useState<any>(null);
-  const [deviceToken, setDeciveToken] = useState<any>(null);
-  // console.log('deviceToken////', deviceToken);
+  const [deviceToken, setDeviceToken] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  // const navigation: any = useNavigation();
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
       SplashScreen.hide();
       requestUserPermission();
-      // getToken();
     }, 2000);
   }, []);
 
-  async function requestUserPermission() {
-    await requestNotifications(['alert', 'sound']);
-    const authStatus = await messaging().requestPermission();
-    const token = await messaging().getToken();
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-    if (enabled) {
-      setDeciveToken(token);
-      console.log('Authorization status:', authStatus);
+  const requestUserPermission = async () => {
+    try {
+      const authStatus = await messaging().requestPermission({
+        sound: true,
+        alert: true,
+        badge: true,
+      });
+      const enabled =
+        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
-      // console.log('Device Token!!!', token);
-      // dispatch(storeToken(token));
+      if (enabled) {
+        const token = await messaging().getToken();
+        setDeviceToken(token);
+        console.log('Authorization status:', authStatus);
+        console.log('Device Token:', token);
+      } else {
+        console.log('Authorization status:', authStatus);
+      }
+    } catch (error) {
+      console.error('Error requesting permission:', error);
     }
-  }
-  const getToken = async () => {
-    const token = await messaging().getToken();
-    // console.log('Sdk Token:', token);
   };
+
   const fetchAuthToken = async () => {
     try {
       const token = await AsyncStorage.getItem('authToken');
@@ -101,65 +99,38 @@ const Root = () => {
       setAuthToken(null);
     }
   };
+
   const getUserId = async () => {
     try {
       const userId: any = await AsyncStorage.getItem('userId');
-
-      if (userId !== null) {
-        return JSON.parse(userId);
-      } else {
-        return null;
-      }
+      return userId ? JSON.parse(userId) : null;
     } catch (error) {
+      console.error('Error fetching user ID:', error);
       return null;
     }
   };
+
   useEffect(() => {
     fetchAuthToken();
   }, []);
-  const [isAuthenticated, setIsAuthenticated] = useState<any>('');
-  // console.log('ioufhiegrfeirugfuerufg', isAuthenticated);
 
-  // const isAuthenticated = useAppSelector(
-  //     (state: any) => state?.Auth?.isAuthenticated,
-  //   );
+  const [isAuthenticated, setIsAuthenticated] = useState<any>('');
 
   useEffect(() => {
     setIsAuthenticated(Boolean(authToken));
   }, [authToken]);
 
   useEffect(() => {
-    isAuthenticated?.authToken && dispatch(ProfileData());
-    // user?.token && dispatch(getUserDetails({userId: isAuthenticated?.id}));
-    return;
-  }, []);
-  //
-  // useEffect(() => {
-  //   let channelId = 'Sheikh_app' + new Date();
-  //   console.log({channelId});
+    if (isAuthenticated?.authToken) {
+      dispatch(ProfileData());
+    }
+  }, [isAuthenticated]);
 
-  //   PushNotification.createChannel(
-  //     {
-  //       channelId: 'Sheikh_app', // (required)
-  //       channelName: 'Sheikh Property', // (required)
-  //     },
-  //     created => {
-  //       console.log(`createChannel returned '${created}'`);
-  //     }, // (optional) callback returns whether the channel was created, false means it already existed.
-  //   );
-  //   messaging()
-  //     .subscribeToTopic('global')
-  //     .then(() => console.log('Subscribed to topic!'));
-  // }, []);
-
-  //
   useEffect(() => {
     const getId = async () => {
       const userId = await getUserId();
-      // console.log('!!!!!!!!!!!!!!!!', deviceToken);
       dispatch(
         getNotifications({
-          // userId: isAuthenticated?._id,
           userId: profileData?._id,
           deviceToken: deviceToken,
         }),
@@ -171,7 +142,6 @@ const Root = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       {isAuthenticated ? (
-        // {!isAuthenticated?.authToken ? (
         <Stack.Group>
           <Stack.Screen
             name="BottomTabNavigation"

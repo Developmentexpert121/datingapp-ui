@@ -77,8 +77,8 @@ const ChatSection = () => {
         if (response.data && response.data.length > 0) {
           const allUsers = response.data;
           allUsers.forEach((user: any) => {
-            const lastChat = user.chat?.message;
-            const timestamp = user.chat?.timestamp;
+            // const lastChat = user.chat?.message;
+            // const timestamp = user.chat?.timestamp;
           });
         } else {
         }
@@ -211,7 +211,7 @@ const ChatSection = () => {
                 }}>
                 {getTimeAgo(item.chat?.timestamp)}
               </Text>
-              {item.chat?.message ? <DoubleTickIC /> : null}
+              {/* {item.chat?.message ? <DoubleTickIC /> : null} */}
             </>
           )}
         </View>

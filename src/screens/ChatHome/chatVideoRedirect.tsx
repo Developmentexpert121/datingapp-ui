@@ -4,6 +4,7 @@ import {
   Call,
   StreamVideo,
   StreamVideoClient,
+  useCallStateHooks,
 } from '@stream-io/video-react-native-sdk';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import uuid from 'react-native-uuid';
@@ -24,7 +25,8 @@ const VideoCallRedirect = () => {
   const [activeScreen, setActiveScreen] = useState('home');
   const [client, setClient] = useState<StreamVideoClient | null>(null);
   const [call, setCall] = useState<Call | null>(null);
-
+  // const {useCallCallingState, useCameraState} = useCallStateHooks();
+  // const {isMute: cameraMuted} = useCameraState();
   useEffect(() => {
     const apiKey = 'xxbhmm34dcx3';
     const tokenProvider = async () => {
@@ -80,11 +82,11 @@ const VideoCallRedirect = () => {
         ring: true,
         data: {
           members: [{user_id: profileData._id}, {user_id: user._id}],
-          // custom: {color: '#AA22AA'},
-          // settings_override: {
-          //   audio: {mic_default_on: false},
-          //   video: {camera_default_on: false},
-          // },
+          //   custom: {color: '#AA22AA'},
+          //   settings_override: {
+          //     // audio: {mic_default_on: false},
+          //     video: {camera_default_on: true},
+          //   },
         },
       })
       .catch(err => {
@@ -102,6 +104,7 @@ const VideoCallRedirect = () => {
   }, [client, callId, profileData._id, user._id, handleCallEnd]);
 
   const goToHomeScreen = () => {
+    console.log('leave call');
     if (call) {
       call.leave();
       handleCallEnd();

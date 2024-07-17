@@ -112,13 +112,13 @@ const App = () => {
           <Loader />
         ) : (
           <NavigationContainer>
+            <PushController />
             <Root />
             <GlobalModal />
             <InternetModal />
           </NavigationContainer>
         )}
       </SafeAreaProvider>
-      {/* <PushController /> */}
     </Fragment>
   );
 };

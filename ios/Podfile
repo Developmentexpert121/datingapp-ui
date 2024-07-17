@@ -35,6 +35,7 @@ target 'DatingApp' do
   pod 'GoogleUtilities',:modular_headers => true
   pod 'FirebaseCoreInternal',:modular_headers => true
   pod 'FirebaseCore', :modular_headers => true
+  pod 'Firebase/Messaging', :modular_headers => true
   # pod 'RNFBApp', :modular_headers => true
   # pod 'RNFBAnalytics', :modular_headers => true
   pod 'RNFBApp', :path => '../node_modules/@react-native-firebase/app'

@@ -6,10 +6,12 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {getNotifications, handleNotificationRead} from '../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loader from '../../components/Loader/Loader';
 
 const getUserId = async () => {
   try {
@@ -38,6 +40,7 @@ const NotificationScreen = () => {
   );
 
   const [allNotificationsPresent, setAllNotifications] = useState([]);
+  const [loading, setLoading] = useState(true);
   console.log('idsfghergugtuyerhgijdehghd', allNotificationsPresent);
 
   useEffect(() => {
@@ -47,6 +50,10 @@ const NotificationScreen = () => {
         .unwrap()
         .then((response: any) => {
           setAllNotifications(response.newNotifications);
+          setLoading(false);
+        })
+        .catch(() => {
+          setLoading(false);
         });
     };
     getId();
@@ -144,17 +151,13 @@ const NotificationScreen = () => {
 
   return (
     <View style={styles.container}>
-      {allNotificationsPresent.length === 0 ? (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginBottom: 40,
-          }}>
-          <Text style={{fontFamily: 'Sansation-Bold', fontSize: 20}}>
-            You have no Notifications!
-          </Text>
+      {loading ? (
+        <View style={styles.loadingContainer}>
+          <Loader />
+        </View>
+      ) : allNotificationsPresent.length === 0 ? (
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyText}>You have no Notifications!</Text>
         </View>
       ) : (
         <FlatList
@@ -171,9 +174,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 40,
+  },
+  emptyText: {
+    fontFamily: 'Sansation-Bold',
+    fontSize: 20,
+  },
   notificationItem: {
     flexDirection: 'row',
-
     alignItems: 'center',
     borderBottomWidth: 1,
     borderColor: '#BDBDBD',

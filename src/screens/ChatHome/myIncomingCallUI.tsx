@@ -8,7 +8,9 @@ import React, {useEffect, useState} from 'react';
 import {Button, StyleSheet, Text, View} from 'react-native';
 
 export default function MyIncomingCallUI({call, goToHomeScreen}: any) {
-  const {useCallCallingState} = useCallStateHooks();
+  const {useCallCallingState, useCameraState} = useCallStateHooks();
+  const {camera} = useCameraState();
+
   const callingState = useCallCallingState();
   if (callingState === CallingState.RINGING) {
     return (

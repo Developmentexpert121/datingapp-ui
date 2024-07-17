@@ -25,7 +25,6 @@ import {userProfileDataChange} from '../../store/slice/myProfileSlice/myProfileS
 import {AppleLogin, GoogleLogin, ProfileData} from '../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getProfile} from '../../store/slice/myProfileSlice/myProfileAction';
-import {name} from '@stream-io/video-react-native-sdk';
 import {
   activityLoaderFinished,
   activityLoaderStarted,

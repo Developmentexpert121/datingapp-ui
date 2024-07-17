@@ -286,14 +286,14 @@ const BottomModalUpdate = ({isOpen, onClose, title, value}: any) => {
                     {selectedAvatar}
                   </Text>
                 </View>
-                <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+                {/* <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
                   {avatars.map((item, index) => {
                     if (!selectedAvatar.includes(item.text)) {
                       return <ListItem2 key={index} item={item.text} />;
                     }
                     return null; // Don't render the chip if it's already selected
                   })}
-                </View>
+                </View> */}
               </View>
             ) : (
               <View style={{justifyContent: 'center', alignItems: 'center'}}>

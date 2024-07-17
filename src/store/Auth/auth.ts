@@ -486,16 +486,6 @@ export const getAllUsers = createAsyncThunk(
     {dispatch}: any,
   ) => {
     try {
-      console.log(
-        'hdsfkjhdksfhksdhkfs',
-        userId,
-        checkedInterests,
-        showIn,
-        distance,
-        low,
-        high,
-        checkedRelationShip,
-      );
       // console.log('.d;alfjlajgfladfsg;lad;gh;');
       const response = await http.get('/user/getUsers', {
         params: {

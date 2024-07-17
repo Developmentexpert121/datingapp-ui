@@ -103,7 +103,6 @@ const TinderCard = ({
   };
 
   return (
-    // <View style={{borderWidth: 10}}>
     <Animated.View
       style={[
         {
@@ -152,20 +151,23 @@ const TinderCard = ({
       {isFirst && renderChoice()}
 
       <View style={styles.imageCountContainer}>
-        {images.map((_, index) => (
-          <View
-            key={index}
-            style={[
-              styles.imageIndicator,
-              index === currentIndex
-                ? styles.activeIndicator
-                : styles.inactiveIndicator,
-            ]}
-          />
-        ))}
+        {images.length > 1 && (
+          <View style={styles.imageCountContainer}>
+            {images.map((_, index) => (
+              <View
+                key={index}
+                style={[
+                  styles.imageIndicator,
+                  index === currentIndex
+                    ? styles.activeIndicator
+                    : styles.inactiveIndicator,
+                ]}
+              />
+            ))}
+          </View>
+        )}
       </View>
     </Animated.View>
-    // </View>
   );
 };
 
