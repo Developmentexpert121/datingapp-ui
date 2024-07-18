@@ -13,7 +13,6 @@ import VideoCallInterface from './chatVideoInterface';
 
 const VideoCallRedirect = () => {
   const user: any = useAppSelector((state: any) => state?.ActivityLoader?.user);
-  // console.log('ashdfigsufgosudfgous', user?.deactivate);
   const dispatch: any = useAppDispatch();
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
@@ -25,8 +24,8 @@ const VideoCallRedirect = () => {
   const [activeScreen, setActiveScreen] = useState('home');
   const [client, setClient] = useState<StreamVideoClient | null>(null);
   const [call, setCall] = useState<Call | null>(null);
-  // const {useCallCallingState, useCameraState} = useCallStateHooks();
-  // const {isMute: cameraMuted} = useCameraState();
+  // console.log('Call Call', call);
+
   useEffect(() => {
     const apiKey = 'xxbhmm34dcx3';
     const tokenProvider = async () => {
@@ -68,7 +67,11 @@ const VideoCallRedirect = () => {
     myCall.on('call.left', event => {
       console.log('User left the call:', event.user.id);
       if (event.user.id !== profileData._id) {
+        console.log('hfweifiefiehrifefrieri');
         handleCallEnd();
+      } else {
+        console.log('dfigdjsufgusdufghus');
+        myCall.end();
       }
     });
 
@@ -82,11 +85,6 @@ const VideoCallRedirect = () => {
         ring: true,
         data: {
           members: [{user_id: profileData._id}, {user_id: user._id}],
-          //   custom: {color: '#AA22AA'},
-          //   settings_override: {
-          //     // audio: {mic_default_on: false},
-          //     video: {camera_default_on: true},
-          //   },
         },
       })
       .catch(err => {

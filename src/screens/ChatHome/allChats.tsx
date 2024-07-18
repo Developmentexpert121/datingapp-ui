@@ -73,7 +73,7 @@ const ChatSection = () => {
           getChatUsersList({userId: profileData._id}),
         ).unwrap();
         setChatListData(response);
-
+        // console.log('_______', response);
         if (response.data && response.data.length > 0) {
           const allUsers = response.data;
           allUsers.forEach((user: any) => {
@@ -122,7 +122,7 @@ const ChatSection = () => {
       return ``;
     }
   };
-
+  // Block
   const BlockData = async () => {
     try {
       const response = await dispatch(
@@ -135,6 +135,7 @@ const ChatSection = () => {
       console.error('Error fetching data:', error);
     }
   };
+  // UnBlock
   const UnBlockData = async () => {
     try {
       console.log(';;;;;;;;;;;;');

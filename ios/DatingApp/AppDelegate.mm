@@ -7,6 +7,8 @@
 #import <FBSDKCoreKit/FBSDKCoreKit-Swift.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 // #import <React/RCTPushNotificationManager.h>
+//#import <RNCPushNotificationIOS.h>
+#import "FirebaseCore.h"
 
 @implementation AppDelegate
 
@@ -48,5 +50,4 @@
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
 }
-
 @end

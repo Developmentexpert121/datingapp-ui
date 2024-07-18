@@ -10,11 +10,6 @@ import io from 'socket.io-client';
 import {requestNotifications} from 'react-native-permissions';
 import {onlineUser} from './src/store/reducer/authSliceState';
 import {withIAPContext} from 'react-native-iap';
-
-import PushNotification from 'react-native-push-notification';
-// import PushController from './src/screens/Notification/PushController';
-import {View} from 'react-native';
-import {Text} from 'react-native-elements';
 import InternetModal from './src/components/Modals/InternetModal';
 import PushController from './src/screens/Notification/PushController';
 
@@ -61,6 +56,7 @@ const App = () => {
         console.log('App Connected from server');
         const userId = profileData?._id;
         socket.emit('user_connected', userId);
+        // console.log('ahsdgjuhgdgsu', userId);
       });
     }
 
@@ -70,19 +66,24 @@ const App = () => {
   }, [profileData._id]);
 
   useEffect(() => {
-    socket.on('user_online', userId => {
-      setOnlineUsers((prevOnlineUsers: any) => {
-        if (!prevOnlineUsers.includes(userId)) {
-          return [...prevOnlineUsers, userId];
-        }
-        return prevOnlineUsers;
-      });
+    socket.on('user_online', users => {
+      // setOnlineUsers(userId);
+      // console.log('________', users);
+      // setOnlineUsers((prevOnlineUsers: any) => {
+      //   if (!prevOnlineUsers.includes(userId)) {
+      //     return [...prevOnlineUsers, userId];
+      //   }
+      //   return prevOnlineUsers;
+      // });
+      setOnlineUsers(users);
     });
 
-    socket.on('user_offline', userId => {
-      setOnlineUsers((prevOnlineUsers: any) =>
-        prevOnlineUsers.filter((user: any) => user !== userId),
-      );
+    socket.on('user_offline', users => {
+      // console.log('user_offline>>>>>>>>>>>>>>>', users);
+      // setOnlineUsers((prevOnlineUsers: any) =>
+      //   prevOnlineUsers.filter((user: any) => user !== userId),
+      // );
+      setOnlineUsers(users);
     });
 
     socket.on('disconnect', () => {

@@ -107,6 +107,7 @@ export const LoginSignIn = createAsyncThunk(
           'authToken',
           JSON.stringify(response?.data?.token),
         );
+        console.log('authToken', response?.data?.token);
         await AsyncStorage.setItem(
           'userId',
           JSON.stringify(response?.data?._id),
@@ -406,7 +407,7 @@ export const likedAUser = createAsyncThunk(
     try {
       const response = await http.post('/user/likeUser', data);
       if (response.status === 200) {
-        console.log('Like by meeee', response);
+        // console.log('Like by meeee', response);
         return response.data;
       }
     } catch (error: any) {

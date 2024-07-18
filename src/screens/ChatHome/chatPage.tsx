@@ -59,6 +59,7 @@ const ChatPage = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
+  console.log('////////////', chatMessages);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -121,6 +122,11 @@ const ChatPage = ({
     fetchMessages();
   }, [skip]);
 
+  useEffect(() => {
+    const userId = profileData?._id;
+    socket.emit('join', userId);
+  }, [profileData]);
+
   const handleSendMessage = useCallback(() => {
     if (inputMessage !== '') {
       const newMessage = {
@@ -130,6 +136,7 @@ const ChatPage = ({
         timestamp: new Date().toISOString(),
       };
       socket.emit('chat message', newMessage);
+      console.log('___________________-3', newMessage);
       setChatMessages((prevMessages: any) => [...prevMessages, newMessage]);
       dispatch(
         sendAMessage({
@@ -195,7 +202,7 @@ const ChatPage = ({
     );
   };
 
-  const isUserOnline = showOnlineUser?.includes(user?._id);
+  const isUserOnline: any = showOnlineUser?.includes(user?._id);
 
   return (
     <>
@@ -234,9 +241,10 @@ const ChatPage = ({
                       fontSize: 16,
                       fontFamily: 'Sansation-Regular',
                       marginStart: 12,
-                      color: '#6D6D6D',
+                      // color: '#6D6D6D',
+                      color: isUserOnline ? 'green' : '#6D6D6D',
                     }}>
-                    {isUserOnline ? 'online' : 'offline'}
+                    {isUserOnline ? 'Online' : 'Offline'}
                   </Text>
                 </View>
               </View>
@@ -294,6 +302,7 @@ const ChatPage = ({
                         marginBottom: 12,
                         alignItems: 'baseline',
                       }}>
+                      {/* Reciver Image */}
                       {messageItem?.sender !== profileData?._id && (
                         <View
                           style={{
@@ -309,6 +318,7 @@ const ChatPage = ({
                         </View>
                       )}
 
+                      {/* Messages */}
                       <View
                         style={{
                           backgroundColor:
@@ -333,6 +343,10 @@ const ChatPage = ({
                                   : 'black',
                             }}>
                             {messageItem?.message}
+                            {/* {console.log(
+                              'edfijedfnfin!!!!!!!!!!!!!!!!!!!1',
+                              messageItem?.message,
+                            )} */}
                           </Text>
                         ) : (
                           <Image
@@ -341,6 +355,8 @@ const ChatPage = ({
                           />
                         )}
                       </View>
+
+                      {/*  Sender Image*/}
                       {messageItem?.sender === profileData?._id && (
                         <View
                           style={{

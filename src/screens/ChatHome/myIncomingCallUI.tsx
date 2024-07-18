@@ -7,7 +7,11 @@ import {
 import React, {useEffect, useState} from 'react';
 import {Button, StyleSheet, Text, View} from 'react-native';
 
-export default function MyIncomingCallUI({call, goToHomeScreen}: any) {
+export default function MyIncomingCallUI({
+  call,
+  goToHomeScreen,
+  userName,
+}: any) {
   const {useCallCallingState, useCameraState} = useCallStateHooks();
   const {camera} = useCameraState();
 
@@ -15,8 +19,18 @@ export default function MyIncomingCallUI({call, goToHomeScreen}: any) {
   if (callingState === CallingState.RINGING) {
     return (
       <View style={styles.container}>
-        <Text>Incoming Call</Text>
-        <Button title="Join!" onPress={async () => await call.join()} />
+        <Text>Incoming Call {userName}</Text>
+        <Button
+          color={'green'}
+          title="Join!"
+          onPress={async () => await call.join()}
+        />
+        <View style={{height: 50}}></View>
+        <Button
+          color={'red'}
+          title="End"
+          onPress={async () => await call.leave()}
+        />
       </View>
     );
   }

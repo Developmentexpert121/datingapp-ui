@@ -210,7 +210,7 @@ const SettingsSection = () => {
       dispatch(logoutUser({senderId: profileData._id}));
       await authTokenRemove();
     } catch (error) {
-      console.error(error, 'error');
+      console.error('errorLogoutUserButton', error);
     }
   };
   const deleteUserButton = async () => {

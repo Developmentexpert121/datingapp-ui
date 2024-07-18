@@ -1,6 +1,5 @@
 import React from 'react';
 import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
-
 import {
   CallingState,
   StreamCall,
@@ -40,7 +39,11 @@ const VideoCallInterface = ({
     <SafeAreaView style={styles.containerMain}>
       {activeScreen === 'call-screen' ? (
         call ? (
-          <MyOutgoingCallUI call={call} goToHomeScreen={goToHomeScreen} />
+          <MyOutgoingCallUI
+            call={call}
+            goToHomeScreen={goToHomeScreen}
+            // userName={user?.name}
+          />
         ) : (
           <View>
             <Text style={{fontFamily: 'Sansation-Regular'}}>
