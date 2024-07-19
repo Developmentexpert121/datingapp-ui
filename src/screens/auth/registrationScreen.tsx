@@ -55,6 +55,7 @@ import {useNavigation} from '@react-navigation/native';
 import {setLocalStorage} from '../../api/storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getProfile} from '../../store/slice/myProfileSlice/myProfileAction';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Register'>;
 
@@ -549,8 +550,23 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
         }
       });
   };
-  const onClick = () => {
+  const onClick = async () => {
     dispatch(GoogleLogin({}));
+    try {
+      if (!GoogleSignin.hasPlayServices()) {
+        console.error('Google Play Services are not available');
+        return;
+      }
+      const isSignedIn = await GoogleSignin.isSignedIn();
+      if (isSignedIn) {
+        await GoogleSignin.signOut();
+      }
+
+      // dispatch(logoutUser({senderId: profileData._id}));
+      // await authTokenRemove();
+    } catch (error) {
+      console.error('errorLogoutUserButton', error);
+    }
     goBack();
   };
   return (

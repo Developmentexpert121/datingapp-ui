@@ -5,31 +5,21 @@ export default class PushController extends Component {
   componentDidMount() {
     PushNotification.configure(
       {
-        // (optional) Called when Token is generated (iOS and Android)
         popInitialNotification: notification => {
-          return notification.priority === 'high'; // Only show high priority notifications
+          return notification.priority === 'high';
         },
-        onRegister: function (token) {
-          console.log('TOKEN:', token);
-        },
-
-        // (required) Called when a remote or local notification is opened or received
+        onRegister: function (token) {},
         onNotification: function (notification) {
           console.log('NOTIFICATION:', notification);
-          // process the notification here
-          // required on iOS only
-          // notification.finish(PushNotificationIOS.FetchResult.NoData);
           PushNotification.localNotification({
             channelId: notification?.channelId,
             title: notification?.title,
             message: notification?.message,
           });
-          // notification.finish(PushNotification.FetchResult.NoData);
         },
-        // (optional) Called when Registered Action is pressed and invokeApp is false, if true onNotification will be called (Android)
         onAction: function (notification) {
           console.log('ACTION:', notification.action);
-          console.log('NOTIFICATION:', notification);
+          console.log('NOTIFICATION::::::', notification);
           // process the action
         },
 
@@ -37,25 +27,11 @@ export default class PushController extends Component {
         onRegistrationError: function (err) {
           console.error('error.', err.message, err);
         },
-
-        // IOS ONLY (optional): default: all - Permissions to register.
         permissions: {
           alert: true,
           badge: true,
           sound: true,
         },
-
-        // Should the initial notification be popped automatically
-        // default: true
-        // popInitialNotification: true,
-
-        /**
-         * (optional) default: true
-         * - Specified if permissions (ios) and token (android and ios) will requested or not,
-         * - if not, you must call PushNotificationsHandler.requestPermissions() later
-         * - if you are not using remote notification or do not have Firebase installed, use this:
-         *     requestPermissions: Platform.OS === 'ios'
-         */
       },
       async callback => {
         // Request permissions if not already granted (optional)

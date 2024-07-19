@@ -38,8 +38,8 @@ target 'DatingApp' do
   pod 'Firebase/Messaging', :modular_headers => true
   pod 'RNFBApp', :path => '../node_modules/@react-native-firebase/app'
   pod 'RNFBMessaging', :path => '../node_modules/@react-native-firebase/messaging'
-  # pod 'React-RCTPushNotification', :path => '../node_modules/react-native/Libraries/PushNotificationIOS'
-  # pod 'RNCPushNotificationIOS', :path => '../node_modules/@react-native-community/push-notification-ios'
+  pod 'React-RCTPushNotification', :path => '../node_modules/react-native/Libraries/PushNotificationIOS'
+  pod 'RNCPushNotificationIOS', :path => '../node_modules/@react-native-community/push-notification-ios'
   pod 'GoogleSignIn'
   permissions_path = '../node_modules/react-native-permissions/ios'
 

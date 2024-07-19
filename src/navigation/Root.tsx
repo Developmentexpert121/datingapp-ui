@@ -51,7 +51,7 @@ const Root = () => {
   const dispatch: any = useAppDispatch();
   const [authToken, setAuthToken] = useState<any>(null);
   const [deviceToken, setDeviceToken] = useState<any>(null);
-  console.log('deviceToken/////////', deviceToken);
+  // console.log('deviceToken/////////', deviceToken);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -61,35 +61,20 @@ const Root = () => {
       requestUserPermission();
     }, 2000);
   }, []);
-  // useEffect(() => {
-  //   const unsubscribe = messaging().onMessage(async remoteMessage => {
-  //     console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
-  //     // Handle the message and update the UI
-  //   });
-
-  //   return unsubscribe;
-  // }, []);
 
   const requestUserPermission = async () => {
     try {
-      // console.log('111111111');
       const authStatus = await messaging().requestPermission({
         sound: true,
         alert: true,
         badge: true,
       });
-      // console.log('222222222');
       const enabled =
         authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
         authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-      // console.log('3333333333');
       if (enabled) {
-        // console.log('44444444');
         const token = await messaging().getToken();
         setDeviceToken(token);
-        // console.log('5555555555');
-        // console.log('Authorization status:', authStatus);
-        console.log('Device Token:', token);
       } else {
         console.log('Authorization status:', authStatus);
       }

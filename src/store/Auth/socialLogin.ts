@@ -21,7 +21,7 @@ export const googleLogin = async () => {
     await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
     console.log('00000000', GoogleSignin);
     const userInfo = await GoogleSignin.signIn();
-    console.log('111111111111', userInfo);
+    // console.log('111111111111', userInfo);
     return userInfo?.user;
   } catch (error) {
     console.log('error NETWORK_ERROR', error);
@@ -40,7 +40,7 @@ export async function onAppleButtonPress() {
     // Decode identity token if available
     if (appleAuthRequestResponse?.identityToken) {
       const userInfo = jwtDecode(appleAuthRequestResponse?.identityToken);
-      console.log('User Info:', userInfo);
+      // console.log('User Info:', userInfo);
       return userInfo;
     } else {
       throw new Error('No identity token returned');
