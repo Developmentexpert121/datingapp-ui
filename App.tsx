@@ -33,16 +33,6 @@ const App = () => {
       // console.log('Authorization status:', authStatus);
     }
   }
-  // useEffect(() => {
-  //   // crashlytics().log("App Mount....");
-  //   PushNotification.createChannel(
-  //     {
-  //       channelId: 'hatti-app',
-  //       channelName: 'Hatti',
-  //     },
-  //     created => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
-  //   );
-  // }, []);
 
   const [onlineUsers, setOnlineUsers] = useState<any>([]);
   const profileData: any = useAppSelector(
@@ -67,22 +57,10 @@ const App = () => {
 
   useEffect(() => {
     socket.on('user_online', users => {
-      // setOnlineUsers(userId);
-      // console.log('________', users);
-      // setOnlineUsers((prevOnlineUsers: any) => {
-      //   if (!prevOnlineUsers.includes(userId)) {
-      //     return [...prevOnlineUsers, userId];
-      //   }
-      //   return prevOnlineUsers;
-      // });
       setOnlineUsers(users);
     });
 
     socket.on('user_offline', users => {
-      // console.log('user_offline>>>>>>>>>>>>>>>', users);
-      // setOnlineUsers((prevOnlineUsers: any) =>
-      //   prevOnlineUsers.filter((user: any) => user !== userId),
-      // );
       setOnlineUsers(users);
     });
 
@@ -113,7 +91,7 @@ const App = () => {
           <Loader />
         ) : (
           <NavigationContainer>
-            <PushController />
+            {/* <PushController /> */}
             <Root />
             <GlobalModal />
             <InternetModal />

@@ -153,7 +153,7 @@ const schema4 = yup.object().shape({
         selectedText: yup.string().required(),
       }),
     )
-    .min(5, 'At least five item must be selected in the first box'),
+    .min(5, 'At least five item must be selected in the all box'),
 });
 
 const schema5 = yup.object().shape({
@@ -165,7 +165,7 @@ const schema5 = yup.object().shape({
         selectedText: yup.string().required(),
       }),
     )
-    .min(4, 'At least four item must be selected in the second box'),
+    .min(4, 'At least four item must be selected in the all box'),
 });
 
 const schema6 = yup.object().shape({

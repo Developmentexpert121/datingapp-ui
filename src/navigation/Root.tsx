@@ -17,7 +17,7 @@ import FilterSection from '../screens/FilterSection/filterSection';
 import ForgotPassword from '../screens/auth/forgotPassword';
 import NewPassword from '../screens/auth/newPassword';
 import Subscriptions from '../screens/Profile/SubscriptionComponent/Subscriptions';
-import {Platform} from 'react-native';
+import PushNotification from 'react-native-push-notification';
 
 export type RootStackParamList = {
   Loginhome: undefined;
@@ -53,12 +53,25 @@ const Root = () => {
   const [deviceToken, setDeviceToken] = useState<any>(null);
   // console.log('deviceToken/////////', deviceToken);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isAuthenticated, setIsAuthenticated] = useState<any>('');
 
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
       SplashScreen.hide();
       requestUserPermission();
+      const unsubscribe = messaging().onMessage(async remoteMessage => {
+        PushNotification.localNotification({
+          channelId: 'fcm_fallback_notification_channel',
+          title: remoteMessage?.notification?.title || 'Notification',
+          message:
+            remoteMessage?.notification?.body ||
+            'You have received a new notification',
+        });
+        // Handle the message
+      });
+
+      return unsubscribe;
     }, 2000);
   }, []);
 
@@ -110,8 +123,6 @@ const Root = () => {
   useEffect(() => {
     fetchAuthToken();
   }, []);
-
-  const [isAuthenticated, setIsAuthenticated] = useState<any>('');
 
   useEffect(() => {
     setIsAuthenticated(Boolean(authToken));
