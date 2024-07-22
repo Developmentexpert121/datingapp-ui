@@ -28,7 +28,7 @@ const VideoCallRedirect = () => {
   // console.log('Call Call', call);
 
   useEffect(() => {
-    const apiKey = 'xxbhmm34dcx3';
+    const apiKey = '48e74nbgz5az';
     const tokenProvider = async () => {
       const token = await dispatch(videoCallToken({id: profileData?._id}))
         .unwrap()

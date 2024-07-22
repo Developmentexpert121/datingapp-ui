@@ -11,10 +11,13 @@ import {
 } from 'react-native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import TinderCard from './TinderCard';
-import {useAppDispatch, useAppSelector} from '../../../store/store';
-import {likedAUser, superLiked} from '../../../store/Auth/auth';
+// import {useAppDispatch, useAppSelector} from '../../../store/store';
+// import {likedAUser, superLiked} from '../../../store/Auth/auth';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Loader from '../../../components/Loader/Loader';
+import {useAppDispatch} from '../../../../store/store';
+import Loader from '../../../../components/Loader/Loader';
+// import Loader from '../../../../components/Loader/Loader';
+// import Loader from '../../../components/Loader/Loader';
 
 const {height, width} = Dimensions.get('window');
 
@@ -179,24 +182,24 @@ const TinderSwipe = ({
     return (degrees * Math.PI) / 180;
   };
 
-  const habits1 = {
-    1: require('../../../assets/images/bottleofchampagne.png'),
-    2: require('../../../assets/images/smoking.png'),
-    3: require('../../../assets/images/Mandumbbells.png'),
-    4: require('../../../assets/images/dogheart.png'),
-    5: require('../../../assets/images/datestep.png'),
-  };
+  // const habits1 = {
+  //   1: require('../../../assets/images/bottleofchampagne.png'),
+  //   2: require('../../../assets/images/smoking.png'),
+  //   3: require('../../../assets/images/Mandumbbells.png'),
+  //   4: require('../../../assets/images/dogheart.png'),
+  //   5: require('../../../assets/images/datestep.png'),
+  // };
 
-  const habits2 = {
-    1: require('../../../assets/images/chat-balloon.png'),
-    2: require('../../../assets/images/love.png'),
-    3: require('../../../assets/images/abroad.png'),
-    4: require('../../../assets/images/moon.png'),
-  };
+  // const habits2 = {
+  //   1: require('../../../assets/images/chat-balloon.png'),
+  //   2: require('../../../assets/images/love.png'),
+  //   3: require('../../../assets/images/abroad.png'),
+  //   4: require('../../../assets/images/moon.png'),
+  // };
   // console.log('kdfhguerwofghqrwh', data);
   return (
     <>
-      <View style={{height: '100%', width: '100%'}}>
+      <View style={{height: '100%', width: '100%', flex: 1, borderWidth: 0}}>
         {data.length > 0 ? (
           <>
             <View style={{height: 340}}>
@@ -222,7 +225,7 @@ const TinderSwipe = ({
                   handleChoiceCross(-1);
                 }}>
                 <Image
-                  source={require('../../../assets/images/Cross.png')}
+                  source={require('../../../../assets/images/Cross.png')}
                   style={styles.icons3}
                 />
               </TouchableOpacity>
@@ -231,7 +234,7 @@ const TinderSwipe = ({
                   handleChoiceSuperLike();
                 }}>
                 <Image
-                  source={require('../../../assets/images/Star.png')}
+                  source={require('../../../../assets/images/Star.png')}
                   style={styles.icons3}
                 />
               </TouchableOpacity>
@@ -240,7 +243,7 @@ const TinderSwipe = ({
                   handleChoiceHeart(1);
                 }}>
                 <Image
-                  source={require('../../../assets/images/Heart.png')}
+                  source={require('../../../../assets/images/Heart.png')}
                   style={styles.icons3}
                 />
               </TouchableOpacity>
@@ -270,7 +273,8 @@ const TinderSwipe = ({
                 }}>
                 Active
               </Text> */}
-              <View style={styles.container}>
+              {/*  Habits1*/}
+              {/* <View style={styles.container}>
                 {data[currentIndex]?.habits1?.map((item, index) => {
                   const imagePath = habits1[item.id];
 
@@ -292,8 +296,9 @@ const TinderSwipe = ({
                     </View>
                   );
                 })}
-              </View>
-              <View style={styles.container}>
+              </View> */}
+              {/* Habits2 */}
+              {/* <View style={styles.container}>
                 {data[currentIndex]?.habits2?.map((item, index) => {
                   const imagePath = habits2[item.id];
 
@@ -315,7 +320,8 @@ const TinderSwipe = ({
                     </View>
                   );
                 })}
-              </View>
+              </View> */}
+              {/* Partner Type */}
               <View style={styles.container}>
                 {data[currentIndex]?.partnerType && (
                   <View style={styles.item}>
@@ -335,18 +341,21 @@ const TinderSwipe = ({
         ) : noProfilesLoader ? (
           <Loader />
         ) : (
-          <Text
-            style={{
-              fontFamily: 'Sansation-Bold',
-              fontSize: 26,
-              textAlign: 'center',
-              paddingHorizontal: 20,
-              marginTop: 100,
-              alignSelf: 'center',
-            }}>
-            You have viewed all profiles! Or no profile matches your applied
-            filters!
-          </Text>
+          <View style={{borderWidth: 0, flex: 1}}>
+            <Text
+              style={{
+                fontFamily: 'Sansation-Bold',
+                fontSize: 26,
+                textAlign: 'center',
+                paddingHorizontal: 20,
+                marginTop: 100,
+                alignSelf: 'center',
+                marginTop: '50%',
+              }}>
+              You have viewed all profiles! Or no profile matches your applied
+              filters!
+            </Text>
+          </View>
         )}
       </View>
       {loader ? <Loader /> : null}
@@ -360,9 +369,11 @@ const styles = StyleSheet.create({
   icons: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    alignItems: 'center',
-    width: '70%',
-    alignSelf: 'center',
+    // alignItems: 'center',
+    // width: '70%',
+    // alignSelf: 'center',
+    // borderWidth: 1,
+    marginTop: '40%',
   },
   locText: {
     flexDirection: 'row',
@@ -375,6 +386,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     margin: 10,
+    marginTop: '50%',
   },
   item: {
     borderWidth: 1.5,

@@ -8,7 +8,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import {ListItem, Avatar} from 'react-native-elements';
-import CommonBackbutton from '../../components/commonBackbutton/CommonBackbutton';
+import CommonBackbutton from '../../components/commonBackbutton/BackButton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../store/store';

@@ -36,8 +36,8 @@ const schema = yup.object().shape({
 
 type Props = NativeStackScreenProps<RootStackParamList, 'NewPassword'>;
 
-const NewPassword: React.FC<Props> = ({navigation, route}) => {
-  const {email} = route.params; // Retrieve the email from params
+const NewPassword: React.FC<Props> = ({navigation, route}, Data: any) => {
+  const {email}: any = route.params; // Retrieve the email from params
   console.log('first....', email);
   const dispatch: any = useAppDispatch();
   const [newPassword, setNewPassword] = useState('');
@@ -47,7 +47,7 @@ const NewPassword: React.FC<Props> = ({navigation, route}) => {
     control,
     handleSubmit,
     formState: {errors},
-  } = useForm<RegisterForm>({
+  } = useForm<any>({
     defaultValues,
     resolver: yupResolver(schema),
   });
@@ -100,7 +100,9 @@ const NewPassword: React.FC<Props> = ({navigation, route}) => {
             secureTextEntry
           />
           {errors.newPassword && (
-            <Text style={styles.errorText}>{errors.newPassword.message}</Text>
+            <Text style={styles.errorText}>
+              {String(errors.newPassword.message)}
+            </Text>
           )}
         </View>
         <MainButton

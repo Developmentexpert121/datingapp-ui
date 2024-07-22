@@ -18,6 +18,7 @@ import ForgotPassword from '../screens/auth/forgotPassword';
 import NewPassword from '../screens/auth/newPassword';
 import Subscriptions from '../screens/Profile/SubscriptionComponent/Subscriptions';
 import PushNotification from 'react-native-push-notification';
+import exploreHome from '../screens/Explore/ExploreHome/exploreHome';
 
 export type RootStackParamList = {
   Loginhome: undefined;
@@ -38,22 +39,24 @@ export type RootStackParamList = {
   BottomTabNavigation: undefined;
   FilterSection: undefined;
   ForgotPassword: undefined;
-  NewPassword: undefined;
+  NewPassword: any;
+  exploreHome: {name: any};
 };
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Root = () => {
-  const allUsers: any = useAppSelector(
-    (state: any) => state?.Auth?.data?.allUsers,
-  );
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
+  // console.log('profileData', profileData);
+  const token: string = useAppSelector((state: any) => state?.Auth?.token);
   const dispatch: any = useAppDispatch();
   const [authToken, setAuthToken] = useState<any>(null);
+  // console.log('+++++++++++++', authToken);
   const [deviceToken, setDeviceToken] = useState<any>(null);
-  // console.log('deviceToken/////////', deviceToken);
+  console.log('deviceToken', deviceToken);
   const [loading, setLoading] = useState<boolean>(true);
-  const [isAuthenticated, setIsAuthenticated] = useState<any>('');
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  // console.log('isAuthenticated', isAuthenticated);
 
   useEffect(() => {
     setTimeout(() => {
@@ -72,7 +75,7 @@ const Root = () => {
       });
 
       return unsubscribe;
-    }, 2000);
+    }, 1000);
   }, []);
 
   const requestUserPermission = async () => {
@@ -125,14 +128,14 @@ const Root = () => {
   }, []);
 
   useEffect(() => {
-    setIsAuthenticated(Boolean(authToken));
-  }, [authToken]);
+    setIsAuthenticated(Boolean(authToken) && Boolean(profileData));
+  }, [authToken, profileData]);
 
   useEffect(() => {
-    if (isAuthenticated?.authToken) {
+    if (authToken) {
       dispatch(ProfileData());
     }
-  }, [isAuthenticated]);
+  }, [authToken]);
 
   useEffect(() => {
     const getId = async () => {
@@ -149,7 +152,7 @@ const Root = () => {
 
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      {isAuthenticated ? (
+      {isAuthenticated && profileData?._id ? (
         <Stack.Group>
           <Stack.Screen
             name="BottomTabNavigation"
@@ -160,6 +163,7 @@ const Root = () => {
           <Stack.Screen name="Subscriptions" component={Subscriptions} />
           <Stack.Screen name="ChatScreen" component={ChatSection} />
           <Stack.Screen name="FilterSection" component={FilterSection} />
+          <Stack.Screen name="exploreHome" component={exploreHome} />
           <Stack.Screen
             name="VideoCallRedirect"
             component={VideoCallRedirect}

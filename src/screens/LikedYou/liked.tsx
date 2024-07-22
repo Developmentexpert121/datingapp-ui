@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import CommonBackbutton from '../../components/commonBackbutton/CommonBackbutton';
+import CommonBackbutton from '../../components/commonBackbutton/BackButton';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import LinearGradient from 'react-native-linear-gradient';
 import {videoCallUser} from '../../store/Activity/activity';
@@ -84,10 +84,12 @@ const LikedScreen = () => {
           <LinearGradient
             colors={['rgba(0,0,0,0)', 'rgba(0,0,0,0.8)']}
             style={styles.gradient}></LinearGradient>
-          <View style={styles.cardInner}>
-            <Text style={styles.name}>{item.name}</Text>
-            <Text style={styles.bio}>{item.hobbies}</Text>
-          </View>
+          {profileData?.plan !== 'Free' ? (
+            <View style={styles.cardInner}>
+              <Text style={styles.name}>{item.name}</Text>
+              <Text style={styles.bio}>{item.hobbies}</Text>
+            </View>
+          ) : null}
         </ImageBackground>
       </TouchableOpacity>
     );

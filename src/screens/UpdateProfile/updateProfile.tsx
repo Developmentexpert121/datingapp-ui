@@ -7,7 +7,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import CommonBackbutton from '../../components/commonBackbutton/CommonBackbutton';
+import CommonBackbutton from '../../components/commonBackbutton/BackButton';
 import {Slider} from 'react-native-elements';
 import SeventhStepScreen from '../auth/Registration/seventhStepScreen';
 import {useAppDispatch, useAppSelector} from '../../store/store';
