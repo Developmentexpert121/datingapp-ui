@@ -19,7 +19,7 @@ import {
   validateReceiptIos,
 } from 'react-native-iap';
 
-import CommonBackbutton from '../../../components/commonBackbutton/CommonBackbutton';
+import CommonBackbutton from '../../../components/commonBackbutton/BackButton';
 
 const errorLog = ({message, error}) => {
   console.error('An error happened:', message, error);

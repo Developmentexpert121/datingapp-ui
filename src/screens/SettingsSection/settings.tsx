@@ -8,7 +8,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import React, {useState, useCallback, useEffect} from 'react';
-import CommonBackbutton from '../../components/commonBackbutton/CommonBackbutton';
+import CommonBackbutton from '../../components/commonBackbutton/BackButton';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useForm} from 'react-hook-form';
 import * as yup from 'yup';

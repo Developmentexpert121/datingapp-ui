@@ -8,9 +8,11 @@ import {
   StyleSheet,
   Dimensions,
   SafeAreaView,
+  TouchableOpacity,
 } from 'react-native';
-import CommonBackbutton from '../../components/commonBackbutton/CommonBackbutton';
+import CommonBackbutton from '../../components/commonBackbutton/BackButton';
 import LinearGradient from 'react-native-linear-gradient';
+
 const ExploredScreen = () => {
   const likedData = [
     {
@@ -56,11 +58,12 @@ const ExploredScreen = () => {
 
     // Add more data as needed
   ];
-
   const navigation = useNavigation();
 
   const renderGridItem = ({item}: any) => (
-    <View style={styles.card}>
+    <TouchableOpacity
+      style={styles.card}
+      onPress={() => navigation.navigate('exploreHome', {name: item?.name})}>
       <ImageBackground source={item.imageUrl} style={styles.image}>
         <LinearGradient
           colors={['rgba(0,0,0,0)', 'rgba(0,0,0,1)']}
@@ -69,7 +72,7 @@ const ExploredScreen = () => {
           <Text style={styles.name}>{item.name}</Text>
         </View>
       </ImageBackground>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
@@ -126,7 +129,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
     paddingHorizontal: 16,
-
     paddingBottom: 20,
   },
   name: {

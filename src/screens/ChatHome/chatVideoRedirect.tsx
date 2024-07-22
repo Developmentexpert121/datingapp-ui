@@ -27,7 +27,7 @@ const VideoCallRedirect = () => {
   // console.log('Call Call', call);
 
   useEffect(() => {
-    const apiKey = 'xxbhmm34dcx3';
+    const apiKey = '48e74nbgz5az';
     const tokenProvider = async () => {
       const token = await dispatch(videoCallToken({id: profileData?._id}))
         .unwrap()
@@ -63,7 +63,7 @@ const VideoCallRedirect = () => {
   const goToCallScreen = useCallback(() => {
     if (!client) return;
 
-    const myCall = client.call('default', callId);
+    const myCall = client.call('audio_room', callId);
     myCall.on('call.left', event => {
       console.log('User left the call:', event.user.id);
       if (event.user.id !== profileData._id) {
