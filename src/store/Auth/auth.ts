@@ -424,8 +424,9 @@ export const likedAUser = createAsyncThunk(
     }
   },
 );
+
 export const superLiked = createAsyncThunk(
-  'auth/likedAUser',
+  'auth/superLiked',
   async (data: any, {dispatch}: any) => {
     console.log('.........dsfgvas', data);
     try {
@@ -947,6 +948,16 @@ const Auth: any = createSlice({
         state.loading = false;
       })
       .addCase(likedAUser.rejected, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(superLiked.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(superLiked.fulfilled, (state, action) => {
+        state.data.userLike = action.payload.notifications;
+        state.loading = false;
+      })
+      .addCase(superLiked.rejected, (state, action) => {
         state.loading = false;
       })
       // likedMe

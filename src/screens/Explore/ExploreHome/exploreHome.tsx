@@ -6,7 +6,7 @@ import TinderSwipe from './AnimatedStack/TinderSwipe';
 import BackButton from '../../../components/commonBackbutton/BackButton';
 import {useRoute} from '@react-navigation/native';
 
-const exploreHome = (Data: any) => {
+const ExploreHome = (Data: any) => {
   const route = useRoute();
   const {name}: any = Data.route.params || {}; // Access the name parameter
   console.log('++++++++', name);
@@ -100,4 +100,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default exploreHome;
+export default ExploreHome;

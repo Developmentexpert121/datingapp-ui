@@ -69,8 +69,8 @@ interface RegisterForm {
   gender: string;
   interests: string;
   partnerType: string;
-  habits1: Array<{id: string; selectedText: string}>;
-  habits2: Array<{id: string; selectedText: string}>;
+  habits1: any;
+  habits2: any;
   hobbies: string;
   password: string;
   confirmPassword: string;
@@ -147,12 +147,7 @@ const schema2 = yup.object().shape({
 const schema4 = yup.object().shape({
   habits1: yup
     .array()
-    .of(
-      yup.object().shape({
-        id: yup.string().required(),
-        selectedText: yup.string().required(),
-      }),
-    )
+
     .min(5, 'At least five item must be selected in the all box'),
 });
 
@@ -181,7 +176,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
     (state: any) => state?.Auth?.data?.otpVerified,
   );
   const navigation = useNavigation();
-  const [steps, setSteps] = React.useState(0);
+  const [steps, setSteps] = React.useState(4);
   const [dateStr, setDateStr] = useState<any>(null);
   const [location, setLocation] = useState<any>(null);
   const [distance, setDistance] = useState<any>(40);
@@ -441,6 +436,8 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
   };
 
   //******************************************** */
+
+  console.log(errors);
 
   const onSubmit: any = async (data: RegisterForm) => {
     console.log('onSubmitfirst', data);

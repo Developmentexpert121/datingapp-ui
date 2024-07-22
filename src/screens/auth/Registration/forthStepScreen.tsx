@@ -6,8 +6,9 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import {useForm, Controller} from 'react-hook-form';
+
 const ForthStepScreen = ({habits1, control, errors}: any) => {
   const dataArray = [
     {
@@ -127,53 +128,43 @@ const ForthStepScreen = ({habits1, control, errors}: any) => {
                       <TouchableOpacity
                         key={index}
                         onPress={() => {
-                          // Check if the current category supports multiple selections
-                          const isMultipleSelection =
-                            item.id === '4' || item.id === '5';
+                          const updatedValue = [...value];
+                          console.log('updatedValue', updatedValue);
+                          const existingCategoryIndex = updatedValue.findIndex(
+                            (habit: any) => habit.id === item.id,
+                          );
+                          console.log(
+                            'existingCategoryIndex',
+                            existingCategoryIndex,
+                          );
+                          if (existingCategoryIndex !== -1) {
+                            const existingSelections =
+                              updatedValue[existingCategoryIndex]
+                                .optionSelected;
+                            const textIndex = existingSelections.indexOf(text);
 
-                          if (isMultipleSelection) {
-                            // Handle multiple selections for categories 4 and 5
-                            const existingIndex = value.findIndex(
-                              (habit: any) =>
-                                habit.id === item.id &&
-                                habit.selectedText === text,
-                            );
-
-                            if (existingIndex !== -1) {
-                              // If the option is already selected, remove it (deselect)
-                              const updatedValue = value.filter(
-                                (habit: any, idx: number) =>
-                                  idx !== existingIndex,
-                              );
-                              onChange(updatedValue);
+                            if (textIndex !== -1) {
+                              // If the text is already selected, remove it
+                              existingSelections.splice(textIndex, 1);
                             } else {
-                              // If the option is not selected, add it
-                              onChange([
-                                ...value,
-                                {
-                                  id: item.id,
-                                  selectedText: text,
-                                  imagePath: item.imagePath,
-                                },
-                              ]);
+                              // If the text is not selected, add it
+                              existingSelections.push(text);
                             }
-                          } else {
-                            // Handle single-choice selection for categories 1, 2, and 3
-                            // Filter out any existing selection in the current category
-                            const updatedValue = value.filter(
-                              (habit: any) => habit.id !== item.id,
-                            );
 
-                            // Add the newly selected option for the current category
+                            // Update the existing category with new selections
+                            updatedValue[existingCategoryIndex].optionSelected =
+                              existingSelections;
+                          } else {
+                            // Add new category with selected text
                             updatedValue.push({
                               id: item.id,
-                              selectedText: text,
-                              imagePath: item.imagePath,
+                              optionSelected: [text],
                             });
-
-                            // Update the state with the new selection
-                            onChange(updatedValue);
                           }
+
+                          console.log('updatedValue', updatedValue);
+
+                          onChange(updatedValue);
                         }}>
                         <Text
                           style={[
@@ -182,53 +173,12 @@ const ForthStepScreen = ({habits1, control, errors}: any) => {
                             value.find(
                               (habit: any) =>
                                 habit.id === item.id &&
-                                habit.selectedText === text,
+                                habit.optionSelected.includes(text),
                             ) && {color: '#AC25AC', borderColor: '#AC25AC'},
                           ]}>
                           {text}
                         </Text>
                       </TouchableOpacity>
-
-                      // <TouchableOpacity
-                      //   key={index}
-                      //   onPress={() => {
-                      //     const existingIndex = value.findIndex(
-                      //       (habit: any) =>
-                      //         habit.id === item.id &&
-                      //         habit.selectedText === text,
-                      //     );
-
-                      //     // If the option is already selected, remove it; otherwise, add it
-                      //     if (existingIndex !== -1) {
-                      //       const updatedValue = value.filter(
-                      //         (habit: any, idx: number) =>
-                      //           idx !== existingIndex,
-                      //       );
-                      //       onChange(updatedValue);
-                      //     } else {
-                      //       onChange([
-                      //         ...value,
-                      //         {
-                      //           id: item.id,
-                      //           selectedText: text,
-                      //           imagePath: item.imagePath,
-                      //         },
-                      //       ]);
-                      //     }
-                      //   }}>
-                      //   <Text
-                      //     style={[
-                      //       styles.textItem,
-                      //       // Apply styling if the text is selected
-                      //       value.find(
-                      //         (habit: any) =>
-                      //           habit.id === item.id &&
-                      //           habit.selectedText === text,
-                      //       ) && {color: '#AC25AC', borderColor: '#AC25AC'},
-                      //     ]}>
-                      //     {text}
-                      //   </Text>
-                      // </TouchableOpacity>
                     ))}
                   </View>
                 </View>
