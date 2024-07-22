@@ -29,10 +29,11 @@ import {
 const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 
 type Props = {
-  goToCallScreen: () => void;
+  goToCallScreen: (e: any) => void;
   setEnableCamera: any;
   setEnableCamera1: any;
   user: any;
+  setCallType: (e: any) => void;
 };
 
 const ChatPage = ({
@@ -40,6 +41,7 @@ const ChatPage = ({
   goToCallScreen,
   setEnableCamera,
   setEnableCamera1,
+  setCallType,
 }: Props) => {
   const navigation = useNavigation();
   const dispatch: any = useAppDispatch();
@@ -47,7 +49,7 @@ const ChatPage = ({
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-  const {showOnlineUser} = useAppSelector(
+  const {showOnlineUser}: any = useAppSelector(
     (state: RootState) => state.authSliceState,
   );
 
@@ -251,8 +253,9 @@ const ChatPage = ({
               <View style={{flexDirection: 'row', marginEnd: 10, width: '25%'}}>
                 <TouchableOpacity
                   onPress={() => {
+                    setCallType('audioCall');
                     setEnableCamera1(false);
-                    goToCallScreen();
+                    goToCallScreen('audioCall');
                   }}>
                   <View style={styles.editIcon}>
                     <Image
@@ -263,8 +266,9 @@ const ChatPage = ({
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
+                    setCallType('videoCall');
                     setEnableCamera(true);
-                    goToCallScreen();
+                    goToCallScreen('videoCall');
                   }}>
                   <View style={styles.editIcon}>
                     <Image
