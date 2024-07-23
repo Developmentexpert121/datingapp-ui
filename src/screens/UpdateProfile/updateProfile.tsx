@@ -53,7 +53,8 @@ const UpdateProfile = () => {
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-  console.log('dsfhkshdfis', profileData?.habits2);
+
+  console.log(profileData);
 
   const dispatch: any = useAppDispatch();
   const [height, setHeight] = useState(parseFloat(profileData?.height) || 3);
@@ -90,14 +91,13 @@ const UpdateProfile = () => {
     {title: 'Work', name: profileData?.work},
     {
       title: 'Education',
-      name: profileData?.habits2[2]?.selectedText
-        ? profileData?.habits2[2]?.selectedText
+      name: profileData?.habits2[2]?.optionSelected
+        ? profileData?.habits2[2]?.optionSelected
         : '',
     },
     {title: 'Interests', name: profileData?.allInterests},
     // {title: 'Relationship Goals', name: profileData?.partnerType},
   ];
-  console.log('first', dataArr);
 
   const closeDrawer = () => {
     setIsDrawerOpen(false);
