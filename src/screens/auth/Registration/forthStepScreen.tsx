@@ -129,40 +129,53 @@ const ForthStepScreen = ({habits1, control, errors}: any) => {
                         key={index}
                         onPress={() => {
                           const updatedValue = [...value];
-                          console.log('updatedValue', updatedValue);
                           const existingCategoryIndex = updatedValue.findIndex(
                             (habit: any) => habit.id === item.id,
                           );
-                          console.log(
-                            'existingCategoryIndex',
-                            existingCategoryIndex,
-                          );
-                          if (existingCategoryIndex !== -1) {
-                            const existingSelections =
-                              updatedValue[existingCategoryIndex]
-                                .optionSelected;
-                            const textIndex = existingSelections.indexOf(text);
 
-                            if (textIndex !== -1) {
-                              // If the text is already selected, remove it
-                              existingSelections.splice(textIndex, 1);
+                          if (item.id === '4') {
+                            // Allow multiple selection for id '4'
+                            if (existingCategoryIndex !== -1) {
+                              const existingSelections =
+                                updatedValue[existingCategoryIndex]
+                                  .optionSelected;
+                              const textIndex =
+                                existingSelections.indexOf(text);
+
+                              if (textIndex !== -1) {
+                                // If the text is already selected, remove it
+                                existingSelections.splice(textIndex, 1);
+                              } else {
+                                // If the text is not selected, add it
+                                existingSelections.push(text);
+                              }
+
+                              // Update the existing category with new selections
+                              updatedValue[
+                                existingCategoryIndex
+                              ].optionSelected = existingSelections;
                             } else {
-                              // If the text is not selected, add it
-                              existingSelections.push(text);
+                              // Add new category with selected text
+                              updatedValue.push({
+                                id: item.id,
+                                optionSelected: [text],
+                              });
                             }
-
-                            // Update the existing category with new selections
-                            updatedValue[existingCategoryIndex].optionSelected =
-                              existingSelections;
                           } else {
-                            // Add new category with selected text
-                            updatedValue.push({
-                              id: item.id,
-                              optionSelected: [text],
-                            });
+                            // Allow only single selection for other ids
+                            if (existingCategoryIndex !== -1) {
+                              // Update the existing category with new selection
+                              updatedValue[
+                                existingCategoryIndex
+                              ].optionSelected = [text];
+                            } else {
+                              // Add new category with selected text
+                              updatedValue.push({
+                                id: item.id,
+                                optionSelected: [text],
+                              });
+                            }
                           }
-
-                          console.log('updatedValue', updatedValue);
 
                           onChange(updatedValue);
                         }}>
