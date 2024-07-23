@@ -29,7 +29,13 @@ const TinderSwipe = ({
   const [nextIndex, setNextIndex] = useState(currentIndex + 1);
   const [loader, setLoader] = useState(false);
   const [noProfilesLoader, setNoProfilesLoader] = useState(false);
-  // const isUserOnline = showOnlineUser?.includes(user?._id);
+  const [currentUser, setCurrentUser] = useState();
+  // const [currentIndex, setCurrentIndex] = useState(0);
+  console.log('currentUser', currentUser);
+
+  const {showOnlineUser} = useAppSelector(state => state.authSliceState);
+  const isUserOnline = showOnlineUser?.includes(currentUser);
+
   const [isSuperLikeAnimating, setIsSuperLikeAnimating] = useState(false);
 
   useEffect(() => {
@@ -193,12 +199,6 @@ const TinderSwipe = ({
     3: require('../../../assets/images/abroad.png'),
     4: require('../../../assets/images/moon.png'),
   };
-  // console.log('kdfhguerwofghqrwh', data);
-  // data.forEach(item => {
-  //   if (item.habits1.length >= 4) {
-  //     console.log('1234567', item.habits1);
-  //   }
-  // });
   return (
     <>
       <View style={{height: '100%', width: '100%'}}>
@@ -214,6 +214,7 @@ const TinderSwipe = ({
                       key={index} // Add key prop here
                       swipe={swipe}
                       item={item}
+                      setCurrentUser={setCurrentUser}
                       isFirst={isFirst}
                       {...dragHandlers}
                     />
@@ -267,15 +268,20 @@ const TinderSwipe = ({
                     : 'Distance information unavailable'}
                 </Text>
               </View>
-              {/* <Text
+              {/* Active */}
+              {isUserOnline ? (
+                <Text
                   style={{
                     fontSize: 16,
                     fontFamily: 'Sansation-Regular',
-                    marginLeft: 20,
+                    marginLeft: 25,
+                    marginTop: 5,
                     color: 'green',
                   }}>
                   Active
-                </Text> */}
+                </Text>
+              ) : null}
+
               {/* habits1 */}
               <View style={styles.container}>
                 {data[currentIndex]?.habits1?.map((item, index) => {
@@ -291,11 +297,7 @@ const TinderSwipe = ({
                       )}
                       <View
                         style={{
-                          // display: 'flex',
-                          // flex: 'row',
                           gap: 4,
-                          // fontFamily: 'Sansation-Regular',
-                          // color: 'black',
                         }}>
                         {item.optionSelected.map(item => (
                           <Text

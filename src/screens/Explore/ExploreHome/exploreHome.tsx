@@ -3,11 +3,10 @@ import {View, StyleSheet, SafeAreaView} from 'react-native';
 import {useAppDispatch, useAppSelector} from '../../../store/store';
 import {getAllUsers, ProfileData} from '../../../store/Auth/auth';
 import BackButton from '../../../components/commonBackbutton/BackButton';
-import {useRoute} from '@react-navigation/native';
 import ExploreSwipe from './AnimatedStack/ExploreSwipe';
+import TinderSwipe from '../../Home/AnimatedStack/TinderSwipe';
 
 const ExploreHome = (Data: any) => {
-  // const route = useRoute();
   const {name}: any = Data.route.params || {};
   const [apply, setApply] = useState(false);
   const dispatch: any = useAppDispatch();
@@ -64,7 +63,8 @@ const ExploreHome = (Data: any) => {
       <BackButton title={name} />
       <View style={styles.pageContainer2}>
         <View style={{marginTop: 20, borderWidth: 0}}>
-          <ExploreSwipe
+          {/* <ExploreSwipe */}
+          <TinderSwipe
             data={data}
             setData={setData}
             currentIndex={currentIndex}

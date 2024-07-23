@@ -52,7 +52,6 @@ const ChatPage = ({
   const {showOnlineUser}: any = useAppSelector(
     (state: RootState) => state.authSliceState,
   );
-
   const [inputMessage, setInputMessage] = useState('');
   const [chatMessages, setChatMessages] = useState<any>([]);
   const [messageCount, setMessageCount] = useState(0);
@@ -61,7 +60,8 @@ const ChatPage = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
-  //  const isUserOnline: any = showOnlineUser?.includes(user?._id) || false;
+  const isUserOnline: any = showOnlineUser?.includes(user?._id) || false;
+
   // var isUserOnline: any;
   // showOnlineUser?.map((res: any) => {
   //   if (res == user?._id) {
@@ -70,11 +70,9 @@ const ChatPage = ({
   //     isUserOnline = false;
   //   }
   // });
-  const isUserOnline: any = showOnlineUser?.some(
-    (res: any) => res === user?._id,
-  );
-
-  console.log(isUserOnline);
+  // const isUserOnline: any = showOnlineUser?.some(
+  //   (res: any) => res === user?._id,
+  // );
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
