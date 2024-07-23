@@ -16,26 +16,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {EditTextIC} from '../../assets/svgs';
 import BottomModalUpdate from './BottomModalUpdate';
 
-interface UpdateForm {
-  work: string;
-  education: string;
-  interest: string;
-  language: string;
-  name: string;
-  email: string;
-  password: string;
-}
-
-const defaultValues = {
-  work: '',
-  education: '',
-  interest: '',
-  language: '',
-  name: '',
-  email: '',
-  password: '',
-};
-
 const getUserId = async () => {
   try {
     const userId: any = await AsyncStorage.getItem('userId');
@@ -53,8 +33,6 @@ const UpdateProfile = () => {
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-
-  console.log(profileData);
 
   const dispatch: any = useAppDispatch();
   const [height, setHeight] = useState(parseFloat(profileData?.height) || 3);

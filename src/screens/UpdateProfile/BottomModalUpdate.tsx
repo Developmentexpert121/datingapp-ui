@@ -69,20 +69,10 @@ const BottomModalUpdate = ({isOpen, onClose, title, value}: any) => {
     {id: '4', text: 'PHD'},
     {id: '5', text: 'Masters'},
   ];
-  const avatars = [
-    {id: '1', text: 'Long term partner'},
-    {id: '2', text: 'Long term open to short'},
-    {id: '3', text: 'Short term open to long'},
-    {id: '4', text: 'Short term fun'},
-    {id: '5', text: 'New friends'},
-    {id: '6', text: 'Still figuring it out'},
-    // Add more avatars as needed
-  ];
 
   const {
     control,
     handleSubmit,
-
     setValue,
     formState: {errors},
   } = useForm<UpdateForm>({
@@ -90,9 +80,21 @@ const BottomModalUpdate = ({isOpen, onClose, title, value}: any) => {
     resolver: yupResolver<any>(schema),
   });
 
+  const [education, setEducation] = useState<string>('');
+
+  const [interests, setInterests] = useState<any>([]);
+
+  console.log(interests);
+
+  const [selectedAvatar, setSelectedAvatar] = useState<string>('');
+
   useEffect(() => {
     setValue(title, value);
-  }, [title]);
+    setEducation(value);
+    if (profileData?.allInterests) {
+      setInterests(profileData.allInterests.split(','));
+    }
+  }, [title, profileData]);
 
   const getUserId = async () => {
     try {
@@ -166,25 +168,16 @@ const BottomModalUpdate = ({isOpen, onClose, title, value}: any) => {
     </TouchableOpacity>
   );
 
-  const [interests, setInterests] = useState(
-    profileData?.allInterests?.split(', ') || [],
-  );
-
-  const [education, setEducation] = useState<string>('');
-
-  const [selectedAvatar, setSelectedAvatar] = useState<string>('');
-
   const toggleChip = (interest: string) => {
-    if (education === interest) {
-      setEducation('');
-    } else {
-      setEducation(interest);
+    console.log(interest);
+    if (title === 'Education') {
+      return setEducation(interest);
     }
-    if (selectedAvatar === interest) {
-      setSelectedAvatar('');
-    } else {
-      setSelectedAvatar(interest);
-    }
+    // if (selectedAvatar === interest) {
+    //   setSelectedAvatar('');
+    // } else {
+    //   setSelectedAvatar(interest);
+    // }
     if (interests.includes(interest)) {
       // If interest is already selected, remove it
       const updatedInterests = interests.filter(
@@ -230,7 +223,7 @@ const BottomModalUpdate = ({isOpen, onClose, title, value}: any) => {
               </View>
               <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
                 {dataEducation.map((item, index) => {
-                  if (!education.includes(item.text)) {
+                  if (!education?.includes(item.text)) {
                     return <ListItem2 key={index} item={item.text} />;
                   }
                   return null; // Don't render the chip if it's already selected
@@ -252,7 +245,7 @@ const BottomModalUpdate = ({isOpen, onClose, title, value}: any) => {
               </View>
               <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
                 {Data.map((item, index) => {
-                  if (!interests.includes(item.text)) {
+                  if (!interests?.includes(item.text)) {
                     return <ListItem2 key={index} item={item.text} />;
                   }
                   return null; // Don't render the chip if it's already selected
