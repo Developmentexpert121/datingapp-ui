@@ -20,6 +20,8 @@ const TinderCard = ({
   item,
   isFirst,
   swipe,
+  currentUser,
+  setCurrentUser,
   ...rest
 }) => {
   const rotate = swipe.x.interpolate({
@@ -85,11 +87,11 @@ const TinderCard = ({
     );
   }, [likeOpacity, rejectOpacity, superLikeOpacity]);
 
-  const images = item.profilePic.split(','); // Convert comma-separated URLs to array
+  const images = item.profilePic.split(',');
   const [currentIndex, setCurrentIndex] = useState(0);
-
   useEffect(() => {
     setCurrentIndex(0);
+    setCurrentUser(item?._id);
   }, [item]);
 
   const handleNextImage = () => {
