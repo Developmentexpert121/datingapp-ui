@@ -154,12 +154,7 @@ const schema4 = yup.object().shape({
 const schema5 = yup.object().shape({
   habits2: yup
     .array()
-    .of(
-      yup.object().shape({
-        id: yup.string().required(),
-        selectedText: yup.string().required(),
-      }),
-    )
+
     .min(4, 'At least four item must be selected in the all box'),
 });
 
