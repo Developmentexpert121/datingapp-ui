@@ -41,7 +41,6 @@ const NotificationScreen = () => {
 
   const [allNotificationsPresent, setAllNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
-  console.log('idsfghergugtuyerhgijdehghd', allNotificationsPresent);
 
   useEffect(() => {
     const getId = async () => {

@@ -1,22 +1,19 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, SafeAreaView, Text} from 'react-native';
+import {View, StyleSheet, SafeAreaView} from 'react-native';
 import {useAppDispatch, useAppSelector} from '../../../store/store';
 import {getAllUsers, ProfileData} from '../../../store/Auth/auth';
-import TinderSwipe from './AnimatedStack/TinderSwipe';
 import BackButton from '../../../components/commonBackbutton/BackButton';
 import {useRoute} from '@react-navigation/native';
+import ExploreSwipe from './AnimatedStack/ExploreSwipe';
 
 const ExploreHome = (Data: any) => {
-  const route = useRoute();
-  const {name}: any = Data.route.params || {}; // Access the name parameter
-  console.log('++++++++', name);
-
+  // const route = useRoute();
+  const {name}: any = Data.route.params || {};
   const [apply, setApply] = useState(false);
   const dispatch: any = useAppDispatch();
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-
   const [low, setLow] = useState<number>(18);
   const [high, setHigh] = useState<number>(56);
   const [showIn, setShowIn] = useState(false);
@@ -40,7 +37,7 @@ const ExploreHome = (Data: any) => {
   }, []);
 
   useEffect(() => {
-    profileData._id &&
+    if (profileData._id) {
       dispatch(
         getAllUsers({
           userId: profileData._id,
@@ -54,18 +51,20 @@ const ExploreHome = (Data: any) => {
       )
         .unwrap()
         .then((response: any) => {
-          setData(response.users);
+          const filteredData = response.users.filter((item: any) => {
+            return item?.habits1[4]?.optionSelected[0] == name;
+          });
+          setData(filteredData);
         });
+    }
     apply && setApply(false);
   }, [apply, trigger]);
-
   return (
     <SafeAreaView style={styles.pageContainer}>
       <BackButton title={name} />
       <View style={styles.pageContainer2}>
-        {/* Display the name */}
         <View style={{marginTop: 20, borderWidth: 0}}>
-          <TinderSwipe
+          <ExploreSwipe
             data={data}
             setData={setData}
             currentIndex={currentIndex}
@@ -90,13 +89,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: '#ededed',
-    // borderWidth: 2,
-  },
-  nameText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginVertical: 10,
   },
 });
 

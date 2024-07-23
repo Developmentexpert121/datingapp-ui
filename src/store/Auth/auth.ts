@@ -407,7 +407,7 @@ export const likedAUser = createAsyncThunk(
     console.log('.........dsfgvadlfghads', data);
     try {
       const response = await http.post('/user/likeUser', data);
-      console.log(response, 'res------>>>>>');
+      console.log('res------>>>>>', response);
       if (response.status === 200) {
         // console.log('Like by meeee', response);
         return response.data;
