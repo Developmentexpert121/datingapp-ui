@@ -194,6 +194,11 @@ const TinderSwipe = ({
     4: require('../../../assets/images/moon.png'),
   };
   // console.log('kdfhguerwofghqrwh', data);
+  // data.forEach(item => {
+  //   if (item.habits1.length >= 4) {
+  //     console.log('1234567', item.habits1);
+  //   }
+  // });
   return (
     <>
       <View style={{height: '100%', width: '100%'}}>
@@ -246,6 +251,7 @@ const TinderSwipe = ({
               </TouchableOpacity>
             </View>
             <ScrollView showsVerticalScrollIndicator={false}>
+              {/* Location */}
               <View style={styles.locText}>
                 <Ionicons name="location-sharp" size={20} color="#AC25AC" />
                 <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
@@ -262,14 +268,15 @@ const TinderSwipe = ({
                 </Text>
               </View>
               {/* <Text
-                style={{
-                  fontSize: 16,
-                  fontFamily: 'Sansation-Regular',
-                  marginLeft: 20,
-                  color: 'green',
-                }}>
-                Active
-              </Text> */}
+                  style={{
+                    fontSize: 16,
+                    fontFamily: 'Sansation-Regular',
+                    marginLeft: 20,
+                    color: 'green',
+                  }}>
+                  Active
+                </Text> */}
+              {/* habits1 */}
               <View style={styles.container}>
                 {data[currentIndex]?.habits1?.map((item, index) => {
                   const imagePath = habits1[item.id];
@@ -282,17 +289,29 @@ const TinderSwipe = ({
                           style={{height: 20, width: 20}}
                         />
                       )}
-                      <Text
+                      <View
                         style={{
-                          fontFamily: 'Sansation-Regular',
-                          color: 'black',
+                          // display: 'flex',
+                          // flex: 'row',
+                          gap: 4,
+                          // fontFamily: 'Sansation-Regular',
+                          // color: 'black',
                         }}>
-                        {item.selectedText}
-                      </Text>
+                        {item.optionSelected.map(item => (
+                          <Text
+                            style={{
+                              fontFamily: 'Sansation-Regular',
+                              color: 'black',
+                            }}>
+                            {item}
+                          </Text>
+                        ))}
+                      </View>
                     </View>
                   );
                 })}
               </View>
+              {/* habits2 */}
               <View style={styles.container}>
                 {data[currentIndex]?.habits2?.map((item, index) => {
                   const imagePath = habits2[item.id];
@@ -305,17 +324,20 @@ const TinderSwipe = ({
                           style={{height: 20, width: 20}}
                         />
                       )}
-                      <Text
-                        style={{
-                          fontFamily: 'Sansation-Regular',
-                          color: 'black',
-                        }}>
-                        {item.selectedText}
-                      </Text>
+                      {item.optionSelected.map(item => (
+                        <Text
+                          style={{
+                            fontFamily: 'Sansation-Regular',
+                            color: 'black',
+                          }}>
+                          {item}
+                        </Text>
+                      ))}
                     </View>
                   );
                 })}
               </View>
+              {/* PartnerType */}
               <View style={styles.container}>
                 {data[currentIndex]?.partnerType && (
                   <View style={styles.item}>

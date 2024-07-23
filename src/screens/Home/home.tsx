@@ -3,7 +3,6 @@ import {View, StyleSheet} from 'react-native';
 import HeaderComponent from '../../components/Dashboard/header/header';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {ProfileData, getAllUsers} from '../../store/Auth/auth';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import FilterSection from '../FilterSection/filterSection';
 import NotificationScreen from '../Notification/notification';
 import TinderSwipe from './AnimatedStack/TinderSwipe';
@@ -12,7 +11,6 @@ const HomeScreen = () => {
   const [activeScreen, setActiveScreen] = useState('HOME');
   const [apply, setApply] = useState(false);
   const dispatch: any = useAppDispatch();
-  // );
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );

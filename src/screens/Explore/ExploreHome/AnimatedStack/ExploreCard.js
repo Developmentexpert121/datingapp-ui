@@ -13,7 +13,7 @@ import {LikeIC, NopeIC, SuperLikeIC} from '../../../../assets/svgs';
 
 const {height, width} = Dimensions.get('window');
 
-const TinderCard = ({
+const ExploreCard = ({
   name,
   profilePic,
   hobbies,
@@ -172,7 +172,7 @@ const TinderCard = ({
   );
 };
 
-export default TinderCard;
+export default ExploreCard;
 
 const styles = StyleSheet.create({
   gradient: {

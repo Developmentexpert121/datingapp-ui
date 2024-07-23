@@ -13,6 +13,7 @@ const Loader = ({color}: LoaderProps) => {
         flex: 1,
         justifyContent: 'center',
         backgroundColor: color ?? '#FFFFFF99',
+        marginTop: 50,
       }}>
       <Image
         source={require('../../assets/git/lodaerIcon.gif')}

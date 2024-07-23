@@ -171,7 +171,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
     (state: any) => state?.Auth?.data?.otpVerified,
   );
   const navigation = useNavigation();
-  const [steps, setSteps] = React.useState(4);
+  const [steps, setSteps] = React.useState(0);
   const [dateStr, setDateStr] = useState<any>(null);
   const [location, setLocation] = useState<any>(null);
   const [distance, setDistance] = useState<any>(40);

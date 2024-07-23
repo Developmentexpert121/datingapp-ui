@@ -17,22 +17,22 @@ const ExploredScreen = () => {
   const likedData = [
     {
       id: '1',
-      name: "Let's be Friends",
+      name: 'Let`s be Friends',
       imageUrl: require('../../assets/images/friends.png'),
     },
     {
       id: '2',
-      name: 'Coffee date',
+      name: 'Coffee Date',
       imageUrl: require('../../assets/images/coffee.png'),
     },
     {
       id: '3',
-      name: 'Date Night',
+      name: 'Date at Night',
       imageUrl: require('../../assets/images/exploreDate.png'),
     },
     {
       id: '4',
-      name: 'Binge Watcher',
+      name: 'Being Watcher',
       imageUrl: require('../../assets/images/movies.png'),
     },
     {

@@ -40,7 +40,7 @@ export type RootStackParamList = {
   FilterSection: undefined;
   ForgotPassword: undefined;
   NewPassword: any;
-  exploreHome: {name: any};
+  exploreHome: any;
 };
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Root = () => {
@@ -53,7 +53,7 @@ const Root = () => {
   const [authToken, setAuthToken] = useState<any>(null);
   // console.log('+++++++++++++', authToken);
   const [deviceToken, setDeviceToken] = useState<any>(null);
-  console.log('deviceToken', deviceToken);
+  // console.log('deviceToken', deviceToken);
   const [loading, setLoading] = useState<boolean>(true);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   // console.log('isAuthenticated', isAuthenticated);

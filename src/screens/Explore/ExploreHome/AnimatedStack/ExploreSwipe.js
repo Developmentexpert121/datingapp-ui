@@ -10,18 +10,14 @@ import {
   ScrollView,
 } from 'react-native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import TinderCard from './TinderCard';
-// import {useAppDispatch, useAppSelector} from '../../../store/store';
-// import {likedAUser, superLiked} from '../../../store/Auth/auth';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useAppDispatch} from '../../../../store/store';
 import Loader from '../../../../components/Loader/Loader';
-// import Loader from '../../../../components/Loader/Loader';
-// import Loader from '../../../components/Loader/Loader';
+import ExploreCard from './ExploreCard';
 
 const {height, width} = Dimensions.get('window');
 
-const TinderSwipe = ({
+const ExploreSwipe = ({
   data,
   currentIndex,
   setCurrentIndex,
@@ -182,21 +178,6 @@ const TinderSwipe = ({
     return (degrees * Math.PI) / 180;
   };
 
-  // const habits1 = {
-  //   1: require('../../../assets/images/bottleofchampagne.png'),
-  //   2: require('../../../assets/images/smoking.png'),
-  //   3: require('../../../assets/images/Mandumbbells.png'),
-  //   4: require('../../../assets/images/dogheart.png'),
-  //   5: require('../../../assets/images/datestep.png'),
-  // };
-
-  // const habits2 = {
-  //   1: require('../../../assets/images/chat-balloon.png'),
-  //   2: require('../../../assets/images/love.png'),
-  //   3: require('../../../assets/images/abroad.png'),
-  //   4: require('../../../assets/images/moon.png'),
-  // };
-  // console.log('kdfhguerwofghqrwh', data);
   return (
     <>
       <View style={{height: '100%', width: '100%', flex: 1, borderWidth: 0}}>
@@ -208,7 +189,7 @@ const TinderSwipe = ({
                   const isFirst = index === 0;
                   const dragHandlers = isFirst ? panResponder.panHandlers : {};
                   return (
-                    <TinderCard
+                    <ExploreCard
                       key={index} // Add key prop here
                       swipe={swipe}
                       item={item}
@@ -264,64 +245,6 @@ const TinderSwipe = ({
                     : 'Distance information unavailable'}
                 </Text>
               </View>
-              {/* <Text
-                style={{
-                  fontSize: 16,
-                  fontFamily: 'Sansation-Regular',
-                  marginLeft: 20,
-                  color: 'green',
-                }}>
-                Active
-              </Text> */}
-              {/*  Habits1*/}
-              {/* <View style={styles.container}>
-                {data[currentIndex]?.habits1?.map((item, index) => {
-                  const imagePath = habits1[item.id];
-
-                  return (
-                    <View key={index} style={styles.item}>
-                      {imagePath && (
-                        <Image
-                          source={imagePath}
-                          style={{height: 20, width: 20}}
-                        />
-                      )}
-                      <Text
-                        style={{
-                          fontFamily: 'Sansation-Regular',
-                          color: 'black',
-                        }}>
-                        {item.selectedText}
-                      </Text>
-                    </View>
-                  );
-                })}
-              </View> */}
-              {/* Habits2 */}
-              {/* <View style={styles.container}>
-                {data[currentIndex]?.habits2?.map((item, index) => {
-                  const imagePath = habits2[item.id];
-
-                  return (
-                    <View key={index} style={styles.item}>
-                      {imagePath && (
-                        <Image
-                          source={imagePath}
-                          style={{height: 20, width: 20}}
-                        />
-                      )}
-                      <Text
-                        style={{
-                          fontFamily: 'Sansation-Regular',
-                          color: 'black',
-                        }}>
-                        {item.selectedText}
-                      </Text>
-                    </View>
-                  );
-                })}
-              </View> */}
-              {/* Partner Type */}
               <View style={styles.container}>
                 {data[currentIndex]?.partnerType && (
                   <View style={styles.item}>
@@ -363,7 +286,7 @@ const TinderSwipe = ({
   );
 };
 
-export default TinderSwipe;
+export default ExploreSwipe;
 
 const styles = StyleSheet.create({
   icons: {
