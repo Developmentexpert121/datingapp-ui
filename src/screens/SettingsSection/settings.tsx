@@ -29,6 +29,7 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import Loader from '../../components/Loader/Loader';
 import GlobalModal from '../../components/Modals/GlobalModal';
 import ConfirmModal from '../../components/Modals/ConfirmModal';
+import {StreamVideoRN} from '@stream-io/video-react-native-sdk';
 
 interface UpdateForm {
   name: string;
@@ -224,6 +225,7 @@ const SettingsSection = () => {
 
       dispatch(logoutUser({senderId: profileData._id}));
       await authTokenRemove();
+      await StreamVideoRN.onPushLogout();
     } catch (error) {
       console.error('errorLogoutUserButton', error);
     }
