@@ -6,7 +6,6 @@
 #import <SafariServices/SafariServices.h>
 #import <FBSDKCoreKit/FBSDKCoreKit-Swift.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
-#import <RNCPushNotificationIOS.h>
 #import <FirebaseCore/FirebaseCore.h>
 #import <FirebaseMessaging/FirebaseMessaging.h>
 #import <UserNotifications/UserNotifications.h>

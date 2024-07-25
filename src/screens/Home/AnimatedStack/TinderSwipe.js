@@ -30,11 +30,11 @@ const TinderSwipe = ({
   const [loader, setLoader] = useState(false);
   const [noProfilesLoader, setNoProfilesLoader] = useState(false);
   const [currentUser, setCurrentUser] = useState();
-  // const [currentIndex, setCurrentIndex] = useState(0);
-  console.log('currentUser', currentUser);
 
   const {showOnlineUser} = useAppSelector(state => state.authSliceState);
-  const isUserOnline = showOnlineUser?.includes(currentUser);
+  const isUserOnline = showOnlineUser?.includes(currentUser) || false;
+  // console.log('___________', isUserOnline);
+  // console.log('___________', currentUser);
 
   const [isSuperLikeAnimating, setIsSuperLikeAnimating] = useState(false);
 
@@ -211,7 +211,7 @@ const TinderSwipe = ({
                   const dragHandlers = isFirst ? panResponder.panHandlers : {};
                   return (
                     <TinderCard
-                      key={index} // Add key prop here
+                      key={item._id} // Use unique identifier
                       swipe={swipe}
                       item={item}
                       setCurrentUser={setCurrentUser}
@@ -288,7 +288,7 @@ const TinderSwipe = ({
                   const imagePath = habits1[item.id];
 
                   return (
-                    <View key={index} style={styles.item}>
+                    <View key={item.id} style={styles.item}>
                       {imagePath && (
                         <Image
                           source={imagePath}
@@ -299,13 +299,14 @@ const TinderSwipe = ({
                         style={{
                           gap: 4,
                         }}>
-                        {item.optionSelected.map(item => (
+                        {item.optionSelected.map(option => (
                           <Text
+                            key={option} // Add key for nested items
                             style={{
                               fontFamily: 'Sansation-Regular',
                               color: 'black',
                             }}>
-                            {item}
+                            {option}
                           </Text>
                         ))}
                       </View>
@@ -319,20 +320,21 @@ const TinderSwipe = ({
                   const imagePath = habits2[item.id];
 
                   return (
-                    <View key={index} style={styles.item}>
+                    <View key={item.id} style={styles.item}>
                       {imagePath && (
                         <Image
                           source={imagePath}
                           style={{height: 20, width: 20}}
                         />
                       )}
-                      {item.optionSelected.map(item => (
+                      {item.optionSelected.map(option => (
                         <Text
+                          key={option} // Add key for nested items
                           style={{
                             fontFamily: 'Sansation-Regular',
                             color: 'black',
                           }}>
-                          {item}
+                          {option}
                         </Text>
                       ))}
                     </View>

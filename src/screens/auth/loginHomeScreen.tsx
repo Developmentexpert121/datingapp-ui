@@ -278,7 +278,9 @@ const LoginHomeScreen: React.FC<Props> = () => {
         </View>
         <View style={styles.loginContainer}>
           <Text style={styles.loginText}>Already a member?</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+          <TouchableOpacity
+            style={{paddingVertical: 5}}
+            onPress={() => navigation.navigate('Login')}>
             <Text style={styles.touchableText}> Log In</Text>
           </TouchableOpacity>
         </View>
