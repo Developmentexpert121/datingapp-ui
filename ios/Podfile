@@ -29,7 +29,6 @@ target 'DatingApp' do
   pod 'RNFBApp', :path => '../node_modules/@react-native-firebase/app'
   pod 'RNFBMessaging', :path => '../node_modules/@react-native-firebase/messaging'
   pod 'React-RCTPushNotification', :path => '../node_modules/react-native/Libraries/PushNotificationIOS'
-  # pod 'RNCPushNotificationIOS', :path => '../node_modules/@react-native-community/push-notification-ios'
   pod 'GoogleSignIn'
   permissions_path = '../node_modules/react-native-permissions/ios'
 
@@ -37,13 +36,13 @@ target 'DatingApp' do
   require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules' 
   use_frameworks! :linkage => :static
   use_modular_headers!
-  # $RNFirebaseAsStaticFramework = true
+  $RNFirebaseAsStaticFramework = true
   $RNFirebaseAnalyticsWithoutAdIdSupport=true
   use_react_native!(
     :path => config[:reactNativePath],
     # Enables Flipper.
     #
-    :hermes_enabled => flags[:hermes_enabled],
+    :hermes_enabled => true,
     :fabric_enabled => flags[:hermes_enabled],
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
