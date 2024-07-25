@@ -1,6 +1,6 @@
 {
-  "name": "DatingApp",
-  "slug": "datingapp",
+  "name": "Top TierDating",
+  "slug": "Top TierDating",
   "android": {
     "package": "com.toptierdating"
   }

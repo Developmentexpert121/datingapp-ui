@@ -29,6 +29,10 @@
 			</array>
 		</dict>
 	</array>
+	<key>UIBackgroundModes</key>
+    <array>
+    <string>voip</string>
+    </array> 
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>FacebookAppID</key>

@@ -18,23 +18,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 
 const App = () => {
-  // const {showOnlineUser} = useAppSelector(
-  //   (state: RootState) => state.authSliceState,
-  // );
-
   const dispatch = useAppDispatch();
-
-  // async function requestUserPermission() {
-  //   await requestNotifications(['alert', 'sound']);
-  //   const authStatus = await messaging().requestPermission();
-  //   const enabled =
-  //     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-  //     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
-  //   if (enabled) {
-  //     // console.log('Authorization status:', authStatus);
-  //   }
-  // }
 
   const [onlineUsers, setOnlineUsers] = useState<any>([]);
   const profileData: any = useAppSelector(
