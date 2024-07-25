@@ -8,7 +8,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import {ListItem, Avatar} from 'react-native-elements';
-import CommonBackbutton from '../../components/commonBackbutton/CommonBackbutton';
+import CommonBackbutton from '../../components/commonBackbutton/BackButton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../store/store';
@@ -37,6 +37,7 @@ const ChatSection = () => {
   const [loader, setLoader] = useState<boolean>(false);
 
   const goToChatWith = async (user: any) => {
+    console.log('user111111111', user);
     await dispatch(videoCallUser({user: user}));
     navigation.navigate('VideoCallRedirect');
   };
@@ -73,12 +74,12 @@ const ChatSection = () => {
           getChatUsersList({userId: profileData._id}),
         ).unwrap();
         setChatListData(response);
-
+        // console.log('_______', response);
         if (response.data && response.data.length > 0) {
           const allUsers = response.data;
           allUsers.forEach((user: any) => {
-            const lastChat = user.chat?.message;
-            const timestamp = user.chat?.timestamp;
+            // const lastChat = user.chat?.message;
+            // const timestamp = user.chat?.timestamp;
           });
         } else {
         }
@@ -122,7 +123,7 @@ const ChatSection = () => {
       return ``;
     }
   };
-
+  // Block
   const BlockData = async () => {
     try {
       const response = await dispatch(
@@ -135,6 +136,7 @@ const ChatSection = () => {
       console.error('Error fetching data:', error);
     }
   };
+  // UnBlock
   const UnBlockData = async () => {
     try {
       console.log(';;;;;;;;;;;;');
@@ -211,7 +213,7 @@ const ChatSection = () => {
                 }}>
                 {getTimeAgo(item.chat?.timestamp)}
               </Text>
-              {item.chat?.message ? <DoubleTickIC /> : null}
+              {/* {item.chat?.message ? <DoubleTickIC /> : null} */}
             </>
           )}
         </View>

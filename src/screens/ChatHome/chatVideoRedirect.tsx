@@ -4,6 +4,7 @@ import {
   Call,
   StreamVideo,
   StreamVideoClient,
+  useCallStateHooks,
 } from '@stream-io/video-react-native-sdk';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import uuid from 'react-native-uuid';
@@ -12,7 +13,6 @@ import VideoCallInterface from './chatVideoInterface';
 
 const VideoCallRedirect = () => {
   const user: any = useAppSelector((state: any) => state?.ActivityLoader?.user);
-  // console.log('ashdfigsufgosudfgous', user?.deactivate);
   const dispatch: any = useAppDispatch();
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
@@ -24,9 +24,11 @@ const VideoCallRedirect = () => {
   const [activeScreen, setActiveScreen] = useState('home');
   const [client, setClient] = useState<StreamVideoClient | null>(null);
   const [call, setCall] = useState<Call | null>(null);
+  const [callType, setCallType] = useState('videoCall');
+  // console.log('Call Call', call);
 
   useEffect(() => {
-    const apiKey = 'xxbhmm34dcx3';
+    const apiKey = '48e74nbgz5az';
     const tokenProvider = async () => {
       const token = await dispatch(videoCallToken({id: profileData?._id}))
         .unwrap()
@@ -59,49 +61,54 @@ const VideoCallRedirect = () => {
     setCall(null);
   }, []);
 
-  const goToCallScreen = useCallback(() => {
-    if (!client) return;
+  const goToCallScreen = useCallback(
+    (type: any) => {
+      if (!client) return;
+      const myCall: any = client.call(
+        type === 'videoCall' ? 'default' : 'audio_call',
+        callId,
+      );
+      myCall.on('call.left', (event: any) => {
+        console.log('User left the call:', event.user.id);
+        if (event.user.id !== profileData._id) {
+          console.log('hfweifiefiehrifefrieri');
+          handleCallEnd();
+        } else {
+          console.log('dfigdjsufgusdufghus');
+          myCall.end();
+        }
+      });
 
-    const myCall = client.call('default', callId);
-    myCall.on('call.left', event => {
-      console.log('User left the call:', event.user.id);
-      if (event.user.id !== profileData._id) {
+      myCall.on('call.ended', (event: any) => {
+        console.log('Call ended:', event);
         handleCallEnd();
-      }
-    });
-
-    myCall.on('call.ended', event => {
-      console.log('Call ended:', event);
-      handleCallEnd();
-    });
-
-    myCall
-      .getOrCreate({
-        ring: true,
-        data: {
-          members: [{user_id: profileData._id}, {user_id: user._id}],
-          // custom: {color: '#AA22AA'},
-          // settings_override: {
-          //   audio: {mic_default_on: false},
-          //   video: {camera_default_on: false},
-          // },
-        },
-      })
-      .catch(err => {
-        console.error('Failed to join the call', err);
       });
 
-    setCall(myCall);
-    setActiveScreen('call-screen');
+      myCall
+        .getOrCreate({
+          ring: true,
+          data: {
+            members: [{user_id: profileData._id}, {user_id: user._id}],
+          },
+        })
+        .catch((err: any) => {
+          console.error('Failed to join the call', err);
+        });
 
-    return () => {
-      myCall.leave().catch(err => {
-        console.error('Failed to leave the call', err);
-      });
-    };
-  }, [client, callId, profileData._id, user._id, handleCallEnd]);
+      setCall(myCall);
+      setActiveScreen('call-screen');
+
+      return () => {
+        myCall.leave().catch((err: any) => {
+          console.error('Failed to leave the call', err);
+        });
+      };
+    },
+    [client, callId, profileData._id, user._id, handleCallEnd],
+  );
 
   const goToHomeScreen = () => {
+    console.log('leave call');
     if (call) {
       call.leave();
       handleCallEnd();
@@ -124,6 +131,7 @@ const VideoCallRedirect = () => {
             setEnableCamera1={setEnableCamera1}
             activeScreen={activeScreen}
             setActiveScreen={setActiveScreen}
+            setCallType={setCallType}
           />
         </StreamVideo>
       )}

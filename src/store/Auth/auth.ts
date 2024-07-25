@@ -107,6 +107,7 @@ export const LoginSignIn = createAsyncThunk(
           'authToken',
           JSON.stringify(response?.data?.token),
         );
+        console.log('authToken', response?.data?.token);
         await AsyncStorage.setItem(
           'userId',
           JSON.stringify(response?.data?._id),
@@ -121,6 +122,7 @@ export const LoginSignIn = createAsyncThunk(
             },
           }),
         );
+        console.log(response?.data, 'loginData---->>>>');
         return response.data;
       }
     } catch (error: any) {
@@ -405,12 +407,13 @@ export const likedAUser = createAsyncThunk(
     console.log('.........dsfgvadlfghads', data);
     try {
       const response = await http.post('/user/likeUser', data);
+      console.log('res------>>>>>', response);
       if (response.status === 200) {
         console.log('Like by meeee', response);
         return response.data;
       }
     } catch (error: any) {
-      console.log('error000000', error);
+      console.log('errorlikedAUser', JSON.stringify(error));
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
       } else {
@@ -421,8 +424,9 @@ export const likedAUser = createAsyncThunk(
     }
   },
 );
+
 export const superLiked = createAsyncThunk(
-  'auth/likedAUser',
+  'auth/superLiked',
   async (data: any, {dispatch}: any) => {
     console.log('.........dsfgvas', data);
     try {
@@ -432,7 +436,7 @@ export const superLiked = createAsyncThunk(
         return response.data;
       }
     } catch (error: any) {
-      console.log('error000000s');
+      console.log('superLiked');
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
       } else {
@@ -486,16 +490,6 @@ export const getAllUsers = createAsyncThunk(
     {dispatch}: any,
   ) => {
     try {
-      console.log(
-        'hdsfkjhdksfhksdhkfs',
-        userId,
-        checkedInterests,
-        showIn,
-        distance,
-        low,
-        high,
-        checkedRelationShip,
-      );
       // console.log('.d;alfjlajgfladfsg;lad;gh;');
       const response = await http.get('/user/getUsers', {
         params: {
@@ -554,7 +548,6 @@ export const getNotifications = createAsyncThunk(
   'auth/getNotifications',
   async ({userId, deviceToken}: any, {dispatch}: any) => {
     // console.log('wueyqierqgrqgrgrq', userId);
-    // console.log('salfgkhdsghksdf', deviceToken);
     try {
       const response = await http.get('/user/getNotification', {
         params: {
@@ -816,6 +809,7 @@ const initialState = {
     signInInfo: '',
     otpVerified: false,
   },
+  token: null,
   isAuthenticated: false,
   loading: false,
 };
@@ -866,6 +860,8 @@ const Auth: any = createSlice({
         state.loading = true;
       })
       .addCase(LoginSignIn.fulfilled, (state, action) => {
+        console.log(action.payload.token, 'action');
+        state.token = action?.payload?.token;
         if (action.payload.data) {
           // Check if data is present in the payload
           state.data.signin = action.payload.data;
@@ -946,30 +942,34 @@ const Auth: any = createSlice({
       // likedAUser
       .addCase(likedAUser.pending, (state, action) => {
         state.loading = true;
-        // console.log('1111111111');
       })
       .addCase(likedAUser.fulfilled, (state, action) => {
         state.data.userLike = action.payload.notifications;
         state.loading = false;
-        // console.log('222222222');
       })
       .addCase(likedAUser.rejected, (state, action) => {
         state.loading = false;
-        // console.log('333333333');
+      })
+      .addCase(superLiked.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(superLiked.fulfilled, (state, action) => {
+        state.data.userLike = action.payload.notifications;
+        state.loading = false;
+      })
+      .addCase(superLiked.rejected, (state, action) => {
+        state.loading = false;
       })
       // likedMe
       .addCase(likedMe.pending, (state, action) => {
         state.loading = true;
-        // console.log('1111111111');
       })
       .addCase(likedMe.fulfilled, (state, action) => {
         // state.data.meLike = action.payload.notifications;
         state.loading = false;
-        // console.log('222222222');
       })
       .addCase(likedMe.rejected, (state, action) => {
         state.loading = false;
-        // console.log('333333333');
       })
       // VerifyOtp
       .addCase(VerifyOtp.fulfilled, (state, action) => {

@@ -19,7 +19,7 @@ import {
   validateReceiptIos,
 } from 'react-native-iap';
 
-import CommonBackbutton from '../../../components/commonBackbutton/CommonBackbutton';
+import CommonBackbutton from '../../../components/commonBackbutton/BackButton';
 
 const errorLog = ({message, error}) => {
   console.error('An error happened:', message, error);
@@ -32,7 +32,7 @@ const subscriptionSkus = Platform.select({
   ios: ['TopTierDatingMonthly15.99'],
   android: ['15.99'],
 });
-console.log('44444444444444444', subscriptionSkus);
+// console.log('44444444444444444', subscriptionSkus);
 const SubscriptionsScreen = ({navigation}) => {
   const {
     connected,

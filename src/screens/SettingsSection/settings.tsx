@@ -8,7 +8,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import React, {useState, useCallback, useEffect} from 'react';
-import CommonBackbutton from '../../components/commonBackbutton/CommonBackbutton';
+import CommonBackbutton from '../../components/commonBackbutton/BackButton';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useForm} from 'react-hook-form';
 import * as yup from 'yup';
@@ -29,6 +29,7 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import Loader from '../../components/Loader/Loader';
 import GlobalModal from '../../components/Modals/GlobalModal';
 import ConfirmModal from '../../components/Modals/ConfirmModal';
+import {StreamVideoRN} from '@stream-io/video-react-native-sdk';
 
 interface UpdateForm {
   name: string;
@@ -74,6 +75,13 @@ const SettingsSection = () => {
   const [values, setValues] = useState<string>('');
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [actionType, setActionType] = useState<string | null>(null);
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId:
+        '151623051367-b882b5sufigjbholkehodmi9ccn4hv6m.apps.googleusercontent.com', // From Google Developer Console
+      offlineAccess: true,
+    });
+  }, []);
 
   const {
     reset,
@@ -203,14 +211,23 @@ const SettingsSection = () => {
 
   const logoutUserButton = async () => {
     try {
+      // Ensure Google Sign-In is configured
+      if (!GoogleSignin.hasPlayServices()) {
+        console.error('Google Play Services are not available');
+        return;
+      }
       const isSignedIn = await GoogleSignin.isSignedIn();
+      console.log('User is signed in:', isSignedIn);
+
       if (isSignedIn) {
         await GoogleSignin.signOut();
       }
+
       dispatch(logoutUser({senderId: profileData._id}));
       await authTokenRemove();
+      await StreamVideoRN.onPushLogout();
     } catch (error) {
-      console.error(error, 'error');
+      console.error('errorLogoutUserButton', error);
     }
   };
   const deleteUserButton = async () => {

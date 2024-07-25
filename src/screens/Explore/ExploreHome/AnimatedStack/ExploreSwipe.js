@@ -10,15 +10,14 @@ import {
   ScrollView,
 } from 'react-native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import TinderCard from './TinderCard';
-import {useAppDispatch, useAppSelector} from '../../../store/store';
-import {likedAUser, superLiked} from '../../../store/Auth/auth';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Loader from '../../../components/Loader/Loader';
+import {useAppDispatch} from '../../../../store/store';
+import Loader from '../../../../components/Loader/Loader';
+import ExploreCard from './ExploreCard';
 
 const {height, width} = Dimensions.get('window');
 
-const TinderSwipe = ({
+const ExploreSwipe = ({
   data,
   currentIndex,
   setCurrentIndex,
@@ -29,13 +28,7 @@ const TinderSwipe = ({
   const [nextIndex, setNextIndex] = useState(currentIndex + 1);
   const [loader, setLoader] = useState(false);
   const [noProfilesLoader, setNoProfilesLoader] = useState(false);
-  const [currentUser, setCurrentUser] = useState();
-
-  const {showOnlineUser} = useAppSelector(state => state.authSliceState);
-  const isUserOnline = showOnlineUser?.includes(currentUser) || false;
-  // console.log('___________', isUserOnline);
-  // console.log('___________', currentUser);
-
+  // const isUserOnline = showOnlineUser?.includes(user?._id);
   const [isSuperLikeAnimating, setIsSuperLikeAnimating] = useState(false);
 
   useEffect(() => {
@@ -185,23 +178,9 @@ const TinderSwipe = ({
     return (degrees * Math.PI) / 180;
   };
 
-  const habits1 = {
-    1: require('../../../assets/images/bottleofchampagne.png'),
-    2: require('../../../assets/images/smoking.png'),
-    3: require('../../../assets/images/Mandumbbells.png'),
-    4: require('../../../assets/images/dogheart.png'),
-    5: require('../../../assets/images/datestep.png'),
-  };
-
-  const habits2 = {
-    1: require('../../../assets/images/chat-balloon.png'),
-    2: require('../../../assets/images/love.png'),
-    3: require('../../../assets/images/abroad.png'),
-    4: require('../../../assets/images/moon.png'),
-  };
   return (
     <>
-      <View style={{height: '100%', width: '100%'}}>
+      <View style={{height: '100%', width: '100%', flex: 1, borderWidth: 0}}>
         {data.length > 0 ? (
           <>
             <View style={{height: 340}}>
@@ -210,11 +189,10 @@ const TinderSwipe = ({
                   const isFirst = index === 0;
                   const dragHandlers = isFirst ? panResponder.panHandlers : {};
                   return (
-                    <TinderCard
-                      key={item._id} // Use unique identifier
+                    <ExploreCard
+                      key={index} // Add key prop here
                       swipe={swipe}
                       item={item}
-                      setCurrentUser={setCurrentUser}
                       isFirst={isFirst}
                       {...dragHandlers}
                     />
@@ -228,7 +206,7 @@ const TinderSwipe = ({
                   handleChoiceCross(-1);
                 }}>
                 <Image
-                  source={require('../../../assets/images/Cross.png')}
+                  source={require('../../../../assets/images/Cross.png')}
                   style={styles.icons3}
                 />
               </TouchableOpacity>
@@ -237,7 +215,7 @@ const TinderSwipe = ({
                   handleChoiceSuperLike();
                 }}>
                 <Image
-                  source={require('../../../assets/images/Star.png')}
+                  source={require('../../../../assets/images/Star.png')}
                   style={styles.icons3}
                 />
               </TouchableOpacity>
@@ -246,13 +224,12 @@ const TinderSwipe = ({
                   handleChoiceHeart(1);
                 }}>
                 <Image
-                  source={require('../../../assets/images/Heart.png')}
+                  source={require('../../../../assets/images/Heart.png')}
                   style={styles.icons3}
                 />
               </TouchableOpacity>
             </View>
             <ScrollView showsVerticalScrollIndicator={false}>
-              {/* Location */}
               <View style={styles.locText}>
                 <Ionicons name="location-sharp" size={20} color="#AC25AC" />
                 <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
@@ -268,80 +245,6 @@ const TinderSwipe = ({
                     : 'Distance information unavailable'}
                 </Text>
               </View>
-              {/* Active */}
-              {isUserOnline ? (
-                <Text
-                  style={{
-                    fontSize: 16,
-                    fontFamily: 'Sansation-Regular',
-                    marginLeft: 25,
-                    marginTop: 5,
-                    color: 'green',
-                  }}>
-                  Active
-                </Text>
-              ) : null}
-
-              {/* habits1 */}
-              <View style={styles.container}>
-                {data[currentIndex]?.habits1?.map((item, index) => {
-                  const imagePath = habits1[item.id];
-
-                  return (
-                    <View key={item.id} style={styles.item}>
-                      {imagePath && (
-                        <Image
-                          source={imagePath}
-                          style={{height: 20, width: 20}}
-                        />
-                      )}
-                      <View
-                        style={{
-                          gap: 4,
-                        }}>
-                        {item.optionSelected.map(option => (
-                          <Text
-                            key={option} // Add key for nested items
-                            style={{
-                              fontFamily: 'Sansation-Regular',
-                              color: 'black',
-                            }}>
-                            {option}
-                          </Text>
-                        ))}
-                      </View>
-                    </View>
-                  );
-                })}
-              </View>
-              {/* habits2 */}
-              <View style={styles.container}>
-                {data[currentIndex]?.habits2?.map((item, index) => {
-                  const imagePath = habits2[item.id];
-
-                  return (
-                    <View key={item.id} style={styles.item}>
-                      {imagePath && (
-                        <Image
-                          source={imagePath}
-                          style={{height: 20, width: 20}}
-                        />
-                      )}
-                      {item.optionSelected.map(option => (
-                        <Text
-                          key={option} // Add key for nested items
-                          style={{
-                            fontFamily: 'Sansation-Regular',
-                            color: 'black',
-                          }}>
-                          {option}
-                        </Text>
-                      ))}
-                    </View>
-                  );
-                })}
-              </View>
-              {/* PartnerType */}
               <View style={styles.container}>
                 {data[currentIndex]?.partnerType && (
                   <View style={styles.item}>
@@ -361,18 +264,21 @@ const TinderSwipe = ({
         ) : noProfilesLoader ? (
           <Loader />
         ) : (
-          <Text
-            style={{
-              fontFamily: 'Sansation-Bold',
-              fontSize: 26,
-              textAlign: 'center',
-              paddingHorizontal: 20,
-              marginTop: 100,
-              alignSelf: 'center',
-            }}>
-            You have viewed all profiles! Or no profile matches your applied
-            filters!
-          </Text>
+          <View style={{borderWidth: 0, flex: 1}}>
+            <Text
+              style={{
+                fontFamily: 'Sansation-Bold',
+                fontSize: 26,
+                textAlign: 'center',
+                paddingHorizontal: 20,
+                marginTop: 100,
+                alignSelf: 'center',
+                marginTop: '50%',
+              }}>
+              You have viewed all profiles! Or no profile matches your applied
+              filters!
+            </Text>
+          </View>
         )}
       </View>
       {loader ? <Loader /> : null}
@@ -380,15 +286,17 @@ const TinderSwipe = ({
   );
 };
 
-export default TinderSwipe;
+export default ExploreSwipe;
 
 const styles = StyleSheet.create({
   icons: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    alignItems: 'center',
-    width: '70%',
-    alignSelf: 'center',
+    // alignItems: 'center',
+    // width: '70%',
+    // alignSelf: 'center',
+    // borderWidth: 1,
+    marginTop: '40%',
   },
   locText: {
     flexDirection: 'row',
@@ -401,6 +309,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     margin: 10,
+    marginTop: '50%',
   },
   item: {
     borderWidth: 1.5,

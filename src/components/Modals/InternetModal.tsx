@@ -54,7 +54,11 @@ const InternetModal: React.FC = ({
           <View style={styles.modal}>
             <View style={styles.modalstyle}>
               <Label text={label ?? 'Oops!!!'} style={styles.textstyle} />
-              <Image source={require('../../assets/git/noln.gif')} />
+              {/* <Image source={require('../../assets/git/noln.gif')} /> */}
+              <Image
+                source={require('../../assets/images/Internet_Lose.png')}
+                style={{width: 150, height: 100}}
+              />
               <Label
                 text={label ?? 'No Internet Connection'}
                 style={styles.textstyle}

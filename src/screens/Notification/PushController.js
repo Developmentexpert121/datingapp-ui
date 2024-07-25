@@ -1,97 +1,103 @@
-import React, {Component} from 'react';
-import PushNotification from 'react-native-push-notification';
-// var PushNotification = require("react-native-push-notification");
-export default class PushController extends Component {
-  componentDidMount() {
-    PushNotification.configure(
-      {
-        // (optional) Called when Token is generated (iOS and Android)
-        popInitialNotification: notification => {
-          return notification.priority === 'high'; // Only show high priority notifications
-        },
-        onRegister: function (token) {
-          // console.log('TOKEN:', token);
-        },
+// import React, {Component} from 'react';
+// import {Platform, Alert} from 'react-native';
+// import PushNotification from 'react-native-push-notification';
+// import PushNotificationIOS from '@react-native-community/push-notification-ios';
 
-        // (required) Called when a remote or local notification is opened or received
-        onNotification: function (notification) {
-          console.log('NOTIFICATION:', notification);
-          // process the notification here
-          // required on iOS only
-          // notification.finish(PushNotificationIOS.FetchResult.NoData);
-          PushNotification.localNotification({
-            channelId: notification?.channelId,
-            title: notification?.title,
-            message: notification?.message,
-          });
-          // notification.finish(PushNotification.FetchResult.NoData);
-        },
-        // (optional) Called when Registered Action is pressed and invokeApp is false, if true onNotification will be called (Android)
-        onAction: function (notification) {
-          console.log('ACTION:', notification.action);
-          console.log('NOTIFICATION:', notification);
-          // process the action
-        },
+// export default class PushController extends Component {
+//   componentDidMount() {
+//     // Request permission for iOS notifications
+//     if (Platform.OS === 'ios') {
+//       PushNotificationIOS.requestPermissions().then(
+//         data => {
+//           console.log('PushNotificationIOS.requestPermissions........', data);
+//         },
+//         data => {
+//           console.log('PushNotificationIOS.requestPermissions failed', data);
+//         },
+//       );
+//     }
 
-        // (optional) Called when the user fails to register for remote notifications. Typically occurs when APNS is having issues, or the device is a simulator. (iOS)
-        onRegistrationError: function (err) {
-          console.error(err.message, err);
-        },
+//     PushNotification.configure({
+//       // (optional) Called when Token is generated (iOS and Android)
+//       onRegister: function (token) {
+//         console.log('TOKEN:', token);
+//       },
 
-        // IOS ONLY (optional): default: all - Permissions to register.
-        permissions: {
-          alert: true,
-          badge: true,
-          sound: true,
-        },
+//       // (required) Called when a remote or local notification is opened or received
+//       onNotification: function (notification) {
+//         console.log('NOTIFICATION:', notification);
 
-        // Should the initial notification be popped automatically
-        // default: true
-        // popInitialNotification: true,
+//         // Process the notification
+//         // if (notification.foreground) {
+//         //   // Show an alert or a local notification when a notification is received in foreground
+//         //   PushNotification.localNotification({
+//         //     channelId:
+//         //       notification?.channelId || 'fcm_fallback_notification_channel',
+//         //     title: notification?.title || 'Notification',
+//         //     message:
+//         //       notification?.message || 'You have received a new notification',
+//         //   });
+//         // }
 
-        /**
-         * (optional) default: true
-         * - Specified if permissions (ios) and token (android and ios) will requested or not,
-         * - if not, you must call PushNotificationsHandler.requestPermissions() later
-         * - if you are not using remote notification or do not have Firebase installed, use this:
-         *     requestPermissions: Platform.OS === 'ios'
-         */
-      },
-      async callback => {
-        // Request permissions if not already granted (optional)
-        console.log(Platform.OS);
-        if (Platform.OS === 'android') {
-          const granted = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.NOTIFICATION_ACCESS,
-          );
-          if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-            console.warn('Notification permission denied');
-          }
-        } else {
-          // Request iOS notification permissions here using UNUserNotificationCenter APIs
-        }
+//         // Required on iOS only (see issue #236)
+//         notification.finish(PushNotificationIOS.FetchResult.NoData);
+//       },
 
-        // Any other logic that relies on successful configuration can go here
-        callback && callback(); // Call the callback if provided
-      },
-    );
-    this.createNotificationChannels();
-  }
-  createNotificationChannels = () => {
-    // Create a default channel
-    PushNotification.createChannel(
-      {
-        channelId: 'fcm_fallback_notification_channel', // (required)
-        channelName: 'fcm_fallback_notification_channel', // (required)
-        channelDescription: 'A default channel', // (optional) default: undefined.
-        soundName: 'default', // (optional) See soundName parameter of localNotification function
-        importance: 4, // (optional) default: 4. Int value of the importance
-        vibrate: true, // (optional) default: true. Creates the default vibration pattern if true.
-      },
-      // created => console.log(`createChannelreturned...'${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
-    );
-  };
-  render() {
-    return null;
-  }
-}
+//       // (optional) Called when the user fails to register for remote notifications.
+//       onRegistrationError: function (err) {
+//         console.error('Registration Error:', err.message, err);
+//       },
+
+//       permissions: {
+//         alert: true,
+//         badge: true,
+//         sound: true,
+//       },
+
+//       popInitialNotification: true,
+//       requestPermissions: Platform.OS === 'ios',
+//     });
+
+//     if (Platform.OS === 'android') {
+//       this.requestAndroidNotificationPermission();
+//     }
+
+//     this.createNotificationChannels();
+//   }
+
+//   requestAndroidNotificationPermission = async () => {
+//     const granted = await PermissionsAndroid.request(
+//       PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+//       {
+//         title: 'Notification Permission',
+//         message: 'App needs access to notifications',
+//         buttonNeutral: 'Ask Me Later',
+//         buttonNegative: 'Cancel',
+//         buttonPositive: 'OK',
+//       },
+//     );
+//     if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+//       console.warn('Notification permission denied_____');
+//     }
+//   };
+
+//   createNotificationChannels = () => {
+//     if (Platform.OS === 'android') {
+//       PushNotification.createChannel(
+//         {
+//           channelId: 'fcm_fallback_notification_channel',
+//           channelName: 'Default Channel',
+//           channelDescription: 'A default channel',
+//           soundName: 'default',
+//           importance: 4,
+//           vibrate: true,
+//         },
+//         created => console.log(`createChannel returned '${created}'`),
+//       );
+//     }
+//   };
+
+//   render() {
+//     return null;
+//   }
+// }

@@ -1,4 +1,7 @@
 {
   "name": "DatingApp",
-  "displayName": "DatingApp"
+  "slug": "datingapp",
+  "android": {
+    "package": "com.toptierdating"
+  }
 }

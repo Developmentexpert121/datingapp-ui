@@ -369,7 +369,7 @@ const FilterSection = ({
         ))}
       </View>
       {/* Gender */}
-      <View style={styles.boxContainer}>
+      {/* <View style={styles.boxContainer}>
         <Text style={styles.textName}>Gender</Text>
         <View style={styles.line} />
         {options.map(item => (
@@ -422,7 +422,7 @@ const FilterSection = ({
             />
           </View>
         ))}
-      </View>
+      </View> */}
     </ScrollView>
   );
 };

@@ -9,19 +9,17 @@ import {
 } from 'react-native';
 import React, {useCallback, useState, useEffect} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import {LikeIC, NopeIC, SuperLikeIC} from '../../../assets/svgs';
+import {LikeIC, NopeIC, SuperLikeIC} from '../../../../assets/svgs';
 
 const {height, width} = Dimensions.get('window');
 
-const TinderCard = ({
+const ExploreCard = ({
   name,
   profilePic,
   hobbies,
   item,
   isFirst,
   swipe,
-  currentUser,
-  setCurrentUser,
   ...rest
 }) => {
   const rotate = swipe.x.interpolate({
@@ -87,11 +85,11 @@ const TinderCard = ({
     );
   }, [likeOpacity, rejectOpacity, superLikeOpacity]);
 
-  const images = item.profilePic.split(',');
+  const images = item.profilePic.split(','); // Convert comma-separated URLs to array
   const [currentIndex, setCurrentIndex] = useState(0);
+
   useEffect(() => {
     setCurrentIndex(0);
-    setCurrentUser(item?._id);
   }, [item]);
 
   const handleNextImage = () => {
@@ -108,7 +106,7 @@ const TinderCard = ({
     <Animated.View
       style={[
         {
-          width: width - 20,
+          width: width - 0,
           height: height - 400,
           position: 'absolute',
           alignItems: 'center',
@@ -125,10 +123,11 @@ const TinderCard = ({
         }}
         style={{
           width: '100%',
-          height: 320,
+          height: '100%',
           borderRadius: 20,
           overflow: 'hidden',
           backgroundColor: 'gray',
+          // borderWidth: 5,
         }}>
         <View style={styles.imageOverlay}>
           <TouchableOpacity onPress={handlePrevImage} style={styles.button} />
@@ -139,7 +138,7 @@ const TinderCard = ({
           colors={['transparent', 'transparent', 'rgba(0,0,0,0.5)']}
           style={{
             width: '100%',
-            height: 320,
+            height: '100%',
             position: 'absolute',
             borderRadius: 20,
           }}>
@@ -173,7 +172,7 @@ const TinderCard = ({
   );
 };
 
-export default TinderCard;
+export default ExploreCard;
 
 const styles = StyleSheet.create({
   gradient: {

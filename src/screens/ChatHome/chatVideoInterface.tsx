@@ -1,6 +1,5 @@
 import React from 'react';
 import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
-
 import {
   CallingState,
   StreamCall,
@@ -18,6 +17,7 @@ const VideoCallInterface = ({
   setEnableCamera,
   setEnableCamera1,
   activeScreen,
+  setCallType,
 }: any) => {
   const calls = useCalls();
 
@@ -40,7 +40,11 @@ const VideoCallInterface = ({
     <SafeAreaView style={styles.containerMain}>
       {activeScreen === 'call-screen' ? (
         call ? (
-          <MyOutgoingCallUI call={call} goToHomeScreen={goToHomeScreen} />
+          <MyOutgoingCallUI
+            call={call}
+            goToHomeScreen={goToHomeScreen}
+            // userName={user?.name}
+          />
         ) : (
           <View>
             <Text style={{fontFamily: 'Sansation-Regular'}}>
@@ -54,6 +58,7 @@ const VideoCallInterface = ({
           goToCallScreen={goToCallScreen}
           setEnableCamera={setEnableCamera}
           setEnableCamera1={setEnableCamera1}
+          setCallType={setCallType}
         />
       )}
     </SafeAreaView>

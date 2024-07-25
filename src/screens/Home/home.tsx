@@ -3,7 +3,6 @@ import {View, StyleSheet} from 'react-native';
 import HeaderComponent from '../../components/Dashboard/header/header';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {ProfileData, getAllUsers} from '../../store/Auth/auth';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import FilterSection from '../FilterSection/filterSection';
 import NotificationScreen from '../Notification/notification';
 import TinderSwipe from './AnimatedStack/TinderSwipe';
@@ -12,60 +11,51 @@ const HomeScreen = () => {
   const [activeScreen, setActiveScreen] = useState('HOME');
   const [apply, setApply] = useState(false);
   const dispatch: any = useAppDispatch();
-  // );
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
+
   const [low, setLow] = useState<number>(18);
   const [high, setHigh] = useState<number>(56);
-  const [showIn, setShowIn] = useState(profileData?.showInDistance || false);
-  const [distance, setDistance] = useState(
-    parseInt(profileData?.distance) || 50,
-  );
+  const [showIn, setShowIn] = useState(false);
+  const [distance, setDistance] = useState(50);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [data, setData] = useState<any>([]);
-  const [checkedInterests, setCheckedInterests] = useState(
-    profileData?.interests || 'Everyone',
-  );
-  const [checkedRelationShip, setCheckedRelationShip] = useState(
-    profileData?.partnerType || '',
-  );
-  console.log('----------q', checkedRelationShip);
-
-  const getProfileData = async () => {
-    try {
-      let responseData = await dispatch(ProfileData());
-    } catch (error) {
-      console.log('iueswdfggsw', error);
-    }
-  };
+  const [checkedInterests, setCheckedInterests] = useState('Everyone');
+  const [checkedRelationShip, setCheckedRelationShip] = useState('');
+  const [trigger, setTrigger] = useState(false);
 
   useEffect(() => {
-    dispatch(
-      getAllUsers({
-        userId: profileData?._id,
-        checkedInterests: checkedInterests,
-        showIn: showIn,
-        distance: distance,
-        low: low,
-        high: high,
-        checkedRelationShip: checkedRelationShip,
-      }),
-    )
+    dispatch(ProfileData())
       .unwrap()
-      .then((response: any) => {
-        setData(response.users);
+      .then((res: any) => {
+        setShowIn(res.data.showInDistance);
+        setDistance(parseInt(res.data.distance));
+        setCheckedInterests(res.data.interests);
+        setCheckedRelationShip(res.data.partnerType);
+        setTrigger(true);
       });
-    apply && setApply(false);
-  }, [apply]);
-
-  useEffect(() => {
-    getProfileData();
   }, []);
 
   useEffect(() => {
-    setCheckedInterests(profileData?.interests);
-  }, [profileData?.interests]);
+    profileData._id &&
+      dispatch(
+        getAllUsers({
+          userId: profileData._id,
+          checkedInterests: checkedInterests,
+          showIn: showIn,
+          distance: distance,
+          low: low,
+          high: high,
+          checkedRelationShip: checkedRelationShip,
+        }),
+      )
+        .unwrap()
+        .then((response: any) => {
+          setData(response.users);
+        });
+    apply && setApply(false);
+  }, [apply, trigger]);
 
   return (
     <View style={styles.pageContainer}>

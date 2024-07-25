@@ -7,7 +7,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import CommonBackbutton from '../../components/commonBackbutton/CommonBackbutton';
+import CommonBackbutton from '../../components/commonBackbutton/BackButton';
 import {Slider} from 'react-native-elements';
 import SeventhStepScreen from '../auth/Registration/seventhStepScreen';
 import {useAppDispatch, useAppSelector} from '../../store/store';
@@ -15,26 +15,6 @@ import {updateProfileData} from '../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {EditTextIC} from '../../assets/svgs';
 import BottomModalUpdate from './BottomModalUpdate';
-
-interface UpdateForm {
-  work: string;
-  education: string;
-  interest: string;
-  language: string;
-  name: string;
-  email: string;
-  password: string;
-}
-
-const defaultValues = {
-  work: '',
-  education: '',
-  interest: '',
-  language: '',
-  name: '',
-  email: '',
-  password: '',
-};
 
 const getUserId = async () => {
   try {
@@ -53,7 +33,6 @@ const UpdateProfile = () => {
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-  console.log('dsfhkshdfis', profileData);
 
   const dispatch: any = useAppDispatch();
   const [height, setHeight] = useState(parseFloat(profileData?.height) || 3);
@@ -88,16 +67,15 @@ const UpdateProfile = () => {
 
   const dataArr = [
     {title: 'Work', name: profileData?.work},
-    // {
-    //   title: 'Education',
-    //   name: profileData?.habits2[2]?.selectedText
-    //     ? profileData?.habits2[2]?.selectedText
-    //     : '',
-    // },
+    {
+      title: 'Education',
+      name: profileData?.habits2[2]?.optionSelected
+        ? profileData?.habits2[2]?.optionSelected
+        : '',
+    },
     {title: 'Interests', name: profileData?.allInterests},
-    {title: 'Relationship Goals', name: profileData?.partnerType},
+    // {title: 'Relationship Goals', name: profileData?.partnerType},
   ];
-  console.log('first', dataArr);
 
   const closeDrawer = () => {
     setIsDrawerOpen(false);

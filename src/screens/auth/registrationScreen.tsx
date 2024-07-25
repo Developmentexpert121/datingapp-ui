@@ -55,6 +55,7 @@ import {useNavigation} from '@react-navigation/native';
 import {setLocalStorage} from '../../api/storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getProfile} from '../../store/slice/myProfileSlice/myProfileAction';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Register'>;
 
@@ -68,8 +69,8 @@ interface RegisterForm {
   gender: string;
   interests: string;
   partnerType: string;
-  habits1: Array<{id: string; selectedText: string}>;
-  habits2: Array<{id: string; selectedText: string}>;
+  habits1: any;
+  habits2: any;
   hobbies: string;
   password: string;
   confirmPassword: string;
@@ -146,25 +147,15 @@ const schema2 = yup.object().shape({
 const schema4 = yup.object().shape({
   habits1: yup
     .array()
-    .of(
-      yup.object().shape({
-        id: yup.string().required(),
-        selectedText: yup.string().required(),
-      }),
-    )
-    .min(1, 'At least one item must be selected in the first box'),
+
+    .min(5, 'At least five item must be selected in the all box'),
 });
 
 const schema5 = yup.object().shape({
   habits2: yup
     .array()
-    .of(
-      yup.object().shape({
-        id: yup.string().required(),
-        selectedText: yup.string().required(),
-      }),
-    )
-    .min(1, 'At least one item must be selected in the second box'),
+
+    .min(4, 'At least four item must be selected in the all box'),
 });
 
 const schema6 = yup.object().shape({
@@ -339,6 +330,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
       },
       err => {
         console.error('Error fetching location:', err);
+        setLoader(false);
         setError(err.message);
         setPermissionStatus('denied');
       },
@@ -439,6 +431,8 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
   };
 
   //******************************************** */
+
+  console.log(errors);
 
   const onSubmit: any = async (data: RegisterForm) => {
     console.log('onSubmitfirst', data);
@@ -548,8 +542,23 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
         }
       });
   };
-  const onClick = () => {
+  const onClick = async () => {
     dispatch(GoogleLogin({}));
+    try {
+      if (!GoogleSignin.hasPlayServices()) {
+        console.error('Google Play Services are not available');
+        return;
+      }
+      const isSignedIn = await GoogleSignin.isSignedIn();
+      if (isSignedIn) {
+        await GoogleSignin.signOut();
+      }
+
+      // dispatch(logoutUser({senderId: profileData._id}));
+      // await authTokenRemove();
+    } catch (error) {
+      console.error('errorLogoutUserButton', error);
+    }
     goBack();
   };
   return (

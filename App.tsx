@@ -10,44 +10,31 @@ import io from 'socket.io-client';
 import {requestNotifications} from 'react-native-permissions';
 import {onlineUser} from './src/store/reducer/authSliceState';
 import {withIAPContext} from 'react-native-iap';
-
-import PushNotification from 'react-native-push-notification';
-// import PushController from './src/screens/Notification/PushController';
-import {View} from 'react-native';
-import {Text} from 'react-native-elements';
 import InternetModal from './src/components/Modals/InternetModal';
-import PushController from './src/screens/Notification/PushController';
+// import PushController from './src/screens/Notification/PushController';
+import {navigationRef} from './src/utils/staticNavigation';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 
 const App = () => {
-  const {showOnlineUser} = useAppSelector(
-    (state: RootState) => state.authSliceState,
-  );
+  // const {showOnlineUser} = useAppSelector(
+  //   (state: RootState) => state.authSliceState,
+  // );
 
   const dispatch = useAppDispatch();
 
-  async function requestUserPermission() {
-    await requestNotifications(['alert', 'sound']);
-    const authStatus = await messaging().requestPermission();
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+  // async function requestUserPermission() {
+  //   await requestNotifications(['alert', 'sound']);
+  //   const authStatus = await messaging().requestPermission();
+  //   const enabled =
+  //     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+  //     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
-    if (enabled) {
-      // console.log('Authorization status:', authStatus);
-    }
-  }
-  // useEffect(() => {
-  //   // crashlytics().log("App Mount....");
-  //   PushNotification.createChannel(
-  //     {
-  //       channelId: 'hatti-app',
-  //       channelName: 'Hatti',
-  //     },
-  //     created => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
-  //   );
-  // }, []);
+  //   if (enabled) {
+  //     // console.log('Authorization status:', authStatus);
+  //   }
+  // }
 
   const [onlineUsers, setOnlineUsers] = useState<any>([]);
   const profileData: any = useAppSelector(
@@ -56,11 +43,17 @@ const App = () => {
 
   useEffect(() => {
     if (profileData?._id) {
+      const setStorage = async () => {
+        await AsyncStorage.setItem('profileData', JSON.stringify(profileData));
+      };
+
+      setStorage();
       socket.emit('user_connected', profileData?._id);
       socket.on('connect', () => {
         console.log('App Connected from server');
         const userId = profileData?._id;
         socket.emit('user_connected', userId);
+        // console.log('ahsdgjuhgdgsu', userId);
       });
     }
 
@@ -70,19 +63,12 @@ const App = () => {
   }, [profileData._id]);
 
   useEffect(() => {
-    socket.on('user_online', userId => {
-      setOnlineUsers((prevOnlineUsers: any) => {
-        if (!prevOnlineUsers.includes(userId)) {
-          return [...prevOnlineUsers, userId];
-        }
-        return prevOnlineUsers;
-      });
+    socket.on('user_online', users => {
+      setOnlineUsers(users);
     });
 
-    socket.on('user_offline', userId => {
-      setOnlineUsers((prevOnlineUsers: any) =>
-        prevOnlineUsers.filter((user: any) => user !== userId),
-      );
+    socket.on('user_offline', users => {
+      setOnlineUsers(users);
     });
 
     socket.on('disconnect', () => {
@@ -111,14 +97,14 @@ const App = () => {
         {isLoading ? (
           <Loader />
         ) : (
-          <NavigationContainer>
+          <NavigationContainer ref={navigationRef}>
+            {/* <PushController /> */}
             <Root />
             <GlobalModal />
             <InternetModal />
           </NavigationContainer>
         )}
       </SafeAreaProvider>
-      {/* <PushController /> */}
     </Fragment>
   );
 };

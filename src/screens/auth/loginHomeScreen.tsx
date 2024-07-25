@@ -25,7 +25,6 @@ import {userProfileDataChange} from '../../store/slice/myProfileSlice/myProfileS
 import {AppleLogin, GoogleLogin, ProfileData} from '../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getProfile} from '../../store/slice/myProfileSlice/myProfileAction';
-import {name} from '@stream-io/video-react-native-sdk';
 import {
   activityLoaderFinished,
   activityLoaderStarted,
@@ -65,14 +64,14 @@ const LoginHomeScreen: React.FC<Props> = () => {
     }
     dispatch(getProfile());
   };
-
+  // Google Login
   const handleGoogleLogin = async () => {
+    setLoader(true);
     try {
       let userInfo = await googleLogin();
       if (userInfo) {
         // Extract the email and id from the user info
         const {email, id, name, photo} = userInfo;
-
         dispatch(
           userProfileDataChange({
             key: 'email',
@@ -86,11 +85,9 @@ const LoginHomeScreen: React.FC<Props> = () => {
           email: email,
           socialId: id,
           deviceToken: 'abcde',
-          name: name,
-          photo: photo,
+          // name: name,
+          // photo: photo,
         };
-        // Dispatch the user sign-up action with the login payload
-        setLoader(true);
         dispatch(GoogleLogin({...loginPayload}))
           .then(async (response: any) => {
             if (response?.payload?.redirect === 'Steps') {
@@ -108,7 +105,6 @@ const LoginHomeScreen: React.FC<Props> = () => {
                 JSON.stringify(response?.payload?._id),
               );
               dispatch(ProfileData());
-
               // If sign-up is successful, call the function to handle the navigation
               handleNavigation(response);
               dispatch(activityLoaderFinished());
@@ -120,7 +116,6 @@ const LoginHomeScreen: React.FC<Props> = () => {
               // Show the modal with the error message
               setActiveModal(true);
             }
-
             setLoader(false);
           })
           .catch((error: any) => {
@@ -136,7 +131,7 @@ const LoginHomeScreen: React.FC<Props> = () => {
       console.log('Error logging in with Google:', error);
     }
   };
-  // *****************
+  // Apple Login
   const handleAppleLogin = async () => {
     // Check if the platform is iOS
     if (Platform.OS === 'ios') {
@@ -283,7 +278,9 @@ const LoginHomeScreen: React.FC<Props> = () => {
         </View>
         <View style={styles.loginContainer}>
           <Text style={styles.loginText}>Already a member?</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+          <TouchableOpacity
+            style={{paddingVertical: 5}}
+            onPress={() => navigation.navigate('Login')}>
             <Text style={styles.touchableText}> Log In</Text>
           </TouchableOpacity>
         </View>
