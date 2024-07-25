@@ -12,7 +12,7 @@ import {
 import Spacing from '../../constants/Spacing';
 import Colors from '../../constants/Colors';
 import {Text} from 'react-native-elements';
-
+import { useSelector } from 'react-redux';
 // Define an interface for the props
 interface CountryCityProps {
   valueCountry: (country: string) => void;
@@ -40,11 +40,16 @@ const CountryCity: FC<CountryCityProps> = ({
   const [countryOpen, setCountryOpen] = useState(false);
   const [stateOpen, setStateOpen] = useState(false);
   const [cityOpen, setCityOpen] = useState(false);
-
+  const selectedValue:any = useSelector<any>(state => state?.authSliceState?.countrycitystate);
   // Fetch all countries when the component mounts
   useEffect(() => {
     const allCountries = Country.getAllCountries();
     setCountries(allCountries ?? []);
+    if(selectedValue?.country){
+      setSelectedCountry(selectedValue?.country);
+    }else{
+      setSelectedCountry(null);
+    }
   }, []);
 
   // Fetch states of selected country
@@ -52,7 +57,11 @@ const CountryCity: FC<CountryCityProps> = ({
     if (selectedCountry) {
       const countryStates = State.getStatesOfCountry(selectedCountry);
       setStates(countryStates);
-      setSelectedState(null);
+      if(selectedValue?.state){
+        setSelectedState(selectedValue?.state);
+      }else{
+        setSelectedState(null);
+      }
       setCities([]);
     }
   }, [selectedCountry]);
@@ -65,7 +74,11 @@ const CountryCity: FC<CountryCityProps> = ({
         selectedState,
       );
       setCities(stateCities);
-      setSelectedCity(null);
+      if(selectedValue?.city){
+        setSelectedCity(selectedValue?.city);
+      }else{
+        setSelectedCity(null);
+      }
     }
   }, [selectedState, selectedCountry]);
 
