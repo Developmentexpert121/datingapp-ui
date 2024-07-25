@@ -46,6 +46,7 @@ const ZeroStepScreen = ({
   setSelectedState,
   setSelectedCity,
   BackClick,
+  dateBirth,
 }: any) => {
   const options = [
     {label: 'Male', value: 'first'},
@@ -119,7 +120,7 @@ const ZeroStepScreen = ({
               <CustomDatePicker
                 label="Date Of Birth"
                 placeholder="Date of birth"
-                value={value.dob}
+                value={value.dob || dateBirth}
                 onChangeText={onChange}
                 errors={Boolean(errors?.dob)}
               />

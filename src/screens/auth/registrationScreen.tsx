@@ -618,6 +618,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
                 setSelectedState={setSelectedState}
                 selectedCity={city}
                 setSelectedCity={setSelectedCity}
+                dateBirth={dob}
               />
             ) : steps === 1 ? (
               <FirstStepScreen
