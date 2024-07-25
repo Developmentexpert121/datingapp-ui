@@ -11,7 +11,7 @@ import {requestNotifications} from 'react-native-permissions';
 import {onlineUser} from './src/store/reducer/authSliceState';
 import {withIAPContext} from 'react-native-iap';
 import InternetModal from './src/components/Modals/InternetModal';
-import PushController from './src/screens/Notification/PushController';
+// import PushController from './src/screens/Notification/PushController';
 import {navigationRef} from './src/utils/staticNavigation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 

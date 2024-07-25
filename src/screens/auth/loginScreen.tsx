@@ -34,7 +34,7 @@ interface LoginForm {
 }
 const defaultValues = {
   email: '',
-  password: 'Test@123',
+  password: '',
 };
 
 const schema = yup.object().shape({

@@ -409,11 +409,11 @@ export const likedAUser = createAsyncThunk(
       const response = await http.post('/user/likeUser', data);
       console.log('res------>>>>>', response);
       if (response.status === 200) {
-        // console.log('Like by meeee', response);
+        console.log('Like by meeee', response);
         return response.data;
       }
     } catch (error: any) {
-      console.log('error000000', JSON.stringify(error));
+      console.log('errorlikedAUser', JSON.stringify(error));
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
       } else {
@@ -436,7 +436,7 @@ export const superLiked = createAsyncThunk(
         return response.data;
       }
     } catch (error: any) {
-      console.log('error000000s');
+      console.log('superLiked');
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
       } else {

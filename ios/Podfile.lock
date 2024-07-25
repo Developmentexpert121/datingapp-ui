@@ -1363,6 +1363,8 @@ PODS:
     - React-Core
   - RNAppleAuthentication (2.3.0):
     - React-Core
+  - RNCallKeep (4.3.14):
+    - React
   - RNCAsyncStorage (1.24.0):
     - React-Core
   - RNCClipboard (1.14.1):
@@ -1414,6 +1416,8 @@ PODS:
   - RNVectorIcons (10.1.0):
     - glog
     - RCT-Folly (= 2022.05.16.00)
+    - React-Core
+  - RNVoipPushNotification (3.3.2):
     - React-Core
   - SocketRocket (0.6.1)
   - stream-react-native-webrtc (118.1.0):
@@ -1498,6 +1502,7 @@ DEPENDENCIES:
   - ReactNativeIncallManager (from `../node_modules/react-native-incall-manager`)
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - "RNAppleAuthentication (from `../node_modules/@invertase/react-native-apple-authentication`)"
+  - RNCallKeep (from `../node_modules/react-native-callkeep`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
   - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
@@ -1514,6 +1519,7 @@ DEPENDENCIES:
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
+  - RNVoipPushNotification (from `../node_modules/react-native-voip-push-notification`)
   - "stream-react-native-webrtc (from `../node_modules/@stream-io/react-native-webrtc`)"
   - "stream-video-react-native (from `../node_modules/@stream-io/video-react-native-sdk`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -1684,6 +1690,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/rn-fetch-blob"
   RNAppleAuthentication:
     :path: "../node_modules/@invertase/react-native-apple-authentication"
+  RNCallKeep:
+    :path: "../node_modules/react-native-callkeep"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNCClipboard:
@@ -1716,6 +1724,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-svg"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
+  RNVoipPushNotification:
+    :path: "../node_modules/react-native-voip-push-notification"
   stream-react-native-webrtc:
     :path: "../node_modules/@stream-io/react-native-webrtc"
   stream-video-react-native:
@@ -1819,6 +1829,7 @@ SPEC CHECKSUMS:
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNAppleAuthentication: e99eaf3c4c01ad8ecb6125dd6f0cfd98871685b5
+  RNCallKeep: 0cab0ef1e272f5ca19e3d0ea1f041257842844cb
   RNCAsyncStorage: ec53e44dc3e75b44aa2a9f37618a49c3bc080a7a
   RNCClipboard: 0a720adef5ec193aa0e3de24c3977222c7e52a37
   RNCPushNotificationIOS: 64218f3c776c03d7408284a819b2abfda1834bc8
@@ -1835,11 +1846,12 @@ SPEC CHECKSUMS:
   RNScreens: e9eece68a6303235ba9c31a5b816cb416a88ae98
   RNSVG: cb24fb322de8c1ebf59904e7aca0447bb8dbed5a
   RNVectorIcons: 9282eb0aef2f7d4747f621aa6c586ce910de23b1
+  RNVoipPushNotification: 543e18f83089134a35e7f1d2eba4c8b1f7776b08
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   stream-react-native-webrtc: 4ccf61161f77c57b9aa45f78cb7f69b7d91f3e9f
   stream-video-react-native: 104bd5e89ed02ff1f669d2602abd07d0af89bdbc
   Yoga: 4f53dc50008d626fa679c7a1cb4bed898f8c0bde
 
-PODFILE CHECKSUM: 22475b9906dfbcd1c2b11b478360399cf522d119
+PODFILE CHECKSUM: 8e5155fcf210845184ab127667ad8bb26bfd8e71
 
 COCOAPODS: 1.15.2

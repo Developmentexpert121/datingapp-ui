@@ -10,6 +10,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   ActivityIndicator,
+  Pressable,
 } from 'react-native';
 import CommonBackbutton from '../../components/commonBackbutton/BackButton';
 import {useAppDispatch, useAppSelector} from '../../store/store';
@@ -29,8 +30,10 @@ const LikedScreen = () => {
   const navigation = useNavigation();
 
   const goToChatWith = async (user: any) => {
+    console.log('user--------', user);
     await dispatch(videoCallUser({user: user}));
     navigation.navigate('VideoCallRedirect');
+    console.log('!!!!!!!!!!!!!!!@@@@@');
   };
 
   const LikedUser = async () => {
@@ -43,14 +46,7 @@ const LikedScreen = () => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    LikedUser();
-  }, []);
-
   const likeByMe = async (item: any) => {
-    // console.log('.......sdfjodsjfojo.....item', item.id);
-    // console.log('.......sdfjodsjfojo.....item', item);
     await dispatch(
       likedAUser({
         likerId: profileData?._id,
@@ -60,14 +56,19 @@ const LikedScreen = () => {
     goToChatWith(item);
   };
 
-  const renderGridItem = ({item, index}: any) => {
+  useEffect(() => {
+    LikedUser();
+  }, []);
+
+  const renderGridItem = ({item}: {item: any}) => {
     return (
-      <TouchableOpacity
+      <Pressable
         onPress={
-          profileData?.plan !== 'Free'
+          profileData?.plan === 'Free'
             ? () => navigation.navigate('ChatPage')
             : () => likeByMe(item)
         }
+        // onPress={() => goToChatWith(item)}
         style={styles.card}>
         <ImageBackground
           source={{uri: item.profilePic?.split(',')[0]}}
@@ -91,7 +92,7 @@ const LikedScreen = () => {
             </View>
           ) : null}
         </ImageBackground>
-      </TouchableOpacity>
+      </Pressable>
     );
   };
 

@@ -47,16 +47,13 @@ const Root = () => {
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-  // console.log('profileData', profileData);
   const token: string = useAppSelector((state: any) => state?.Auth?.token);
   const dispatch: any = useAppDispatch();
   const [authToken, setAuthToken] = useState<any>(null);
-  // console.log('+++++++++++++', authToken);
   const [deviceToken, setDeviceToken] = useState<any>(null);
-  // console.log('deviceToken', deviceToken);
+  console.log('deviceToken', deviceToken);
   const [loading, setLoading] = useState<boolean>(true);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  // console.log('isAuthenticated', isAuthenticated);
 
   useEffect(() => {
     setTimeout(() => {
@@ -162,7 +159,6 @@ const Root = () => {
           <Stack.Screen name="UpdateProfile" component={UpdateProfileScreen} />
           <Stack.Screen name="Subscriptions" component={Subscriptions} />
           <Stack.Screen name="ChatScreen" component={ChatSection} />
-          <Stack.Screen name="FilterSection" component={FilterSection} />
           <Stack.Screen name="exploreHome" component={exploreHome} />
           <Stack.Screen
             name="VideoCallRedirect"

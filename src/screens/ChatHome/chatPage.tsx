@@ -61,18 +61,6 @@ const ChatPage = ({
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
   const isUserOnline: any = showOnlineUser?.includes(user?._id) || false;
-
-  // var isUserOnline: any;
-  // showOnlineUser?.map((res: any) => {
-  //   if (res == user?._id) {
-  //     isUserOnline = true;
-  //   } else {
-  //     isUserOnline = false;
-  //   }
-  // });
-  // const isUserOnline: any = showOnlineUser?.some(
-  //   (res: any) => res === user?._id,
-  // );
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
