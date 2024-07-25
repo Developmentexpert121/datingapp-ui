@@ -32,7 +32,7 @@ export function setPushConfig() {
     },
     android: {
       // add your push_provider_name for Android that you have setup in Stream dashboard
-      pushProviderName: __DEV__ ? 'Dating-App' : 'Dating-App',
+      pushProviderName: __DEV__ ? 'TopTierDating' : 'TopTierDating',
       // configure the notification channel to be used for incoming calls for Android.
       incomingCallChannel: {
         id: 'stream_incoming_call',
@@ -77,7 +77,7 @@ export function setPushConfig() {
         getTokenForUser(profileData?._id).then(auth => auth.token);
 
       return new StreamVideoClient({
-        apiKey: 'xxbhmm34dcx3', // pass your stream api key
+        apiKey: '48e74nbgz5az', // pass your stream api key
         user: user,
         tokenProvider,
       });
