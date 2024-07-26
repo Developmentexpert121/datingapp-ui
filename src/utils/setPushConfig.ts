@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {staticNavigate} from './staticNavigation';
 import http from '../services/http/http-common';
 
-const getTokenForUser = async userId => {
+const getTokenForUser = async (userId: any) => {
   try {
     const response = await http.post(`/user/stream-chat/token`, userId);
 
@@ -28,7 +28,7 @@ export function setPushConfig() {
   StreamVideoRN.setPushConfig({
     ios: {
       // add your push_provider_name for iOS that you have setup in Stream dashboard
-      pushProviderName: __DEV__ ? 'apn-video-staging' : 'apn-video-production',
+      pushProviderName: __DEV__ ? 'TopTierDating' : 'TopTierDating',
     },
     android: {
       // add your push_provider_name for Android that you have setup in Stream dashboard
