@@ -69,7 +69,7 @@ const App = () => {
   useEffect(() => {
     dispatch(onlineUser(onlineUsers));
   }, [onlineUsers, dispatch]);
-  // console.log('onlineUsers', onlineUsers);
+  console.log('onlineUsers', onlineUsers);
 
   const isLoading = useAppSelector(
     (state: any) => state.ActivityLoader.loading,
@@ -94,3 +94,16 @@ const App = () => {
 };
 
 export default withIAPContext(App);
+
+// import {View, Text, SafeAreaView} from 'react-native';
+// import React from 'react';
+
+// const App = () => {
+//   return (
+//     <SafeAreaView>
+//       <Text>Hellow world</Text>
+//     </SafeAreaView>
+//   );
+// };
+
+// export default App;

@@ -655,7 +655,7 @@
 					"$(SRCROOT)/../node_modules/react-native-callkeep/ios/RNCallKeep",
 				);
 				INFOPLIST_FILE = DatingApp/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "TopTier Dating";
+				INFOPLIST_KEY_CFBundleDisplayName = DatingApp;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -812,7 +812,7 @@
 					"$(SRCROOT)/../node_modules/react-native-callkeep/ios/RNCallKeep",
 				);
 				INFOPLIST_FILE = DatingApp/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "TopTier Dating";
+				INFOPLIST_KEY_CFBundleDisplayName = DatingApp;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

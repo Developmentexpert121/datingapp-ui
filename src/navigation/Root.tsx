@@ -17,8 +17,10 @@ import FilterSection from '../screens/FilterSection/filterSection';
 import ForgotPassword from '../screens/auth/forgotPassword';
 import NewPassword from '../screens/auth/newPassword';
 import Subscriptions from '../screens/Profile/SubscriptionComponent/Subscriptions';
-import PushNotification from 'react-native-push-notification';
+// import PushNotification from 'react-native-push-notification';
 import exploreHome from '../screens/Explore/ExploreHome/exploreHome';
+import notifee, {AndroidImportance} from '@notifee/react-native';
+import {Platform} from 'react-native';
 
 export type RootStackParamList = {
   Loginhome: undefined;
@@ -60,41 +62,76 @@ const Root = () => {
       setLoading(false);
       SplashScreen.hide();
       requestUserPermission();
-      const unsubscribe = messaging().onMessage(async remoteMessage => {
-        PushNotification.localNotification({
-          channelId: 'fcm_fallback_notification_channel',
-          title: remoteMessage?.notification?.title || 'Notification',
-          message:
-            remoteMessage?.notification?.body ||
-            'You have received a new notification',
-        });
-        // Handle the message
-      });
-
-      return unsubscribe;
+      unsubscribe();
     }, 1000);
+
+    return unsubscribe;
   }, []);
 
-  const requestUserPermission = async () => {
-    try {
-      const authStatus = await messaging().requestPermission({
-        sound: true,
-        alert: true,
-        badge: true,
-      });
-      const enabled =
-        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-      if (enabled) {
-        const token = await messaging().getToken();
-        setDeviceToken(token);
-      } else {
-        console.log('Authorization status:', authStatus);
-      }
-    } catch (error) {
-      console.error('Error requesting permission:', error);
-    }
+  async function requestUserPermission() {
+    await notifee.requestPermission();
+  }
+
+  const unsubscribe = messaging().onMessage(async remoteMessage => {
+    const channelId = await notifee.createChannel({
+      id: 'fcm_fallback_notification_channel',
+      name: 'Default Channel',
+      importance: AndroidImportance.HIGH,
+    });
+
+    // Display the notification
+    await notifee.displayNotification({
+      title: remoteMessage?.notification?.title || 'Notification',
+      body:
+        remoteMessage?.notification?.body ||
+        'You have received a new notification',
+      android: {
+        channelId,
+      },
+    });
+  });
+
+  //Testingß
+  // Display a notification
+  const displayNotification = async () => {
+    // Create a notification channel (required for Android)
+    console.log('Notification ===========+>');
+    const channelId = await notifee.createChannel({
+      id: 'default',
+      name: 'Default Channel',
+      importance: AndroidImportance.HIGH,
+    });
+
+    // Display the notification
+    await notifee.displayNotification({
+      title: 'Notification Title',
+      body: 'Main body content of the notification',
+      android: {
+        channelId,
+      },
+    });
   };
+
+  // const requestUserPermission = async () => {
+  //   try {
+  //     const authStatus = await messaging().requestPermission({
+  //       sound: true,
+  //       alert: true,
+  //       badge: true,
+  //     });
+  //     const enabled =
+  //       authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+  //       authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+  //     if (enabled) {
+  //       const token = await messaging().getToken();
+  //       setDeviceToken(token);
+  //     } else {
+  //       console.log('Authorization status:', authStatus);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error requesting permission:', error);
+  //   }
+  // };
 
   const fetchAuthToken = async () => {
     try {

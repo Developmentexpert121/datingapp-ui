@@ -29,7 +29,7 @@ target 'DatingApp' do
   pod 'RNFBApp', :path => '../node_modules/@react-native-firebase/app'
   pod 'RNFBMessaging', :path => '../node_modules/@react-native-firebase/messaging'
   pod 'React-RCTPushNotification', :path => '../node_modules/react-native/Libraries/PushNotificationIOS'
-  pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
+  # pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
   pod 'GoogleSignIn'
   permissions_path = '../node_modules/react-native-permissions/ios'
 
