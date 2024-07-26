@@ -72,6 +72,7 @@ const LoginHomeScreen: React.FC<Props> = () => {
       if (userInfo) {
         // Extract the email and id from the user info
         const {email, id, name, photo} = userInfo;
+        console.log(userInfo);
         dispatch(
           userProfileDataChange({
             key: 'email',
@@ -85,9 +86,10 @@ const LoginHomeScreen: React.FC<Props> = () => {
           email: email,
           socialId: id,
           deviceToken: 'abcde',
-          // name: name,
-          // photo: photo,
+          name: name,
+          photo: photo,
         };
+
         dispatch(GoogleLogin({...loginPayload}))
           .then(async (response: any) => {
             if (response?.payload?.redirect === 'Steps') {
@@ -125,10 +127,13 @@ const LoginHomeScreen: React.FC<Props> = () => {
             setActiveModal(true);
           });
         setLoader(false);
+      } else {
+        setLoader(false);
       }
     } catch (error) {
       // Handle any errors that occur during the Google login process
       console.log('Error logging in with Google:', error);
+      setLoader(false);
     }
   };
   // Apple Login
