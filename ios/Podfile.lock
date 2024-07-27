@@ -1415,6 +1415,8 @@ PODS:
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
+  - RNVoipPushNotification (3.3.2):
+    - React-Core
   - SocketRocket (0.6.1)
   - stream-react-native-webrtc (118.1.0):
     - JitsiWebRTC (~> 118.0.0)
@@ -1514,6 +1516,7 @@ DEPENDENCIES:
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
+  - RNVoipPushNotification (from `../node_modules/react-native-voip-push-notification`)
   - "stream-react-native-webrtc (from `../node_modules/@stream-io/react-native-webrtc`)"
   - "stream-video-react-native (from `../node_modules/@stream-io/video-react-native-sdk`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -1716,6 +1719,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-svg"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
+  RNVoipPushNotification:
+    :path: "../node_modules/react-native-voip-push-notification"
   stream-react-native-webrtc:
     :path: "../node_modules/@stream-io/react-native-webrtc"
   stream-video-react-native:
@@ -1835,11 +1840,12 @@ SPEC CHECKSUMS:
   RNScreens: e9eece68a6303235ba9c31a5b816cb416a88ae98
   RNSVG: cb24fb322de8c1ebf59904e7aca0447bb8dbed5a
   RNVectorIcons: 9282eb0aef2f7d4747f621aa6c586ce910de23b1
+  RNVoipPushNotification: 543e18f83089134a35e7f1d2eba4c8b1f7776b08
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   stream-react-native-webrtc: 4ccf61161f77c57b9aa45f78cb7f69b7d91f3e9f
   stream-video-react-native: 104bd5e89ed02ff1f669d2602abd07d0af89bdbc
   Yoga: 4f53dc50008d626fa679c7a1cb4bed898f8c0bde
 
-PODFILE CHECKSUM: dc116ecea1f823c6753fd6d749c6f0e05a379703
+PODFILE CHECKSUM: f575b2d3df787926a77fadffbef0b4e05d48c785
 
 COCOAPODS: 1.15.2

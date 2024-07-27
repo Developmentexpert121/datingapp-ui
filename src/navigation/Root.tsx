@@ -13,7 +13,6 @@ import {ProfileData, getNotifications} from '../store/Auth/auth';
 import BottomTabNavigation from './BottomTabNavigation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from 'react-native-splash-screen';
-import FilterSection from '../screens/FilterSection/filterSection';
 import ForgotPassword from '../screens/auth/forgotPassword';
 import NewPassword from '../screens/auth/newPassword';
 import Subscriptions from '../screens/Profile/SubscriptionComponent/Subscriptions';
@@ -56,23 +55,14 @@ const Root = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
-    setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       setLoading(false);
       SplashScreen.hide();
       requestUserPermission();
-      const unsubscribe = messaging().onMessage(async remoteMessage => {
-        PushNotification.localNotification({
-          channelId: 'fcm_fallback_notification_channel',
-          title: remoteMessage?.notification?.title || 'Notification',
-          message:
-            remoteMessage?.notification?.body ||
-            'You have received a new notification',
-        });
-        // Handle the message
-      });
-
-      return unsubscribe;
     }, 1000);
+
+    // Cleanup function to clear timeout if the component unmounts before timeout completes
+    return () => clearTimeout(timeoutId);
   }, []);
 
   const requestUserPermission = async () => {
@@ -149,7 +139,7 @@ const Root = () => {
 
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      {isAuthenticated && profileData?._id ? (
+      {isAuthenticated && profileData ? (
         <Stack.Group>
           <Stack.Screen
             name="BottomTabNavigation"

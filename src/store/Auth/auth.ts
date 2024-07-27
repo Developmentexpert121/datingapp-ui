@@ -16,20 +16,23 @@ interface authData {
   confirmPassword?: string;
 }
 
-export const ProfileData = createAsyncThunk('auth/ProfileData', async () => {
-  try {
-    const response: any = await http.get(`/user/profile`);
-    if (response.status === 200) {
-      return response.data;
-    }
-  } catch (error: any) {
-    if (error.response && error.response.status === 400) {
-      console.error('12345', error);
+export const ProfileData: any = createAsyncThunk(
+  'auth/ProfileData',
+  async () => {
+    try {
+      const response: any = await http.get(`/user/profile`);
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error: any) {
+      // if (error.response && error.response.status === 400) {
+      console.error('errorProfileData', error);
 
       return {error: 'Bad Request'};
     }
-  }
-});
+    // }
+  },
+);
 
 export const GoogleLogin = createAsyncThunk(
   'auth/GoogleLogin',
@@ -799,7 +802,7 @@ const initialState = {
     loginwithapple: {},
     signup: {},
     data: {},
-    profileData: {},
+    profileData: null,
     updateprofileData: {},
     allUsers: [],
     chatUsersList: [],
