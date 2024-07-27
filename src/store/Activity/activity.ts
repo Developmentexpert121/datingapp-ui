@@ -10,12 +10,12 @@ const initialState: Iprops = {
   modalData: {text: '', label: '', cancel: false},
 };
 
-export const activityLoaderStarted = createAsyncThunk(
+export const activityLoaderStarted: any = createAsyncThunk(
   'activityLoader/activityLoaderStarted',
   async () => {},
 );
 
-export const activityLoaderFinished = createAsyncThunk(
+export const activityLoaderFinished: any = createAsyncThunk(
   'activityLoader/activityLoaderFinished',
   async () => {},
 );

@@ -26,7 +26,6 @@ export const ProfileData: any = createAsyncThunk(
       }
     } catch (error: any) {
       // if (error.response && error.response.status === 400) {
-      console.error('errorProfileData', error);
 
       return {error: 'Bad Request'};
     }

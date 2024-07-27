@@ -15,6 +15,10 @@ import InternetModal from './src/components/Modals/InternetModal';
 import {navigationRef} from './src/utils/staticNavigation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ProfileData} from './src/store/Auth/auth';
+import {
+  activityLoaderFinished,
+  activityLoaderStarted,
+} from './src/store/Activity/activity';
 
 const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 
@@ -72,7 +76,13 @@ const App = () => {
   }, [onlineUsers, dispatch]);
   // console.log('onlineUsers', onlineUsers);
   useEffect(() => {
-    dispatch(ProfileData());
+    dispatch(activityLoaderStarted());
+    dispatch(ProfileData())
+      .unwrap()
+      .then(() => {
+        dispatch(activityLoaderFinished());
+        // }
+      });
   }, []);
   const isLoading = useAppSelector(
     (state: any) => state.ActivityLoader.loading,

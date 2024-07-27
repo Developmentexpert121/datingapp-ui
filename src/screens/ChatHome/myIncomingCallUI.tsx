@@ -13,7 +13,6 @@ export default function MyIncomingCallUI({
   userName,
 }: any) {
   const {useCallCallingState, useCameraState} = useCallStateHooks();
-  const {camera} = useCameraState();
 
   const callingState = useCallCallingState();
   if (callingState === CallingState.RINGING) {
