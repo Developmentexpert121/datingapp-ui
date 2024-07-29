@@ -23,7 +23,7 @@ const VideoCallRedirect = () => {
   const [enableCamera1, setEnableCamera1] = useState<boolean>(false);
   const [activeScreen, setActiveScreen] = useState('home');
   const [client, setClient] = useState<StreamVideoClient | null>(null);
-  const [call, setCall] = useState<Call | null>(null);
+  const [call, setCall] = useState<Call | any>(null);
   const [callType, setCallType] = useState('videoCall');
   // console.log('Call Call', call);
 
@@ -51,10 +51,11 @@ const VideoCallRedirect = () => {
     setClient(myClient);
 
     return () => {
+      console.log('FifthFifthFifthFifthFifth');
       myClient.disconnectUser();
       setClient(null);
     };
-  }, [dispatch, profileData?._id, profileData?.name, profileData?.profilePic]);
+  }, [dispatch, profileData]);
 
   const handleCallEnd = useCallback(() => {
     setActiveScreen('home');
@@ -69,18 +70,17 @@ const VideoCallRedirect = () => {
         callId,
       );
       myCall.on('call.left', (event: any) => {
-        console.log('User left the call:', event.user.id);
         if (event.user.id !== profileData._id) {
-          console.log('hfweifiefiehrifefrieri');
+          console.log('firstfirstfirstfirstfirst');
           handleCallEnd();
         } else {
-          console.log('dfigdjsufgusdufghus');
+          console.log('SecondSecondSecondSecondSecond');
           myCall.end();
         }
       });
 
       myCall.on('call.ended', (event: any) => {
-        console.log('Call ended:', event);
+        console.log('ThirdThirdThirdThirdThird');
         handleCallEnd();
       });
 
@@ -99,6 +99,7 @@ const VideoCallRedirect = () => {
       setActiveScreen('call-screen');
 
       return () => {
+        console.log('ThirdThirdThirdThirdThird');
         myCall.leave().catch((err: any) => {
           console.error('Failed to leave the call', err);
         });
@@ -108,11 +109,12 @@ const VideoCallRedirect = () => {
   );
 
   const goToHomeScreen = () => {
-    console.log('leave call');
     if (call) {
-      call.leave();
+      console.log('first');
+      call.endCall();
       handleCallEnd();
     } else {
+      call.endCall();
       setActiveScreen('home');
     }
   };
