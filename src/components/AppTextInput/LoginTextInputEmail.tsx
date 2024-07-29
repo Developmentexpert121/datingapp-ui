@@ -15,7 +15,8 @@ const LoginTextInputEmail = (Props: any) => {
     autoCapitalize,
     viewStyle,
     rightIcon,
-    // secureTextEntry,
+    keyboardType,
+    secureTextEntry,
     ...textInputProps
   } = Props;
   const hasError = errors;
@@ -40,7 +41,7 @@ const LoginTextInputEmail = (Props: any) => {
           <TextInput
             {...textInputProps}
             style={[styles.textInput1, textstyle]}
-            // keyboardType={Props.keyboardType}
+            keyboardType={Props.keyboardType}
             placeholderTextColor={Colors.darkText}
             // onFocus={() => setFocused(true)}
             // onBlur={() => (onBlur(), setFocused(false))}

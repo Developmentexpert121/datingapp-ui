@@ -2,10 +2,30 @@ import React, {useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import HeaderComponent from '../../components/Dashboard/header/header';
 import {useAppDispatch, useAppSelector} from '../../store/store';
-import {ProfileData, getAllUsers} from '../../store/Auth/auth';
+import {
+  ProfileData,
+  getAllUsers,
+  updateProfileData,
+} from '../../store/Auth/auth';
 import FilterSection from '../FilterSection/filterSection';
 import NotificationScreen from '../Notification/notification';
 import TinderSwipe from './AnimatedStack/TinderSwipe';
+import Geolocation from '@react-native-community/geolocation';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const getUserId = async () => {
+  try {
+    const userId: any = await AsyncStorage.getItem('userId');
+
+    if (userId !== null) {
+      return JSON.parse(userId);
+    } else {
+      return null;
+    }
+  } catch (error) {
+    return null;
+  }
+};
 
 const HomeScreen = () => {
   const [activeScreen, setActiveScreen] = useState('HOME');
@@ -26,6 +46,26 @@ const HomeScreen = () => {
   const [trigger, setTrigger] = useState(false);
 
   useEffect(() => {
+    Geolocation.requestAuthorization();
+    Geolocation.getCurrentPosition(
+      position => {
+        const {latitude, longitude} = position.coords;
+        console.log('latitude:', latitude);
+        console.log('Longitude:', longitude);
+
+        dispatch(
+          updateProfileData({
+            field: 'location',
+            value: {latitude, longitude},
+            id: getUserId(),
+          }),
+        );
+      },
+      err => {
+        console.error('Error fetching location:', err);
+      },
+      {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}, // Increased timeout to 30000ms (30 seconds)
+    );
     dispatch(ProfileData())
       .unwrap()
       .then((res: any) => {

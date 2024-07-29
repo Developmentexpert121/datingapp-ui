@@ -18,6 +18,7 @@ import NewPassword from '../screens/auth/newPassword';
 import Subscriptions from '../screens/Profile/SubscriptionComponent/Subscriptions';
 import PushNotification from 'react-native-push-notification';
 import exploreHome from '../screens/Explore/ExploreHome/exploreHome';
+import notifee, {AndroidImportance} from '@notifee/react-native';
 import {Platform} from 'react-native';
 
 export type RootStackParamList = {
@@ -59,19 +60,10 @@ const Root = () => {
       setLoading(false);
       SplashScreen.hide();
       requestUserPermission();
-      const unsubscribe = messaging().onMessage(async remoteMessage => {
-        // PushNotification.localNotification({
-        //   channelId: 'fcm_fallback_notification_channel',
-        //   title: remoteMessage?.notification?.title || 'Notification',
-        //   message:
-        //     remoteMessage?.notification?.body ||
-        //     'You have received a new notification',
-        // });
-      });
-      return unsubscribe;
     }, 1000);
-
-    return () => clearTimeout(timeoutId);
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   const requestUserPermission = async () => {
@@ -94,6 +86,30 @@ const Root = () => {
       console.error('Error requesting permission:', error);
     }
   };
+
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      await notifee.cancelAllNotifications();
+      const channelId = await notifee.createChannel({
+        id: 'default',
+        name: 'Default Channel',
+        importance: AndroidImportance.HIGH, // Set importance to high
+      });
+
+      // Display the notification
+      await notifee.displayNotification({
+        title: remoteMessage?.notification?.title || 'Notification',
+        body:
+          remoteMessage?.notification?.body ||
+          'You have received a new notification',
+        android: {
+          channelId,
+        },
+      });
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const fetchAuthToken = async () => {
     try {
