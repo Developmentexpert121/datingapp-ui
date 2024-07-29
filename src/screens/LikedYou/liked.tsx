@@ -63,12 +63,12 @@ const LikedScreen = () => {
   const renderGridItem = ({item}: {item: any}) => {
     return (
       <Pressable
-        onPress={
-          profileData?.plan === 'Free'
-            ? () => navigation.navigate('ChatPage')
-            : () => likeByMe(item)
-        }
-        // onPress={() => goToChatWith(item)}
+        // onPress={
+        //   profileData?.plan === 'Free'
+        //     ? () => navigation.navigate('ChatPage')
+        //     : () => likeByMe(item)
+        // }
+        // onPress={() => navigation.navigate('Subscriptions')}
         style={styles.card}>
         <ImageBackground
           source={{uri: item.profilePic?.split(',')[0]}}
