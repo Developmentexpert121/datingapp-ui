@@ -29,6 +29,7 @@ import {
   otpModal,
   setAuthentication,
   toggleGlobalModal,
+  countrycitystate,
 } from '../../store/reducer/authSliceState';
 
 import ZeroStepScreen from './Registration/zeroStepScreen';
@@ -56,7 +57,6 @@ import {setLocalStorage} from '../../api/storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getProfile} from '../../store/slice/myProfileSlice/myProfileAction';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-
 type Props = NativeStackScreenProps<RootStackParamList, 'Register'>;
 
 interface RegisterForm {
@@ -454,6 +454,13 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
         setStepFiveErrors(false);
       }
     }
+    dispatch(
+      countrycitystate({
+        country: country,
+        state: state,
+        city: city,
+      }),
+    );
     setDob(data.dob);
     setEmail(data.email);
     setPhone({

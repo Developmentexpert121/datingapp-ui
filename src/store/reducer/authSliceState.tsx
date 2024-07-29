@@ -8,6 +8,7 @@ export interface Iprops {
   showLoader?: boolean;
   isNavigate?: string;
   isLoggedin: boolean;
+  countrycitystate:{}
 }
 const initialState: Iprops = {
   showGlobalModal: false,
@@ -17,6 +18,7 @@ const initialState: Iprops = {
   showLoader: false,
   isNavigate: '',
   isLoggedin: false,
+  countrycitystate:{}
 };
 export const authSice = createSlice({
   name: 'authSice',
@@ -41,6 +43,9 @@ export const authSice = createSlice({
     onlineUser: (state, {payload}) => {
       // console.log('lswfreiqhfitehifgtjruae', payload);
       state.showOnlineUser = payload;
+    },
+    countrycitystate: (state, {payload}) => {
+      state.countrycitystate = payload;
     },
     // onlineUser: (state, action) => {
     //   state.showOnlineUser = action.payload.visible;
@@ -78,5 +83,6 @@ export const {
   navigation,
   setAuthentication,
   onlineUser,
+  countrycitystate
 } = authSice.actions;
 export default authSice.reducer;
