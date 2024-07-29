@@ -9,7 +9,13 @@ import {
 import React, {useState} from 'react';
 import {useForm, Controller} from 'react-hook-form';
 
-const FifthStepScreen = ({habits2, control, errors}: any) => {
+const FifthStepScreen = ({
+  habits2,
+  control,
+  errors,
+  stepFiveErrors,
+  setStepFiveErrors,
+}: any) => {
   const dataArray = [
     {
       id: '1',
@@ -65,9 +71,9 @@ const FifthStepScreen = ({habits2, control, errors}: any) => {
         <Text style={styles.paragraphText}>
           Don't hold back Authenticity attracts authenticity.
         </Text>
-        {errors.habits2 && (
+        {stepFiveErrors && (
           <Text style={{color: 'red', alignSelf: 'center', marginTop: 6}}>
-            {errors.habits2.message}
+            At least an item must be selected from each box
           </Text>
         )}
         <View style={{height: 10}}></View>
@@ -152,6 +158,9 @@ const FifthStepScreen = ({habits2, control, errors}: any) => {
                           }
 
                           onChange(updatedValue);
+                          if (updatedValue.length === 5) {
+                            setStepFiveErrors(false);
+                          }
                         }}>
                         <Text
                           style={[

@@ -9,7 +9,13 @@ import {
 import React from 'react';
 import {useForm, Controller} from 'react-hook-form';
 
-const ForthStepScreen = ({habits1, control, errors}: any) => {
+const ForthStepScreen = ({
+  habits1,
+  control,
+  errors,
+  stepFourErrors,
+  setStepFourErrors,
+}: any) => {
   const dataArray = [
     {
       id: '1',
@@ -91,9 +97,9 @@ const ForthStepScreen = ({habits1, control, errors}: any) => {
         <Text style={styles.paragraphText}>
           Do their habits match yours? You go first.
         </Text>
-        {errors.habits1 && (
+        {stepFourErrors && (
           <Text style={{color: 'red', alignSelf: 'center', marginTop: 6}}>
-            {errors.habits1.message}
+            At least an item must be selected from each box
           </Text>
         )}
         <View style={{height: 10}}></View>
@@ -178,6 +184,9 @@ const ForthStepScreen = ({habits1, control, errors}: any) => {
                           }
 
                           onChange(updatedValue);
+                          if (updatedValue.length === 5) {
+                            setStepFourErrors(false);
+                          }
                         }}>
                         <Text
                           style={[

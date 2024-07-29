@@ -145,17 +145,11 @@ const schema2 = yup.object().shape({
 });
 
 const schema4 = yup.object().shape({
-  habits1: yup
-    .array()
-
-    .min(5, 'At least five item must be selected in the all box'),
+  habits1: yup.array(),
 });
 
 const schema5 = yup.object().shape({
-  habits2: yup
-    .array()
-
-    .min(4, 'At least four item must be selected in the all box'),
+  habits2: yup.array(),
 });
 
 const schema6 = yup.object().shape({
@@ -189,6 +183,9 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
   const [email, setEmail] = useState('');
   const [msg, setMsg] = useState<string | undefined>('');
   const [activeModal, setActiveModal] = useState<boolean>(false);
+  const [stepFourErrors, setStepFourErrors] = useState(false);
+  const [stepFiveErrors, setStepFiveErrors] = useState(false);
+
   const dispatch: any = useAppDispatch();
 
   // Introduce a state variable to track whether email has been verified
@@ -233,6 +230,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
     defaultValues,
     resolver: Schemas(steps),
   });
+
   const handleNavigation = (response: any) => {
     if (!response.payload?.data.otpVerified) {
       navigation.navigate('Loginhome');
@@ -314,8 +312,6 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
               setActiveModal(true);
             }
             setLoader(false);
-
-            console.log('..........DDDDDDD');
           })
 
           .catch((error: any) => {
@@ -344,7 +340,6 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
   };
 
   const showPermissionPopup = (data: RegisterForm) => {
-    console.log('................0', data);
     Alert.alert(
       'Location Permission',
       'This app needs access to your location to provide the service.',
@@ -432,10 +427,33 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
 
   //******************************************** */
 
-  console.log(errors);
-
   const onSubmit: any = async (data: RegisterForm) => {
-    console.log('onSubmitfirst', data);
+    console.log(data.habits1[3].optionSelected.length);
+    if (steps === 4 && data.habits1.length !== 5) {
+      setStepFourErrors(true);
+      return;
+    } else {
+      if (data.habits1[3].optionSelected.length === 0) {
+        setStepFourErrors(true);
+        return;
+      } else {
+        setStepFourErrors(false);
+      }
+    }
+    if (steps === 5 && data.habits2.length !== 4) {
+      setStepFiveErrors(true);
+      return;
+    } else {
+      if (
+        data.habits2[0].optionSelected.length === 0 ||
+        data.habits2[1].optionSelected.length === 0
+      ) {
+        setStepFiveErrors(true);
+        return;
+      } else {
+        setStepFiveErrors(false);
+      }
+    }
     setDob(data.dob);
     setEmail(data.email);
     setPhone({
@@ -639,12 +657,16 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
                 habits1="habits1"
                 control={control}
                 errors={errors}
+                stepFourErrors={stepFourErrors}
+                setStepFourErrors={setStepFourErrors}
               />
             ) : steps === 5 ? (
               <FifthStepScreen
                 habits2="habits2"
                 control={control}
                 errors={errors}
+                stepFiveErrors={stepFiveErrors}
+                setStepFiveErrors={setStepFiveErrors}
               />
             ) : steps === 6 ? (
               <SixthStepScreen
