@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     marginLeft: 20,
-    marginTop: 80,
+    marginTop: Platform.OS === 'ios' ? 80 : 50,
   },
   formContainer: {
     flex: 1 / 10,

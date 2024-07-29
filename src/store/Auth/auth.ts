@@ -407,12 +407,12 @@ export const updateProfileData = createAsyncThunk(
 export const likedAUser = createAsyncThunk(
   'auth/likedAUser',
   async (data: any, {dispatch}: any) => {
-    console.log('.........dsfgvadlfghads', data);
+    // console.log('.........dsfgvadlfghads', data);
     try {
       const response = await http.post('/user/likeUser', data);
-      console.log('res------>>>>>', response);
+      // console.log('res------>>>>>', response);
       if (response.status === 200) {
-        console.log('Like by meeee', response);
+        console.log('Like by meeee');
         return response.data;
       }
     } catch (error: any) {

@@ -18,6 +18,7 @@ import NewPassword from '../screens/auth/newPassword';
 import Subscriptions from '../screens/Profile/SubscriptionComponent/Subscriptions';
 import PushNotification from 'react-native-push-notification';
 import exploreHome from '../screens/Explore/ExploreHome/exploreHome';
+import {Platform} from 'react-native';
 
 export type RootStackParamList = {
   Loginhome: undefined;
@@ -50,7 +51,6 @@ const Root = () => {
   const dispatch: any = useAppDispatch();
   const [authToken, setAuthToken] = useState<any>(null);
   const [deviceToken, setDeviceToken] = useState<any>(null);
-  console.log('deviceToken', deviceToken);
   const [loading, setLoading] = useState<boolean>(true);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
@@ -59,9 +59,18 @@ const Root = () => {
       setLoading(false);
       SplashScreen.hide();
       requestUserPermission();
+      const unsubscribe = messaging().onMessage(async remoteMessage => {
+        // PushNotification.localNotification({
+        //   channelId: 'fcm_fallback_notification_channel',
+        //   title: remoteMessage?.notification?.title || 'Notification',
+        //   message:
+        //     remoteMessage?.notification?.body ||
+        //     'You have received a new notification',
+        // });
+      });
+      return unsubscribe;
     }, 1000);
 
-    // Cleanup function to clear timeout if the component unmounts before timeout completes
     return () => clearTimeout(timeoutId);
   }, []);
 
