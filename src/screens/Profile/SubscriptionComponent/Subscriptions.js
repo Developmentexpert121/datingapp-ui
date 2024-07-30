@@ -1,5 +1,3 @@
-// 2393e794f5214bc59ab8387a8d2152c7
-
 import React, {useEffect, useState} from 'react';
 import {
   ScrollView,
@@ -27,12 +25,11 @@ const errorLog = ({message, error}) => {
 
 const isIos = Platform.OS === 'ios';
 
-// Product ID from App Store Connect app -> subscriptions
 const subscriptionSkus = Platform.select({
   ios: ['TopTierDatingMonthly15.99'],
   android: ['15.99'],
 });
-// console.log('44444444444444444', subscriptionSkus);
+
 const SubscriptionsScreen = ({navigation}) => {
   const {
     connected,
@@ -73,8 +70,6 @@ const SubscriptionsScreen = ({navigation}) => {
       console.log('Initiating purchase for:', productId);
       setLoading(true);
       await requestSubscription(productId);
-
-      // Adjusted here
     } catch (error) {
       console.log('error handleBuySubscription', error);
       if (error instanceof PurchaseError) {
@@ -94,7 +89,6 @@ const SubscriptionsScreen = ({navigation}) => {
           if (receipt) {
             if (isIos) {
               const isTestEnvironment = __DEV__;
-
               const appleReceiptResponse = await validateReceiptIos(
                 {
                   'receipt-data': receipt,
@@ -104,12 +98,10 @@ const SubscriptionsScreen = ({navigation}) => {
               );
 
               if (appleReceiptResponse && appleReceiptResponse.status === 0) {
-                // Receipt is valid
                 await finishTransaction(purchase);
                 navigation.navigate('Home');
               }
             } else {
-              // Android receipt handling (if required)
               await finishTransaction(purchase);
               navigation.navigate('Home');
             }

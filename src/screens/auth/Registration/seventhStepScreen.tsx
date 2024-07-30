@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     width: 90,
     height: 90,
-    marginHorizontal: 3,
+    marginHorizontal: 5.1,
   },
   dummyImagedm: {
     width: 90,

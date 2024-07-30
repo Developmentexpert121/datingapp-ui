@@ -114,6 +114,7 @@ const styles = StyleSheet.create({
     borderRadius: 45,
     borderWidth: 2,
     borderColor: 'transparent',
+    margin: 2,
   },
   avatarImage: {
     width: 32,

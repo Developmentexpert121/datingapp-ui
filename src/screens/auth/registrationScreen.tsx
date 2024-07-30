@@ -428,31 +428,28 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
   //******************************************** */
 
   const onSubmit: any = async (data: RegisterForm) => {
-    console.log(data.habits1[3].optionSelected.length);
+    console.log("data.habits1[3].optionSelected.length");
     if (steps === 4 && data.habits1.length !== 5) {
       setStepFourErrors(true);
       return;
+    } else if (steps === 4 && data.habits1[3].optionSelected.length === 0) {
+      setStepFourErrors(true);
+      return;
     } else {
-      if (data.habits1[3].optionSelected.length === 0) {
-        setStepFourErrors(true);
-        return;
-      } else {
-        setStepFourErrors(false);
-      }
+      setStepFourErrors(false);
     }
+
     if (steps === 5 && data.habits2.length !== 4) {
       setStepFiveErrors(true);
       return;
+    } else if (
+      (steps === 5 && data.habits2[0].optionSelected.length === 0) ||
+      (steps === 5 && data.habits2[1].optionSelected.length === 0)
+    ) {
+      setStepFiveErrors(true);
+      return;
     } else {
-      if (
-        data.habits2[0].optionSelected.length === 0 ||
-        data.habits2[1].optionSelected.length === 0
-      ) {
-        setStepFiveErrors(true);
-        return;
-      } else {
-        setStepFiveErrors(false);
-      }
+      setStepFiveErrors(false);
     }
     dispatch(
       countrycitystate({

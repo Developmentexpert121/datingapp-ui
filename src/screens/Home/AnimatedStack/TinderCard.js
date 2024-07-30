@@ -131,8 +131,14 @@ const TinderCard = ({
           backgroundColor: 'gray',
         }}>
         <View style={styles.imageOverlay}>
-          <TouchableOpacity onPress={handlePrevImage} style={styles.button} />
-          <TouchableOpacity onPress={handleNextImage} style={styles.button} />
+          <TouchableOpacity
+            onPress={handlePrevImage}
+            style={styles.leftButton}
+          />
+          <TouchableOpacity
+            onPress={handleNextImage}
+            style={styles.rightButton}
+          />
         </View>
 
         <LinearGradient
@@ -205,11 +211,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     height: '100%',
-    zIndex: 2,
+    zIndex: 10,
+    // borderWidth: 2,
   },
-  button: {
+  leftButton: {
     width: '50%',
-    borderRadius: 20,
+    height: '100%',
+    // borderWidth: 2,
+  },
+  rightButton: {
+    width: '50%',
+    height: '100%',
   },
   imageCountContainer: {
     position: 'absolute',

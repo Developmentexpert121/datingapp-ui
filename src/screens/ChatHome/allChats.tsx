@@ -16,11 +16,9 @@ import {
   UnBlockAUser,
   blockAUser,
   getChatUsersList,
-  getReceivers,
 } from '../../store/Auth/auth';
 import {videoCallUser} from '../../store/Activity/activity';
 import SmallLoader from '../../components/Loader/SmallLoader';
-import {DoubleTickIC} from '../../assets/svgs';
 import BlockModal from '../../components/Modals/BlockModal';
 import Loader from '../../components/Loader/Loader';
 
@@ -31,10 +29,10 @@ const ChatSection = () => {
     (state: any) => state?.Auth?.data?.profileData,
   );
   const [chatListData, setChatListData] = useState<any>([]);
-  // console.log('first', chatListData);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const [loader, setLoader] = useState<boolean>(false);
+  const [initialLoading, setInitialLoading] = useState<boolean>(true);
 
   const goToChatWith = async (user: any) => {
     console.log('user111111111', user);
@@ -74,17 +72,10 @@ const ChatSection = () => {
           getChatUsersList({userId: profileData._id}),
         ).unwrap();
         setChatListData(response);
-        // console.log('_______', response);
-        if (response.data && response.data.length > 0) {
-          const allUsers = response.data;
-          allUsers.forEach((user: any) => {
-            // const lastChat = user.chat?.message;
-            // const timestamp = user.chat?.timestamp;
-          });
-        } else {
-        }
+        setInitialLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
+        setInitialLoading(false);
       }
     };
     const intervalId = setInterval(fetchData, 500); // Poll every 5 seconds
@@ -139,7 +130,6 @@ const ChatSection = () => {
   // UnBlock
   const UnBlockData = async () => {
     try {
-      console.log(';;;;;;;;;;;;');
       const response = await dispatch(
         UnBlockAUser({
           userId: profileData._id,
@@ -225,22 +215,28 @@ const ChatSection = () => {
     <SafeAreaView style={styles.container}>
       <CommonBackbutton title="Chat" />
       <View style={{flex: 1}}>
-        <View style={styles.containerSearch}>
-          <Ionicons name="search-outline" size={20} />
-          <TextInput
-            placeholder="Search"
-            onChangeText={handleSearchChange}
-            value={search}
-            style={styles.input}
-          />
-        </View>
-        <Text style={styles.msgs}>Messages</Text>
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={filteredData}
-          keyExtractor={(item, index) => item._id || index.toString()}
-          renderItem={renderItem}
-        />
+        {initialLoading ? (
+          <Loader />
+        ) : (
+          <>
+            <View style={styles.containerSearch}>
+              <Ionicons name="search-outline" size={20} />
+              <TextInput
+                placeholder="Search"
+                onChangeText={handleSearchChange}
+                value={search}
+                style={styles.input}
+              />
+            </View>
+            <Text style={styles.msgs}>Messages</Text>
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              data={filteredData}
+              keyExtractor={(item, index) => item._id || index.toString()}
+              renderItem={renderItem}
+            />
+          </>
+        )}
       </View>
 
       {/* Modal for blocking  */}
