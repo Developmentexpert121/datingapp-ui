@@ -16,9 +16,10 @@ import CommonBackbutton from '../../components/commonBackbutton/BackButton';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import LinearGradient from 'react-native-linear-gradient';
 import {videoCallUser} from '../../store/Activity/activity';
-import {likedAUser, likedMe} from '../../store/Auth/auth';
+import {likedAUser, likedMe, superLiked} from '../../store/Auth/auth';
 import {BlurView} from '@react-native-community/blur';
 import Loader from '../../components/Loader/Loader';
+import {SuperLikeIC} from '../../assets/svgs';
 
 const LikedScreen = () => {
   const profileData: any = useAppSelector(
@@ -27,13 +28,15 @@ const LikedScreen = () => {
   const dispatch: any = useAppDispatch();
   const [likeData, setLikeData] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const navigation = useNavigation();
+  const navigation: any = useNavigation();
+
+  console.log(likeData);
 
   const goToChatWith = async (user: any) => {
     console.log('user--------', user);
-    await dispatch(videoCallUser({user: user}));
-    navigation.navigate('VideoCallRedirect');
-    console.log('!!!!!!!!!!!!!!!@@@@@');
+    await dispatch(videoCallUser({user: user}))
+      .unwrap()
+      .then(() => navigation.navigate('ChatSection'));
   };
 
   const LikedUser = async () => {
@@ -47,13 +50,25 @@ const LikedScreen = () => {
     }
   };
   const likeByMe = async (item: any) => {
-    await dispatch(
-      likedAUser({
-        likerId: profileData?._id,
-        userIdBeingLiked: item?._id,
-      }),
-    );
-    goToChatWith(item);
+    if (item.type === 'like') {
+      await dispatch(
+        likedAUser({
+          likerId: profileData?._id,
+          userIdBeingLiked: item?._id,
+        }),
+      )
+        .unwrap()
+        .then(() => goToChatWith(item));
+    } else if (item.type === 'superLike') {
+      await dispatch(
+        superLiked({
+          likerId: profileData?._id,
+          userIdBeingLiked: item?._id,
+        }),
+      )
+        .unwrap()
+        .then(() => goToChatWith(item));
+    }
   };
 
   useEffect(() => {
@@ -64,8 +79,8 @@ const LikedScreen = () => {
     return (
       <Pressable
         onPress={
-          profileData?.plan === 'Free'
-            ? () => navigation.navigate('ChatPage')
+          profileData?.plan !== 'Free'
+            ? () => navigation.navigate('ChatSection')
             : () => likeByMe(item)
         }
         // onPress={() => goToChatWith(item)}
@@ -73,7 +88,7 @@ const LikedScreen = () => {
         <ImageBackground
           source={{uri: item.profilePic?.split(',')[0]}}
           style={styles.image}>
-          {profileData?.plan === 'Free' ? (
+          {profileData?.plan === 'Free' && item.type !== 'superLike' ? (
             <BlurView
               style={styles.absolute}
               blurType="light"
@@ -81,11 +96,24 @@ const LikedScreen = () => {
               reducedTransparencyFallbackColor="white"
             />
           ) : null}
+          {item.type === 'superLike' && (
+            <SuperLikeIC
+              width={50}
+              height={50}
+              style={{
+                transform: [{rotate: '-5deg'}],
+                alignSelf: 'flex-end',
+                marginHorizontal: 2,
+                backgroundColor: 'white',
+                borderRadius: 6,
+              }}
+            />
+          )}
 
           <LinearGradient
             colors={['rgba(0,0,0,0)', 'rgba(0,0,0,0.8)']}
             style={styles.gradient}></LinearGradient>
-          {profileData?.plan !== 'Free' ? (
+          {profileData?.plan !== 'Free' || item.type === 'superLike' ? (
             <View style={styles.cardInner}>
               <Text style={styles.name}>{item.name}</Text>
               <Text style={styles.bio}>{item.hobbies}</Text>
