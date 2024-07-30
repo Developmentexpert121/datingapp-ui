@@ -355,7 +355,7 @@ const styles = StyleSheet.create({
     borderRadius: wp(2.5),
     height: hp(6),
     paddingHorizontal: wp(2.5),
-    alignItems: 'center',
+    justifyContent: 'center',
   },
   passwordView: {
     backgroundColor: Colors.onPrimary,
