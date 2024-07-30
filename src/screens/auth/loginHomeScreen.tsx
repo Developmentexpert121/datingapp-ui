@@ -29,6 +29,10 @@ import {
   activityLoaderFinished,
   activityLoaderStarted,
 } from '../../store/Activity/activity';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 import Loader from '../../components/Loader/Loader';
 interface AppleAuthResponse {
   user: string;
@@ -219,97 +223,95 @@ const LoginHomeScreen: React.FC<Props> = () => {
       style={{
         backgroundColor: '#FFC7FF',
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
       }}>
-      <View
-        style={{
-          flex: 3 / 5,
-          width: '100%',
-          height: '100%',
-          alignItems: 'center',
-        }}>
-        <Image
-          source={require('../../assets/images/LoginTop.png')}
-          // resizeMode="contain"
-          style={{width: 160, height: 160}}
-        />
-        <Image
-          source={require('../../assets/images/LoginBottom.png')}
-          resizeMode="contain"
-          style={{width: '100%', height: '70%'}}
-        />
-      </View>
-      <View
-        style={{
-          flex: 2 / 5,
-          width: '100%',
-          height: '100%',
-          alignItems: 'center',
-        }}>
-        <View>
-          <Text style={styles.label}>What's your email?</Text>
-          <Text style={styles.subText}>
-            Don't lose access to your account,{'\n'}verify your email.
-          </Text>
-        </View>
-        <MainButton
-          buttonStyle={{width: '75%'}}
-          ButtonName={'Create Account'}
-          onPress={() => navigation.navigate('Register')}
-        />
+      <View style={{flex: 1}}>
         <View
           style={{
-            flexDirection: 'row',
-            marginVertical: 15,
             alignItems: 'center',
-            width: '50%',
-            justifyContent: 'space-evenly',
           }}>
-          <TouchableOpacity onPress={handleGoogleLogin}>
-            <GoogleIC />
-          </TouchableOpacity>
-          {/* <TouchableOpacity
+          <Image
+            source={require('../../assets/images/LoginTop.png')}
+            style={{resizeMode: 'contain', width: wp(36), height: hp(18)}}
+          />
+          <Image
+            source={require('../../assets/images/LoginBottom.png')}
+            resizeMode="contain"
+            style={{
+              resizeMode: 'contain',
+              width: hp(100),
+              height: hp(40),
+            }}
+          />
+        </View>
+        <View
+          style={{
+            alignItems: 'center',
+          }}>
+          <View>
+            <Text style={styles.label}>What's your email?</Text>
+            <Text style={styles.subText}>
+              Don't lose access to your account,{'\n'}verify your email.
+            </Text>
+          </View>
+          <MainButton
+            buttonStyle={{width: '75%'}}
+            ButtonName={'Create Account'}
+            onPress={() => navigation.navigate('Register')}
+          />
+          <View
+            style={{
+              flexDirection: 'row',
+              marginVertical: 15,
+              alignItems: 'center',
+              width: '50%',
+              justifyContent: 'space-evenly',
+            }}>
+            <TouchableOpacity onPress={handleGoogleLogin}>
+              <GoogleIC />
+            </TouchableOpacity>
+            {/* <TouchableOpacity
           // onPress={handleFacebookLogin}
           //
           >
             <FacebookIC />
           </TouchableOpacity> */}
-          {Platform.OS === 'ios' && (
-            <TouchableOpacity onPress={handleAppleLogin}>
-              <AppleIC />
+            {Platform.OS === 'ios' && (
+              <TouchableOpacity onPress={handleAppleLogin}>
+                <AppleIC />
+              </TouchableOpacity>
+            )}
+          </View>
+          <View style={styles.loginContainer}>
+            <Text style={styles.loginText}>Already a member?</Text>
+            <TouchableOpacity
+              style={{paddingVertical: 5}}
+              onPress={() => navigation.navigate('Login')}>
+              <Text style={styles.touchableText}> Log In</Text>
             </TouchableOpacity>
-          )}
+          </View>
         </View>
-        <View style={styles.loginContainer}>
-          <Text style={styles.loginText}>Already a member?</Text>
-          <TouchableOpacity
-            style={{paddingVertical: 5}}
-            onPress={() => navigation.navigate('Login')}>
-            <Text style={styles.touchableText}> Log In</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={{flexDirection: 'row', bottom: 20, position: 'absolute'}}>
-          <Text
-            style={styles.termsText}
-            onPress={() => {
-              Linking.openURL(
-                'https://www.freeprivacypolicy.com/live/049b6fad-d131-4ee8-b7c0-51b2fe118617',
-              );
-            }}>
-            Terms of use
-          </Text>
-          <Text style={styles.termsText1}> and </Text>
-          <Text
-            style={styles.termsText}
-            onPress={() => {
-              Linking.openURL(
-                'https://www.freeprivacypolicy.com/live/049b6fad-d131-4ee8-b7c0-51b2fe118617',
-              );
-            }}>
-            privacy policy{' '}
-          </Text>
-        </View>
+      </View>
+      <View
+        style={{flexDirection: 'row', height: hp(5), justifyContent: 'center'}}>
+        <Text
+          style={styles.termsText}
+          onPress={() => {
+            Linking.openURL(
+              'https://www.freeprivacypolicy.com/live/049b6fad-d131-4ee8-b7c0-51b2fe118617',
+            );
+          }}>
+          Terms of use
+        </Text>
+        <Text style={styles.termsText1}> and </Text>
+        <Text
+          style={styles.termsText}
+          onPress={() => {
+            Linking.openURL(
+              'https://www.freeprivacypolicy.com/live/049b6fad-d131-4ee8-b7c0-51b2fe118617',
+            );
+          }}>
+          privacy policy{' '}
+        </Text>
       </View>
       {loader && <Loader />}
     </SafeAreaView>
