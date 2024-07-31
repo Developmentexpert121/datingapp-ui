@@ -28,13 +28,13 @@ const isIos = Platform.OS === 'ios';
 const subscriptionSkus = Platform.select({
   ios: [
     'TopTierDatingMonthly15.99',
-    // 'TopTierDatingMonthlyMedium29.99',
-    // 'TopTierDatingPremiumPlus59.99',
+    'TopTierDatingMonthlyMedium29.99',
+    'TopTierDatingPremiumPlus59.99',
   ],
   android: [
     '15.99toptierdating',
-    // 'toptierdatingmonthly29.99',
-    // 'toptierdatingpremiumplus59.99',
+    'toptierdatingmonthly29.99',
+    'toptierdatingpremiumplus59.99',
   ],
 });
 

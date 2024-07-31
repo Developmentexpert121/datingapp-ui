@@ -36,8 +36,8 @@ export default function MyIncomingCallUI({
   return (
     <View style={styles.container}>
       <CallContent
-        onHangupCallHandler={() => {
-          goToHomeScreen();
+        onHangupCallHandler={async () => {
+          await goToHomeScreen();
         }}
       />
     </View>

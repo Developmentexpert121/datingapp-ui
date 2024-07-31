@@ -38,21 +38,22 @@ const VideoCallInterface = ({
 
   return (
     <SafeAreaView style={styles.containerMain}>
-      {activeScreen === 'call-screen' ? (
-        call ? (
-          <MyOutgoingCallUI
-            call={call}
-            goToHomeScreen={goToHomeScreen}
-            // userName={user?.name}
-          />
-        ) : (
-          <View>
-            <Text style={{fontFamily: 'Sansation-Regular'}}>
-              Calling...{user?.name}
-            </Text>
-          </View>
-        )
+      {activeScreen === 'call-screen' && call && calls.length > 0 ? (
+        //  (
+        <MyOutgoingCallUI
+          call={call}
+          goToHomeScreen={goToHomeScreen}
+          // userName={user?.name}
+        />
       ) : (
+        // )
+        //  : (
+        //   <View>
+        //     <Text style={{fontFamily: 'Sansation-Regular'}}>
+        //       Calling...{user?.name}
+        //     </Text>
+        //   </View>
+        // )
         <ChatPage
           user={user}
           goToCallScreen={goToCallScreen}

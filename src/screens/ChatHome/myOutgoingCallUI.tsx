@@ -8,7 +8,9 @@ export default function MyOutgoingCallUI({call, goToHomeScreen}: any) {
     <View style={styles.container}>
       <StreamCall call={call}>
         <View style={styles.container}>
-          <CallContent onHangupCallHandler={goToHomeScreen} />
+          <CallContent
+            onHangupCallHandler={async () => await goToHomeScreen()}
+          />
         </View>
       </StreamCall>
     </View>
