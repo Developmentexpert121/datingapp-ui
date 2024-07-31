@@ -292,7 +292,12 @@ const LoginHomeScreen: React.FC<Props> = () => {
         </View>
       </View>
       <View
-        style={{flexDirection: 'row', height: hp(5), justifyContent: 'center'}}>
+        style={{
+          flexDirection: 'row',
+          height: hp(5),
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
         <Text
           style={styles.termsText}
           onPress={() => {
