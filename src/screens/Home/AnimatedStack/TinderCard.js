@@ -129,6 +129,7 @@ const TinderCard = ({
           borderRadius: 20,
           overflow: 'hidden',
           backgroundColor: 'gray',
+          zIndex: 1,
         }}>
         <View style={styles.imageOverlay}>
           <TouchableOpacity
@@ -211,13 +212,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     height: '100%',
-    zIndex: 10,
+    zIndex: 3,
     // borderWidth: 2,
   },
   leftButton: {
     width: '50%',
     height: '100%',
-    // borderWidth: 2,
   },
   rightButton: {
     width: '50%',
@@ -230,6 +230,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '95%',
     justifyContent: 'center',
+    zIndex: 2,
   },
   imageIndicator: {
     width: 50,
