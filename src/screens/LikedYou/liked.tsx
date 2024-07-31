@@ -79,8 +79,10 @@ const LikedScreen = () => {
     return (
       <Pressable
         onPress={
-          profileData?.plan !== 'Free'
-            ? () => navigation.navigate('ChatSection')
+          profileData?.plan === 'Free'
+            ? () => {
+                navigation.navigate('Subscriptions');
+              }
             : () => likeByMe(item)
         }
         // onPress={() => goToChatWith(item)}

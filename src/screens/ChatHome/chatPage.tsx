@@ -247,11 +247,17 @@ const ChatPage = ({
               </View>
               <View style={{flexDirection: 'row', marginEnd: 10, width: '25%'}}>
                 <TouchableOpacity
-                  onPress={() => {
-                    setCallType('audioCall');
-                    setEnableCamera1(false);
-                    goToCallScreen('audioCall');
-                  }}>
+                  onPress={
+                    profileData?.plan === 'Free'
+                      ? () => {
+                          navigation.navigate('Subscriptions');
+                        }
+                      : () => {
+                          setCallType('audioCall');
+                          setEnableCamera1(false);
+                          goToCallScreen('audioCall');
+                        }
+                  }>
                   <View style={styles.editIcon}>
                     <Image
                       source={require('../../assets/images/Phone.png/')}
@@ -260,11 +266,17 @@ const ChatPage = ({
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => {
-                    setCallType('videoCall');
-                    setEnableCamera(true);
-                    goToCallScreen('videoCall');
-                  }}>
+                  onPress={
+                    profileData?.plan === 'Free'
+                      ? () => {
+                          navigation.navigate('Subscriptions');
+                        }
+                      : () => {
+                          setCallType('videoCall');
+                          setEnableCamera(true);
+                          goToCallScreen('videoCall');
+                        }
+                  }>
                   <View style={styles.editIcon}>
                     <Image
                       source={require('../../assets/images/Video.png/')}
