@@ -15,8 +15,10 @@
 		2ACBDB09A43B97D23A51064D /* Pods_DatingApp_DatingAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F404B141BFBFBA496D755AA5 /* Pods_DatingApp_DatingAppTests.framework */; };
 		3A04FE25AEC1490EAF39DA49 /* PassionOne-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FB51463032AE48548C8355C8 /* PassionOne-Black.ttf */; };
 		69BDFC65BAD3441AAF1AA2AE /* Sansation-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1E92A9EBB09D422CA4247D82 /* Sansation-Italic.ttf */; };
-		6AD9A3CBBC4D8509E43970D2 /* Pods_DatingApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 908F41DBEB02F5D7250E3083 /* Pods_DatingApp.framework */; };
+		6AD9A3CBBC4D8509E43970D2 /* Pods_DatingApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 908F41DBEB02F5D7250E3083 /* Pods_DatingApp.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		738B2FC42C5229C600768FA5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7327DBF12C48FD390028B5F6 /* GoogleService-Info.plist */; };
+		73BB2BA62C59FE7500664BD2 /* CallKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73BB2BA52C59FE7500664BD2 /* CallKit.framework */; };
+		73BB2BA82C59FE9000664BD2 /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73BB2BA72C59FE9000664BD2 /* Intents.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		73E04DFC2C2ADE2B00E61613 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73E04DFB2C2ADE2B00E61613 /* StoreKit.framework */; };
 		7AE3F1C654F84C6A8FD4257E /* Sansation-Bold-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 166BB430F5E84D20A712F40F /* Sansation-Bold-Italic.ttf */; };
 		7E62B00978FB4E7ABCB2442C /* Sansation-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0BFA7B56BC3B4E70A245AFD2 /* Sansation-Light.ttf */; };
@@ -61,6 +63,8 @@
 		7327DBF12C48FD390028B5F6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7331E69F2BF64518009052FA /* DatingAppRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = DatingAppRelease.entitlements; path = DatingApp/DatingAppRelease.entitlements; sourceTree = "<group>"; };
 		73AD3A052BFB95C30035BBAD /* DatingAppDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = DatingAppDebug.entitlements; path = DatingApp/DatingAppDebug.entitlements; sourceTree = "<group>"; };
+		73BB2BA52C59FE7500664BD2 /* CallKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CallKit.framework; path = System/Library/Frameworks/CallKit.framework; sourceTree = SDKROOT; };
+		73BB2BA72C59FE9000664BD2 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 		73E04DFB2C2ADE2B00E61613 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = DatingApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8889862103064F618212876F /* Sansation-Light-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Sansation-Light-Italic.ttf"; path = "../src/assets/fonts/Sansation-Light-Italic.ttf"; sourceTree = "<group>"; };
@@ -85,6 +89,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				73BB2BA82C59FE9000664BD2 /* Intents.framework in Frameworks */,
+				73BB2BA62C59FE7500664BD2 /* CallKit.framework in Frameworks */,
 				73E04DFC2C2ADE2B00E61613 /* StoreKit.framework in Frameworks */,
 				6AD9A3CBBC4D8509E43970D2 /* Pods_DatingApp.framework in Frameworks */,
 			);
@@ -130,6 +136,8 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				73BB2BA72C59FE9000664BD2 /* Intents.framework */,
+				73BB2BA52C59FE7500664BD2 /* CallKit.framework */,
 				73E04DFB2C2ADE2B00E61613 /* StoreKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				908F41DBEB02F5D7250E3083 /* Pods_DatingApp.framework */,

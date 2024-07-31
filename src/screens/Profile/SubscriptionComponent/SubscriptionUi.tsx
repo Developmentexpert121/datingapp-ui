@@ -1,8 +1,7 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef} from 'react';
 import {
   View,
   Text,
-  Image,
   StyleSheet,
   TouchableOpacity,
   SafeAreaView,
@@ -17,27 +16,48 @@ import {LockIC, UnlockIC} from '../../../assets/svgs';
 import {useNavigation} from '@react-navigation/native';
 
 const {width} = Dimensions.get('window');
-const eightyPercentWidth: number = width * 0.84;
+const eightyPercentWidth = width * 0.84;
+
 const dataType = [
   {
+    id: 1,
+    title: 'Basic',
+    description:
+      'Maximize your dating with all the benefits of premium with extra features included',
+    price: '$14.99',
+  },
+  {
+    id: 2,
     title: 'Premium',
     description:
       'Maximize your dating with all the benefits of premium with extra features included',
-    price: '999INR',
+    price: '$29.99',
   },
   {
+    id: 3,
     title: 'Premium Plus',
     description:
       'Maximize your dating with all the benefits of premium with extra features included',
-    price: '1,999INR',
+    price: '$59.99',
   },
 ];
 
 const data2 = [
-  {service: 'See who likes you', icon: <LockIC />},
-  {service: 'Priority likes', icon: <LockIC />},
-  {service: 'Unlimited Rewards', icon: <UnlockIC />},
-  {service: 'Unlimited likes', icon: <UnlockIC />},
+  {id: 1, service: 'See who likes you', icon: <LockIC />},
+  {id: 2, service: 'Priority likes', icon: <LockIC />},
+  {id: 3, service: 'Unlimited likes', icon: <UnlockIC />},
+  {id: 4, service: 'Control who you see', icon: <UnlockIC />},
+  {id: 5, service: 'Access to chat', icon: <UnlockIC />},
+  {id: 6, service: 'Access to advanced search filters', icon: <UnlockIC />},
+  {id: 7, service: 'Checkout who likes you', icon: <UnlockIC />},
+  {id: 8, service: 'Access to audio call', icon: <UnlockIC />},
+  {id: 9, service: 'Unlimited Super Likes', icon: <UnlockIC />},
+  {id: 10, service: 'Control who sees you', icon: <UnlockIC />},
+  {id: 11, service: 'Top picks', icon: <UnlockIC />},
+  {id: 12, service: 'Live streaming', icon: <UnlockIC />},
+  {id: 13, service: 'Video call access', icon: <UnlockIC />},
+  {id: 14, service: 'Message before matching.', icon: <UnlockIC />},
+  {id: 15, service: 'Hide ads', icon: <UnlockIC />},
 ];
 
 const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {
@@ -50,10 +70,11 @@ const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {
       colors={[
         item.title === 'Premium' ? '#AC25AC' : '#101010',
         item.title === 'Premium' ? '#FF4FFF' : '#494949',
+        item.title === 'Premium' ? '#AC25AC' : '#101010',
       ]}
       start={{x: 0, y: 0.5}}
       end={{x: 1, y: 0.5}}
-      style={[styles.box]}>
+      style={styles.box}>
       <Text style={styles.boxTitle}>{item.title}</Text>
       <Text style={styles.boxDescription}>{item.description}</Text>
       <TouchableOpacity onPress={onPress}>
@@ -75,6 +96,26 @@ const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {
     flatListRef.current.scrollToIndex({animated: true, index});
   };
 
+  const getUpdatedData2 = () => {
+    if (activeIndex === 0) {
+      return data2.map((item, index) => ({
+        ...item,
+        icon: index < 4 ? <UnlockIC /> : <LockIC />,
+      }));
+    } else if (activeIndex === 1) {
+      return data2.map((item, index) => ({
+        ...item,
+        icon: index >= 0 && index < 10 ? <UnlockIC /> : <LockIC />,
+      }));
+    } else if (activeIndex === 2) {
+      return data2.map((item, index) => ({
+        ...item,
+        icon: index >= 10 ? <UnlockIC /> : <UnlockIC />,
+      }));
+    }
+    return data2;
+  };
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <ScrollView
@@ -91,7 +132,7 @@ const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {
             pagingEnabled
             onScroll={event => {
               const offsetX = event.nativeEvent.contentOffset.x;
-              const index = Math.floor(offsetX / 300);
+              const index = Math.floor(offsetX / eightyPercentWidth);
               setActiveIndex(index);
             }}
           />
@@ -114,7 +155,7 @@ const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {
         <View style={styles.servicesList}>
           <FlatList
             scrollEnabled={false}
-            data={data2}
+            data={getUpdatedData2()}
             renderItem={({item}) => (
               <View style={styles.serviceItem}>
                 <View style={styles.serviceIconContainer}>{item.icon}</View>
@@ -132,6 +173,7 @@ const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {
 };
 
 export default SubscriptionUi;
+
 const styles = StyleSheet.create({
   scrollView: {
     width: '100%',

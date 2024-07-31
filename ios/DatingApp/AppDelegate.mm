@@ -11,6 +11,9 @@
 #import <FirebaseCore/FirebaseCore.h>
 #import <FirebaseMessaging/FirebaseMessaging.h>
 #import <UserNotifications/UserNotifications.h>
+#import "RNCallKeep.h"
+#import <PushKit/PushKit.h>
+#import "RNVoipPushNotificationManager.h"
 
 @interface AppDelegate () <UNUserNotificationCenterDelegate, FIRMessagingDelegate>
 @end
@@ -26,6 +29,15 @@
   [StreamVideoReactNative setup];
   [super application:application didFinishLaunchingWithOptions:launchOptions];
   [RNSplashScreen hide];
+  
+  NSString *localizedAppName = [[[NSBundle mainBundle] localizedInfoDictionary] objectForKey:@"CFBundleDisplayName"];
+    NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey :@"CFBundleDisplayName"];
+    [RNCallKeep setup:@{
+      @"appName": localizedAppName != nil ? localizedAppName : appName,
+      @"supportsVideo": @YES,
+      // pass @YES here if you want the call to be shown in calls history in the built-in dialer app
+      @"includesCallsInRecents": @NO,
+    }];
 
   // Request notification permissions
   if (@available(iOS 10.0, *)) {
@@ -44,11 +56,46 @@
     [UIUserNotificationSettings settingsForTypes:allNotificationTypes categories:nil];
     [application registerUserNotificationSettings:settings];
   }
-
+  [RNVoipPushNotificationManager voipRegistration];
   [application registerForRemoteNotifications];
   [FIRMessaging messaging].delegate = self;
 
   return YES;
+}
+
+// handle updated push credentials
+- (void)pushRegistry:(PKPushRegistry *)registry didUpdatePushCredentials:(PKPushCredentials *)credentials forType:(PKPushType)type {
+  [RNVoipPushNotificationManager didUpdatePushCredentials:credentials forType:(NSString *)type];
+}
+
+// handle incoming pushes
+- (void)pushRegistry:(PKPushRegistry *)registry didReceiveIncomingPushWithPayload:(PKPushPayload *)payload forType:(PKPushType)type withCompletionHandler:(void (^)(void))completion {
+  // send event to JS
+  [RNVoipPushNotificationManager didReceiveIncomingPushWithPayload:payload forType:(NSString *)type];
+
+  // process the payload
+  NSDictionary *stream = payload.dictionaryPayload[@"stream"];
+  NSString *uuid = [[NSUUID UUID] UUIDString];
+  NSString *createdCallerName = stream[@"created_by_display_name"];
+  NSString *cid = stream[@"call_cid"];
+
+  [StreamVideoReactNative registerIncomingCall:cid uuid:uuid];
+
+  [RNVoipPushNotificationManager addCompletionHandler:uuid completionHandler:completion];
+
+  // display the incoming call notification
+  [RNCallKeep reportNewIncomingCall: uuid
+                             handle: createdCallerName
+                         handleType: @"generic"
+                           hasVideo: YES
+                localizedCallerName: createdCallerName
+                    supportsHolding: YES
+                       supportsDTMF: YES
+                   supportsGrouping: YES
+                 supportsUngrouping: YES
+                        fromPushKit: YES
+                            payload: stream
+              withCompletionHandler: nil];
 }
 
 // Handle APNS token registration

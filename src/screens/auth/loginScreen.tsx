@@ -49,30 +49,30 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
 
   const [keyboardHeight] = useState(new Animated.Value(0));
 
-  useEffect(() => {
-    const keyboardWillShow = Keyboard.addListener('keyboardWillShow', event => {
-      Animated.timing(keyboardHeight, {
-        duration: event.duration,
-        toValue: event.endCoordinates.height,
-        useNativeDriver: false,
-      }).start();
-    });
+  // useEffect(() => {
+  //   const keyboardWillShow = Keyboard.addListener('keyboardWillShow', event => {
+  //     Animated.timing(keyboardHeight, {
+  //       duration: event.duration,
+  //       toValue: event.endCoordinates.height,
+  //       useNativeDriver: false,
+  //     }).start();
+  //   });
 
-    const keyboardWillHide = Keyboard.addListener('keyboardWillHide', event => {
-      Animated.timing(keyboardHeight, {
-        duration: event.duration,
-        toValue: 0,
-        useNativeDriver: false,
-      }).start();
-    });
+  //   const keyboardWillHide = Keyboard.addListener('keyboardWillHide', event => {
+  //     Animated.timing(keyboardHeight, {
+  //       duration: event.duration,
+  //       toValue: 0,
+  //       useNativeDriver: false,
+  //     }).start();
+  //   });
 
-    return () => {
-      keyboardWillShow.remove();
-      keyboardWillHide.remove();
-    };
-  }, []);
+  //   return () => {
+  //     keyboardWillShow.remove();
+  //     keyboardWillHide.remove();
+  //   };
+  // }, []);
 
-  const onSubmit: any = (data: LoginForm) => {
+  const onSubmit = (data: LoginForm) => {
     setLoader(true);
     dispatch(LoginSignIn(data));
     setLoader(false);
@@ -133,12 +133,13 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
       !error.password
     ) {
       console.log('All well');
+      onSubmit({email: formData.email, password: formData.password});
     }
   };
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#FFC7FF'}}>
-      <Animated.View
+      <View
         // style={[styles.container, {paddingBottom: keyboardHeight}]}>
         style={[styles.container]}>
         <KeyboardAwareScrollView
@@ -181,6 +182,7 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
                   <TextInput
                     placeholder="Enter Your Email"
                     placeholderTextColor={Colors.darkText}
+                    autoCapitalize="none"
                     style={{
                       fontFamily: 'Sansation-Regular',
                       fontSize: hp(2),
@@ -189,6 +191,10 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
                     onChangeText={value =>
                       setFormData({...formData, email: value})
                     }
+                    autoCorrect={false}
+                    keyboardType="email-address"
+                    textContentType="emailAddress"
+                    secureTextEntry={false}
                   />
                 </View>
 
@@ -222,6 +228,7 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
                       setFormData({...formData, password: value})
                     }
                     secureTextEntry={!isPasswordVisible}
+                    keyboardType="visible-password"
                   />
                   <TouchableOpacity
                     onPress={() => {
@@ -273,7 +280,7 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
           </Text>
         </View>
         {loader ? <Loader /> : null}
-      </Animated.View>
+      </View>
     </SafeAreaView>
   );
 };

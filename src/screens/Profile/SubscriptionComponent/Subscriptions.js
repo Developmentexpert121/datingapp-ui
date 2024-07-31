@@ -20,14 +20,22 @@ import {
 import CommonBackbutton from '../../../components/commonBackbutton/BackButton';
 
 const errorLog = ({message, error}) => {
-  console.error('An error happened:', message, error);
+  console.error('An error happened:.....', message, error);
 };
 
 const isIos = Platform.OS === 'ios';
 
 const subscriptionSkus = Platform.select({
-  ios: ['TopTierDatingMonthly15.99'],
-  android: ['15.99'],
+  ios: [
+    'TopTierDatingMonthly15.99',
+    // 'TopTierDatingMonthlyMedium29.99',
+    // 'TopTierDatingPremiumPlus59.99',
+  ],
+  android: [
+    '15.99toptierdating',
+    // 'toptierdatingmonthly29.99',
+    // 'toptierdatingpremiumplus59.99',
+  ],
 });
 
 const SubscriptionsScreen = ({navigation}) => {
@@ -51,7 +59,7 @@ const SubscriptionsScreen = ({navigation}) => {
       console.log('Subscriptions fetched:');
     } catch (error) {
       console.log('error error', error);
-      errorLog({message: 'handleGetSubscriptions', error});
+      errorLog({message: 'handleGetSubscriptions......', error});
     }
   };
 

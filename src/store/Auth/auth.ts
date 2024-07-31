@@ -549,7 +549,7 @@ export const getChatUsersList = createAsyncThunk(
 export const getNotifications = createAsyncThunk(
   'auth/getNotifications',
   async ({userId, deviceToken}: any, {dispatch}: any) => {
-    // console.log('wueyqierqgrqgrgrq', userId);
+    console.log('wueyqierqgrqgrgrq', userId, deviceToken);
     try {
       const response = await http.get('/user/getNotification', {
         params: {
