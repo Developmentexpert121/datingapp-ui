@@ -147,6 +147,11 @@ const ChatSection = () => {
       <ListItem
         containerStyle={styles.listItemContainer}
         onPress={() => goToChatWith(item)}
+        // onPress={
+        //   profileData?.plan === 'Free'
+        //     ? () => navigation.navigate('UpdateProfileScreen')
+        //     : () => goToChatWith(item)
+        // }
         onLongPress={() => handleLongPress(item)}>
         <View style={{width: '15%'}}>
           {item.profilePic ? (
