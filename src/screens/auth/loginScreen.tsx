@@ -11,6 +11,8 @@ import {
   TextInput,
   SafeAreaView,
 } from 'react-native';
+import messaging from '@react-native-firebase/messaging';
+
 import React, {useEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../types';
@@ -18,7 +20,7 @@ import {useAppDispatch, useAppSelector} from '../../store/store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MainButton from '../../components/ButtonComponent/MainButton';
 import {useNavigation} from '@react-navigation/native';
-import {LoginSignIn} from '../../store/Auth/auth';
+import {LoginSignIn, updateProfileData} from '../../store/Auth/auth';
 import Colors from '../../constants/Colors';
 import Loader from '../../components/Loader/Loader';
 import {BackIC, EyeslashIC, EyeslashOpenIC} from '../../assets/svgs';
@@ -72,9 +74,38 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   //   };
   // }, []);
 
-  const onSubmit = (data: LoginForm) => {
+  const [deviceToken, setDeviceToken] = useState<any>(null);
+
+  const requestUserPermission = async () => {
+    try {
+      const authStatus = await messaging().requestPermission({
+        sound: true,
+        alert: true,
+        badge: true,
+      });
+      const enabled =
+        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+      if (enabled) {
+        const token = await messaging().getToken();
+        setDeviceToken(token);
+      } else {
+        console.log('Authorization status:', authStatus);
+      }
+    } catch (error) {
+      console.error('Error requesting permission:', error);
+    }
+  };
+
+  console.log('=-=-=-=-', deviceToken);
+
+  const onSubmit = async (data: LoginForm) => {
+    const requestData = {
+      ...data,
+      deviceToken: deviceToken, // Include the deviceToken
+    };
     setLoader(true);
-    dispatch(LoginSignIn(data));
+    dispatch(LoginSignIn(requestData));
     setLoader(false);
   };
 
@@ -83,6 +114,7 @@ const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
   );
 
   useEffect(() => {
+    requestUserPermission();
     const fetchToken = async () => {
       try {
         const value = await AsyncStorage.getItem('authToken');

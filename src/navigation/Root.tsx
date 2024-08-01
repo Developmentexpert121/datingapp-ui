@@ -9,7 +9,7 @@ import VideoCallRedirect from '../screens/ChatHome/chatVideoRedirect';
 import SettingsScreen from '../screens/SettingsSection/settings';
 import UpdateProfileScreen from '../screens/UpdateProfile/updateProfile';
 import {useAppDispatch, useAppSelector} from '../store/store';
-import {ProfileData, getNotifications} from '../store/Auth/auth';
+import {ProfileData, getNotifications, logoutUser} from '../store/Auth/auth';
 import BottomTabNavigation from './BottomTabNavigation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from 'react-native-splash-screen';
@@ -19,7 +19,9 @@ import Subscriptions from '../screens/Profile/SubscriptionComponent/Subscription
 import PushNotification from 'react-native-push-notification';
 import exploreHome from '../screens/Explore/ExploreHome/exploreHome';
 import notifee, {AndroidImportance} from '@notifee/react-native';
+import {StreamVideoRN} from '@stream-io/video-react-native-sdk';
 import {Platform} from 'react-native';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 export type RootStackParamList = {
   Loginhome: undefined;
@@ -149,18 +151,56 @@ const Root = () => {
     }
   }, [authToken]);
 
+  const authTokenRemove: any = async () => {
+    try {
+      await AsyncStorage.removeItem('authToken');
+    } catch (error) {
+      return null;
+    }
+  };
+
   useEffect(() => {
-    const getId = async () => {
-      const userId = await getUserId();
-      dispatch(
-        getNotifications({
-          userId: profileData?._id,
-          deviceToken: deviceToken,
-        }),
-      );
-    };
-    getId();
-  }, [deviceToken]);
+    if (profileData && deviceToken) {
+      const getId = async () => {
+        await GoogleSignin.configure({
+          webClientId:
+            '151623051367-b882b5sufigjbholkehodmi9ccn4hv6m.apps.googleusercontent.com', // From Google Developer Console
+          offlineAccess: true,
+        });
+        if (profileData.deviceToken[0] === deviceToken) {
+          console.log('Called Main');
+          dispatch(
+            getNotifications({
+              userId: profileData?._id,
+              deviceToken: deviceToken,
+            }),
+          );
+        } else {
+          try {
+            console.log('Called');
+            // Ensure Google Sign-In is configured
+            if (!GoogleSignin.hasPlayServices()) {
+              console.error('Google Play Services are not available');
+              return;
+            }
+            const isSignedIn = await GoogleSignin.isSignedIn();
+
+            if (isSignedIn) {
+              await GoogleSignin.signOut();
+            }
+
+            // dispatch(logoutUser({senderId: profileData._id}));
+            await authTokenRemove();
+            await StreamVideoRN.onPushLogout();
+          } catch (error) {
+            console.error('errorLogoutUserButton', error);
+          }
+        }
+      };
+
+      getId();
+    }
+  }, [deviceToken, profileData]);
 
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
