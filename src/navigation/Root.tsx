@@ -168,7 +168,7 @@ const Root = () => {
           offlineAccess: true,
         });
         if (profileData.deviceToken[0] === deviceToken) {
-          console.log('Called Main');
+          // console.log('Called Main');
           dispatch(
             getNotifications({
               userId: profileData?._id,

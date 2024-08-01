@@ -18,7 +18,7 @@ const VideoCallRedirect = () => {
     (state: any) => state?.Auth?.data?.profileData,
   );
 
-  const callId = uuid.v4();
+  const callId: any = uuid.v4();
   const [enableCamera, setEnableCamera] = useState<boolean>(true);
   const [enableCamera1, setEnableCamera1] = useState<boolean>(false);
   const [activeScreen, setActiveScreen] = useState('home');

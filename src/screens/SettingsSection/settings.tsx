@@ -161,8 +161,8 @@ const SettingsSection = () => {
     Geolocation.getCurrentPosition(
       position => {
         const {latitude, longitude} = position.coords;
-        console.log('latitude:', latitude);
-        console.log('Longitude:', longitude);
+        // console.log('latitude:', latitude);
+        // console.log('Longitude:', longitude);
         setLoader(false);
         setPermissionStatus('granted');
         dispatch(
@@ -222,7 +222,6 @@ const SettingsSection = () => {
       if (isSignedIn) {
         await GoogleSignin.signOut();
       }
-
       dispatch(logoutUser({senderId: profileData._id}));
       await authTokenRemove();
       await StreamVideoRN.onPushLogout();

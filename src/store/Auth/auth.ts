@@ -549,7 +549,7 @@ export const getChatUsersList = createAsyncThunk(
 export const getNotifications = createAsyncThunk(
   'auth/getNotifications',
   async ({userId, deviceToken}: any, {dispatch}: any) => {
-    console.log('wueyqierqgrqgrgrq', userId, deviceToken);
+    // console.log('wueyqierqgrqgrgrq', userId, deviceToken);
     try {
       const response = await http.get('/user/getNotification', {
         params: {
@@ -656,7 +656,7 @@ export const getReceivers = createAsyncThunk(
 export const logoutUser = createAsyncThunk(
   'auth/logoutUser',
   async (data: any, {dispatch}: any) => {
-    console.log('data', data.senderId);
+    console.log('data', data);
     try {
       dispatch(activityLoaderStarted());
       console.log('Reachedddddddd', data);
@@ -683,7 +683,7 @@ export const logoutUser = createAsyncThunk(
 export const deleteUser = createAsyncThunk(
   'auth/deleteUser',
   async (data: any, {dispatch}: any) => {
-    console.log('data', data.senderId);
+    // console.log('data', data);
     try {
       console.log('swjdfguwgyduwye');
       dispatch(activityLoaderStarted());
@@ -691,7 +691,7 @@ export const deleteUser = createAsyncThunk(
         `/user/delete-account?userId=${data.senderId}`,
       );
       if (response.status === 200) {
-        console.log('________________-', response);
+        // console.log('________________-', response);
         dispatch(updateAuthentication());
         return response.data;
       }

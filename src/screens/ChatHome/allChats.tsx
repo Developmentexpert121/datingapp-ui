@@ -35,7 +35,7 @@ const ChatSection = () => {
   const [initialLoading, setInitialLoading] = useState<boolean>(true);
 
   const goToChatWith = async (user: any) => {
-    console.log('user111111111', user);
+    // console.log('user111111111', user);
     await dispatch(videoCallUser({user: user}));
     navigation.navigate('VideoCallRedirect');
   };

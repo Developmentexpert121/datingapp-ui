@@ -18,10 +18,8 @@ import {
 } from 'react-native-iap';
 
 import CommonBackbutton from '../../../components/commonBackbutton/BackButton';
-
-const errorLog = ({message, error}) => {
-  console.error('An error happened:.....', message, error);
-};
+import SubscriptionUi from './SubscriptionUi';
+import Loader from '../../../components/Loader/Loader';
 
 const isIos = Platform.OS === 'ios';
 
@@ -33,22 +31,21 @@ const subscriptionSkus = Platform.select({
   ],
   android: [
     '15.99toptierdating',
-    'toptierdatingmonthly29.99',
-    'toptierdatingpremiumplus59.99',
+    // 'toptierdatingmonthly29.99',
+    // 'toptierdatingpremiumplus59.99',
   ],
 });
 
 const SubscriptionsScreen = ({navigation}) => {
   const {
     connected,
-    subscriptions,
+    subscriptions = [], // Ensure subscriptions is an array by default
     getSubscriptions,
     currentPurchase,
     finishTransaction,
-    purchaseHistory,
+    purchaseHistory = [], // Ensure purchaseHistory is an array by default
     getPurchaseHistory,
   } = useIAP();
-  console.log('!!!!!!!!!!!!!!', subscriptions);
 
   const [loading, setLoading] = useState(false);
 
@@ -56,10 +53,9 @@ const SubscriptionsScreen = ({navigation}) => {
     try {
       console.log('Fetching subscriptions...');
       await getSubscriptions({skus: subscriptionSkus});
-      console.log('Subscriptions fetched:');
+      console.log('Subscriptions fetched:', subscriptions);
     } catch (error) {
-      console.log('error error', error);
-      errorLog({message: 'handleGetSubscriptions......', error});
+      console.log('Error in handleGetSubscriptions:', error);
     }
   };
 
@@ -76,16 +72,16 @@ const SubscriptionsScreen = ({navigation}) => {
   const handleBuySubscription = async productId => {
     try {
       console.log('Initiating purchase for:', productId);
-      setLoading(true);
+      setLoading(true); // Enable loading indicator
       await requestSubscription(productId);
     } catch (error) {
-      console.log('error handleBuySubscription', error);
+      console.log('Error in handleBuySubscription:', error);
       if (error instanceof PurchaseError) {
-        errorLog({message: `[${error.code}]: ${error.message}`, error});
+        console.log('PurchaseError:', error);
       } else {
-        errorLog({message: 'handleBuySubscription', error});
+        console.log('Unexpected error:', error);
       }
-      setLoading(false);
+      setLoading(false); // Disable loading indicator on error
     }
   };
 
@@ -115,7 +111,7 @@ const SubscriptionsScreen = ({navigation}) => {
             }
           }
         } catch (error) {
-          errorLog({message: 'checkCurrentPurchase', error});
+          console.log('Error in checkCurrentPurchase:', error);
         } finally {
           setLoading(false);
         }
@@ -132,6 +128,8 @@ const SubscriptionsScreen = ({navigation}) => {
       <ScrollView>
         <View style={{padding: 1}}>
           <CommonBackbutton title="Subscribe" />
+          <SubscriptionUi />
+          <View style={{height: 20}}></View>
           <Text style={styles.listItem}>
             Subscribe to some cool stuff today.
           </Text>
@@ -146,80 +144,82 @@ const SubscriptionsScreen = ({navigation}) => {
             Choose your membership plan.
           </Text>
           <View style={{marginTop: 10}}>
-            {subscriptions.map((subscription, index) => {
-              const owned = purchaseHistory.find(
-                s => s?.productId === subscription.productId,
-              );
-              return (
-                <View style={styles.box} key={index}>
-                  {subscription?.introductoryPriceSubscriptionPeriodIOS && (
+            {subscriptions.length > 0 ? (
+              subscriptions.map((subscription, index) => {
+                const owned = purchaseHistory.find(
+                  s => s?.productId === subscription.productId,
+                );
+                return (
+                  <View style={styles.box} key={index}>
+                    {/* {subscription?.introductoryPriceSubscriptionPeriodIOS && (
                     <Text style={styles.specialTag}>SPECIAL OFFER</Text>
-                  )}
-                  <View
-                    style={{
-                      flex: 1,
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      marginTop: 10,
-                    }}>
-                    <Text
+                  )} */}
+                    <View
                       style={{
-                        paddingBottom: 10,
-                        fontWeight: 'bold',
-                        fontSize: 18,
-                        textTransform: 'uppercase',
+                        flex: 1,
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        marginTop: 10,
                       }}>
-                      {subscription?.title}
-                    </Text>
-                    <Text
-                      style={{
-                        paddingBottom: 20,
-                        fontWeight: 'bold',
-                        fontSize: 18,
-                      }}>
-                      {subscription?.localizedPrice}
-                    </Text>
-                  </View>
-                  {subscription?.introductoryPriceSubscriptionPeriodIOS && (
-                    <Text>
-                      Free for 1{' '}
-                      {subscription?.introductoryPriceSubscriptionPeriodIOS}
-                    </Text>
-                  )}
-                  <Text style={{paddingBottom: 20}}>
-                    {subscription?.description}
-                  </Text>
-                  {owned && (
-                    <>
-                      <Text style={{textAlign: 'center', marginBottom: 10}}>
-                        You are Subscribed to this plan!
+                      <Text
+                        style={{
+                          paddingBottom: 10,
+                          fontWeight: 'bold',
+                          fontSize: 18,
+                          textTransform: 'uppercase',
+                        }}>
+                        {subscription?.title}
                       </Text>
-                      <TouchableOpacity
-                        style={[styles.button, {backgroundColor: '#0071bc'}]}
-                        onPress={() => navigation.navigate('Home')}>
-                        <Text style={styles.buttonText}>Continue to App</Text>
-                      </TouchableOpacity>
-                    </>
-                  )}
-                  {loading && <ActivityIndicator size="large" />}
-                  {!loading && !owned && (
-                    <TouchableOpacity
-                      style={styles.button}
-                      onPress={() =>
-                        handleBuySubscription(subscription.productId)
-                      }>
-                      <Text style={styles.buttonText}>Subscribe</Text>
-                    </TouchableOpacity>
-                  )}
-                </View>
-              );
-            })}
-            {subscriptions.length === 0 && (
+                      <Text
+                        style={{
+                          paddingBottom: 20,
+                          fontWeight: 'bold',
+                          fontSize: 18,
+                        }}>
+                        {subscription?.localizedPrice}
+                      </Text>
+                    </View>
+                    {subscription?.introductoryPriceSubscriptionPeriodIOS && (
+                      <Text>
+                        Free for 1{' '}
+                        {subscription?.introductoryPriceSubscriptionPeriodIOS}
+                      </Text>
+                    )}
+                    <Text style={{paddingBottom: 20}}>
+                      {subscription?.description}
+                    </Text>
+                    {owned ? (
+                      <>
+                        <Text style={{textAlign: 'center', marginBottom: 10}}>
+                          You are Subscribed to this plan!
+                        </Text>
+                        <TouchableOpacity
+                          style={[styles.button, {backgroundColor: '#0071bc'}]}
+                          onPress={() => navigation.navigate('Home')}>
+                          <Text style={styles.buttonText}>Continue to App</Text>
+                        </TouchableOpacity>
+                      </>
+                    ) : (
+                      !loading && (
+                        <TouchableOpacity
+                          style={styles.button}
+                          onPress={() =>
+                            handleBuySubscription(subscription.productId)
+                          }>
+                          <Text style={styles.buttonText}>Subscribe</Text>
+                        </TouchableOpacity>
+                      )
+                    )}
+                  </View>
+                );
+              })
+            ) : (
               <Text style={{textAlign: 'center', marginTop: 20}}>
                 No subscriptions available. Please check your Play Store
                 configuration.
               </Text>
             )}
+            {loading && <Loader size="large" />}
           </View>
         </View>
       </ScrollView>
