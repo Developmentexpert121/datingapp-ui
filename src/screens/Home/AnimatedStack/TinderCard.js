@@ -52,7 +52,7 @@ const TinderCard = ({
       <>
         <Animated.View
           style={[
-            {position: 'absolute', top: 5, left: 20},
+            {position: 'absolute', top: 5, left: 20, zIndex: 5},
             {opacity: likeOpacity},
           ]}>
           <LikeIC
@@ -63,7 +63,7 @@ const TinderCard = ({
         </Animated.View>
         <Animated.View
           style={[
-            {position: 'absolute', top: 5, right: 20},
+            {position: 'absolute', top: 5, right: 20, zIndex: 5},
             {opacity: rejectOpacity},
           ]}>
           <NopeIC
@@ -74,7 +74,7 @@ const TinderCard = ({
         </Animated.View>
         <Animated.View
           style={[
-            {position: 'absolute', top: 80, alignSelf: 'center'},
+            {position: 'absolute', top: 80, alignSelf: 'center', zIndex: 5},
             {opacity: superLikeOpacity},
           ]}>
           <SuperLikeIC
