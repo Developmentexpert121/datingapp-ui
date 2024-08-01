@@ -129,6 +129,7 @@ const TinderCard = ({
           borderRadius: 20,
           overflow: 'hidden',
           backgroundColor: 'gray',
+          zIndex: 1,
         }}>
         <View style={styles.imageOverlay}>
           <TouchableOpacity
@@ -148,15 +149,15 @@ const TinderCard = ({
             height: 320,
             position: 'absolute',
             borderRadius: 20,
+            zIndex: 2,
           }}>
           <View style={styles.cardInner}>
             <Text style={styles.name}>{item.name}</Text>
             <Text style={styles.bio}>{item.hobbies}</Text>
           </View>
         </LinearGradient>
+        {isFirst && renderChoice()}
       </ImageBackground>
-
-      {isFirst && renderChoice()}
 
       <View style={styles.imageCountContainer}>
         {images.length > 1 && (
@@ -211,13 +212,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     height: '100%',
-    zIndex: 10,
+    zIndex: 5,
     // borderWidth: 2,
   },
   leftButton: {
     width: '50%',
     height: '100%',
-    // borderWidth: 2,
   },
   rightButton: {
     width: '50%',
@@ -230,6 +230,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '95%',
     justifyContent: 'center',
+    zIndex: 2,
   },
   imageIndicator: {
     width: 50,
