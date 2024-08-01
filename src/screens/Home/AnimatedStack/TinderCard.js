@@ -52,7 +52,7 @@ const TinderCard = ({
       <>
         <Animated.View
           style={[
-            {position: 'absolute', top: 5, left: 20, zIndex: 5},
+            {position: 'absolute', top: 5, left: 20},
             {opacity: likeOpacity},
           ]}>
           <LikeIC
@@ -63,7 +63,7 @@ const TinderCard = ({
         </Animated.View>
         <Animated.View
           style={[
-            {position: 'absolute', top: 5, right: 20, zIndex: 5},
+            {position: 'absolute', top: 5, right: 20},
             {opacity: rejectOpacity},
           ]}>
           <NopeIC
@@ -74,7 +74,7 @@ const TinderCard = ({
         </Animated.View>
         <Animated.View
           style={[
-            {position: 'absolute', top: 80, alignSelf: 'center', zIndex: 5},
+            {position: 'absolute', top: 80, alignSelf: 'center'},
             {opacity: superLikeOpacity},
           ]}>
           <SuperLikeIC
@@ -149,15 +149,15 @@ const TinderCard = ({
             height: 320,
             position: 'absolute',
             borderRadius: 20,
+            zIndex: 2,
           }}>
           <View style={styles.cardInner}>
             <Text style={styles.name}>{item.name}</Text>
             <Text style={styles.bio}>{item.hobbies}</Text>
           </View>
         </LinearGradient>
+        {isFirst && renderChoice()}
       </ImageBackground>
-
-      {isFirst && renderChoice()}
 
       <View style={styles.imageCountContainer}>
         {images.length > 1 && (
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     height: '100%',
-    zIndex: 3,
+    zIndex: 5,
     // borderWidth: 2,
   },
   leftButton: {
