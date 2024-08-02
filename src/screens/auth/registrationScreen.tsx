@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -10,6 +10,7 @@ import {
   Alert,
   StatusBar,
 } from 'react-native';
+import messaging from '@react-native-firebase/messaging';
 import * as yup from 'yup';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useForm} from 'react-hook-form';
@@ -24,6 +25,7 @@ import {
   ProfileData,
   RegisterSignUp,
   VerifyOtp,
+  updateProfileData,
 } from '../../store/Auth/auth';
 import {
   otpModal,
@@ -185,6 +187,32 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
   const [activeModal, setActiveModal] = useState<boolean>(false);
   const [stepFourErrors, setStepFourErrors] = useState(false);
   const [stepFiveErrors, setStepFiveErrors] = useState(false);
+  const [deviceToken, setDeviceToken] = useState<any>(null);
+
+  useEffect(() => {
+    requestUserPermission();
+  }, []);
+
+  const requestUserPermission = async () => {
+    try {
+      const authStatus = await messaging().requestPermission({
+        sound: true,
+        alert: true,
+        badge: true,
+      });
+      const enabled =
+        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+      if (enabled) {
+        const token = await messaging().getToken();
+        setDeviceToken(token);
+      } else {
+        console.log('Authorization status:', authStatus);
+      }
+    } catch (error) {
+      console.error('Error requesting permission:', error);
+    }
+  };
 
   const dispatch: any = useAppDispatch();
 
@@ -268,6 +296,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
                 state: state,
                 city: city,
                 email: loginwithgoogle.email,
+                deviceToken: deviceToken,
               })
             : RegisterSignUp({
                 ...data,
@@ -279,6 +308,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
                 country: country,
                 state: state,
                 city: city,
+                deviceToken: deviceToken,
               }),
         )
           .unwrap()
@@ -359,6 +389,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
                     state: state,
                     city: city,
                     email: loginwithgoogle.email,
+                    deviceToken: deviceToken,
                   })
                 : RegisterSignUp({
                     ...data,
@@ -369,6 +400,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
                     country: country,
                     state: state,
                     city: city,
+                    deviceToken: deviceToken,
                   }),
             )
               .unwrap()
@@ -428,7 +460,6 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
   //******************************************** */
 
   const onSubmit: any = async (data: RegisterForm) => {
-    console.log("data.habits1[3].optionSelected.length");
     if (steps === 4 && data.habits1.length !== 5) {
       setStepFourErrors(true);
       return;
