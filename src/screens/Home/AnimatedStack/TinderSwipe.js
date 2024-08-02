@@ -241,83 +241,113 @@ const TinderSwipe = ({
                 })
                 .reverse()}
             </View>
-            <View style={styles.icons}>
-              <TouchableOpacity
-                onPress={() => {
-                  handleChoiceCross(-1);
-                }}>
-                <Image
-                  source={require('../../../assets/images/Cross.png')}
-                  style={styles.icons3}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  handleChoiceSuperLike();
-                }}>
-                <Image
-                  source={require('../../../assets/images/Star.png')}
-                  style={styles.icons3}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  handleChoiceHeart(1);
-                }}>
-                <Image
-                  source={require('../../../assets/images/Heart.png')}
-                  style={styles.icons3}
-                />
-              </TouchableOpacity>
-            </View>
-            <ScrollView showsVerticalScrollIndicator={false}>
-              {/* Location */}
-              <View style={styles.locText}>
-                <Ionicons name="location-sharp" size={20} color="#AC25AC" />
-                <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
-                  {profileData.location && data[currentIndex]?.location
-                    ? `${Math.round(
-                        calculateDistance(
-                          profileData.location.latitude,
-                          profileData.location.longitude,
-                          data[currentIndex].location.latitude,
-                          data[currentIndex].location.longitude,
-                        ),
-                      ).toFixed(0)} miles away`
-                    : 'Distance information unavailable'}
-                </Text>
-              </View>
-              {/* Active */}
-              {isUserOnline ? (
-                <Text
-                  style={{
-                    fontSize: 16,
-                    fontFamily: 'Sansation-Regular',
-                    marginLeft: 25,
-                    marginTop: 5,
-                    color: 'green',
+            <View style={{zIndex: -1}}>
+              <View style={styles.icons}>
+                <TouchableOpacity
+                  onPress={() => {
+                    handleChoiceCross(-1);
                   }}>
-                  Active
-                </Text>
-              ) : null}
+                  <Image
+                    source={require('../../../assets/images/Cross.png')}
+                    style={styles.icons3}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    handleChoiceSuperLike();
+                  }}>
+                  <Image
+                    source={require('../../../assets/images/Star.png')}
+                    style={styles.icons3}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    handleChoiceHeart(1);
+                  }}>
+                  <Image
+                    source={require('../../../assets/images/Heart.png')}
+                    style={styles.icons3}
+                  />
+                </TouchableOpacity>
+              </View>
+              <ScrollView showsVerticalScrollIndicator={false}>
+                {/* Location */}
+                <View style={styles.locText}>
+                  <Ionicons name="location-sharp" size={20} color="#AC25AC" />
+                  <Text
+                    style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
+                    {profileData.location && data[currentIndex]?.location
+                      ? `${Math.round(
+                          calculateDistance(
+                            profileData.location.latitude,
+                            profileData.location.longitude,
+                            data[currentIndex].location.latitude,
+                            data[currentIndex].location.longitude,
+                          ),
+                        ).toFixed(0)} miles away`
+                      : 'Distance information unavailable'}
+                  </Text>
+                </View>
+                {/* Active */}
+                {isUserOnline ? (
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontFamily: 'Sansation-Regular',
+                      marginLeft: 25,
+                      marginTop: 5,
+                      color: 'green',
+                    }}>
+                    Active
+                  </Text>
+                ) : null}
 
-              {/* habits1 */}
-              <View style={styles.container}>
-                {data[currentIndex]?.habits1?.map((item, index) => {
-                  const imagePath = habits1[item.id];
+                {/* habits1 */}
+                <View style={styles.container}>
+                  {data[currentIndex]?.habits1?.map((item, index) => {
+                    const imagePath = habits1[item.id];
 
-                  return (
-                    <View key={item.id} style={styles.item}>
-                      {imagePath && (
-                        <Image
-                          source={imagePath}
-                          style={{height: 20, width: 20}}
-                        />
-                      )}
-                      <View
-                        style={{
-                          gap: 4,
-                        }}>
+                    return (
+                      <View key={item.id} style={styles.item}>
+                        {imagePath && (
+                          <Image
+                            source={imagePath}
+                            style={{height: 20, width: 20}}
+                          />
+                        )}
+                        <View
+                          style={{
+                            gap: 4,
+                          }}>
+                          {item.optionSelected.map(option => (
+                            <Text
+                              key={option} // Add key for nested items
+                              style={{
+                                fontFamily: 'Sansation-Regular',
+                                color: 'black',
+                              }}>
+                              {option}
+                            </Text>
+                          ))}
+                        </View>
+                      </View>
+                    );
+                  })}
+                </View>
+                {/* habits2 */}
+                <View style={styles.container}>
+                  {data[currentIndex]?.habits2?.map((item, index) => {
+                    const imagePath = habits2[item.id];
+
+                    return (
+                      <View key={item.id} style={styles.item}>
+                        {imagePath && (
+                          <Image
+                            source={imagePath}
+                            style={{height: 20, width: 20}}
+                          />
+                        )}
                         {item.optionSelected.map(option => (
                           <Text
                             key={option} // Add key for nested items
@@ -329,53 +359,26 @@ const TinderSwipe = ({
                           </Text>
                         ))}
                       </View>
+                    );
+                  })}
+                </View>
+                {/* PartnerType */}
+                <View style={styles.container}>
+                  {data[currentIndex]?.partnerType && (
+                    <View style={styles.item}>
+                      <Text
+                        style={{
+                          fontFamily: 'Sansation-Regular',
+                          color: 'black',
+                        }}>
+                        {data[currentIndex].partnerType}
+                      </Text>
                     </View>
-                  );
-                })}
-              </View>
-              {/* habits2 */}
-              <View style={styles.container}>
-                {data[currentIndex]?.habits2?.map((item, index) => {
-                  const imagePath = habits2[item.id];
-
-                  return (
-                    <View key={item.id} style={styles.item}>
-                      {imagePath && (
-                        <Image
-                          source={imagePath}
-                          style={{height: 20, width: 20}}
-                        />
-                      )}
-                      {item.optionSelected.map(option => (
-                        <Text
-                          key={option} // Add key for nested items
-                          style={{
-                            fontFamily: 'Sansation-Regular',
-                            color: 'black',
-                          }}>
-                          {option}
-                        </Text>
-                      ))}
-                    </View>
-                  );
-                })}
-              </View>
-              {/* PartnerType */}
-              <View style={styles.container}>
-                {data[currentIndex]?.partnerType && (
-                  <View style={styles.item}>
-                    <Text
-                      style={{
-                        fontFamily: 'Sansation-Regular',
-                        color: 'black',
-                      }}>
-                      {data[currentIndex].partnerType}
-                    </Text>
-                  </View>
-                )}
-              </View>
-              <View style={{height: 50}}></View>
-            </ScrollView>
+                  )}
+                </View>
+                <View style={{height: 50}}></View>
+              </ScrollView>
+            </View>
           </>
         ) : noProfilesLoader ? (
           <Loader />

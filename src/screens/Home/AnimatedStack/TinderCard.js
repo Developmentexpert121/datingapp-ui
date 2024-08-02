@@ -112,8 +112,8 @@ const TinderCard = ({
     <Animated.View
       style={[
         {
-          width: width - 20,
-          height: height - 400,
+          width: width - wp(5),
+          height: height - hp(64),
           position: 'absolute',
           alignItems: 'center',
           alignSelf: 'center',
