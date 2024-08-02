@@ -10,6 +10,10 @@ import {
 import React, {useCallback, useState, useEffect} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {LikeIC, NopeIC, SuperLikeIC} from '../../../assets/svgs';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
 
 const {height, width} = Dimensions.get('window');
 
@@ -25,24 +29,24 @@ const TinderCard = ({
   ...rest
 }) => {
   const rotate = swipe.x.interpolate({
-    inputRange: [-100, 0, 100],
+    inputRange: [wp(-100), 0, wp(100)],
     outputRange: ['8deg', '0deg', '-8deg'],
   });
 
   const likeOpacity = swipe.x.interpolate({
-    inputRange: [10, 100],
+    inputRange: [wp(15), wp(30)],
     outputRange: [0, 1],
     extrapolate: 'clamp',
   });
 
   const rejectOpacity = swipe.x.interpolate({
-    inputRange: [-100, -10],
+    inputRange: [wp(-30), wp(-15)],
     outputRange: [1, 0],
     extrapolate: 'clamp',
   });
 
   const superLikeOpacity = swipe.y.interpolate({
-    inputRange: [-100, -10],
+    inputRange: [wp(-30), wp(-10)],
     outputRange: [1, 0],
     extrapolate: 'clamp',
   });
@@ -159,23 +163,23 @@ const TinderCard = ({
         {isFirst && renderChoice()}
       </ImageBackground>
 
-      <View style={styles.imageCountContainer}>
-        {images.length > 1 && (
-          <View style={styles.imageCountContainer}>
-            {images.map((_, index) => (
-              <View
-                key={index}
-                style={[
-                  styles.imageIndicator,
-                  index === currentIndex
-                    ? styles.activeIndicator
-                    : styles.inactiveIndicator,
-                ]}
-              />
-            ))}
-          </View>
-        )}
-      </View>
+      {/* <View style={styles.imageCountContainer}> */}
+      {images.length > 1 && (
+        <View style={styles.imageCountContainer}>
+          {images.map((_, index) => (
+            <View
+              key={index}
+              style={[
+                styles.imageIndicator,
+                index === currentIndex
+                  ? styles.activeIndicator
+                  : styles.inactiveIndicator,
+              ]}
+            />
+          ))}
+        </View>
+      )}
+      {/* </View> */}
     </Animated.View>
   );
 };
@@ -213,7 +217,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     zIndex: 5,
-    // borderWidth: 2,
   },
   leftButton: {
     width: '50%',
@@ -233,7 +236,7 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   imageIndicator: {
-    width: 50,
+    width: wp(12),
     height: 10,
     borderRadius: 5,
     marginHorizontal: 5,

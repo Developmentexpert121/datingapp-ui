@@ -44,7 +44,7 @@ const LikedScreen = () => {
       const response = await dispatch(likedMe({id: profileData._id})).unwrap();
       setLikeData(response.users);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('Error fetching data:33', error);
     } finally {
       setLoading(false);
     }

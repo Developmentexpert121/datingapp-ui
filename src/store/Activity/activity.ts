@@ -30,7 +30,7 @@ export const footerStatus = createAsyncThunk(
 export const videoCallUser = createAsyncThunk(
   'activityLoader/videoCallUser',
   async (data: any) => {
-    console.log('8972348762374576');
+    // console.log('8972348762374576');
     return data;
   },
 );
