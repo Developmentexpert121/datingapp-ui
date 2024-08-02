@@ -25,7 +25,6 @@ const VideoCallRedirect = () => {
   const [client, setClient] = useState<StreamVideoClient | null>(null);
   const [call, setCall] = useState<Call | any>(null);
   const [callType, setCallType] = useState('videoCall');
-  // console.log('Call Call', call);
 
   useEffect(() => {
     if (profileData) {
@@ -82,7 +81,6 @@ const VideoCallRedirect = () => {
 
       myCall.on('call.ended', (event: any) => {
         // myCall.leave();
-        console.log('ThirdThirdThirdThirdThird');
         handleCallEnd();
       });
 

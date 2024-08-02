@@ -12,7 +12,6 @@ const getTokenForUser = async (userId: any) => {
     const response = await http.post(`/user/stream-chat/token`, userId);
 
     if (response.status === 200) {
-      console.log('uououououououupupupupupupu', response.data);
       return response.data;
     }
   } catch (error: any) {

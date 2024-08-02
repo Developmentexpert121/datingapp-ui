@@ -42,7 +42,6 @@ const App = () => {
         console.log('App Connected from server');
         const userId = profileData?._id;
         socket.emit('user_connected', userId);
-        // console.log('ahsdgjuhgdgsu', userId);
       });
     }
 
@@ -74,7 +73,6 @@ const App = () => {
   useEffect(() => {
     dispatch(onlineUser(onlineUsers));
   }, [onlineUsers, dispatch]);
-  // console.log('onlineUsers', onlineUsers);
   useEffect(() => {
     dispatch(activityLoaderStarted());
     dispatch(ProfileData())
