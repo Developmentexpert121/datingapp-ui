@@ -14,6 +14,7 @@ import TinderCard from './TinderCard';
 import {useAppDispatch, useAppSelector} from '../../../store/store';
 import {likedAUser, superLiked} from '../../../store/Auth/auth';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useNavigation} from '@react-navigation/native';
 import Loader from '../../../components/Loader/Loader';
 
 const {height, width} = Dimensions.get('window');
@@ -25,6 +26,7 @@ const TinderSwipe = ({
   profileData,
   setData,
 }) => {
+  const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const [nextIndex, setNextIndex] = useState(currentIndex + 1);
   const [loader, setLoader] = useState(false);
@@ -88,14 +90,22 @@ const TinderSwipe = ({
         likerId: profileData?._id,
         userIdBeingLiked: data[currentIndex]?._id,
       }),
-    );
-    const targetX = hiddenTranslateX;
-    translateX.value = withSpring(targetX);
-    setTimeout(() => {
-      const updatedUsers = [...data];
-      updatedUsers.splice(currentIndex, 1);
-      setData(updatedUsers);
-    }, 1000);
+    )
+      .unwrap()
+      .then(res => {
+        console.log('awdawd', res);
+        if (res.success === true) {
+          const targetX = hiddenTranslateX;
+          translateX.value = withSpring(targetX);
+          setTimeout(() => {
+            const updatedUsers = [...data];
+            updatedUsers.splice(currentIndex, 1);
+            setData(updatedUsers);
+          }, 1000);
+        } else {
+          navigation.navigate('Subscriptions');
+        }
+      });
   };
 
   const onSwipeTop = async () => {
@@ -104,14 +114,22 @@ const TinderSwipe = ({
         likerId: profileData?._id,
         userIdBeingLiked: data[currentIndex]?._id,
       }),
-    );
-    const targetX = hiddenTranslateX;
-    translateX.value = withSpring(targetX);
-    setTimeout(() => {
-      const updatedUsers = [...data];
-      updatedUsers.splice(currentIndex, 1);
-      setData(updatedUsers);
-    }, 1000);
+    )
+      .unwrap()
+      .then(res => {
+        console.log('awdawd', res.success);
+        if (res.success === true) {
+          const targetX = hiddenTranslateX;
+          translateX.value = withSpring(targetX);
+          setTimeout(() => {
+            const updatedUsers = [...data];
+            updatedUsers.splice(currentIndex, 1);
+            setData(updatedUsers);
+          }, 1000);
+        } else {
+          navigation.navigate('Subscriptions');
+        }
+      });
   };
 
   const onSwipeLeft = async () => {
