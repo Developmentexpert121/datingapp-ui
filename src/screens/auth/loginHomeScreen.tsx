@@ -10,6 +10,7 @@ import {
   Platform,
   Alert,
 } from 'react-native';
+import messaging from '@react-native-firebase/messaging';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../types';
 import {AppleIC, FacebookIC, GoogleIC} from '../../assets/svgs';
@@ -22,7 +23,12 @@ import {setLocalStorage} from '../../api/storage';
 import {setAuthentication} from '../../store/reducer/authSliceState';
 import {googleLogin, onAppleButtonPress} from '../../store/Auth/socialLogin';
 import {userProfileDataChange} from '../../store/slice/myProfileSlice/myProfileSlice';
-import {AppleLogin, GoogleLogin, ProfileData} from '../../store/Auth/auth';
+import {
+  AppleLogin,
+  GoogleLogin,
+  ProfileData,
+  updateProfileData,
+} from '../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getProfile} from '../../store/slice/myProfileSlice/myProfileAction';
 import {
@@ -56,6 +62,32 @@ const LoginHomeScreen: React.FC<Props> = () => {
     otherParam: 'anything you want here',
   };
   // **************
+  const [deviceToken, setDeviceToken] = useState<any>(null);
+
+  useEffect(() => {
+    requestUserPermission();
+  }, []);
+
+  const requestUserPermission = async () => {
+    try {
+      const authStatus = await messaging().requestPermission({
+        sound: true,
+        alert: true,
+        badge: true,
+      });
+      const enabled =
+        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+      if (enabled) {
+        const token = await messaging().getToken();
+        setDeviceToken(token);
+      } else {
+        console.log('Authorization status:', authStatus);
+      }
+    } catch (error) {
+      console.error('Error requesting permission:', error);
+    }
+  };
 
   const handleNavigation = (response: any) => {
     if (!response.payload?.data.otpVerified) {
@@ -70,6 +102,7 @@ const LoginHomeScreen: React.FC<Props> = () => {
   };
   // Google Login
   const handleGoogleLogin = async () => {
+    console.log('Called');
     setLoader(true);
     try {
       let userInfo = await googleLogin();
@@ -89,7 +122,7 @@ const LoginHomeScreen: React.FC<Props> = () => {
           role: 'U',
           email: email,
           socialId: id,
-          deviceToken: 'abcde',
+          deviceToken: deviceToken,
           name: name,
           photo: photo,
         };
@@ -157,7 +190,8 @@ const LoginHomeScreen: React.FC<Props> = () => {
             role: 'U',
             email: userInfo?.email,
             socialId: userInfo?.sub,
-            deviceToken: 'abcde', // Replace with actual device token if available
+            deviceToken: deviceToken,
+            // Replace with actual device token if available
           };
 
           // Dispatch the user sign-up action with the login payload
