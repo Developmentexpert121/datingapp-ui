@@ -74,7 +74,7 @@ const ChatSection = () => {
         setChatListData(response);
         setInitialLoading(false);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching data:11', error);
         setInitialLoading(false);
       }
     };
@@ -124,7 +124,7 @@ const ChatSection = () => {
         }),
       ).unwrap();
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('Error fetching data:22', error);
     }
   };
   // UnBlock

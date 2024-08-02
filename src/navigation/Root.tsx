@@ -127,15 +127,15 @@ const Root = () => {
     }
   };
 
-  const getUserId = async () => {
-    try {
-      const userId: any = await AsyncStorage.getItem('userId');
-      return userId ? JSON.parse(userId) : null;
-    } catch (error) {
-      console.error('Error fetching user ID:', error);
-      return null;
-    }
-  };
+  // const getUserId = async () => {
+  //   try {
+  //     const userId: any = await AsyncStorage.getItem('userId');
+  //     return userId ? JSON.parse(userId) : null;
+  //   } catch (error) {
+  //     console.error('Error fetching user ID:', error);
+  //     return null;
+  //   }
+  // };
 
   useEffect(() => {
     fetchAuthToken();
