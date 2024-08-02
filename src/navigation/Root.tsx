@@ -168,7 +168,6 @@ const Root = () => {
           offlineAccess: true,
         });
         if (profileData.deviceToken[0] === deviceToken) {
-          // console.log('Called Main');
           dispatch(
             getNotifications({
               userId: profileData?._id,
@@ -177,7 +176,6 @@ const Root = () => {
           );
         } else {
           try {
-            console.log('Called');
             // Ensure Google Sign-In is configured
             if (!GoogleSignin.hasPlayServices()) {
               console.error('Google Play Services are not available');

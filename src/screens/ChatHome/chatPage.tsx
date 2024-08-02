@@ -300,7 +300,6 @@ const ChatPage = ({
                 {isLoading && <LoadingIndicator />}
                 {/*  */}
                 {chatMessages?.map((messageItem: any, index: any) => {
-                  // console.log('chatMessages ', chatMessages);
                   const isTextMessage = !messageItem.uri;
 
                   const isAuthMessage =

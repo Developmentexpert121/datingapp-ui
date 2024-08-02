@@ -29,11 +29,7 @@ const LikedScreen = () => {
   const [likeData, setLikeData] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const navigation: any = useNavigation();
-
-  console.log(likeData);
-
   const goToChatWith = async (user: any) => {
-    console.log('user--------', user);
     await dispatch(videoCallUser({user: user}))
       .unwrap()
       .then(() => navigation.navigate('ChatSection'));
@@ -68,6 +64,7 @@ const LikedScreen = () => {
       )
         .unwrap()
         .then(() => goToChatWith(item));
+      console.log(':::::::::::::::::::::');
     }
   };
 
