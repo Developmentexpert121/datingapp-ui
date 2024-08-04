@@ -26,9 +26,7 @@ const schema = yup.object().shape({
   email: yup.string().email('Invalid email').required('Email is required'),
 });
 
-type Props = NativeStackScreenProps<RootStackParamList, 'ForgotPassword'>;
-
-const ForgotPassword: React.FC<Props> = ({navigation}) => {
+const ForgotPassword = () => {
   const dispatch: any = useAppDispatch();
   const [email, setEmail] = useState('');
   const [loader, setLoader] = useState<boolean>(false);

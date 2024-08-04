@@ -45,12 +45,21 @@ export const authSice = createSlice({
   },
 });
 
+export const clientData = createAsyncThunk(
+  'activityLoader/clientData',
+  async (data: any) => {
+    // console.log('8972348762374576');
+    return data;
+  },
+);
+
 const ActivityLoader: any = createSlice({
   name: 'activityLoader',
   initialState: {
     loading: false,
     footerStatus: 'HOME',
     user: null,
+    clientData: null,
   },
   reducers: {},
   extraReducers: builder => {
@@ -79,7 +88,13 @@ const ActivityLoader: any = createSlice({
       })
       .addCase(videoCallUser?.fulfilled, (state: any, action: any) => {
         state.user = action.payload.user;
-      });
+      })
+      .addCase(clientData.pending, state => {})
+      .addCase(clientData.fulfilled, (state: any, action: any) => {
+        state.loading = false;
+        state.clientData = action.payload;
+      })
+      .addCase(clientData.rejected, state => {});
   },
 });
 

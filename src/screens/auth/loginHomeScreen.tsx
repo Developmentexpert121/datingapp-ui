@@ -41,8 +41,7 @@ interface AppleAuthResponse {
   identityToken: string | null;
   authorizationCode: string | null;
 }
-type Props = NativeStackScreenProps<RootStackParamList, 'Loginhome'>;
-const LoginHomeScreen: React.FC<Props> = () => {
+const LoginHomeScreen = () => {
   const [state, setState] = useState<string>('');
   const [userInfo, setUserInfo] = useState<null>(null);
   const dispatch: any = useAppDispatch();

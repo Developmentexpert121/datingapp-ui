@@ -1,8 +1,11 @@
 // AppDelegate.m
 
 #import "AppDelegate.h"
-#import <React/RCTBundleURLProvider.h>
+#import "RNCallKeep.h"
+#import <PushKit/PushKit.h>
+#import "RNVoipPushNotificationManager.h"
 #import "StreamVideoReactNative.h"
+#import <React/RCTBundleURLProvider.h>
 #import "RNSplashScreen.h"
 #import <AuthenticationServices/AuthenticationServices.h>
 #import <SafariServices/SafariServices.h>
@@ -11,9 +14,7 @@
 #import <FirebaseCore/FirebaseCore.h>
 #import <FirebaseMessaging/FirebaseMessaging.h>
 #import <UserNotifications/UserNotifications.h>
-#import "RNCallKeep.h"
-#import <PushKit/PushKit.h>
-#import "RNVoipPushNotificationManager.h"
+
 
 @interface AppDelegate () <UNUserNotificationCenterDelegate, FIRMessagingDelegate>
 @end
@@ -38,6 +39,8 @@
       // pass @YES here if you want the call to be shown in calls history in the built-in dialer app
       @"includesCallsInRecents": @NO,
     }];
+  
+  [RNVoipPushNotificationManager voipRegistration];
 
   // Request notification permissions
   if (@available(iOS 10.0, *)) {
@@ -56,7 +59,7 @@
     [UIUserNotificationSettings settingsForTypes:allNotificationTypes categories:nil];
     [application registerUserNotificationSettings:settings];
   }
-  [RNVoipPushNotificationManager voipRegistration];
+  
   [application registerForRemoteNotifications];
   [FIRMessaging messaging].delegate = self;
 

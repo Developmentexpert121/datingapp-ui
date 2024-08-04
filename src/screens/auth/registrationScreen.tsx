@@ -160,7 +160,7 @@ const schema7 = yup.object().shape({
   hobbies: yup.string().trim().required('Photos are required'),
 });
 
-const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
+const RegisterScreen = () => {
   const otpVerified = useAppSelector(
     (state: any) => state?.Auth?.data?.otpVerified,
   );
@@ -428,7 +428,7 @@ const RegisterScreen: React.FC<Props> = ({navigation: {navigate, goBack}}) => {
   //******************************************** */
 
   const onSubmit: any = async (data: RegisterForm) => {
-    console.log("data.habits1[3].optionSelected.length");
+    console.log('data.habits1[3].optionSelected.length');
     if (steps === 4 && data.habits1.length !== 5) {
       setStepFourErrors(true);
       return;

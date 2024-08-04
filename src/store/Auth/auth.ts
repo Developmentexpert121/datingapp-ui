@@ -21,15 +21,41 @@ export const ProfileData: any = createAsyncThunk(
   async () => {
     try {
       const response: any = await http.get(`/user/profile`);
+      console.log('response', response);
       if (response.status === 200) {
+        await AsyncStorage.setItem(
+          'profileData',
+          JSON.stringify(response.data),
+        );
+
         return response.data;
       }
     } catch (error: any) {
+      console.log('error', error);
       // if (error.response && error.response.status === 400) {
 
       return {error: 'Bad Request'};
     }
     // }
+  },
+);
+export const setAuthData: any = createAsyncThunk(
+  'auth/setAuthData',
+  async () => {
+    try {
+      const authToken: any = await AsyncStorage.getItem('authToken');
+      const userId: any = await AsyncStorage.getItem('userId');
+      const profileData: any = await AsyncStorage.getItem('profileData');
+
+      const authTokenRes = JSON.parse(authToken);
+      const userIdRes = JSON.parse(userId);
+      const profileRes = JSON.parse(profileData);
+
+      console.log('test', authTokenRes, userIdRes);
+      return {token: authTokenRes, userId: userIdRes, profileRes: profileRes};
+    } catch (error: any) {
+      return {error: 'Bad Request'};
+    }
   },
 );
 
@@ -814,6 +840,7 @@ const initialState = {
   token: null,
   isAuthenticated: false,
   loading: false,
+  authLoading: true,
 };
 const Auth: any = createSlice({
   name: 'auth',
@@ -874,6 +901,20 @@ const Auth: any = createSlice({
       })
       .addCase(LoginSignIn.rejected, (state, action) => {
         state.loading = false;
+      })
+      .addCase(setAuthData.pending, (state, action) => {
+        state.authLoading = true;
+      })
+      .addCase(setAuthData.fulfilled, (state, action) => {
+        console.log(action.payload.token, 'action');
+        state.data.profileData = action.payload.profileRes;
+        state.token = action?.payload?.token;
+        state.data.signin = {data: {_id: action?.payload?.userId}};
+
+        state.authLoading = false;
+      })
+      .addCase(setAuthData.rejected, (state, action) => {
+        state.authLoading = false;
       })
       // RegisterSignUp
       .addCase(RegisterSignUp.pending, (state, action) => {

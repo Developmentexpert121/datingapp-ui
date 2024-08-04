@@ -10,6 +10,9 @@ import {useAppDispatch, useAppSelector} from '../../store/store';
 import uuid from 'react-native-uuid';
 import {videoCallToken} from '../../store/Auth/auth';
 import VideoCallInterface from './chatVideoInterface';
+import {io} from 'socket.io-client';
+import {onlineUser} from '../../store/reducer/authSliceState';
+const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 
 const VideoCallRedirect = () => {
   const user: any = useAppSelector((state: any) => state?.ActivityLoader?.user);
@@ -18,7 +21,15 @@ const VideoCallRedirect = () => {
     (state: any) => state?.Auth?.data?.profileData,
   );
 
+  const clientData: any = useAppSelector(
+    (state: any) => state?.ActivityLoader?.clientData,
+  );
+
+  console.log('--------', clientData);
+
   const callId: any = uuid.v4();
+
+  const [onlineUsers, setOnlineUsers] = useState<any>([]);
   const [enableCamera, setEnableCamera] = useState<boolean>(true);
   const [enableCamera1, setEnableCamera1] = useState<boolean>(false);
   const [activeScreen, setActiveScreen] = useState('home');
@@ -26,6 +37,30 @@ const VideoCallRedirect = () => {
   const [call, setCall] = useState<Call | any>(null);
   const [callType, setCallType] = useState('videoCall');
   // console.log('Call Call', call);
+
+  useEffect(() => {
+    socket.on('user_online', users => {
+      setOnlineUsers(users);
+    });
+
+    socket.on('user_offline', users => {
+      setOnlineUsers(users);
+    });
+
+    socket.on('disconnect', () => {
+      console.log('App Disconnected from server');
+    });
+
+    return () => {
+      socket.off('user_online');
+      socket.off('user_offline');
+      socket.off('disconnect');
+    };
+  }, []);
+
+  useEffect(() => {
+    dispatch(onlineUser(onlineUsers));
+  }, [onlineUsers]);
 
   useEffect(() => {
     if (profileData) {
@@ -58,6 +93,12 @@ const VideoCallRedirect = () => {
     }
   }, [profileData]);
 
+  useEffect(() => {
+    if (clientData) {
+      setClient(clientData);
+    }
+  }, [clientData]);
+
   const handleCallEnd = useCallback(() => {
     setActiveScreen('home');
     setCall(null);
@@ -65,6 +106,7 @@ const VideoCallRedirect = () => {
 
   const goToCallScreen = useCallback(
     (type: any) => {
+      console.log('CAll create hit ==>', type);
       if (!client) return;
       const myCall: any = client.call(
         type === 'videoCall' ? 'default' : 'audio_call',

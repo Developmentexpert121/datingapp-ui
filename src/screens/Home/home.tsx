@@ -12,6 +12,8 @@ import NotificationScreen from '../Notification/notification';
 import TinderSwipe from './AnimatedStack/TinderSwipe';
 import Geolocation from '@react-native-community/geolocation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {io} from 'socket.io-client';
+const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 
 const getUserId = async () => {
   try {
@@ -75,6 +77,19 @@ const HomeScreen = () => {
         setCheckedRelationShip(res.data.partnerType);
         setTrigger(true);
       });
+  }, []);
+
+  useEffect(() => {
+    socket.emit('user_connected', profileData?._id);
+    socket.on('connect', () => {
+      console.log('App Connected from server');
+      const userId = profileData?._id;
+      socket.emit('user_connected', profileData?._id);
+      // console.log('ahsdgjuhgdgsu', userId);
+    });
+    return () => {
+      socket.off('connect');
+    };
   }, []);
 
   useEffect(() => {

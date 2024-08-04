@@ -36,7 +36,7 @@ interface LoginForm {
   password: string;
 }
 
-const LoginScreen: React.FC<Props> = ({navigation: {navigate}}) => {
+const LoginScreen = () => {
   const dispatch: any = useAppDispatch();
   const navigation = useNavigation();
   const [loader, setLoader] = useState<boolean>(false);
