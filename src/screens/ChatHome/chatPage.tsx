@@ -12,9 +12,11 @@ import {
   Keyboard,
   ActivityIndicator,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {Avatar} from 'react-native-elements';
 import {RootState, useAppDispatch, useAppSelector} from '../../store/store';
 import {
@@ -29,6 +31,9 @@ import {
   ImageLibraryOptions,
   Asset,
 } from 'react-native-image-picker';
+import {CameraRoll} from '@react-native-camera-roll/camera-roll';
+import {check, request, PERMISSIONS} from 'react-native-permissions';
+import RNFS from 'react-native-fs';
 
 const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 
@@ -218,6 +223,36 @@ const ChatPage = ({
       }),
     );
   };
+
+  const saveImageToGallery = async (url: string) => {
+    try {
+      // Check permission
+      const permission = await check(
+        PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+      );
+      if (permission !== 'granted') {
+        await request(PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE);
+      }
+
+      const fileName = url.split('/').pop() || 'image.jpg';
+      const downloadDest = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+      const result = await RNFS.downloadFile({
+        fromUrl: url,
+        toFile: downloadDest,
+      }).promise;
+
+      if (result.statusCode === 200) {
+        await CameraRoll.save(downloadDest, {type: 'photo'});
+        Alert.alert('Save Complete', downloadDest);
+      } else {
+        Alert.alert('Save Failed', 'There was a problem saving the image.');
+      }
+    } catch (error) {
+      console.error('Error saving image:', error);
+      Alert.alert('Error', 'Failed to save image.');
+    }
+  };
+
   return (
     <>
       <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
@@ -386,10 +421,37 @@ const ChatPage = ({
                               </Text>
                             ) : (
                               isAuthMessage && (
-                                <Image
-                                  source={{uri: messageItem.uri}}
-                                  style={styles.sharedImage}
-                                />
+                                <View>
+                                  <Image
+                                    source={{uri: messageItem.uri}}
+                                    style={[
+                                      styles.sharedImage,
+                                      {position: 'relative'},
+                                    ]}
+                                  />
+                                  <View
+                                    style={{
+                                      backgroundColor: 'white',
+                                      alignSelf: 'flex-start',
+                                      padding: 2,
+                                      borderRadius: 4,
+                                      position: 'absolute',
+                                      top: 0,
+                                      right: 0,
+                                      margin: 4,
+                                    }}>
+                                    <TouchableOpacity
+                                      onPress={() =>
+                                        saveImageToGallery(messageItem.uri)
+                                      }>
+                                      <FontAwesome
+                                        name="download"
+                                        color="black"
+                                        size={20}
+                                      />
+                                    </TouchableOpacity>
+                                  </View>
+                                </View>
                               )
                             )}
                           </View>
@@ -526,5 +588,10 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     borderRadius: 8,
+  },
+  downloadText: {
+    color: '#007BFF',
+    fontSize: 14,
+    marginTop: 5,
   },
 });
