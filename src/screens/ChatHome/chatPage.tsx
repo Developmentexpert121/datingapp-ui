@@ -243,7 +243,7 @@ const ChatPage = ({
 
       if (result.statusCode === 200) {
         await CameraRoll.save(downloadDest, {type: 'photo'});
-        Alert.alert('Save Complete', downloadDest);
+        Alert.alert('Save Complete', 'Image saved to Gallery');
       } else {
         Alert.alert('Save Failed', 'There was a problem saving the image.');
       }

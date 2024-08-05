@@ -127,16 +127,6 @@ const Root = () => {
     }
   };
 
-  // const getUserId = async () => {
-  //   try {
-  //     const userId: any = await AsyncStorage.getItem('userId');
-  //     return userId ? JSON.parse(userId) : null;
-  //   } catch (error) {
-  //     console.error('Error fetching user ID:', error);
-  //     return null;
-  //   }
-  // };
-
   useEffect(() => {
     fetchAuthToken();
   }, []);
@@ -146,9 +136,15 @@ const Root = () => {
   }, [authToken, profileData]);
 
   useEffect(() => {
-    if (authToken) {
-      dispatch(ProfileData());
-    }
+    const intervalId = setInterval(() => {
+      console.log('Polling for profile data');
+      if (authToken) {
+        console.log('Called');
+        dispatch(ProfileData());
+      }
+    }, 10000); // 10 seconds
+
+    return () => clearInterval(intervalId); // Clear interval on component unmount
   }, [authToken]);
 
   const authTokenRemove: any = async () => {
@@ -160,7 +156,9 @@ const Root = () => {
   };
 
   useEffect(() => {
+    console.log('first');
     if (profileData && deviceToken) {
+      console.log('second');
       const getId = async () => {
         await GoogleSignin.configure({
           webClientId:
