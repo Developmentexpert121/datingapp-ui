@@ -17,7 +17,11 @@ import {useNavigation} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Avatar} from 'react-native-elements';
 import {RootState, useAppDispatch, useAppSelector} from '../../store/store';
-import {reciveMessages, sendAMessage} from '../../store/Auth/auth';
+import {
+  reciveMessages,
+  sendAMessage,
+  uploadImages,
+} from '../../store/Auth/auth';
 import io from 'socket.io-client';
 import {PhoneCallIC, SendIC, VideoIC} from '../../assets/svgs';
 import {
@@ -161,18 +165,31 @@ const ChatPage = ({
     </View>
   );
 
-  const handleMediaSelection = () => {
+  const handleMediaSelection = async () => {
     const options: ImageLibraryOptions = {
       mediaType: 'mixed',
     };
 
-    launchImageLibrary(options, response => {
+    launchImageLibrary(options, async response => {
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.errorCode) {
         console.error('ImagePicker Error: ', response.errorMessage);
       } else if (response.assets && response.assets.length > 0) {
-        handleFileSend(response.assets[0]);
+        const asset = response.assets[0];
+        const formData = new FormData();
+        formData.append('image', {
+          name: asset.fileName,
+          fileName: asset.fileName,
+          type: asset.type,
+          uri: asset.uri,
+        });
+
+        const uploadedImageUrl = await dispatch(uploadImages(formData))
+          .unwrap()
+          .then((response: any) => response.secureUrl);
+
+        handleFileSend(uploadedImageUrl);
       }
     });
   };
@@ -181,9 +198,9 @@ const ChatPage = ({
     const newMessage = {
       sender: profileData._id,
       receiver: user?._id,
-      fileType: file.type || 'unknown',
-      uri: file.uri || '',
-      name: file.fileName || 'unknown',
+      fileType: typeof file || 'unknown',
+      uri: file || '',
+      name: file || 'unknown',
       timestamp: new Date().toISOString(),
     };
 
@@ -194,13 +211,13 @@ const ChatPage = ({
       sendAMessage({
         senderId: profileData?._id,
         receiverId: user?._id,
-        message: file.fileName || 'unknown',
-        fileUri: file.uri || '',
-        fileType: file.type || 'unknown',
+        message: file || 'unknown',
+        uri: file || '',
+        fileType: typeof file || 'unknown',
+        timestamp: new Date().toISOString(),
       }),
     );
   };
-
   return (
     <>
       <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
@@ -248,7 +265,7 @@ const ChatPage = ({
               <View style={{flexDirection: 'row', marginEnd: 10, width: '25%'}}>
                 <TouchableOpacity
                   onPress={
-                    profileData?.plan !== 'Free'
+                    profileData?.plan === 'Free'
                       ? () => {
                           navigation.navigate('Subscriptions');
                         }
@@ -267,7 +284,7 @@ const ChatPage = ({
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={
-                    profileData?.plan !== 'Free'
+                    profileData?.plan === 'Free'
                       ? () => {
                           navigation.navigate('Subscriptions');
                         }
@@ -301,7 +318,6 @@ const ChatPage = ({
                 {/*  */}
                 {chatMessages?.map((messageItem: any, index: any) => {
                   const isTextMessage = !messageItem.uri;
-
                   const isAuthMessage =
                     messageItem.receiver === user?._id ||
                     messageItem.sender === user?._id;
