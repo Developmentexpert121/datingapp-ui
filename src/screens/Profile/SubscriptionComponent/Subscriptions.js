@@ -31,8 +31,8 @@ const subscriptionSkus = Platform.select({
   ],
   android: [
     '15.99toptierdating',
-    // 'toptierdatingmonthly29.99',
-    // 'toptierdatingpremiumplus59.99',
+    'toptierdatingmonthly29.99',
+    'toptierdatingpremiumplus59.99',
   ],
 });
 
@@ -73,14 +73,25 @@ const SubscriptionsScreen = ({navigation}) => {
     try {
       console.log('Initiating purchase for:', productId);
       setLoading(true); // Enable loading indicator
+
+      // Check if productId is a valid SKU
+      if (!productId || typeof productId !== 'string') {
+        throw new Error('Invalid productId');
+      }
+
       await requestSubscription(productId);
     } catch (error) {
       console.log('Error in handleBuySubscription:', error);
+
       if (error instanceof PurchaseError) {
         console.log('PurchaseError:', error);
+      } else if (error instanceof TypeError) {
+        console.log('TypeError:', error.message);
+        console.log('Error details:', error);
       } else {
         console.log('Unexpected error:', error);
       }
+
       setLoading(false); // Disable loading indicator on error
     }
   };
