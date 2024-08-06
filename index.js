@@ -7,6 +7,9 @@ import {Settings} from 'react-native-fbsdk-next';
 import {setPushConfig} from './src/utils/setPushConfig';
 
 Settings.initializeSDK();
+if (__DEV__) {
+  require('./ReactotronConfig');
+}
 
 const Root = () => (
   <Provider store={store}>
