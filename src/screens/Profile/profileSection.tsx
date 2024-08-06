@@ -148,11 +148,11 @@ const ProfileSection: React.FC = () => {
             </TouchableOpacity>
           </View>
           <View style={styles.userInfo}>
-            <Text style={styles.userName}>{profileData.name}</Text>
+            <Text style={styles.userName}>{profileData?.name}</Text>
             <View style={styles.userLocationContainer}>
               <Ionicons name="location" size={20} color="#AC25AC" />
               <Text style={styles.userLocationText}>
-                {profileData.city}, {profileData.country}
+                {profileData?.city}, {profileData?.country}
               </Text>
             </View>
           </View>

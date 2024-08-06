@@ -93,7 +93,7 @@ const HomeScreen = () => {
   }, []);
 
   useEffect(() => {
-    profileData._id &&
+    profileData?._id &&
       dispatch(
         getAllUsers({
           userId: profileData._id,

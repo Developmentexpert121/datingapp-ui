@@ -20,6 +20,7 @@ import {
   deleteUser,
   logoutUser,
   resetAuth,
+  updateAuthentication,
   updateProfileData,
 } from '../../store/Auth/auth';
 import Geolocation from '@react-native-community/geolocation';
@@ -150,6 +151,8 @@ const SettingsSection = () => {
   const authTokenRemove: any = async () => {
     try {
       await AsyncStorage.removeItem('authToken');
+      await AsyncStorage.removeItem('userId');
+      await AsyncStorage.removeItem('profileData');
     } catch (error) {
       return null;
     }
@@ -222,8 +225,9 @@ const SettingsSection = () => {
       if (isSignedIn) {
         await GoogleSignin.signOut();
       }
-      dispatch(logoutUser({senderId: profileData._id}));
+      // dispatch(logoutUser({senderId: profileData._id}));
       await authTokenRemove();
+      dispatch(updateAuthentication());
       await StreamVideoRN.onPushLogout();
     } catch (error) {
       console.error('errorLogoutUserButton', error);
@@ -241,6 +245,7 @@ const SettingsSection = () => {
             await GoogleSignin.signOut();
           }
           dispatch(logoutUser({senderId: profileData._id}));
+          dispatch(updateAuthentication());
           await authTokenRemove();
         } catch (error) {
           console.error(error, 'error');

@@ -196,9 +196,9 @@ PODS:
     - nanopb/encode (= 2.30910.0)
   - nanopb/decode (2.30910.0)
   - nanopb/encode (2.30910.0)
-  - OneSignalXCFramework (5.2.1):
-    - OneSignalXCFramework/OneSignalComplete (= 5.2.1)
-  - OneSignalXCFramework/OneSignal (5.2.1):
+  - OneSignalXCFramework (5.2.2):
+    - OneSignalXCFramework/OneSignalComplete (= 5.2.2)
+  - OneSignalXCFramework/OneSignal (5.2.2):
     - OneSignalXCFramework/OneSignalCore
     - OneSignalXCFramework/OneSignalExtension
     - OneSignalXCFramework/OneSignalLiveActivities
@@ -206,38 +206,38 @@ PODS:
     - OneSignalXCFramework/OneSignalOSCore
     - OneSignalXCFramework/OneSignalOutcomes
     - OneSignalXCFramework/OneSignalUser
-  - OneSignalXCFramework/OneSignalComplete (5.2.1):
+  - OneSignalXCFramework/OneSignalComplete (5.2.2):
     - OneSignalXCFramework/OneSignal
     - OneSignalXCFramework/OneSignalInAppMessages
     - OneSignalXCFramework/OneSignalLocation
-  - OneSignalXCFramework/OneSignalCore (5.2.1)
-  - OneSignalXCFramework/OneSignalExtension (5.2.1):
+  - OneSignalXCFramework/OneSignalCore (5.2.2)
+  - OneSignalXCFramework/OneSignalExtension (5.2.2):
     - OneSignalXCFramework/OneSignalCore
     - OneSignalXCFramework/OneSignalOutcomes
-  - OneSignalXCFramework/OneSignalInAppMessages (5.2.1):
+  - OneSignalXCFramework/OneSignalInAppMessages (5.2.2):
     - OneSignalXCFramework/OneSignalCore
     - OneSignalXCFramework/OneSignalNotifications
     - OneSignalXCFramework/OneSignalOSCore
     - OneSignalXCFramework/OneSignalOutcomes
     - OneSignalXCFramework/OneSignalUser
-  - OneSignalXCFramework/OneSignalLiveActivities (5.2.1):
+  - OneSignalXCFramework/OneSignalLiveActivities (5.2.2):
     - OneSignalXCFramework/OneSignalCore
     - OneSignalXCFramework/OneSignalOSCore
     - OneSignalXCFramework/OneSignalUser
-  - OneSignalXCFramework/OneSignalLocation (5.2.1):
+  - OneSignalXCFramework/OneSignalLocation (5.2.2):
     - OneSignalXCFramework/OneSignalCore
     - OneSignalXCFramework/OneSignalNotifications
     - OneSignalXCFramework/OneSignalOSCore
     - OneSignalXCFramework/OneSignalUser
-  - OneSignalXCFramework/OneSignalNotifications (5.2.1):
+  - OneSignalXCFramework/OneSignalNotifications (5.2.2):
     - OneSignalXCFramework/OneSignalCore
     - OneSignalXCFramework/OneSignalExtension
     - OneSignalXCFramework/OneSignalOutcomes
-  - OneSignalXCFramework/OneSignalOSCore (5.2.1):
+  - OneSignalXCFramework/OneSignalOSCore (5.2.2):
     - OneSignalXCFramework/OneSignalCore
-  - OneSignalXCFramework/OneSignalOutcomes (5.2.1):
+  - OneSignalXCFramework/OneSignalOutcomes (5.2.2):
     - OneSignalXCFramework/OneSignalCore
-  - OneSignalXCFramework/OneSignalUser (5.2.1):
+  - OneSignalXCFramework/OneSignalUser (5.2.2):
     - OneSignalXCFramework/OneSignalCore
     - OneSignalXCFramework/OneSignalNotifications
     - OneSignalXCFramework/OneSignalOSCore
@@ -1138,9 +1138,9 @@ PODS:
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
-  - react-native-config (1.5.2):
-    - react-native-config/App (= 1.5.2)
-  - react-native-config/App (1.5.2):
+  - react-native-config (1.5.3):
+    - react-native-config/App (= 1.5.3)
+  - react-native-config/App (1.5.3):
     - React-Core
   - react-native-fbsdk-next (13.0.0):
     - React-Core
@@ -1157,7 +1157,7 @@ PODS:
     - FBSDKGamingServicesKit (~> 17.0.0)
     - FBSDKShareKit (~> 17.0.0)
     - React-Core
-  - react-native-geolocation (3.2.1):
+  - react-native-geolocation (3.3.0):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1169,16 +1169,16 @@ PODS:
     - React-Core
   - react-native-netinfo (9.5.0):
     - React-Core
-  - react-native-onesignal (5.2.1):
-    - OneSignalXCFramework (= 5.2.1)
+  - react-native-onesignal (5.2.2):
+    - OneSignalXCFramework (= 5.2.2)
     - React (< 1.0.0, >= 0.13.0)
-  - react-native-safe-area-context (4.10.5):
+  - react-native-safe-area-context (4.10.8):
     - React-Core
   - react-native-splash-screen (3.3.0):
     - React-Core
   - react-native-version-check (3.4.7):
     - React-Core
-  - react-native-webview (13.10.4):
+  - react-native-webview (13.10.5):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1365,11 +1365,11 @@ PODS:
     - React-Core
   - RNCallKeep (4.3.14):
     - React
-  - RNCAsyncStorage (1.23.1):
+  - RNCAsyncStorage (1.24.0):
     - React-Core
   - RNCClipboard (1.14.1):
     - React-Core
-  - RNDateTimePicker (7.6.3):
+  - RNDateTimePicker (7.7.0):
     - React-Core
   - RNFBAnalytics (19.3.0):
     - Firebase/AnalyticsWithoutAdIdSupport (= 10.24.0)
@@ -1390,7 +1390,7 @@ PODS:
   - RNGoogleSignin (11.0.1):
     - GoogleSignIn (~> 7.0.0)
     - React-Core
-  - RNIap (12.15.1):
+  - RNIap (12.15.2):
     - React-Core
   - RNNotifee (7.8.2):
     - React-Core
@@ -1399,16 +1399,17 @@ PODS:
     - React-Core
   - RNPermissions (4.1.5):
     - React-Core
-  - RNReanimated (3.12.1):
+  - RNReanimated (3.14.0):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
     - ReactCommon/turbomodule/core
-  - RNScreens (3.29.0):
+  - RNScreens (3.34.0):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
-  - RNSVG (15.3.0):
+    - React-RCTImage
+  - RNSVG (15.4.0):
     - React-Core
   - RNVectorIcons (10.1.0):
     - glog
@@ -1763,7 +1764,7 @@ SPEC CHECKSUMS:
   lottie-ios: e047b1d2e6239b787cc5e9755b988869cf190494
   lottie-react-native: 3444859381572e468f1b3a57cc5728968af868a6
   nanopb: 438bc412db1928dac798aa6fd75726007be04262
-  OneSignalXCFramework: fbafb3b4964a37f8b0ff273419d1c0e5ac0e07d6
+  OneSignalXCFramework: f06edd9b146c7ac5935136a117ce2a5fdd6420f6
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   RCT-Folly: 7169b2b1c44399c76a47b5deaaba715eeeb476c0
   RCTRequired: 6dda55e483f75d2b43781d8ad5bd7df276a50981
@@ -1787,17 +1788,17 @@ SPEC CHECKSUMS:
   React-logger: e0c1e918d9588a9f39c9bc62d9d6bfe9ca238d9d
   React-Mapbuffer: babe0bb3746937775f8a3a89b861cea3c077162d
   react-native-blur: 7e9297c3c6047fd61d4363a909377912bf48c990
-  react-native-config: d7d8a0c65f7fa523197879f6b777997abbfc987e
+  react-native-config: 8f7283449bbb048902f4e764affbbf24504454af
   react-native-fbsdk-next: 84746ea062dc3b1a422154d7674ba4c5836b6d82
-  react-native-geolocation: 1a28156c0c562c894460e1b359e12fe4c13d0240
+  react-native-geolocation: e50b98fa3c6ad907154470e4302c82e9a59013df
   react-native-image-picker: fefff630cfa3ee6a809f6ac6569981f4a34e0050
   react-native-image-resizer: d9fb629a867335bdc13230ac2a58702bb8c8828f
   react-native-netinfo: 48c5f79a84fbc3ba1d28a8b0d04adeda72885fa8
-  react-native-onesignal: 77a5dfd158b6c190243af73e2a9fc724130fbff5
-  react-native-safe-area-context: a240ad4b683349e48b1d51fed1611138d1bdad97
+  react-native-onesignal: 592184d34780d04ebbea2b9844d5b6088606cb30
+  react-native-safe-area-context: b7daa1a8df36095a032dff095a1ea8963cb48371
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   react-native-version-check: 6cd36aad4e30b8e3216747e3b4ddeb09e0647af8
-  react-native-webview: 5f9f5cc75ff7f1ab4857b85cb3d6b31b3b29962c
+  react-native-webview: 9e10059a108ffbaf28f9315def09b2ef93ce5a72
   React-nativeconfig: a8685fce6d0ffbb77b1fe983895dbbc7bfe949ad
   React-NativeModulesApple: 63accd5672e433f187e4c35ce61641f2b303098c
   React-perflogger: 5ffc4d6ccb74eaac7b8b2867e58a447232483d6d
@@ -1824,20 +1825,20 @@ SPEC CHECKSUMS:
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNAppleAuthentication: e99eaf3c4c01ad8ecb6125dd6f0cfd98871685b5
   RNCallKeep: 0cab0ef1e272f5ca19e3d0ea1f041257842844cb
-  RNCAsyncStorage: 826b603ae9c0f88b5ac4e956801f755109fa4d5c
+  RNCAsyncStorage: ec53e44dc3e75b44aa2a9f37618a49c3bc080a7a
   RNCClipboard: 0a720adef5ec193aa0e3de24c3977222c7e52a37
-  RNDateTimePicker: 7b38b71bcd7c4cfa1cb95f2dff9a4f1faed2dced
+  RNDateTimePicker: 4f3c4dbd4f908be32ec8c93f086e8924bd4a2e07
   RNFBAnalytics: 74eebc66e5f2475f2ed3a63822ef6bc913c4b4ff
   RNFBApp: de81f7eb68c1e6107574f2b102b0dee92a9862fa
   RNFBAuth: 40b9953bc9a8e2e207843e424aa82aa84bf34057
   RNFBMessaging: bcceb47d52080700672f4a46aa9096d9754a988f
   RNGoogleSignin: 24d3b3261f78b0fae0aa013f8ab6f8d25e369b0c
-  RNIap: 17583f958d35788a87948e94072ff6edd3580497
+  RNIap: 2a3674383dcf383e5b7b3c4680dc87f1b2657326
   RNNotifee: 8e2d3df3f0e9ce8f5d1fe4c967431138190b6175
   RNPermissions: 294531ede5a64d1528463e88fffef05675842042
-  RNReanimated: 5fdbe436bdb843bb5fcf081539fd03cd9f2a5705
-  RNScreens: 2b73f5eb2ac5d94fbd61fa4be0bfebd345716825
-  RNSVG: a48668fd382115bc89761ce291a81c4ca5f2fd2e
+  RNReanimated: 18de397a04799ecb22af0dcc0728df6a06b0a4cf
+  RNScreens: 6113407d16024819b62abc541506510da9038f48
+  RNSVG: cb24fb322de8c1ebf59904e7aca0447bb8dbed5a
   RNVectorIcons: 9282eb0aef2f7d4747f621aa6c586ce910de23b1
   RNVoipPushNotification: 543e18f83089134a35e7f1d2eba4c8b1f7776b08
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17

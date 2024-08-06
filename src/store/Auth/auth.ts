@@ -21,27 +21,25 @@ export const ProfileData: any = createAsyncThunk(
   async () => {
     try {
       const response: any = await http.get(`/user/profile`);
-      console.log('response', response);
       if (response.status === 200) {
+        console.log('Profile data api hit ----------');
         await AsyncStorage.setItem(
           'profileData',
           JSON.stringify(response.data),
         );
+        console.log('response', JSON.stringify(response));
 
         return response.data;
       }
     } catch (error: any) {
-      console.log('error', error);
-      // if (error.response && error.response.status === 400) {
-
-      return {error: 'Bad Request'};
+      console.log('error UserProfile', error);
     }
-    // }
   },
 );
+
 export const setAuthData: any = createAsyncThunk(
   'auth/setAuthData',
-  async () => {
+  async (_, {dispatch}: any) => {
     try {
       const authToken: any = await AsyncStorage.getItem('authToken');
       const userId: any = await AsyncStorage.getItem('userId');
@@ -51,9 +49,14 @@ export const setAuthData: any = createAsyncThunk(
       const userIdRes = JSON.parse(userId);
       const profileRes = JSON.parse(profileData);
 
-      console.log('test', authTokenRes, userIdRes);
+      console.log('test()((()()()', userIdRes, authTokenRes);
+      if (userIdRes && authTokenRes) {
+        console.log('Go to profile data api ---->');
+        dispatch(ProfileData());
+      }
       return {token: authTokenRes, userId: userIdRes, profileRes: profileRes};
     } catch (error: any) {
+      console.log('Bad request');
       return {error: 'Bad Request'};
     }
   },
@@ -135,11 +138,12 @@ export const LoginSignIn = createAsyncThunk(
           'authToken',
           JSON.stringify(response?.data?.token),
         );
-        console.log('authToken', response?.data?.token);
+        console.log('authToken =>', response?.data?.token);
         await AsyncStorage.setItem(
           'userId',
           JSON.stringify(response?.data?._id),
         );
+        console.log('UserID =>', response?.data?._id);
         dispatch(ProfileData());
         dispatch(
           toggleGlobalModal({
@@ -150,7 +154,7 @@ export const LoginSignIn = createAsyncThunk(
             },
           }),
         );
-        console.log(response?.data, 'loginData---->>>>');
+        // console.log(response?.data, 'loginData---->>>>');
         return response.data;
       }
     } catch (error: any) {
@@ -550,6 +554,7 @@ export const getAllUsers = createAsyncThunk(
 export const getChatUsersList = createAsyncThunk(
   'auth/getChatUsersList',
   async ({userId}: any) => {
+    console.log('ieuwfgudegrfhkdsjbh', userId);
     try {
       const response = await http.get('/users/chatlist', {
         params: {
@@ -561,6 +566,7 @@ export const getChatUsersList = createAsyncThunk(
         return response.data;
       }
     } catch (error: any) {
+      console.log('error..', error);
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
       } else {
@@ -828,6 +834,7 @@ const initialState = {
     signup: {},
     data: {},
     profileData: null,
+    isProfileDataPresenr: false,
     updateprofileData: {},
     allUsers: [],
     chatUsersList: [],
@@ -837,11 +844,13 @@ const initialState = {
     signInInfo: '',
     otpVerified: false,
   },
+  userID: null,
   token: null,
   isAuthenticated: false,
   loading: false,
   authLoading: true,
 };
+
 const Auth: any = createSlice({
   name: 'auth',
   initialState,
@@ -889,7 +898,7 @@ const Auth: any = createSlice({
         state.loading = true;
       })
       .addCase(LoginSignIn.fulfilled, (state, action) => {
-        console.log(action.payload.token, 'action');
+        // console.log(action.payload.token, '<===action');
         state.token = action?.payload?.token;
         if (action.payload.data) {
           // Check if data is present in the payload
@@ -897,6 +906,10 @@ const Auth: any = createSlice({
           state.isAuthenticated = true;
         } else {
           state.data.signInInfo = action.payload.error; // Assuming the error field is set properly on unsuccessful login
+        }
+        if (!state.userID) {
+          console.log('UserId ==>', action.payload.data._id);
+          state.userID = action.payload.data._id;
         }
       })
       .addCase(LoginSignIn.rejected, (state, action) => {
@@ -906,12 +919,12 @@ const Auth: any = createSlice({
         state.authLoading = true;
       })
       .addCase(setAuthData.fulfilled, (state, action) => {
-        console.log(action.payload.token, 'action');
         state.data.profileData = action.payload.profileRes;
         state.token = action?.payload?.token;
-        state.data.signin = {data: {_id: action?.payload?.userId}};
-
-        state.authLoading = false;
+        state.userID = action?.payload?.userId;
+        if (!action?.payload?.token) {
+          state.authLoading = false;
+        }
       })
       .addCase(setAuthData.rejected, (state, action) => {
         state.authLoading = false;
@@ -931,6 +944,7 @@ const Auth: any = createSlice({
       .addCase(ProfileData.fulfilled, (state, action) => {
         state.data.profileData = action.payload.data;
         state.loading = false;
+        state.authLoading = false;
       })
       .addCase(ProfileData.pending, (state, action) => {
         state.loading = true;
@@ -1020,11 +1034,14 @@ const Auth: any = createSlice({
       })
       .addCase(updateAuthentication.fulfilled, (state, action) => {
         state.isAuthenticated = false;
+        state.token = null;
+        state.authLoading = false;
         // state.data.status = false;
         // state.data.signin = {};
         // state.data.signup = {};
         // state.data.data = {};
-        // state.data.profileData = {};
+        state.data.profileData = null;
+        state.data.isProfileDataPresenr = false;
         // state.data.allUsers = [];
         // state.data.allNotifications = [];
       });

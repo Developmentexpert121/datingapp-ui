@@ -26,11 +26,12 @@ import Loader from '../components/Loader/Loader';
 const Stack = createNativeStackNavigator();
 
 const Root = () => {
-  const userid: any = useAppSelector(
-    (state: any) => state?.Auth?.data?.signin?.data?._id,
-  );
-
+  const userid: any = useAppSelector((state: any) => state?.Auth?.userID);
+  // const isprofiledataPresent: any = useAppSelector(
+  //   (state: any) => state?.Auth?.data?.isProfileDataPresenr,
+  // );
   const isAuthLoading = useAppSelector((state: any) => state.Auth.authLoading);
+
   const dispatch: any = useAppDispatch();
   const [deviceToken, setDeviceToken] = useState<any>(null);
   const AfterLoginStack = createNativeStackNavigator();
@@ -42,9 +43,17 @@ const Root = () => {
     offlineAccess: true,
   });
 
+  console.log('isAuthLoading==>', isAuthLoading);
+  console.log('userid Root==>', userid);
+  // console.log('token==>', userid);
+  console.log('==========================================');
+
   useEffect(() => {
+    console.log('userid Root==>', userid);
+
     dispatch(setAuthData());
-  }, []);
+  }, [userid]);
+
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       SplashScreen.hide();
@@ -78,7 +87,9 @@ const Root = () => {
 
   const BeforeLogin = () => {
     return (
-      <BeforeLoginStack.Navigator screenOptions={{headerShown: false}}>
+      <BeforeLoginStack.Navigator
+        screenOptions={{headerShown: false}}
+        initialRouteName="Loginhome">
         <BeforeLoginStack.Screen name="Loginhome" component={LoginHomeScreen} />
         <BeforeLoginStack.Screen name="Login" component={LoginScreen} />
         <BeforeLoginStack.Screen name="Register" component={RegisterScreen} />
@@ -93,7 +104,9 @@ const Root = () => {
 
   const AfterLogin = () => {
     return (
-      <AfterLoginStack.Navigator screenOptions={{headerShown: false}}>
+      <AfterLoginStack.Navigator
+        screenOptions={{headerShown: false}}
+        initialRouteName="BottomTabNavigation">
         <AfterLoginStack.Screen
           name="BottomTabNavigation"
           component={BottomTabNavigation}
