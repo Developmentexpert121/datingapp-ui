@@ -80,6 +80,7 @@ const Root = () => {
         authStatus === messaging.AuthorizationStatus.PROVISIONAL;
       if (enabled) {
         const token = await messaging().getToken();
+        await AsyncStorage.setItem('deviceToken', token);
         setDeviceToken(token);
       } else {
         console.log('Authorization status:', authStatus);
@@ -136,15 +137,15 @@ const Root = () => {
   }, [authToken, profileData]);
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      console.log('Polling for profile data');
-      if (authToken) {
-        console.log('Called');
-        dispatch(ProfileData());
-      }
-    }, 10000); // 10 seconds
+    // const intervalId = setInterval(() => {
+    //   console.log('Polling for profile data');
+    if (authToken) {
+      console.log('Called');
+      dispatch(ProfileData());
+    }
+    // }, 10000); // 10 seconds
 
-    return () => clearInterval(intervalId); // Clear interval on component unmount
+    // return () => clearInterval(intervalId); // Clear interval on component unmount
   }, [authToken]);
 
   const authTokenRemove: any = async () => {

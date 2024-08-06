@@ -14,6 +14,20 @@ const getToken = async () => {
   }
 };
 
+const getDeviceToken = async () => {
+  try {
+    const deviceToken = await AsyncStorage.getItem('deviceToken');
+    if (deviceToken !== null) {
+      return deviceToken;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error('Error retrieving device token:', error);
+    return null;
+  }
+};
+
 const http = axios.create({
   // baseURL: 'http://10.0.2.2:8000/api',
   baseURL: 'https://datingapp-api-9d1ff64158e0.herokuapp.com/api',
@@ -27,17 +41,21 @@ http.interceptors.request.use(
   async config => {
     try {
       const token = await getToken();
+      const deviceToken = await getDeviceToken();
       if (token) {
         config.headers.authorization = `Bearer ${token}`;
       }
+      if (deviceToken) {
+        config.headers['device-token'] = deviceToken;
+      }
       return config;
     } catch (error) {
-      console.error('Error retrieving token:', error);
+      console.error('Error retrieving tokens:', error);
       return config;
     }
   },
   error => {
-    console.log('error', error);
+    console.error('Request error:', error);
     return Promise.reject(error);
   },
 );

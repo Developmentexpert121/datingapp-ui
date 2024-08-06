@@ -93,7 +93,7 @@ const TinderSwipe = ({
     )
       .unwrap()
       .then(res => {
-        console.log('awdawd', res);
+        console.log('awdawdssssss', res);
         if (res.success === true) {
           const targetX = hiddenTranslateX;
           translateX.value = withSpring(targetX);
