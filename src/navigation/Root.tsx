@@ -32,10 +32,6 @@ import {
 
 const Stack = createNativeStackNavigator();
 
-const socket = io(
-  'https://9f97-2401-4900-1c6e-add2-9931-f8a7-8deb-a539.ngrok-free.app',
-);
-
 const Root = () => {
   const userid: any = useAppSelector((state: any) => state?.Auth?.userID);
   // const isprofiledataPresent: any = useAppSelector(
@@ -44,7 +40,6 @@ const Root = () => {
   const isAuthLoading = useAppSelector((state: any) => state.Auth.authLoading);
 
   const dispatch: any = useAppDispatch();
-  const [onlineUsers, setOnlineUsers] = useState<any>(null);
   const AfterLoginStack = createNativeStackNavigator();
   const BeforeLoginStack = createNativeStackNavigator();
 
@@ -53,11 +48,6 @@ const Root = () => {
       '151623051367-b882b5sufigjbholkehodmi9ccn4hv6m.apps.googleusercontent.com', // From Google Developer Console
     offlineAccess: true,
   });
-
-  console.log('isAuthLoading==>', isAuthLoading);
-  console.log('userid Root==>', userid);
-  // console.log('token==>', userid);
-  console.log('==========================================');
 
   useEffect(() => {
     dispatch(setAuthData());
@@ -98,53 +88,29 @@ const Root = () => {
     }
   };
 
-  const profileData: any = useAppSelector(
-    (state: any) => state?.Auth?.data?.profileData,
-  );
+  // const profileData: any = useAppSelector(
+  //   (state: any) => state?.Auth?.data?.profileData,
+  // );
 
-  useEffect(() => {
-    if (profileData) {
-      const setStorage = async () => {
-        await AsyncStorage.setItem('profileData', JSON.stringify(profileData));
-      };
+  // useEffect(() => {
+  //   if (profileData) {
+  //     const setStorage = async () => {
+  //       await AsyncStorage.setItem('profileData', JSON.stringify(profileData));
+  //     };
 
-      setStorage();
-      socket.emit('user_connected', profileData?._id);
-      socket.on('connect', () => {
-        console.log('App Connected from server');
-        const userId = profileData?._id;
-        socket.emit('user_connected', userId);
-      });
-    }
+  //     setStorage();
+  //     socket.emit('user_connected', profileData?._id);
+  //     socket.on('connect', () => {
+  //       console.log('App Connected from server');
+  //       const userId = profileData?._id;
+  //       socket.emit('user_connected', userId);
+  //     });
+  //   }
 
-    return () => {
-      socket.off('connect');
-    };
-  }, [profileData]);
-
-  useEffect(() => {
-    socket.on('user_online', users => {
-      setOnlineUsers(users);
-    });
-
-    socket.on('user_offline', users => {
-      setOnlineUsers(users);
-    });
-
-    socket.on('disconnect', () => {
-      console.log('App Disconnected from server');
-    });
-
-    return () => {
-      socket.off('user_online');
-      socket.off('user_offline');
-      socket.off('disconnect');
-    };
-  }, []);
-
-  useEffect(() => {
-    dispatch(onlineUser(onlineUsers));
-  }, [onlineUsers, dispatch]);
+  //   return () => {
+  //     socket.off('connect');
+  //   };
+  // }, [profileData]);
 
   const BeforeLogin = () => {
     return (

@@ -13,6 +13,7 @@ import TinderSwipe from './AnimatedStack/TinderSwipe';
 import Geolocation from '@react-native-community/geolocation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {io} from 'socket.io-client';
+import {onlineUser} from '../../store/reducer/authSliceState';
 const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 
 const getUserId = async () => {
@@ -46,6 +47,7 @@ const HomeScreen = () => {
   const [checkedInterests, setCheckedInterests] = useState('Everyone');
   const [checkedRelationShip, setCheckedRelationShip] = useState('');
   const [trigger, setTrigger] = useState(false);
+  const [onlineUsers, setOnlineUsers] = useState<any>(null);
 
   useEffect(() => {
     Geolocation.requestAuthorization();
@@ -91,6 +93,29 @@ const HomeScreen = () => {
       socket.off('connect');
     };
   }, []);
+  useEffect(() => {
+    socket.on('user_online', users => {
+      setOnlineUsers(users);
+    });
+
+    socket.on('user_offline', users => {
+      setOnlineUsers(users);
+    });
+
+    socket.on('disconnect', () => {
+      console.log('App Disconnected from server');
+    });
+
+    return () => {
+      socket.off('user_online');
+      socket.off('user_offline');
+      socket.off('disconnect');
+    };
+  }, []);
+
+  useEffect(() => {
+    dispatch(onlineUser(onlineUsers));
+  }, [onlineUsers]);
 
   useEffect(() => {
     profileData?._id &&

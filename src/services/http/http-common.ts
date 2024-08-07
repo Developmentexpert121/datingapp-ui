@@ -16,9 +16,9 @@ const getToken = async () => {
 
 const http = axios.create({
   // baseURL: 'http://10.0.2.2:8000/api',
-  // baseURL: 'https://datingapp-api-9d1ff64158e0.herokuapp.com/api',
-  baseURL:
-    'https://9f97-2401-4900-1c6e-add2-9931-f8a7-8deb-a539.ngrok-free.app/api',
+  baseURL: 'https://datingapp-api-9d1ff64158e0.herokuapp.com/api',
+  // baseURL:
+  //   'https://9f97-2401-4900-1c6e-add2-9931-f8a7-8deb-a539.ngrok-free.app/api',
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
