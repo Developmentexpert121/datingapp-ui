@@ -26,7 +26,11 @@ import {
   Asset,
 } from 'react-native-image-picker';
 
-const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
+// const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
+
+const socket = io(
+  'https://9f97-2401-4900-1c6e-add2-9931-f8a7-8deb-a539.ngrok-free.app',
+);
 
 type Props = {
   goToCallScreen: (e: any) => void;

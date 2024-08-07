@@ -9,7 +9,7 @@ import VideoCallRedirect from '../screens/ChatHome/chatVideoRedirect';
 import SettingsScreen from '../screens/SettingsSection/settings';
 import UpdateProfileScreen from '../screens/UpdateProfile/updateProfile';
 import {useAppDispatch, useAppSelector} from '../store/store';
-import {setAuthData} from '../store/Auth/auth';
+import {ProfileData, setAuthData} from '../store/Auth/auth';
 import BottomTabNavigation from './BottomTabNavigation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from 'react-native-splash-screen';
@@ -23,8 +23,18 @@ import {StreamVideo, StreamVideoRN} from '@stream-io/video-react-native-sdk';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import Loader from '../components/Loader/Loader';
 import {getLocalStroage, setLocalStorage} from '../api/storage';
+import io from 'socket.io-client';
+import {onlineUser} from '../store/reducer/authSliceState';
+import {
+  activityLoaderFinished,
+  activityLoaderStarted,
+} from '../store/Activity/activity';
 
 const Stack = createNativeStackNavigator();
+
+const socket = io(
+  'https://9f97-2401-4900-1c6e-add2-9931-f8a7-8deb-a539.ngrok-free.app',
+);
 
 const Root = () => {
   const userid: any = useAppSelector((state: any) => state?.Auth?.userID);
@@ -34,7 +44,7 @@ const Root = () => {
   const isAuthLoading = useAppSelector((state: any) => state.Auth.authLoading);
 
   const dispatch: any = useAppDispatch();
-  const [deviceToken, setDeviceToken] = useState<any>(null);
+  const [onlineUsers, setOnlineUsers] = useState<any>(null);
   const AfterLoginStack = createNativeStackNavigator();
   const BeforeLoginStack = createNativeStackNavigator();
 
@@ -87,6 +97,54 @@ const Root = () => {
       }
     }
   };
+
+  const profileData: any = useAppSelector(
+    (state: any) => state?.Auth?.data?.profileData,
+  );
+
+  useEffect(() => {
+    if (profileData) {
+      const setStorage = async () => {
+        await AsyncStorage.setItem('profileData', JSON.stringify(profileData));
+      };
+
+      setStorage();
+      socket.emit('user_connected', profileData?._id);
+      socket.on('connect', () => {
+        console.log('App Connected from server');
+        const userId = profileData?._id;
+        socket.emit('user_connected', userId);
+      });
+    }
+
+    return () => {
+      socket.off('connect');
+    };
+  }, [profileData]);
+
+  useEffect(() => {
+    socket.on('user_online', users => {
+      setOnlineUsers(users);
+    });
+
+    socket.on('user_offline', users => {
+      setOnlineUsers(users);
+    });
+
+    socket.on('disconnect', () => {
+      console.log('App Disconnected from server');
+    });
+
+    return () => {
+      socket.off('user_online');
+      socket.off('user_offline');
+      socket.off('disconnect');
+    };
+  }, []);
+
+  useEffect(() => {
+    dispatch(onlineUser(onlineUsers));
+  }, [onlineUsers, dispatch]);
 
   const BeforeLogin = () => {
     return (
