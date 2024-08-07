@@ -10,6 +10,7 @@ import {
   otpModal,
   toggleGlobalModal,
 } from '../reducer/authSliceState';
+import {setLocalStorage} from '../../api/storage';
 interface authData {
   email: string;
   password: string;
@@ -67,12 +68,15 @@ export const GoogleLogin = createAsyncThunk(
   async (data: any, {dispatch}: any) => {
     try {
       // dispatch(activityLoaderStarted());
+      console.log('google login data ==>', data);
       const response: any = await http.post('/auth/loginwithgoogle', data);
       if (response.status === 200) {
+        console.log('Api google response ==>', JSON.stringify(response.data));
+        // return {...response.data, userid: data.socialId};
         return response.data;
       }
     } catch (error: any) {
-      console.error('first error', error);
+      console.error('google login  error', error);
       if (error.response && error.response.status === 400) {
         dispatch(
           toggleGlobalModal({
@@ -99,12 +103,14 @@ export const AppleLogin = createAsyncThunk(
   async (data: any, {dispatch}: any) => {
     try {
       // dispatch(activityLoaderStarted());
+      console.log('Apple login data ==>', data);
       const response: any = await http.post('/auth/loginwithapple', data);
       if (response.status === 200) {
+        console.log('Apple login Response ==>', response.data);
         return response.data;
       }
     } catch (error: any) {
-      console.error('first error', error);
+      console.error('Apple login error', error);
       if (error.response && error.response.status === 400) {
         dispatch(
           toggleGlobalModal({
@@ -130,6 +136,7 @@ export const AppleLogin = createAsyncThunk(
 export const LoginSignIn = createAsyncThunk(
   'auth/LoginSignIn',
   async (data: any, {dispatch}: any) => {
+    console.log('Login data ==>', data);
     try {
       dispatch(activityLoaderStarted());
       const response: any = await http.post('/user/signin', data);
@@ -767,6 +774,10 @@ export const updateAuthentication = createAsyncThunk(
   async () => {},
 );
 
+export const setUserId = createAsyncThunk('auth/setUserId', async (id: any) => {
+  return {_id: id};
+});
+
 export const videoCallToken = createAsyncThunk(
   'auth/videoCallToken',
   async (data: any, {dispatch}: any) => {
@@ -1042,8 +1053,12 @@ const Auth: any = createSlice({
         // state.data.data = {};
         state.data.profileData = null;
         state.data.isProfileDataPresenr = false;
+        state.userID = null;
         // state.data.allUsers = [];
         // state.data.allNotifications = [];
+      })
+      .addCase(setUserId.fulfilled, (state, action) => {
+        state.userID = action?.payload?._id;
       });
   },
 });

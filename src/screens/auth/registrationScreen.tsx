@@ -23,6 +23,7 @@ import {
   GoogleLogin,
   ProfileData,
   RegisterSignUp,
+  setUserId,
   VerifyOtp,
 } from '../../store/Auth/auth';
 import {
@@ -303,6 +304,7 @@ const RegisterScreen = () => {
               // If sign-up is successful, call the function to handle the navigation
               handleNavigation(response);
               dispatch(activityLoaderFinished());
+              dispatch(setUserId(response?._id));
             } else {
               // If there is an error in sign-up, check if there is an error message and set it
               if (response?.payload?.message) {
@@ -394,6 +396,7 @@ const RegisterScreen = () => {
                   // If sign-up is successful, call the function to handle the navigation
                   handleNavigation(response);
                   dispatch(activityLoaderFinished());
+                  dispatch(setUserId(response?._id));
                 } else {
                   // If there is an error in sign-up, check if there is an error message and set it
                   if (response?.payload?.message) {
@@ -565,7 +568,7 @@ const RegisterScreen = () => {
       });
   };
   const onClick = async () => {
-    dispatch(GoogleLogin({}));
+    // dispatch(GoogleLogin({}));
     try {
       if (!GoogleSignin.hasPlayServices()) {
         console.error('Google Play Services are not available');
@@ -581,7 +584,7 @@ const RegisterScreen = () => {
     } catch (error) {
       console.error('errorLogoutUserButton', error);
     }
-    goBack();
+    navigation.goBack();
   };
   return (
     <SafeAreaView style={styles.container}>

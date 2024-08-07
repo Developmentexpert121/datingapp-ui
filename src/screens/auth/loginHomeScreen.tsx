@@ -18,11 +18,16 @@ import Colors from '../../constants/Colors';
 import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 // import {googleLogin} from '../../store/Auth/socialLogin';
-import {setLocalStorage} from '../../api/storage';
+import {getLocalStroage, setLocalStorage} from '../../api/storage';
 import {setAuthentication} from '../../store/reducer/authSliceState';
 import {googleLogin, onAppleButtonPress} from '../../store/Auth/socialLogin';
 import {userProfileDataChange} from '../../store/slice/myProfileSlice/myProfileSlice';
-import {AppleLogin, GoogleLogin, ProfileData} from '../../store/Auth/auth';
+import {
+  AppleLogin,
+  GoogleLogin,
+  ProfileData,
+  setUserId,
+} from '../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getProfile} from '../../store/slice/myProfileSlice/myProfileAction';
 import {
@@ -34,6 +39,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Loader from '../../components/Loader/Loader';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 interface AppleAuthResponse {
   user: string;
   email: string | null;
@@ -70,12 +76,19 @@ const LoginHomeScreen = () => {
   // Google Login
   const handleGoogleLogin = async () => {
     setLoader(true);
+    const isSignedIn = await GoogleSignin.isSignedIn();
+    console.log('User is signed in:', isSignedIn);
+
+    if (isSignedIn) {
+      console.log('logout hit');
+      await GoogleSignin.signOut();
+    }
     try {
       let userInfo = await googleLogin();
       if (userInfo) {
         // Extract the email and id from the user info
         const {email, id, name, photo} = userInfo;
-        console.log(userInfo);
+        console.log('Google Login data  ==1> ', userInfo);
         dispatch(
           userProfileDataChange({
             key: 'email',
@@ -83,18 +96,20 @@ const LoginHomeScreen = () => {
           }),
         );
         // Prepare the login payload for Google login
+        let deviceToken = await getLocalStroage('DeviceToken');
         let loginPayload = {
           loginType: 'GOOGLE',
           role: 'U',
           email: email,
           socialId: id,
-          deviceToken: 'abcde',
+          deviceToken: deviceToken,
           name: name,
           photo: photo,
         };
 
         dispatch(GoogleLogin({...loginPayload}))
           .then(async (response: any) => {
+            console.log('Google login api response ==>', response.payload);
             if (response?.payload?.redirect === 'Steps') {
               await navigation.navigate('Register');
             } else if (response?.payload?.redirect === 'Dashboard') {
@@ -110,9 +125,11 @@ const LoginHomeScreen = () => {
                 JSON.stringify(response?.payload?._id),
               );
               dispatch(ProfileData());
+
               // If sign-up is successful, call the function to handle the navigation
               handleNavigation(response);
               dispatch(activityLoaderFinished());
+              dispatch(setUserId(response?.payload?._id));
             } else {
               // If there is an error in sign-up, check if there is an error message and set it
               if (response?.payload?.message) {
@@ -151,12 +168,13 @@ const LoginHomeScreen = () => {
 
         if (userInfo) {
           // Prepare the login payload for Apple login
+          let deviceToken = await getLocalStroage('DeviceToken');
           const loginPayload = {
             loginType: 'APPLE',
             role: 'U',
             email: userInfo?.email,
             socialId: userInfo?.sub,
-            deviceToken: 'abcde', // Replace with actual device token if available
+            deviceToken: deviceToken, // Replace with actual device token if available
           };
 
           // Dispatch the user sign-up action with the login payload
@@ -181,6 +199,7 @@ const LoginHomeScreen = () => {
                 // If sign-up is successful, call the function to handle the navigation
                 handleNavigation(response);
                 dispatch(activityLoaderFinished());
+                dispatch(setUserId(response?.payload?._id));
               } else {
                 // If there is an error in sign-up, check if there is an error message and set it
                 if (response?.payload?.message) {

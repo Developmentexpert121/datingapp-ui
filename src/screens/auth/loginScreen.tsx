@@ -29,6 +29,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {getLocalStroage} from '../../api/storage';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 interface LoginForm {
@@ -76,30 +77,8 @@ const LoginScreen = () => {
 
   const [deviceToken, setDeviceToken] = useState<any>(null);
 
-  const requestUserPermission = async () => {
-    try {
-      const authStatus = await messaging().requestPermission({
-        sound: true,
-        alert: true,
-        badge: true,
-      });
-      const enabled =
-        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-      if (enabled) {
-        const token = await messaging().getToken();
-        setDeviceToken(token);
-      } else {
-        console.log('Authorization status:', authStatus);
-      }
-    } catch (error) {
-      console.error('Error requesting permission:', error);
-    }
-  };
-
-  console.log('=-=-=-=-', deviceToken);
-
   const onSubmit = async (data: LoginForm) => {
+    let deviceToken = await getLocalStroage('DeviceToken');
     const requestData = {
       ...data,
       deviceToken: deviceToken, // Include the deviceToken
@@ -114,7 +93,6 @@ const LoginScreen = () => {
   );
 
   useEffect(() => {
-    requestUserPermission();
     const fetchToken = async () => {
       try {
         const value = await AsyncStorage.getItem('authToken');

@@ -22,6 +22,7 @@ import notifee, {AndroidImportance} from '@notifee/react-native';
 import {StreamVideo, StreamVideoRN} from '@stream-io/video-react-native-sdk';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import Loader from '../components/Loader/Loader';
+import {getLocalStroage, setLocalStorage} from '../api/storage';
 
 const Stack = createNativeStackNavigator();
 
@@ -49,8 +50,6 @@ const Root = () => {
   console.log('==========================================');
 
   useEffect(() => {
-    console.log('userid Root==>', userid);
-
     dispatch(setAuthData());
   }, [userid]);
 
@@ -65,23 +64,27 @@ const Root = () => {
   }, []);
 
   const requestUserPermission = async () => {
-    try {
-      const authStatus = await messaging().requestPermission({
-        sound: true,
-        alert: true,
-        badge: true,
-      });
-      const enabled =
-        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-      if (enabled) {
-        const token = await messaging().getToken();
-        setDeviceToken(token);
-      } else {
-        console.log('Authorization status:', authStatus);
+    let deviceToken = await getLocalStroage('DeviceToken');
+    if (!deviceToken) {
+      try {
+        const authStatus = await messaging().requestPermission({
+          sound: true,
+          alert: true,
+          badge: true,
+        });
+        const enabled =
+          authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+          authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+        if (enabled) {
+          const token = await messaging().getToken();
+          console.log('DeviceToken==> ', token);
+          await setLocalStorage('DeviceToken', token);
+        } else {
+          console.log('Authorization status:', authStatus);
+        }
+      } catch (error) {
+        console.error('Error requesting permission:', error);
       }
-    } catch (error) {
-      console.error('Error requesting permission:', error);
     }
   };
 
