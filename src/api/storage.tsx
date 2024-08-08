@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 //resusable function to store data in local storage of device
 export const setLocalStorage = async (storageKey: string, data: any) => {
   try {
-    await AsyncStorage.setItem(storageKey, JSON.stringify(data));
+    await AsyncStorage.setItem(storageKey, data);
   } catch (e) {
     console.log(e);
   }
@@ -14,7 +14,7 @@ export const getLocalStroage = async (storageKey: string) => {
   try {
     const value = await AsyncStorage.getItem(storageKey);
     if (value !== null) {
-      const _value = JSON.parse(value);
+      const _value = value;
       return _value;
     }
   } catch (e) {

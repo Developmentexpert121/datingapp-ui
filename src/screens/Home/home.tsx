@@ -81,41 +81,41 @@ const HomeScreen = () => {
       });
   }, []);
 
-  useEffect(() => {
-    socket.emit('user_connected', profileData?._id);
-    socket.on('connect', () => {
-      console.log('App Connected from server');
-      const userId = profileData?._id;
-      socket.emit('user_connected', profileData?._id);
-      // console.log('ahsdgjuhgdgsu', userId);
-    });
-    return () => {
-      socket.off('connect');
-    };
-  }, []);
-  useEffect(() => {
-    socket.on('user_online', users => {
-      setOnlineUsers(users);
-    });
+  // useEffect(() => {
+  //   socket.emit('user_connected', profileData?._id);
+  //   socket.on('connect', () => {
+  //     console.log('App Connected from server');
+  //     const userId = profileData?._id;
+  //     socket.emit('user_connected', profileData?._id);
+  //     // console.log('ahsdgjuhgdgsu', userId);
+  //   });
+  //   return () => {
+  //     socket.off('connect');
+  //   };
+  // }, []);
+  // useEffect(() => {
+  //   socket.on('user_online', users => {
+  //     setOnlineUsers(users);
+  //   });
 
-    socket.on('user_offline', users => {
-      setOnlineUsers(users);
-    });
+  //   socket.on('user_offline', users => {
+  //     setOnlineUsers(users);
+  //   });
 
-    socket.on('disconnect', () => {
-      console.log('App Disconnected from server');
-    });
+  //   socket.on('disconnect', () => {
+  //     console.log('App Disconnected from server');
+  //   });
 
-    return () => {
-      socket.off('user_online');
-      socket.off('user_offline');
-      socket.off('disconnect');
-    };
-  }, []);
+  //   return () => {
+  //     socket.off('user_online');
+  //     socket.off('user_offline');
+  //     socket.off('disconnect');
+  //   };
+  // }, []);
 
-  useEffect(() => {
-    dispatch(onlineUser(onlineUsers));
-  }, [onlineUsers]);
+  // useEffect(() => {
+  //   dispatch(onlineUser(onlineUsers));
+  // }, [onlineUsers]);
 
   useEffect(() => {
     profileData?._id &&

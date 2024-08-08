@@ -78,7 +78,7 @@ const LoginScreen = () => {
   const [deviceToken, setDeviceToken] = useState<any>(null);
 
   const onSubmit = async (data: LoginForm) => {
-    let deviceToken = await getLocalStroage('DeviceToken');
+    let deviceToken = await getLocalStroage('deviceToken');
     const requestData = {
       ...data,
       deviceToken: deviceToken, // Include the deviceToken

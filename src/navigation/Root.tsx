@@ -9,7 +9,12 @@ import VideoCallRedirect from '../screens/ChatHome/chatVideoRedirect';
 import SettingsScreen from '../screens/SettingsSection/settings';
 import UpdateProfileScreen from '../screens/UpdateProfile/updateProfile';
 import {useAppDispatch, useAppSelector} from '../store/store';
-import {ProfileData, setAuthData} from '../store/Auth/auth';
+import {
+  ProfileData,
+  setAuthData,
+  setModal,
+  updateAuthentication,
+} from '../store/Auth/auth';
 import BottomTabNavigation from './BottomTabNavigation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from 'react-native-splash-screen';
@@ -29,6 +34,7 @@ import {
   activityLoaderFinished,
   activityLoaderStarted,
 } from '../store/Activity/activity';
+import {EventRegister} from 'react-native-event-listeners';
 
 const Stack = createNativeStackNavigator();
 
@@ -64,7 +70,7 @@ const Root = () => {
   }, []);
 
   const requestUserPermission = async () => {
-    let deviceToken = await getLocalStroage('DeviceToken');
+    let deviceToken = await getLocalStroage('deviceToken');
     if (!deviceToken) {
       try {
         const authStatus = await messaging().requestPermission({
@@ -78,7 +84,7 @@ const Root = () => {
         if (enabled) {
           const token = await messaging().getToken();
           console.log('DeviceToken==> ', token);
-          await setLocalStorage('DeviceToken', token);
+          await setLocalStorage('deviceToken', token);
         } else {
           console.log('Authorization status:', authStatus);
         }
@@ -111,6 +117,50 @@ const Root = () => {
   //     socket.off('connect');
   //   };
   // }, [profileData]);
+
+  useEffect(() => {
+    // Register the event listener
+    const eventListener: any = EventRegister.addEventListener('LogOut', () => {
+      console.log('user Logout Hit');
+      logoutUserButton();
+    });
+
+    // Clean up the event listener on component unmount
+    return () => {
+      EventRegister.removeEventListener(eventListener);
+    };
+  }, []);
+
+  const logoutUserButton = async () => {
+    try {
+      if (!GoogleSignin.hasPlayServices()) {
+        console.error('Google Play Services are not available');
+        return;
+      }
+      const isSignedIn = await GoogleSignin.isSignedIn();
+
+      if (isSignedIn) {
+        await GoogleSignin.signOut();
+      }
+      await authTokenRemove();
+      dispatch(setModal());
+      dispatch(updateAuthentication());
+
+      await StreamVideoRN.onPushLogout();
+    } catch (error) {
+      console.error('errorLogoutUserButton', error);
+    }
+  };
+
+  const authTokenRemove: any = async () => {
+    try {
+      await AsyncStorage.removeItem('authToken');
+      await AsyncStorage.removeItem('userId');
+      await AsyncStorage.removeItem('profileData');
+    } catch (error) {
+      return null;
+    }
+  };
 
   const BeforeLogin = () => {
     return (

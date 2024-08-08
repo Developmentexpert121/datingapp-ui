@@ -50,7 +50,7 @@ export const setAuthData: any = createAsyncThunk(
       const userIdRes = JSON.parse(userId);
       const profileRes = JSON.parse(profileData);
 
-      console.log('test()((()()()', userIdRes, authTokenRes);
+      // console.log('test()((()()()', userIdRes, authTokenRes);
       if (userIdRes && authTokenRes) {
         console.log('Go to profile data api ---->');
         dispatch(ProfileData());
@@ -561,7 +561,7 @@ export const getAllUsers = createAsyncThunk(
 export const getChatUsersList = createAsyncThunk(
   'auth/getChatUsersList',
   async ({userId}: any) => {
-    console.log('ieuwfgudegrfhkdsjbh', userId);
+    console.log('Chat api user ID', userId);
     try {
       const response = await http.get('/users/chatlist', {
         params: {
@@ -772,6 +772,21 @@ export const deactivateUser = createAsyncThunk(
 export const updateAuthentication = createAsyncThunk(
   'auth/updateAuthentication',
   async () => {},
+);
+
+export const setModal = createAsyncThunk(
+  'auth/setModal',
+  async (_, {dispatch}: any) => {
+    dispatch(
+      toggleGlobalModal({
+        visible: true,
+        data: {
+          text: 'OK',
+          label: 'Already logged in on another device',
+        },
+      }),
+    );
+  },
 );
 
 export const setUserId = createAsyncThunk('auth/setUserId', async (id: any) => {

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -10,7 +10,7 @@ import {
 import {ListItem, Avatar} from 'react-native-elements';
 import CommonBackbutton from '../../components/commonBackbutton/BackButton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {
   UnBlockAUser,
@@ -65,23 +65,31 @@ const ChatSection = () => {
       )
     : [];
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await dispatch(
-          getChatUsersList({userId: profileData._id}),
-        ).unwrap();
-        setChatListData(response);
-        setInitialLoading(false);
-      } catch (error) {
-        console.error('Error fetching data:11', error);
-        setInitialLoading(false);
-      }
-    };
-    const intervalId = setInterval(fetchData, 500); // Poll every 5 seconds
-    fetchData(); // Fetch data immediately on component mount
-    return () => clearInterval(intervalId);
-  }, []);
+  const fetchData = async () => {
+    console.log('Fetch chat user list api hit');
+    try {
+      const response = await dispatch(
+        getChatUsersList({userId: profileData._id}),
+      ).unwrap();
+      setChatListData(response);
+      setInitialLoading(false);
+    } catch (error) {
+      console.error('Error fetching data:11', error);
+      setInitialLoading(false);
+    }
+  };
+  useFocusEffect(
+    useCallback(() => {
+      // Start polling when the screen is focused
+      const intervalId = setInterval(fetchData, 5000); // Poll every 5 seconds
+      fetchData(); // Fetch data immediately on component mount
+
+      return () => {
+        clearInterval(intervalId);
+        console.log('chat clear Interval hit');
+      }; // Clear interval on blur
+    }, [dispatch, profileData._id]),
+  );
   // Time Funcation
   const getTimeAgo = (timestamp: string) => {
     const timeNow = new Date();

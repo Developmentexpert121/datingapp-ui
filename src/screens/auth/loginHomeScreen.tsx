@@ -96,7 +96,7 @@ const LoginHomeScreen = () => {
           }),
         );
         // Prepare the login payload for Google login
-        let deviceToken = await getLocalStroage('DeviceToken');
+        let deviceToken = await getLocalStroage('deviceToken');
         let loginPayload = {
           loginType: 'GOOGLE',
           role: 'U',
@@ -168,7 +168,7 @@ const LoginHomeScreen = () => {
 
         if (userInfo) {
           // Prepare the login payload for Apple login
-          let deviceToken = await getLocalStroage('DeviceToken');
+          let deviceToken = await getLocalStroage('deviceToken');
           const loginPayload = {
             loginType: 'APPLE',
             role: 'U',
