@@ -417,6 +417,7 @@ const ChatPage = ({
                     value={inputMessage}
                     onChangeText={setInputMessage}
                     placeholder="Type your message..."
+                    placeholderTextColor="gray"
                     style={styles.input}
                   />
                   <TouchableOpacity onPress={handleMediaSelection}>
