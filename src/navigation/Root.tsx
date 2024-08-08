@@ -50,12 +50,16 @@ const Root = () => {
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
+  const checkDevice: any = useAppSelector(
+    (state: any) => state?.Auth?.data?.checkDevice,
+  );
   const token: string = useAppSelector((state: any) => state?.Auth?.token);
   const dispatch: any = useAppDispatch();
   const [authToken, setAuthToken] = useState<any>(null);
   const [deviceToken, setDeviceToken] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  console.log('rrrrrrrrrrrrrrr', checkDevice);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -146,7 +150,7 @@ const Root = () => {
     // }, 10000); // 10 seconds
 
     // return () => clearInterval(intervalId); // Clear interval on component unmount
-  }, [authToken]);
+  }, [authToken, checkDevice]);
 
   const authTokenRemove: any = async () => {
     try {

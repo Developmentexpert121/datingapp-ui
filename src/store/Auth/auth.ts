@@ -413,9 +413,14 @@ export const likedAUser = createAsyncThunk(
         return response.data;
       }
     } catch (error: any) {
-      console.log(error.response);
-
-      return rejectWithValue(error.response);
+      console.log('yyyyyyyyyyyyyyyyyy', error.response.status);
+      if (error.response && error.response.status === 400) {
+        return {error: 'Bad Request'};
+      } else if (error.response.status === 403) {
+        return rejectWithValue(error.response);
+      } else {
+        throw error;
+      }
     } finally {
       //  dispatch(activityLoaderFinished());
     }
@@ -805,6 +810,7 @@ const initialState = {
     meLike: [],
     signInInfo: '',
     otpVerified: false,
+    checkDevice: false,
   },
   token: null,
   isAuthenticated: false,
@@ -945,8 +951,12 @@ const Auth: any = createSlice({
         state.data.userLike = action.payload.notifications;
         state.loading = false;
       })
-      .addCase(likedAUser.rejected, (state, action) => {
-        console.log('CAllllllllllllllled', action);
+      .addCase(likedAUser.rejected, (state, action: any) => {
+        console.log('CAllllllllllllllled', action.payload.status);
+        if (action.payload.status === 403) {
+          state.data.checkDevice = !state.data.checkDevice;
+        }
+
         state.loading = false;
       })
       .addCase(superLiked.pending, (state, action) => {
