@@ -39,7 +39,7 @@ const subscriptionSkus = Platform.select({
 const SubscriptionsScreen = ({navigation}) => {
   const {
     connected,
-    subscriptions = [], // Ensure subscriptions is an array by default
+    subscriptions = ['15.99toptierdating'], // Ensure subscriptions is an array by default
     getSubscriptions,
     currentPurchase,
     finishTransaction,
@@ -75,6 +75,7 @@ const SubscriptionsScreen = ({navigation}) => {
       setLoading(true); // Enable loading indicator
 
       // Check if productId is a valid SKU
+      console.log('productId.........', productId);
       if (!productId || typeof productId !== 'string') {
         throw new Error('Invalid productId');
       }
@@ -133,6 +134,28 @@ const SubscriptionsScreen = ({navigation}) => {
       checkCurrentPurchase(currentPurchase);
     }
   }, [currentPurchase, finishTransaction, navigation]);
+
+  //
+  const handleSubscriptionExpiry = () => {
+    // Example logic for handling expired subscriptions
+    Alert.alert(
+      'Subscription Expired',
+      'Your subscription has expired. Please renew to continue using premium features.',
+      [
+        {text: 'Renew Now', onPress: () => navigateToSubscriptionPage()},
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Subscription expiry cancelled'),
+        },
+      ],
+    );
+  };
+
+  const navigateToSubscriptionPage = () => {
+    // Navigate to subscription page or show options to renew
+  };
+
+  //
 
   return (
     <SafeAreaView>
