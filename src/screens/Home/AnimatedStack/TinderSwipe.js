@@ -50,10 +50,8 @@ const TinderSwipe = ({
   useEffect(() => {
     if (data.length === 0) {
       setNoProfilesLoader(true);
-      const timer = setTimeout(() => {
-        setNoProfilesLoader(false);
-      }, 2000);
-      return () => clearTimeout(timer);
+    } else {
+      setNoProfilesLoader(false);
     }
   }, [data.length]);
 

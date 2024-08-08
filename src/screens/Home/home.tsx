@@ -76,6 +76,7 @@ const HomeScreen = () => {
 
   useEffect(() => {
     profileData._id &&
+      trigger &&
       dispatch(
         getAllUsers({
           userId: profileData._id,
