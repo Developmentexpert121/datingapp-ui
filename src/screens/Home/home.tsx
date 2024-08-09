@@ -54,9 +54,6 @@ const HomeScreen = () => {
     Geolocation.getCurrentPosition(
       position => {
         const {latitude, longitude} = position.coords;
-        // console.log('latitude:', latitude);
-        // console.log('Longitude:', longitude);
-
         dispatch(
           updateProfileData({
             field: 'location',

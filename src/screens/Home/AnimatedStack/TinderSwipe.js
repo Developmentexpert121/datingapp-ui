@@ -50,10 +50,8 @@ const TinderSwipe = ({
   useEffect(() => {
     if (data.length === 0) {
       setNoProfilesLoader(true);
-      const timer = setTimeout(() => {
-        setNoProfilesLoader(false);
-      }, 2000);
-      return () => clearTimeout(timer);
+    } else {
+      setNoProfilesLoader(false);
     }
   }, [data.length]);
 
@@ -93,7 +91,7 @@ const TinderSwipe = ({
     )
       .unwrap()
       .then(res => {
-        console.log('awdawd', res);
+        console.log('awdawdssssss', res);
         if (res.success === true) {
           const targetX = hiddenTranslateX;
           translateX.value = withSpring(targetX);

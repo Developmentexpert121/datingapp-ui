@@ -191,7 +191,6 @@ export const RegisterSignUp = createAsyncThunk(
   'auth/RegisterSignUp',
   async (data: any, {dispatch}: any) => {
     try {
-      console.log('RegisterSignUp Data', data);
       const response = await http.post('/user/signup', data);
       if (response.status === 200) {
         dispatch(
@@ -269,7 +268,7 @@ export const VerifyOtp = createAsyncThunk(
   async (data: any, {dispatch}: any) => {
     try {
       const response = await http.post('/user/verifyOtp', data);
-      console.log(response.data);
+
       if (response.status === 200) {
         response.data.success &&
           dispatch(
@@ -442,19 +441,21 @@ export const updateProfileData = createAsyncThunk(
 
 export const likedAUser = createAsyncThunk(
   'auth/likedAUser',
-  async (data: any, {dispatch}: any) => {
+  async (data: any, {dispatch, rejectWithValue}: any) => {
     // console.log('.........dsfgvadlfghads', data);
     try {
       const response = await http.post('/user/likeUser', data);
-      // console.log('res------>>>>>', response);
+      console.log('res------>>>>>', response);
       if (response.status === 200) {
         console.log('Like by meeee');
         return response.data;
       }
     } catch (error: any) {
-      console.log('errorlikedAUser', JSON.stringify(error));
+      console.log('yyyyyyyyyyyyyyyyyy', error.response.status);
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
+      } else if (error.response.status === 403) {
+        return rejectWithValue(error.response);
       } else {
         throw error;
       }
@@ -869,6 +870,7 @@ const initialState = {
     meLike: [],
     signInInfo: '',
     otpVerified: false,
+    checkDevice: false,
   },
   userID: null,
   token: null,
@@ -1027,10 +1029,16 @@ const Auth: any = createSlice({
         state.loading = true;
       })
       .addCase(likedAUser.fulfilled, (state, action) => {
+        console.log('oooooooooooo');
         state.data.userLike = action.payload.notifications;
         state.loading = false;
       })
-      .addCase(likedAUser.rejected, (state, action) => {
+      .addCase(likedAUser.rejected, (state, action: any) => {
+        console.log('CAllllllllllllllled', action.payload.status);
+        if (action.payload.status === 403) {
+          state.data.checkDevice = !state.data.checkDevice;
+        }
+
         state.loading = false;
       })
       .addCase(superLiked.pending, (state, action) => {

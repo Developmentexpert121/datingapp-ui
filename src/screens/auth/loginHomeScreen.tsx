@@ -10,6 +10,7 @@ import {
   Platform,
   Alert,
 } from 'react-native';
+import messaging from '@react-native-firebase/messaging';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../types';
 import {AppleIC, FacebookIC, GoogleIC} from '../../assets/svgs';
@@ -61,6 +62,32 @@ const LoginHomeScreen = () => {
     otherParam: 'anything you want here',
   };
   // **************
+  const [deviceToken, setDeviceToken] = useState<any>(null);
+
+  useEffect(() => {
+    requestUserPermission();
+  }, []);
+
+  const requestUserPermission = async () => {
+    try {
+      const authStatus = await messaging().requestPermission({
+        sound: true,
+        alert: true,
+        badge: true,
+      });
+      const enabled =
+        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+      if (enabled) {
+        const token = await messaging().getToken();
+        setDeviceToken(token);
+      } else {
+        console.log('Authorization status:', authStatus);
+      }
+    } catch (error) {
+      console.error('Error requesting permission:', error);
+    }
+  };
 
   const handleNavigation = (response: any) => {
     if (!response.payload?.data.otpVerified) {
@@ -75,6 +102,7 @@ const LoginHomeScreen = () => {
   };
   // Google Login
   const handleGoogleLogin = async () => {
+    console.log('Called');
     setLoader(true);
     const isSignedIn = await GoogleSignin.isSignedIn();
     console.log('User is signed in:', isSignedIn);

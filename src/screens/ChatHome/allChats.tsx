@@ -10,6 +10,8 @@ import {
 import {ListItem, Avatar} from 'react-native-elements';
 import CommonBackbutton from '../../components/commonBackbutton/BackButton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {
@@ -35,7 +37,6 @@ const ChatSection = () => {
   const [initialLoading, setInitialLoading] = useState<boolean>(true);
 
   const goToChatWith = async (user: any) => {
-    // console.log('user111111111', user);
     await dispatch(videoCallUser({user: user}));
     navigation.navigate('VideoCallRedirect');
   };
@@ -151,6 +152,8 @@ const ChatSection = () => {
 
   //
   const renderItem = ({item}: {item: any}) => {
+    const isTextMessage = !item.chat.uri;
+
     return (
       <ListItem
         containerStyle={styles.listItemContainer}
@@ -186,7 +189,16 @@ const ChatSection = () => {
             style={{
               fontFamily: 'Sansation-Regular',
             }}>
-            {item.chat?.message}
+            {isTextMessage ? (
+              item.chat?.message
+            ) : (
+              <View style={{flexDirection: 'row'}}>
+                <Text>Photo</Text>
+                <View>
+                  <MaterialIcons name="photo" size={20} />
+                </View>
+              </View>
+            )}
           </Text>
         </View>
 

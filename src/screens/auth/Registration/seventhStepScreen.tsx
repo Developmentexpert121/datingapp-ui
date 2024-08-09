@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {request, PERMISSIONS} from 'react-native-permissions';
-import {useAppDispatch, useAppSelector} from '../../../store/store';
+import {useAppDispatch} from '../../../store/store';
 import {updateProfileData, uploadImages} from '../../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../../../components/Loader/Loader';
@@ -96,7 +96,7 @@ const SeventhStepScreen = ({
   };
 
   useEffect(() => {
-    if (title !== 'Registeration') {
+    if (title !== 'Registration') {
       let fieldValue = profileImages?.join(',');
       dispatch(
         updateProfileData({
@@ -156,45 +156,15 @@ const SeventhStepScreen = ({
   };
 
   const handleRemoveImage = async (index: number) => {
-    if (profileImages.length === 0) {
-      try {
-        launchImageLibrary({mediaType: 'photo'}, async response => {
-          if (!response?.didCancel && !response?.errorMessage) {
-            if (response?.assets && response.assets.length > 0) {
-              try {
-                const asset = response.assets[0];
-                const formData = new FormData();
-                formData.append('image', {
-                  name: asset.fileName,
-                  fileName: asset.fileName,
-                  type: asset.type,
-                  uri: asset.uri,
-                });
-
-                const uploadedImageUrl = await dispatch(uploadImages(formData))
-                  .unwrap()
-                  .then((response: any) => response.secureUrl);
-
-                setProfileImages([uploadedImageUrl]);
-                setUploadError(false);
-              } catch (error) {
-                console.error('Error uploading image:', error);
-                setUploadError(true);
-              }
-            } else {
-              setUploadError(true);
-            }
-          }
-        });
-      } catch (error) {
-        console.error('Error handling image removal:', error);
-      }
-    } else {
-      const updatedImages = [...profileImages];
-      updatedImages?.splice(index, 1);
-      setProfileImages(updatedImages);
-      setUploadError(false);
+    if (profileImages.length <= 2) {
+      setUploadError(true);
+      return;
     }
+
+    const updatedImages = [...profileImages];
+    updatedImages.splice(index, 1);
+    setProfileImages(updatedImages);
+    setUploadError(false);
   };
 
   return (
@@ -207,7 +177,7 @@ const SeventhStepScreen = ({
         {[
           ...profileImages,
           ...Array(Math.max(6 - (profileImages?.length || 0), 0)),
-        ]?.map((item, index) => (
+        ].map((item, index) => (
           <TouchableOpacity
             onPress={() => {
               if (item) {
@@ -233,15 +203,9 @@ const SeventhStepScreen = ({
           </TouchableOpacity>
         ))}
       </View>
-      {errors && (
-        <Text
-          style={{
-            color: 'red',
-            textAlign: 'center',
-            fontFamily: 'Sansation_Regular',
-            marginTop: 30,
-          }}>
-          Please select minimum 2 pictures.
+      {(uploadError || (errors && profileImages.length < 2)) && (
+        <Text style={styles.errorText}>
+          Please select a minimum of 2 pictures.
         </Text>
       )}
       {loader ? <Loader /> : null}
@@ -298,6 +262,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     color: 'black',
     marginVertical: 10,
+  },
+  errorText: {
+    color: 'red',
+    textAlign: 'center',
+    fontFamily: 'Sansation_Regular',
+    marginTop: 30,
   },
 });
 

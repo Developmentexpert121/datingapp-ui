@@ -21,7 +21,6 @@ import SplashScreen from 'react-native-splash-screen';
 import ForgotPassword from '../screens/auth/forgotPassword';
 import NewPassword from '../screens/auth/newPassword';
 import Subscriptions from '../screens/Profile/SubscriptionComponent/Subscriptions';
-import PushNotification from 'react-native-push-notification';
 import exploreHome from '../screens/Explore/ExploreHome/exploreHome';
 import notifee, {AndroidImportance} from '@notifee/react-native';
 import {StreamVideo, StreamVideoRN} from '@stream-io/video-react-native-sdk';

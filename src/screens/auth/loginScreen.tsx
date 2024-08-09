@@ -110,7 +110,6 @@ const LoginScreen = () => {
 
   const validateEmail = (email: string) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    console.log('Valid email =>', regex.test(email));
     return regex.test(email);
   };
 
@@ -142,7 +141,6 @@ const LoginScreen = () => {
       !error.emptyPassword &&
       !error.password
     ) {
-      console.log('All well');
       onSubmit({email: formData.email, password: formData.password});
     }
   };
