@@ -23,12 +23,12 @@ export const ProfileData: any = createAsyncThunk(
     try {
       const response: any = await http.get(`/user/profile`);
       if (response.status === 200) {
-        console.log('Profile data api hit ----------');
+        // console.log('Profile data api hit ----------');
         await AsyncStorage.setItem(
           'profileData',
           JSON.stringify(response.data),
         );
-        console.log('response', JSON.stringify(response));
+        // console.log('response', JSON.stringify(response));
 
         return response.data;
       }
