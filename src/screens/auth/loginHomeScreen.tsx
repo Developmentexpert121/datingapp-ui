@@ -192,7 +192,7 @@ const LoginHomeScreen = () => {
 
       try {
         // Call the function to handle Apple button press and get user info
-        const userInfo = await onAppleButtonPress();
+        const userInfo: any = await onAppleButtonPress();
 
         if (userInfo) {
           // Prepare the login payload for Apple login
@@ -206,46 +206,53 @@ const LoginHomeScreen = () => {
           };
 
           // Dispatch the user sign-up action with the login payload
-          dispatch(AppleLogin({...loginPayload}))
-            .then(async (response: any) => {
-              if (response?.payload?.redirect === 'Steps') {
-                await navigation.navigate('Register');
-              } else if (response?.payload?.redirect === 'Dashboard') {
-                dispatch(activityLoaderStarted());
-                let token: string = response?.payload?.token;
-                setLocalStorage('token', token);
-                await AsyncStorage.setItem(
-                  'authToken',
-                  JSON.stringify(response?.payload?.token),
-                );
-                await AsyncStorage.setItem(
-                  'userId',
-                  JSON.stringify(response?.payload?._id),
-                );
-                dispatch(ProfileData());
+          if (loginPayload.email) {
+            dispatch(AppleLogin({...loginPayload}))
+              .then(async (response: any) => {
+                if (response?.payload?.redirect === 'Steps') {
+                  await navigation.navigate('Register');
+                } else if (response?.payload?.redirect === 'Dashboard') {
+                  dispatch(activityLoaderStarted());
+                  let token: string = response?.payload?.token;
+                  setLocalStorage('token', token);
+                  await AsyncStorage.setItem(
+                    'authToken',
+                    JSON.stringify(response?.payload?.token),
+                  );
+                  await AsyncStorage.setItem(
+                    'userId',
+                    JSON.stringify(response?.payload?._id),
+                  );
+                  dispatch(ProfileData());
 
-                // If sign-up is successful, call the function to handle the navigation
-                handleNavigation(response);
-                dispatch(activityLoaderFinished());
-                dispatch(setUserId(response?.payload?._id));
-              } else {
-                // If there is an error in sign-up, check if there is an error message and set it
-                if (response?.payload?.message) {
-                  setMsg(response?.payload?.message);
+                  // If sign-up is successful, call the function to handle the navigation
+                  handleNavigation(response);
+                  dispatch(activityLoaderFinished());
+                  dispatch(setUserId(response?.payload?._id));
+                } else {
+                  // If there is an error in sign-up, check if there is an error message and set it
+                  if (response?.payload?.message) {
+                    setMsg(response?.payload?.message);
+                  }
+                  // Show the modal with the error message
+                  setActiveModal(true);
                 }
-                // Show the modal with the error message
+              })
+              .catch((error: any) => {
+                // If there is an error in the promise chain, set the error message and show the modal
+                console.error('Apple login dispatch error:', error);
+                setMsg(
+                  error?.payload?.message ||
+                    'An error occurred during Apple login.',
+                );
                 setActiveModal(true);
-              }
-            })
-            .catch((error: any) => {
-              // If there is an error in the promise chain, set the error message and show the modal
-              console.error('Apple login dispatch error:', error);
-              setMsg(
-                error?.payload?.message ||
-                  'An error occurred during Apple login.',
-              );
-              setActiveModal(true);
-            });
+              });
+          } else {
+            Alert.alert(
+              'Error',
+              'Please Use Valid Email or Your apple account created with mobile number',
+            );
+          }
         } else {
           // Handle the case when the user info is not available
           setMsg('User information could not be retrieved. Please try again.');
