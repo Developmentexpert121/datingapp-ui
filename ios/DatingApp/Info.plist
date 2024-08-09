@@ -16,8 +16,6 @@
 	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>We need access to your photo library to save images.</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
@@ -72,7 +70,7 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>TopTier Dating app uses microphone to call.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>[REASON]</string>
+	<string>We need access to your photo library to save images.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>TopTier Dating App uses gallery to pick photos.</string>
 	<key>UIAppFonts</key>

@@ -34,7 +34,10 @@ import {
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import {check, request, PERMISSIONS} from 'react-native-permissions';
 import RNFS from 'react-native-fs';
-
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
 // const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 
 const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
@@ -446,10 +449,13 @@ const ChatPage = ({
                                       onPress={() =>
                                         saveImageToGallery(messageItem.uri)
                                       }>
-                                      <FontAwesome
-                                        name="download"
-                                        color="black"
-                                        size={20}
+                                      <Image
+                                        source={require('../../assets/images/download.png')}
+                                        style={{
+                                          resizeMode: 'contain',
+                                          height: hp(2),
+                                          width: wp(4),
+                                        }}
                                       />
                                     </TouchableOpacity>
                                   </View>

@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TextInput,
   SafeAreaView,
+  Image,
 } from 'react-native';
 import {ListItem, Avatar} from 'react-native-elements';
 import CommonBackbutton from '../../components/commonBackbutton/BackButton';
@@ -23,6 +24,10 @@ import {videoCallUser} from '../../store/Activity/activity';
 import SmallLoader from '../../components/Loader/SmallLoader';
 import BlockModal from '../../components/Modals/BlockModal';
 import Loader from '../../components/Loader/Loader';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
 
 const ChatSection = () => {
   const navigation: any = useNavigation();
@@ -152,7 +157,7 @@ const ChatSection = () => {
 
   //
   const renderItem = ({item}: {item: any}) => {
-    const isTextMessage = !item.chat.uri;
+    const isTextMessage = !item?.chat?.uri;
 
     return (
       <ListItem
@@ -192,11 +197,17 @@ const ChatSection = () => {
             {isTextMessage ? (
               item.chat?.message
             ) : (
-              <View style={{flexDirection: 'row'}}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Image
+                  source={require('../../assets/images/camera.png')}
+                  style={{
+                    resizeMode: 'contain',
+                    height: hp(1.5),
+                    width: wp(3),
+                    marginRight: wp(1),
+                  }}
+                />
                 <Text>Photo</Text>
-                <View>
-                  <MaterialIcons name="photo" size={20} />
-                </View>
               </View>
             )}
           </Text>
