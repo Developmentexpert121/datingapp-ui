@@ -10,9 +10,6 @@ import {useAppDispatch, useAppSelector} from '../../store/store';
 import uuid from 'react-native-uuid';
 import {videoCallToken} from '../../store/Auth/auth';
 import VideoCallInterface from './chatVideoInterface';
-import {io} from 'socket.io-client';
-import {onlineUser} from '../../store/reducer/authSliceState';
-const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 
 const VideoCallRedirect = () => {
   const user: any = useAppSelector((state: any) => state?.ActivityLoader?.user);
@@ -25,8 +22,6 @@ const VideoCallRedirect = () => {
     (state: any) => state?.ActivityLoader?.clientData,
   );
 
-  console.log('--------', clientData);
-
   const callId: any = uuid.v4();
 
   const [onlineUsers, setOnlineUsers] = useState<any>([]);
@@ -36,67 +31,6 @@ const VideoCallRedirect = () => {
   const [client, setClient] = useState<StreamVideoClient | null>(null);
   const [call, setCall] = useState<Call | any>(null);
   const [callType, setCallType] = useState('videoCall');
-
-  useEffect(() => {
-    socket.on('user_online', users => {
-      setOnlineUsers(users);
-    });
-
-    socket.on('user_offline', users => {
-      setOnlineUsers(users);
-    });
-
-    socket.on('disconnect', () => {
-      console.log('App Disconnected from server');
-    });
-
-    return () => {
-      socket.off('user_online');
-      socket.off('user_offline');
-      socket.off('disconnect');
-    };
-  }, []);
-
-  useEffect(() => {
-    dispatch(onlineUser(onlineUsers));
-  }, [onlineUsers]);
-
-  useEffect(() => {
-    if (profileData) {
-      const apiKey = '48e74nbgz5az';
-      const tokenProvider = async () => {
-        const token = await dispatch(videoCallToken({id: profileData?._id}))
-          .unwrap()
-          .then((response: any) => response.token);
-        return token;
-      };
-
-      const userMain = {
-        id: profileData?._id,
-        name: profileData?.name,
-        image: profileData?.profilePic,
-      };
-
-      const myClient = new StreamVideoClient({
-        apiKey,
-        user: userMain,
-        tokenProvider,
-      });
-
-      setClient(myClient);
-
-      // return () => {
-      //   myClient.disconnectUser();
-      //   setClient(null);
-      // };
-    }
-  }, [profileData]);
-
-  useEffect(() => {
-    if (clientData) {
-      setClient(clientData);
-    }
-  }, [clientData]);
 
   const handleCallEnd = useCallback(() => {
     setActiveScreen('home');
@@ -162,20 +96,20 @@ const VideoCallRedirect = () => {
   return (
     <SafeAreaView style={styles.containerMain}>
       {client && (
-        <StreamVideo client={client}>
-          <VideoCallInterface
-            call={call}
-            client={client}
-            goToHomeScreen={goToHomeScreen}
-            user={user}
-            goToCallScreen={goToCallScreen}
-            setEnableCamera={setEnableCamera}
-            setEnableCamera1={setEnableCamera1}
-            activeScreen={activeScreen}
-            setActiveScreen={setActiveScreen}
-            setCallType={setCallType}
-          />
-        </StreamVideo>
+        // <StreamVideo client={client}>
+        <VideoCallInterface
+          call={call}
+          client={client}
+          goToHomeScreen={goToHomeScreen}
+          user={user}
+          goToCallScreen={goToCallScreen}
+          setEnableCamera={setEnableCamera}
+          setEnableCamera1={setEnableCamera1}
+          activeScreen={activeScreen}
+          setActiveScreen={setActiveScreen}
+          setCallType={setCallType}
+        />
+        // </StreamVideo>
       )}
     </SafeAreaView>
   );

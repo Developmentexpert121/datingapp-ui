@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -7,11 +7,9 @@ import {
   Platform,
   TouchableOpacity,
   SafeAreaView,
-  ActivityIndicator,
 } from 'react-native';
 
 import {
-  PurchaseError,
   requestSubscription,
   useIAP,
   validateReceiptIos,
@@ -30,6 +28,7 @@ const subscriptionSkus = Platform.select({
     'TopTierDatingPremiumPlus59.99',
   ],
   android: [
+    // '15toptierdating',
     '15.99toptierdating',
     'toptierdatingmonthly29.99',
     'toptierdatingpremiumplus59.99',
@@ -48,54 +47,25 @@ const SubscriptionsScreen = ({navigation}) => {
   } = useIAP();
 
   const [loading, setLoading] = useState(false);
+  const [subscriptionsFetched, setSubscriptionsFetched] = useState(false);
 
-  const handleGetSubscriptions = async () => {
-    try {
-      console.log('Fetching subscriptions...');
-      await getSubscriptions({skus: subscriptionSkus});
-      console.log('Subscriptions fetched:', subscriptions);
-    } catch (error) {
-      console.log('Error in handleGetSubscriptions:', error);
-    }
-  };
-
+  // ******************************************************
   useEffect(() => {
-    if (connected) {
+    if (connected && !subscriptionsFetched) {
       handleGetSubscriptions();
       getPurchaseHistory();
-      console.log('connected', connected);
+      setSubscriptionsFetched(true); // Set this to true to avoid re-fetching
     } else {
-      console.log('Not connected to IAP');
+      // console.log('Not connected to IAP or already fetched subscriptions');
     }
-  }, [connected]);
+  }, [connected, subscriptionsFetched]);
+  // }, [connected, subscriptionsFetched]);
+  // console.log('!!!!!!!!!!!!!!!!!', connected);
+  // console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', subscriptionsFetched);
 
-  const handleBuySubscription = async productId => {
-    try {
-      console.log('Initiating purchase for:', productId);
-      setLoading(true); // Enable loading indicator
+  //
 
-      // Check if productId is a valid SKU
-      console.log('productId.........', productId);
-      if (!productId || typeof productId !== 'string') {
-        throw new Error('Invalid productId');
-      }
-      await requestSubscription(productId);
-    } catch (error) {
-      console.log('Error in handleBuySubscription:', error);
-
-      if (error instanceof PurchaseError) {
-        console.log('PurchaseError:', error);
-      } else if (error instanceof TypeError) {
-        console.log('TypeError:', error.message);
-        console.log('Error details:', error);
-      } else {
-        console.log('Unexpected error:', error);
-      }
-
-      setLoading(false); // Disable loading indicator on error
-    }
-  };
-
+  // ******************************************************
   useEffect(() => {
     const checkCurrentPurchase = async purchase => {
       if (purchase) {
@@ -111,7 +81,6 @@ const SubscriptionsScreen = ({navigation}) => {
                 },
                 isTestEnvironment,
               );
-
               if (appleReceiptResponse && appleReceiptResponse.status === 0) {
                 await finishTransaction(purchase);
                 navigation.navigate('Home');
@@ -132,9 +101,53 @@ const SubscriptionsScreen = ({navigation}) => {
     if (currentPurchase) {
       checkCurrentPurchase(currentPurchase);
     }
-  }, [currentPurchase, finishTransaction, navigation]);
+  }, [currentPurchase, finishTransaction, isIos]);
+  // }, [currentPurchase, finishTransaction, navigation, isIos]);
+  // console.log('#######', currentPurchase);
+  // console.log('$$$4$', finishTransaction);
+  // console.log('%%%%%%%%', navigation);
+  // console.log('^^^^^^^^^^', isIos);
 
   //
+
+  // ******************************************************
+
+  const handleGetSubscriptions = useCallback(async () => {
+    try {
+      // console.log('Fetching subscriptions...', subscriptionSkus);
+      await getSubscriptions({skus: subscriptionSkus});
+      // console.log('Subscriptions fetched:', subscriptions);
+    } catch (error) {
+      console.log('Error in handleGetSubscriptions:', error);
+    }
+  }, [getSubscriptions, subscriptions]);
+
+  const handleBuySubscription = useCallback(
+    async productId => {
+      try {
+        // console.log('Initiating purchase for:', productId);
+        setLoading(true);
+        if (!productId || typeof productId !== 'string') {
+          throw new Error('Invalid productId');
+        }
+        await requestSubscription(productId);
+      } catch (error) {
+        console.log('Error in handleBuySubscription:', error);
+        setLoading(false);
+      }
+    },
+    [requestSubscription],
+  );
+
+  //
+
+  // ******************************************************
+
+  // console.log('22222222222', currentPurchase);
+
+  //
+
+  // ******************************************************
   const handleSubscriptionExpiry = () => {
     // Example logic for handling expired subscriptions
     Alert.alert(
@@ -154,14 +167,12 @@ const SubscriptionsScreen = ({navigation}) => {
     // Navigate to subscription page or show options to renew
   };
 
-  //
-  console.log('++++++++++++++++++++++++++++', subscriptions);
   return (
     <SafeAreaView>
       <ScrollView>
         <View style={{padding: 1}}>
           <CommonBackbutton title="Subscribe" />
-          <SubscriptionUi />
+          {/* <SubscriptionUi /> */}
           <View style={{height: 20}}></View>
           <Text style={styles.listItem}>
             Subscribe to some cool stuff today.
