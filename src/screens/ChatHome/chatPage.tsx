@@ -300,7 +300,7 @@ const ChatPage = ({
               <View style={{flexDirection: 'row', marginEnd: 10, width: '25%'}}>
                 <TouchableOpacity
                   onPress={
-                    profileData?.plan === 'Free'
+                    profileData?.plan !== 'Free'
                       ? () => {
                           navigation.navigate('Subscriptions');
                         }
