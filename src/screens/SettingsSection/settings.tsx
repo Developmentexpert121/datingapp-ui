@@ -287,8 +287,7 @@ const SettingsSection = () => {
                 }}>
                 <View style={{width: 20}}></View>
                 <Text style={styles.textName}>{item.title}</Text>
-                {item.title === 'Location' ||
-                item.title === 'Language I Know' ? (
+                {item.title === 'Language I Know' ? (
                   <EditTextIC
                     onPress={() => {
                       if (item.title === 'Location') {

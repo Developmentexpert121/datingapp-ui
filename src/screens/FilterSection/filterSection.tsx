@@ -219,7 +219,16 @@ const FilterSection = ({
           break;
         case RESULTS.GRANTED:
           console.log('The permission is granted');
+          dispatch(
+            updateProfileData({
+              field: 'showInDistance',
+              value: !showIn,
+              id: getUserId(),
+            }),
+          ).then(() => setShowIn(!showIn));
+          Geolocation.requestAuthorization();
           getLocationAndRegister();
+          setLoader(true);
           break;
         case RESULTS.BLOCKED:
           console.log('The permission is denied and not requestable anymore');
@@ -262,24 +271,16 @@ const FilterSection = ({
       Geolocation.requestAuthorization();
       getLocationAndRegister();
       setLoader(true);
+      dispatch(
+        updateProfileData({
+          field: 'showInDistance',
+          value: !showIn,
+          id: getUserId(),
+        }),
+      ).then(() => setShowIn(!showIn));
     } else if (result === RESULTS.BLOCKED) {
       showSettingsAlert();
     }
-  };
-
-  const showPermissionPopup = () => {
-    Alert.alert(
-      'Location Permission',
-      'This app needs access to your location to provide the service.',
-      [
-        {
-          text: 'Cancel',
-          onPress: () => {},
-          style: 'cancel',
-        },
-        {text: 'Allow', onPress: () => checkLocationPermission()},
-      ],
-    );
   };
 
   return (
@@ -334,17 +335,7 @@ const FilterSection = ({
               </Text>
               <TouchableOpacity
                 onPress={() => {
-                  if (profileData.location !== undefined) {
-                    dispatch(
-                      updateProfileData({
-                        field: 'showInDistance',
-                        value: !showIn,
-                        id: getUserId(),
-                      }),
-                    ).then(() => setShowIn(!showIn));
-                  } else {
-                    showPermissionPopup();
-                  }
+                  checkLocationPermission();
                 }}>
                 <Ionicons
                   name={
