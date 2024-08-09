@@ -50,33 +50,35 @@ const HomeScreen = () => {
   const [onlineUsers, setOnlineUsers] = useState<any>(null);
 
   useEffect(() => {
-    Geolocation.requestAuthorization();
-    Geolocation.getCurrentPosition(
-      position => {
-        const {latitude, longitude} = position.coords;
-        dispatch(
-          updateProfileData({
-            field: 'location',
-            value: {latitude, longitude},
-            id: getUserId(),
-          }),
-        );
-      },
-      err => {
-        console.error('Error fetching location:', err);
-      },
-      {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}, // Increased timeout to 30000ms (30 seconds)
-    );
+    // Geolocation.requestAuthorization();
+    // Geolocation.getCurrentPosition(
+    //   position => {
+    //     const {latitude, longitude} = position.coords;
+    //     dispatch(
+    //       updateProfileData({
+    //         field: 'location',
+    //         value: {latitude, longitude},
+    //         id: getUserId(),
+    //       }),
+    //     );
+    //   },
+    //   err => {
+    //     console.error('Error fetching location:', err);
+    //   },
+    //   {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}, // Increased timeout to 30000ms (30 seconds)
+    // );
     dispatch(ProfileData())
       .unwrap()
       .then((res: any) => {
-        setShowIn(res.data.showInDistance);
+        if (res.data.location !== undefined) {
+          setShowIn(res.data.showInDistance);
+        }
         setDistance(parseInt(res.data.distance));
         setCheckedInterests(res.data.interests);
         setCheckedRelationShip(res.data.partnerType);
         setTrigger(true);
       });
-  }, []);
+  }, [apply]);
 
   useEffect(() => {
     socket.emit('user_connected', profileData?._id);
