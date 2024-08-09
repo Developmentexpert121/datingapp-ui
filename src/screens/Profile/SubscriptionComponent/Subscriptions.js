@@ -39,7 +39,7 @@ const subscriptionSkus = Platform.select({
 const SubscriptionsScreen = ({navigation}) => {
   const {
     connected,
-    subscriptions = ['15.99toptierdating'], // Ensure subscriptions is an array by default
+    subscriptions = [], // Ensure subscriptions is an array by default
     getSubscriptions,
     currentPurchase,
     finishTransaction,
@@ -79,7 +79,6 @@ const SubscriptionsScreen = ({navigation}) => {
       if (!productId || typeof productId !== 'string') {
         throw new Error('Invalid productId');
       }
-
       await requestSubscription(productId);
     } catch (error) {
       console.log('Error in handleBuySubscription:', error);
@@ -156,7 +155,7 @@ const SubscriptionsScreen = ({navigation}) => {
   };
 
   //
-
+  console.log('++++++++++++++++++++++++++++', subscriptions);
   return (
     <SafeAreaView>
       <ScrollView>
