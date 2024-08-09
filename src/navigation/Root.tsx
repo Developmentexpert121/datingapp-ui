@@ -14,6 +14,7 @@ import {
   setAuthData,
   setModal,
   updateAuthentication,
+  videoCallToken,
 } from '../store/Auth/auth';
 import BottomTabNavigation from './BottomTabNavigation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -23,7 +24,11 @@ import NewPassword from '../screens/auth/newPassword';
 import Subscriptions from '../screens/Profile/SubscriptionComponent/Subscriptions';
 import exploreHome from '../screens/Explore/ExploreHome/exploreHome';
 import notifee, {AndroidImportance} from '@notifee/react-native';
-import {StreamVideo, StreamVideoRN} from '@stream-io/video-react-native-sdk';
+import {
+  StreamVideo,
+  StreamVideoClient,
+  StreamVideoRN,
+} from '@stream-io/video-react-native-sdk';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import Loader from '../components/Loader/Loader';
 import {getLocalStroage, setLocalStorage} from '../api/storage';
@@ -34,14 +39,13 @@ import {
   activityLoaderStarted,
 } from '../store/Activity/activity';
 import {EventRegister} from 'react-native-event-listeners';
+import {useDispatch} from 'react-redux';
 
 const Stack = createNativeStackNavigator();
 
 const Root = () => {
   const userid: any = useAppSelector((state: any) => state?.Auth?.userID);
-  // const isprofiledataPresent: any = useAppSelector(
-  //   (state: any) => state?.Auth?.data?.isProfileDataPresenr,
-  // );
+
   const isAuthLoading = useAppSelector((state: any) => state.Auth.authLoading);
 
   const dispatch: any = useAppDispatch();
@@ -92,30 +96,59 @@ const Root = () => {
       }
     }
   };
+  const Dispatch = useDispatch<any>();
+  const [client, setClient] = useState<StreamVideoClient | null>(null);
+  const userdata: any = useAppSelector(
+    (state: any) => state?.Auth?.data?.userData,
+  );
 
-  // const profileData: any = useAppSelector(
-  //   (state: any) => state?.Auth?.data?.profileData,
-  // );
+  useEffect(() => {
+    // Define an async function inside the useEffect
+    const fetchData = async () => {
+      try {
+        const apiKey = '48e74nbgz5az';
+        const tokenProvider = async () => {
+          const token = await Dispatch(videoCallToken({id: userdata?.id}))
+            .unwrap()
+            .then((response: any) => response.token);
+          return token;
+        };
 
-  // useEffect(() => {
-  //   if (profileData) {
-  //     const setStorage = async () => {
-  //       await AsyncStorage.setItem('profileData', JSON.stringify(profileData));
-  //     };
+        const token = await tokenProvider();
+        console.log('Stream Token', token);
 
-  //     setStorage();
-  //     socket.emit('user_connected', profileData?._id);
-  //     socket.on('connect', () => {
-  //       console.log('App Connected from server');
-  //       const userId = profileData?._id;
-  //       socket.emit('user_connected', userId);
-  //     });
-  //   }
+        const userMain = {
+          id: userdata.id,
+          name: userdata.name,
+          image: userdata.image,
+        };
 
-  //   return () => {
-  //     socket.off('connect');
-  //   };
-  // }, [profileData]);
+        const myClient = new StreamVideoClient({
+          apiKey,
+          user: userMain,
+          tokenProvider: () => token,
+        });
+
+        setClient(myClient);
+      } catch (error) {
+        console.error('Error connecting to Stream Video Client:', error);
+      }
+    };
+
+    // Only proceed if userdata is available
+    if (userdata) {
+      fetchData();
+
+      return () => {
+        // Cleanup: disconnect the client when the component unmounts or userdata changes
+        if (client) {
+          console.log('Stream Logout Hit');
+          client.disconnectUser();
+          setClient(null);
+        }
+      };
+    }
+  }, [userdata]); // Ensure 'client' is included in the dependency array
 
   useEffect(() => {
     // Register the event listener
@@ -179,30 +212,36 @@ const Root = () => {
   };
 
   const AfterLogin = () => {
+    if (!client) {
+      return <Loader />;
+    }
+
     return (
-      <AfterLoginStack.Navigator
-        screenOptions={{headerShown: false}}
-        initialRouteName="BottomTabNavigation">
-        <AfterLoginStack.Screen
-          name="BottomTabNavigation"
-          component={BottomTabNavigation}
-        />
-        <AfterLoginStack.Screen name="Settings" component={SettingsScreen} />
-        <AfterLoginStack.Screen
-          name="UpdateProfile"
-          component={UpdateProfileScreen}
-        />
-        <AfterLoginStack.Screen
-          name="Subscriptions"
-          component={Subscriptions}
-        />
-        <AfterLoginStack.Screen name="ChatScreen" component={ChatSection} />
-        <AfterLoginStack.Screen name="exploreHome" component={exploreHome} />
-        <AfterLoginStack.Screen
-          name="VideoCallRedirect"
-          component={VideoCallRedirect}
-        />
-      </AfterLoginStack.Navigator>
+      <StreamVideo client={client}>
+        <AfterLoginStack.Navigator
+          screenOptions={{headerShown: false}}
+          initialRouteName="BottomTabNavigation">
+          <AfterLoginStack.Screen
+            name="BottomTabNavigation"
+            component={BottomTabNavigation}
+          />
+          <AfterLoginStack.Screen name="Settings" component={SettingsScreen} />
+          <AfterLoginStack.Screen
+            name="UpdateProfile"
+            component={UpdateProfileScreen}
+          />
+          <AfterLoginStack.Screen
+            name="Subscriptions"
+            component={Subscriptions}
+          />
+          <AfterLoginStack.Screen name="ChatScreen" component={ChatSection} />
+          <AfterLoginStack.Screen name="exploreHome" component={exploreHome} />
+          <AfterLoginStack.Screen
+            name="VideoCallRedirect"
+            component={VideoCallRedirect}
+          />
+        </AfterLoginStack.Navigator>
+      </StreamVideo>
     );
   };
 

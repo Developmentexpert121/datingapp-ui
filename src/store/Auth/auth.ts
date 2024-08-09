@@ -23,12 +23,12 @@ export const ProfileData: any = createAsyncThunk(
     try {
       const response: any = await http.get(`/user/profile`);
       if (response.status === 200) {
-        console.log('Profile data api hit ----------');
+        // console.log('Profile data api hit ----------');
         await AsyncStorage.setItem(
           'profileData',
           JSON.stringify(response.data),
         );
-        console.log('response', JSON.stringify(response));
+        // console.log('response', JSON.stringify(response));
 
         return response.data;
       }
@@ -802,7 +802,6 @@ export const videoCallToken = createAsyncThunk(
       const response = await http.post(`/user/stream-chat/token`, data);
 
       if (response.status === 200) {
-        // console.log(',,,,,VIdeo calll200');
         return response.data;
       }
     } catch (error: any) {
@@ -852,7 +851,7 @@ export const UnBlockAUser = createAsyncThunk(
   },
 );
 
-const initialState = {
+const initialState: any = {
   data: {
     status: false,
     signin: {},
@@ -861,6 +860,7 @@ const initialState = {
     signup: {},
     data: {},
     profileData: null,
+    userData: null,
     isProfileDataPresenr: false,
     updateprofileData: {},
     allUsers: [],
@@ -973,6 +973,13 @@ const Auth: any = createSlice({
         state.data.profileData = action.payload.data;
         state.loading = false;
         state.authLoading = false;
+        if (!state.data.userData) {
+          state.data.userData = {
+            id: action.payload.data._id,
+            name: action.payload.data.name,
+            image: action.payload.data.profilePic,
+          };
+        }
       })
       .addCase(ProfileData.pending, (state, action) => {
         state.loading = true;
