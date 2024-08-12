@@ -87,6 +87,9 @@ const VideoCallRedirect = () => {
       myCall.on('call.notification', (event: any) => {
         console.log('call.notification triggered');
       });
+      myCall.on('call.missed', (event: any) => {
+        console.log('call.missed triggered');
+      });
       myCall.on('call.rejected', (event: any) => {
         console.log('call.rejected triggered');
       });
@@ -96,7 +99,7 @@ const VideoCallRedirect = () => {
         });
       };
     },
-    [client, callId, profileData._id, user._id],
+    [client, callId],
   );
 
   const goToHomeScreen = async () => {

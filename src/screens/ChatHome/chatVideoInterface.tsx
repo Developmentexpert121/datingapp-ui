@@ -24,7 +24,7 @@ const VideoCallInterface = ({
 
   const [outgoingCall] = outgoingCalls;
   // console.log(outgoingCall);
-
+  console.log('outgoingCall ==>', outgoingCall);
   return (
     <SafeAreaView style={styles.containerMain}>
       {outgoingCall ? (

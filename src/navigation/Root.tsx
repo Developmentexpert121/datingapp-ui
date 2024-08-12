@@ -44,6 +44,7 @@ import {
 import {EventRegister} from 'react-native-event-listeners';
 import {useDispatch} from 'react-redux';
 import MyIncomingCallUI from '../screens/ChatHome/myIncomingCallUI';
+import {View} from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
@@ -220,17 +221,42 @@ const Root = () => {
     );
 
     const [incomingCall] = incomingCalls;
-    const client = useAppSelector((state: any) => state?.Auth?.streamClient);
 
-    if (incomingCall && client) {
+    if (incomingCall) {
       return (
-        <StreamCall call={incomingCall}>
-          <MyIncomingCallUI call={incomingCall} />
-        </StreamCall>
+        <View style={{flex: 1}}>
+          <StreamCall call={incomingCall}>
+            <MyIncomingCallUI call={incomingCall} />
+          </StreamCall>
+        </View>
       );
     }
 
-    return null;
+    return (
+      <AfterLoginStack.Navigator
+        screenOptions={{headerShown: false}}
+        initialRouteName="BottomTabNavigation">
+        <AfterLoginStack.Screen
+          name="BottomTabNavigation"
+          component={BottomTabNavigation}
+        />
+        <AfterLoginStack.Screen name="Settings" component={SettingsScreen} />
+        <AfterLoginStack.Screen
+          name="UpdateProfile"
+          component={UpdateProfileScreen}
+        />
+        <AfterLoginStack.Screen
+          name="Subscriptions"
+          component={Subscriptions}
+        />
+        <AfterLoginStack.Screen name="ChatScreen" component={ChatSection} />
+        <AfterLoginStack.Screen name="exploreHome" component={exploreHome} />
+        <AfterLoginStack.Screen
+          name="VideoCallRedirect"
+          component={VideoCallRedirect}
+        />
+      </AfterLoginStack.Navigator>
+    );
   };
 
   const AfterLogin = () => {
@@ -241,29 +267,6 @@ const Root = () => {
     return (
       <StreamVideo client={client}>
         <IncomingCallHandler />
-        <AfterLoginStack.Navigator
-          screenOptions={{headerShown: false}}
-          initialRouteName="BottomTabNavigation">
-          <AfterLoginStack.Screen
-            name="BottomTabNavigation"
-            component={BottomTabNavigation}
-          />
-          <AfterLoginStack.Screen name="Settings" component={SettingsScreen} />
-          <AfterLoginStack.Screen
-            name="UpdateProfile"
-            component={UpdateProfileScreen}
-          />
-          <AfterLoginStack.Screen
-            name="Subscriptions"
-            component={Subscriptions}
-          />
-          <AfterLoginStack.Screen name="ChatScreen" component={ChatSection} />
-          <AfterLoginStack.Screen name="exploreHome" component={exploreHome} />
-          <AfterLoginStack.Screen
-            name="VideoCallRedirect"
-            component={VideoCallRedirect}
-          />
-        </AfterLoginStack.Navigator>
       </StreamVideo>
     );
   };

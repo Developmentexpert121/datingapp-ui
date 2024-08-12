@@ -36,26 +36,8 @@ import {
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen';
 import {Provider} from 'react-redux';
-import MyIncomingCallUI from './src/screens/ChatHome/myIncomingCallUI';
 
 const App = () => {
-  // const calls = useCalls();
-
-  // const incomingCalls = calls.filter(
-  //   call =>
-  //     call.isCreatedByMe === false &&
-  //     call.state.callingState === CallingState.RINGING,
-  // );
-
-  // const [incomingCall] = incomingCalls;
-  // if (incomingCall) {
-  //   return (
-  //     <StreamCall call={incomingCall}>
-  //       <MyIncomingCallUI call={incomingCall} />
-  //     </StreamCall>
-  //   );
-  // }
-
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       await notifee.cancelAllNotifications();
