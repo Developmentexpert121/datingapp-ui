@@ -21,7 +21,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from 'react-native-splash-screen';
 import ForgotPassword from '../screens/auth/forgotPassword';
 import NewPassword from '../screens/auth/newPassword';
-import Subscriptions from '../screens/Profile/SubscriptionComponent/Subscriptions';
+import Subscriptions from '../screens/Profile/SubscriptionComponent/SubscriptionsScreen';
 import exploreHome from '../screens/Explore/ExploreHome/exploreHome';
 import notifee, {AndroidImportance} from '@notifee/react-native';
 import {
