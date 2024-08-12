@@ -57,7 +57,7 @@ export async function onAppleButtonPress() {
 //       'public_profile',
 //       'email',
 //     ]);
-//     console.log('first', LoginManager);
+//
 //     if (result.isCancelled) {
 //       console.log('......Login cancelled');
 //     } else {

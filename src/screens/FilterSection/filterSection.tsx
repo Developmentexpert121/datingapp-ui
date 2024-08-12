@@ -4,6 +4,9 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
+  Alert,
+  Platform,
+  Linking,
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {Slider} from 'react-native-elements';
@@ -20,6 +23,9 @@ import Label from '../SettingsSection/Label';
 import Notch from '../SettingsSection/Notch';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import Geolocation from '@react-native-community/geolocation';
+import Loader from '../../components/Loader/Loader';
+import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
 
 const getUserId = async () => {
   try {
@@ -166,6 +172,116 @@ const FilterSection = ({
     );
   };
 
+  const [loader, setLoader] = useState<boolean>(false);
+
+  const getLocationAndRegister = () => {
+    Geolocation.getCurrentPosition(
+      position => {
+        const {latitude, longitude} = position.coords;
+        // console.log('latitude:', latitude);
+        // console.log('Longitude:', longitude);
+        setLoader(false);
+        dispatch(
+          updateProfileData({
+            field: 'location',
+            value: {latitude, longitude},
+            id: getUserId(),
+          }),
+        );
+      },
+
+      err => {
+        console.error('Error fetching location:', err);
+        setLoader(false);
+      },
+      {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}, // Increased timeout to 30000ms (30 seconds)
+    );
+  };
+
+  const checkLocationPermission = async () => {
+    try {
+      const permission =
+        Platform.OS === 'ios'
+          ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
+          : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION;
+      const result = await check(permission);
+
+      switch (result) {
+        case RESULTS.UNAVAILABLE:
+          console.log('This feature is not available on this device');
+          break;
+        case RESULTS.DENIED:
+          console.log(
+            'The permission has not been requested / is denied but requestable',
+          );
+          requestLocationPermission();
+          break;
+        case RESULTS.GRANTED:
+          console.log('The permission is granted');
+          dispatch(
+            updateProfileData({
+              field: 'showInDistance',
+              value: !showIn,
+              id: getUserId(),
+            }),
+          ).then(() => setShowIn(!showIn));
+          Geolocation.requestAuthorization();
+          getLocationAndRegister();
+          setLoader(true);
+          break;
+        case RESULTS.BLOCKED:
+          console.log('The permission is denied and not requestable anymore');
+          showSettingsAlert();
+          break;
+      }
+    } catch (error) {
+      console.error('Failed to check permission:', error);
+    }
+  };
+
+  const showSettingsAlert = () => {
+    Alert.alert(
+      'Location Permission',
+      'The app needs location access to provide this feature. Please go to the app settings and enable location permissions.',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => {},
+          style: 'cancel',
+        },
+        {
+          text: 'Open Settings',
+          onPress: () => {
+            Linking.openSettings();
+          },
+        },
+      ],
+    );
+  };
+
+  const requestLocationPermission = async () => {
+    const permission =
+      Platform.OS === 'ios'
+        ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
+        : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION;
+    const result = await request(permission);
+
+    if (result === RESULTS.GRANTED) {
+      Geolocation.requestAuthorization();
+      getLocationAndRegister();
+      setLoader(true);
+      dispatch(
+        updateProfileData({
+          field: 'showInDistance',
+          value: !showIn,
+          id: getUserId(),
+        }),
+      ).then(() => setShowIn(!showIn));
+    } else if (result === RESULTS.BLOCKED) {
+      showSettingsAlert();
+    }
+  };
+
   return (
     <ScrollView style={{marginTop: 10}} showsVerticalScrollIndicator={false}>
       {/* Distance Preference */}
@@ -177,18 +293,26 @@ const FilterSection = ({
           </Text>
         </View>
         <View style={styles.line} />
-        <Slider
-          style={styles.slider}
-          minimumValue={4}
-          maximumValue={50}
-          value={distance}
-          onSlidingComplete={handleSliderChange}
-          step={1}
-          thumbTintColor="#AC25AC"
-          minimumTrackTintColor="#AC25AC"
-          maximumTrackTintColor="gray"
-          thumbStyle={styles.thumbStyle}
-        />
+        <View
+          style={
+            showIn && profileData.location !== undefined ? {} : {opacity: 0.5}
+          }
+          pointerEvents={
+            showIn && profileData.location !== undefined ? 'auto' : 'none'
+          }>
+          <Slider
+            style={styles.slider}
+            minimumValue={4}
+            maximumValue={50}
+            value={distance}
+            onSlidingComplete={handleSliderChange}
+            step={1}
+            thumbTintColor="#AC25AC"
+            minimumTrackTintColor="#AC25AC"
+            maximumTrackTintColor="gray"
+            thumbStyle={styles.thumbStyle}
+          />
+        </View>
         <Controller
           name={'showInDistance'}
           control={control}
@@ -210,13 +334,7 @@ const FilterSection = ({
               </Text>
               <TouchableOpacity
                 onPress={() => {
-                  dispatch(
-                    updateProfileData({
-                      field: 'showInDistance',
-                      value: !showIn,
-                      id: getUserId(),
-                    }),
-                  ).then(() => setShowIn(!showIn));
+                  checkLocationPermission();
                 }}>
                 <Ionicons
                   name={
@@ -423,6 +541,7 @@ const FilterSection = ({
           </View>
         ))}
       </View> */}
+      {loader && <Loader />}
     </ScrollView>
   );
 };

@@ -38,7 +38,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'NewPassword'>;
 
 const NewPassword: React.FC<Props> = ({navigation, route}, Data: any) => {
   const {email}: any = route.params; // Retrieve the email from params
-  console.log('first....', email);
+
   const dispatch: any = useAppDispatch();
   const [newPassword, setNewPassword] = useState('');
   const [loader, setLoader] = useState<boolean>(false);

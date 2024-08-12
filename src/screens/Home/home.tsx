@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Platform, Alert, Linking} from 'react-native';
 import HeaderComponent from '../../components/Dashboard/header/header';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {
@@ -14,6 +14,7 @@ import Geolocation from '@react-native-community/geolocation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {io} from 'socket.io-client';
 import {onlineUser} from '../../store/reducer/authSliceState';
+import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
 const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 
 const getUserId = async () => {
@@ -49,11 +50,13 @@ const HomeScreen = () => {
   const [trigger, setTrigger] = useState(false);
   const [onlineUsers, setOnlineUsers] = useState<any>(null);
 
-  useEffect(() => {
-    Geolocation.requestAuthorization();
+  const getLocationAndRegister = () => {
     Geolocation.getCurrentPosition(
       position => {
         const {latitude, longitude} = position.coords;
+        // console.log('latitude:', latitude);
+        // console.log('Longitude:', longitude);
+
         dispatch(
           updateProfileData({
             field: 'location',
@@ -62,21 +65,96 @@ const HomeScreen = () => {
           }),
         );
       },
+
       err => {
         console.error('Error fetching location:', err);
       },
       {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}, // Increased timeout to 30000ms (30 seconds)
     );
+  };
+
+  const checkLocationPermission = async () => {
+    try {
+      const permission =
+        Platform.OS === 'ios'
+          ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
+          : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION;
+      const result = await check(permission);
+
+      switch (result) {
+        case RESULTS.UNAVAILABLE:
+          console.log('This feature is not available on this device');
+          break;
+        case RESULTS.DENIED:
+          console.log(
+            'The permission has not been requested / is denied but requestable',
+          );
+          requestLocationPermission();
+          break;
+        case RESULTS.GRANTED:
+          console.log('The permission is granted');
+          Geolocation.requestAuthorization();
+          getLocationAndRegister();
+          break;
+        case RESULTS.BLOCKED:
+          console.log('The permission is denied and not requestable anymore');
+          showSettingsAlert();
+          break;
+      }
+    } catch (error) {
+      console.error('Failed to check permission:', error);
+    }
+  };
+
+  const showSettingsAlert = () => {
+    Alert.alert(
+      'Location Permission',
+      'The app needs location access to provide this feature. Please go to the app settings and enable location permissions.',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => {},
+          style: 'cancel',
+        },
+        {
+          text: 'Open Settings',
+          onPress: () => {
+            Linking.openSettings();
+          },
+        },
+      ],
+    );
+  };
+
+  const requestLocationPermission = async () => {
+    const permission =
+      Platform.OS === 'ios'
+        ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
+        : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION;
+    const result = await request(permission);
+
+    if (result === RESULTS.GRANTED) {
+      Geolocation.requestAuthorization();
+      getLocationAndRegister();
+    } else if (result === RESULTS.BLOCKED) {
+      showSettingsAlert();
+    }
+  };
+
+  useEffect(() => {
+    checkLocationPermission();
     dispatch(ProfileData())
       .unwrap()
       .then((res: any) => {
-        setShowIn(res.data.showInDistance);
+        if (res.data.location !== undefined) {
+          setShowIn(res.data.showInDistance);
+        }
         setDistance(parseInt(res.data.distance));
         setCheckedInterests(res.data.interests);
         setCheckedRelationShip(res.data.partnerType);
         setTrigger(true);
       });
-  }, []);
+  }, [apply]);
 
   useEffect(() => {
     socket.emit('user_connected', profileData?._id);

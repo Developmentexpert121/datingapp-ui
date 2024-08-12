@@ -26,7 +26,6 @@ import {
   RegisterSignUp,
   setUserId,
   VerifyOtp,
-  updateProfileData,
 } from '../../store/Auth/auth';
 import {
   otpModal,
@@ -407,7 +406,6 @@ const RegisterScreen = () => {
             )
               .unwrap()
               .then(async (response: any) => {
-                // console.log('response>>>>>>>', response);
                 if (response?.payload?.redirect === 'Steps') {
                   await navigation.navigate('Register');
                 } else if (response?.redirect === 'Dashboard') {
@@ -520,7 +518,7 @@ const RegisterScreen = () => {
     } else {
       if (steps === 0 && !otpVerified) {
         setLoader(true);
-        // console.log('first', otpVerified);
+
         try {
           await dispatch(
             EmailVerification({
