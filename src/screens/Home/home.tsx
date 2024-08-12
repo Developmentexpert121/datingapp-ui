@@ -161,14 +161,9 @@ const HomeScreen = () => {
     socket.emit('user_connected', profileData?._id);
     socket.on('connect', () => {
       console.log('App Connected from server');
-      const userId = profileData?._id;
       socket.emit('user_connected', profileData?._id);
     });
-    return () => {
-      socket.off('connect');
-    };
-  }, []);
-  useEffect(() => {
+
     socket.on('user_online', users => {
       setOnlineUsers(users);
     });
@@ -180,8 +175,8 @@ const HomeScreen = () => {
     socket.on('disconnect', () => {
       console.log('App Disconnected from server');
     });
-
     return () => {
+      socket.off('connect');
       socket.off('user_online');
       socket.off('user_offline');
       socket.off('disconnect');

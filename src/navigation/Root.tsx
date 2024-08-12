@@ -25,9 +25,12 @@ import Subscriptions from '../screens/Profile/SubscriptionComponent/Subscription
 import exploreHome from '../screens/Explore/ExploreHome/exploreHome';
 import notifee, {AndroidImportance} from '@notifee/react-native';
 import {
+  CallingState,
+  StreamCall,
   StreamVideo,
   StreamVideoClient,
   StreamVideoRN,
+  useCalls,
 } from '@stream-io/video-react-native-sdk';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import Loader from '../components/Loader/Loader';
@@ -40,17 +43,21 @@ import {
 } from '../store/Activity/activity';
 import {EventRegister} from 'react-native-event-listeners';
 import {useDispatch} from 'react-redux';
+import MyIncomingCallUI from '../screens/ChatHome/myIncomingCallUI';
 
 const Stack = createNativeStackNavigator();
 
 const Root = () => {
   const userid: any = useAppSelector((state: any) => state?.Auth?.userID);
-
   const isAuthLoading = useAppSelector((state: any) => state.Auth.authLoading);
-
   const dispatch: any = useAppDispatch();
   const AfterLoginStack = createNativeStackNavigator();
   const BeforeLoginStack = createNativeStackNavigator();
+  const Dispatch = useDispatch<any>();
+  const [client, setClient] = useState<StreamVideoClient | null>(null);
+  const userdata: any = useAppSelector(
+    (state: any) => state?.Auth?.data?.userData,
+  );
 
   GoogleSignin.configure({
     webClientId:
@@ -96,14 +103,8 @@ const Root = () => {
       }
     }
   };
-  const Dispatch = useDispatch<any>();
-  const [client, setClient] = useState<StreamVideoClient | null>(null);
-  const userdata: any = useAppSelector(
-    (state: any) => state?.Auth?.data?.userData,
-  );
 
   useEffect(() => {
-    // Define an async function inside the useEffect
     const fetchData = async () => {
       try {
         const apiKey = '48e74nbgz5az';
@@ -128,7 +129,6 @@ const Root = () => {
           user: userMain,
           tokenProvider: () => token,
         });
-
         setClient(myClient);
       } catch (error) {
         console.error('Error connecting to Stream Video Client:', error);
@@ -211,6 +211,28 @@ const Root = () => {
     );
   };
 
+  const IncomingCallHandler = () => {
+    const calls = useCalls();
+    const incomingCalls = calls.filter(
+      call =>
+        call.isCreatedByMe === false &&
+        call.state.callingState === CallingState.RINGING,
+    );
+
+    const [incomingCall] = incomingCalls;
+    const client = useAppSelector((state: any) => state?.Auth?.streamClient);
+
+    if (incomingCall && client) {
+      return (
+        <StreamCall call={incomingCall}>
+          <MyIncomingCallUI call={incomingCall} />
+        </StreamCall>
+      );
+    }
+
+    return null;
+  };
+
   const AfterLogin = () => {
     if (!client) {
       return <Loader />;
@@ -218,6 +240,7 @@ const Root = () => {
 
     return (
       <StreamVideo client={client}>
+        <IncomingCallHandler />
         <AfterLoginStack.Navigator
           screenOptions={{headerShown: false}}
           initialRouteName="BottomTabNavigation">

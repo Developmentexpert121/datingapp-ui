@@ -1,10 +1,12 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import {SafeAreaView, StyleSheet, View} from 'react-native';
 import {
   Call,
+  OwnCapability,
   StreamVideo,
   StreamVideoClient,
   useCallStateHooks,
+  useStreamVideoClient,
 } from '@stream-io/video-react-native-sdk';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import uuid from 'react-native-uuid';
@@ -14,13 +16,12 @@ import VideoCallInterface from './chatVideoInterface';
 const VideoCallRedirect = () => {
   const user: any = useAppSelector((state: any) => state?.ActivityLoader?.user);
   const dispatch: any = useAppDispatch();
+  const client = useStreamVideoClient();
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
 
-  const clientData: any = useAppSelector(
-    (state: any) => state?.ActivityLoader?.clientData,
-  );
+  console.log('Steam client data on chat screen:', !!client);
 
   const callId: any = uuid.v4();
 
@@ -28,7 +29,7 @@ const VideoCallRedirect = () => {
   const [enableCamera, setEnableCamera] = useState<boolean>(true);
   const [enableCamera1, setEnableCamera1] = useState<boolean>(false);
   const [activeScreen, setActiveScreen] = useState('home');
-  const [client, setClient] = useState<StreamVideoClient | null>(null);
+  // const [client, setClient] = useState<StreamVideoClient | null>(null);
   const [call, setCall] = useState<Call | any>(null);
   const [callType, setCallType] = useState('videoCall');
 
@@ -38,33 +39,30 @@ const VideoCallRedirect = () => {
   }, []);
 
   const goToCallScreen = useCallback(
-    (type: any) => {
-      console.log('CAll create hit ==>', type);
+    async (type: any) => {
       if (!client) return;
       const myCall: any = client.call(
         type === 'videoCall' ? 'default' : 'audio_call',
         callId,
       );
-      myCall.on('call.left', async (event: any) => {
-        if (event.user.id !== profileData._id) {
-          // await myCall.endCall();
-          handleCallEnd();
-        } else {
-          console.log('SecondSecondSecondSecondSecond');
-          // await myCall.endCall();
-        }
-      });
-
-      myCall.on('call.ended', (event: any) => {
-        // myCall.leave();
-        handleCallEnd();
-      });
-
-      myCall
+      await myCall
         .getOrCreate({
+          // create: true,
           ring: true,
+          // notify: true,
           data: {
-            members: [{user_id: profileData._id}, {user_id: user._id}],
+            members: [
+              {
+                user_id: profileData._id,
+                role: 'admin',
+                OwnCapability: OwnCapability.JOIN_ENDED_CALL,
+              },
+              {
+                user_id: user._id,
+                role: 'admin',
+                OwnCapability: OwnCapability.JOIN_ENDED_CALL,
+              },
+            ],
           },
         })
         .catch((err: any) => {
@@ -73,6 +71,22 @@ const VideoCallRedirect = () => {
 
       setCall(myCall);
       setActiveScreen('call-screen');
+
+      myCall.on('call.ended', (event: any) => {
+        console.log('call.ended triggered');
+      });
+      myCall.on('call.deleted', (event: any) => {
+        console.log('call.deleted triggered');
+      });
+      myCall.on('call.ring', (event: any) => {
+        console.log('call.ring triggered');
+      });
+      myCall.on('call.session_ended', (event: any) => {
+        console.log('call.session_ended triggered');
+      });
+      myCall.on('call.notification', (event: any) => {
+        console.log('call.notification triggered');
+      });
 
       return () => {
         myCall.leave().catch((err: any) => {
@@ -95,22 +109,18 @@ const VideoCallRedirect = () => {
 
   return (
     <SafeAreaView style={styles.containerMain}>
-      {client && (
-        // <StreamVideo client={client}>
-        <VideoCallInterface
-          call={call}
-          client={client}
-          goToHomeScreen={goToHomeScreen}
-          user={user}
-          goToCallScreen={goToCallScreen}
-          setEnableCamera={setEnableCamera}
-          setEnableCamera1={setEnableCamera1}
-          activeScreen={activeScreen}
-          setActiveScreen={setActiveScreen}
-          setCallType={setCallType}
-        />
-        // </StreamVideo>
-      )}
+      <VideoCallInterface
+        call={call}
+        client={client}
+        goToHomeScreen={goToHomeScreen}
+        user={user}
+        goToCallScreen={goToCallScreen}
+        setEnableCamera={setEnableCamera}
+        setEnableCamera1={setEnableCamera1}
+        activeScreen={activeScreen}
+        setActiveScreen={setActiveScreen}
+        setCallType={setCallType}
+      />
     </SafeAreaView>
   );
 };

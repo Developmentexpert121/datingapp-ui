@@ -1,12 +1,7 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import {
-  CallingState,
-  StreamCall,
-  useCalls,
-} from '@stream-io/video-react-native-sdk';
+import {SafeAreaView, StyleSheet} from 'react-native';
+import {CallingState, useCalls} from '@stream-io/video-react-native-sdk';
 import ChatPage from './chatPage';
-import MyIncomingCallUI from './myIncomingCallUI';
 import MyOutgoingCallUI from './myOutgoingCallUI';
 
 const VideoCallInterface = ({
@@ -21,39 +16,20 @@ const VideoCallInterface = ({
 }: any) => {
   const calls = useCalls();
 
-  const incomingCalls = calls.filter(
+  const outgoingCalls = calls.filter(
     call =>
-      call.isCreatedByMe === false &&
+      call.isCreatedByMe === true &&
       call.state.callingState === CallingState.RINGING,
   );
 
-  const [incomingCall] = incomingCalls;
-  if (incomingCall) {
-    return (
-      <StreamCall call={incomingCall}>
-        <MyIncomingCallUI call={incomingCall} goToHomeScreen={goToHomeScreen} />
-      </StreamCall>
-    );
-  }
+  const [outgoingCall] = outgoingCalls;
+  // console.log(outgoingCall);
 
   return (
     <SafeAreaView style={styles.containerMain}>
-      {activeScreen === 'call-screen' && call && calls.length > 0 ? (
-        //  (
-        <MyOutgoingCallUI
-          call={call}
-          goToHomeScreen={goToHomeScreen}
-          // userName={user?.name}
-        />
+      {outgoingCall ? (
+        <MyOutgoingCallUI call={outgoingCall} goToHomeScreen={goToHomeScreen} />
       ) : (
-        // )
-        //  : (
-        //   <View>
-        //     <Text style={{fontFamily: 'Sansation-Regular'}}>
-        //       Calling...{user?.name}
-        //     </Text>
-        //   </View>
-        // )
         <ChatPage
           user={user}
           goToCallScreen={goToCallScreen}
