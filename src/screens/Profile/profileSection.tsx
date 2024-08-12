@@ -40,53 +40,47 @@ const ProfileSection: React.FC = () => {
   const [profileCompletion, setProfileCompletion] = useState(0);
   const navigation = useNavigation();
 
+  console.log('first');
+
   useEffect(() => {
-    let filledFieldsCount = 0;
-    const fields = [
-      profileData?.phone || '',
-      profileData?.email || '',
-      String(profileData?.location?.longitude) || '',
-      String(profileData?.location?.latitude) || '',
-      profileData?.interests || '',
-      profileData?.language || '',
-      profileData?.gender || '',
-      profileData?.profilePic || '',
-      profileData?.work || '',
-      profileData?.education || '',
-      profileData?.allInterests || '',
-      profileData?.partnerType || '',
-    ];
+    if (profileData) {
+      let filledFieldsCount = 0;
+      const fields = [
+        profileData?.phone || '',
+        profileData?.email || '',
+        String(profileData?.location?.longitude) || '',
+        String(profileData?.location?.latitude) || '',
+        profileData?.interests || '',
+        profileData?.language || '',
+        profileData?.gender || '',
+        profileData?.profilePic || '',
+        profileData?.work || '',
+        profileData?.education || '',
+        profileData?.allInterests || '',
+        profileData?.partnerType || '',
+      ];
 
-    fields.forEach(field => {
-      if (typeof field === 'string' && field.trim() !== '') {
-        filledFieldsCount++;
-      }
-    });
+      fields.forEach(field => {
+        if (typeof field === 'string' && field.trim() !== '') {
+          filledFieldsCount++;
+        }
+      });
 
-    const totalFields = fields?.length;
-    const percentageValue = Math.round((filledFieldsCount / totalFields) * 100);
-    setProfileCompletion(percentageValue);
+      const totalFields = fields?.length;
+      const percentageValue = Math.round(
+        (filledFieldsCount / totalFields) * 100,
+      );
+      setProfileCompletion(percentageValue);
 
-    dispatch(
-      updateProfileData({
-        field: 'profilePercentage',
-        value: percentageValue,
-        id: getUserId(),
-      }),
-    );
-  }, [
-    profileData?.email,
-    profileData?.location?.longitude,
-    profileData?.location?.longitude,
-    profileData?.interests,
-    profileData?.language,
-    profileData?.gender,
-    profileData?.profilePic,
-    profileData?.work,
-    profileData?.education,
-    profileData?.allInterests,
-    profileData?.partnerType,
-  ]);
+      dispatch(
+        updateProfileData({
+          field: 'profilePercentage',
+          value: percentageValue,
+          id: getUserId(),
+        }),
+      );
+    }
+  }, [profileData]);
 
   const profileImage = profileData?.profilePic?.split(',')[0];
 

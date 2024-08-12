@@ -96,6 +96,8 @@ const SeventhStepScreen = ({
   };
 
   useEffect(() => {
+    console.log('second');
+
     if (title !== 'Registration') {
       let fieldValue = profileImages?.join(',');
       dispatch(
@@ -107,6 +109,7 @@ const SeventhStepScreen = ({
       );
     }
   }, [profileImages]);
+  console.log('first');
 
   const handleImageSelection = async () => {
     launchImageLibrary({mediaType: 'photo'}, async response => {
