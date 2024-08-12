@@ -93,7 +93,7 @@
 //                   img: appImages.location,
 //                   text: 'Location',
 //                   onPress: () => {
-//                     console.log('first');
+//
 //                   },
 //                 },
 
@@ -101,21 +101,21 @@
 //                   img: appImages.payment,
 //                   text: 'Payment',
 //                   onPress: () => {
-//                     console.log('first');
+//
 //                   },
 //                 },
 //                 {
 //                   img: appImages.contact,
 //                   text: 'Contact',
 //                   onPress: () => {
-//                     console.log('first');
+//
 //                   },
 //                 },
 //                 {
 //                   img: appImages.poll,
 //                   text: 'Poll',
 //                   onPress: () => {
-//                     console.log('first');
+//
 //                   },
 //                 },
 //               ]}

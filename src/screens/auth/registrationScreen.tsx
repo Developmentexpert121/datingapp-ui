@@ -518,7 +518,7 @@ const RegisterScreen = () => {
     } else {
       if (steps === 0 && !otpVerified) {
         setLoader(true);
-        // console.log('first', otpVerified);
+
         try {
           await dispatch(
             EmailVerification({

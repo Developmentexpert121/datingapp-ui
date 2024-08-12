@@ -188,7 +188,6 @@ const FilterSection = ({
             id: getUserId(),
           }),
         );
-        console.log('first');
       },
 
       err => {

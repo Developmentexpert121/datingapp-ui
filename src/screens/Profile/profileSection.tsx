@@ -40,8 +40,6 @@ const ProfileSection: React.FC = () => {
   const [profileCompletion, setProfileCompletion] = useState(0);
   const navigation = useNavigation();
 
-  console.log('first');
-
   useEffect(() => {
     if (profileData) {
       let filledFieldsCount = 0;
