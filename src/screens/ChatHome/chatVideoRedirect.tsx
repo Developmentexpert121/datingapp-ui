@@ -87,7 +87,10 @@ const VideoCallRedirect = () => {
       myCall.on('call.notification', (event: any) => {
         console.log('call.notification triggered');
       });
-
+      call.rejected;
+      myCall.on('call.rejected', (event: any) => {
+        console.log('call.rejected triggered');
+      });
       return () => {
         myCall.leave().catch((err: any) => {
           console.error('Failed to leave the call', err);
