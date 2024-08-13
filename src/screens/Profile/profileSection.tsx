@@ -50,7 +50,7 @@ const ProfileSection: React.FC = () => {
         String(profileData?.location?.longitude) || '',
         String(profileData?.location?.latitude) || '',
         profileData?.interests || '',
-        // profileData?.language || '',
+        profileData?.language || '',
         profileData?.gender || '',
         profileData?.profilePic || '',
         profileData?.work || '',
@@ -80,6 +80,11 @@ const ProfileSection: React.FC = () => {
       );
     }
   }, [profileData]);
+
+  const date = new Date(profileData.plan.transactionDate);
+  console.log(date.toString());
+
+  console.log(profileData.plan.productId);
 
   const profileImage = profileData?.profilePic?.split(',')[0];
 

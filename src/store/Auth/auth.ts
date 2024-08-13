@@ -91,9 +91,6 @@ export const GoogleLogin = createAsyncThunk(
         throw error;
       }
     }
-    //  finally {
-    // dispatch(activityLoaderFinished());
-    // }
   },
 );
 export const AppleLogin = createAsyncThunk(
@@ -125,9 +122,6 @@ export const AppleLogin = createAsyncThunk(
         throw error;
       }
     }
-    // finally {
-    //   dispatch(activityLoaderFinished());
-    // }
   },
 );
 
@@ -364,32 +358,6 @@ export const NewPasswordAdd = createAsyncThunk(
     }
   },
 );
-
-// export const UploadImage = createAsyncThunk(
-//   'auth/UploadImage',
-//   async (formData: any, {dispatch}: any) => {
-//     try {
-//       //  dispatch(activityLoaderStarted());
-//       const response = await http.post('/user/upload-pic', formData, {
-//         headers: {
-//           Accept: 'application/json',
-//           'Content-Type': 'multipart/form-data',
-//         },
-//       });
-//       if (response.status === 200) {
-//         return response.data;
-//       }
-//     } catch (error: any) {
-//       if (error.response && error.response.status === 400) {
-//         return {error: 'Bad Request'};
-//       } else {
-//         throw error;
-//       }
-//     } finally {
-//       //  dispatch(activityLoaderFinished());
-//     }
-//   },
-// );
 
 export const uploadImages = createAsyncThunk(
   'auth/uploadImages',

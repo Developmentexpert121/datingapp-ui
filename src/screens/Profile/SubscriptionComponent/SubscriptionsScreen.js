@@ -19,7 +19,10 @@ import {
   Subscription,
   Purchase,
   withIAPContext,
+  acknowledgePurchaseAndroid,
 } from 'react-native-iap';
+import {useDispatch} from 'react-redux';
+import {verifyReceipt} from '../../../store/Auth/auth';
 
 const isIos = Platform.OS === 'ios';
 
@@ -31,9 +34,8 @@ const subscriptionSkus =
       'TopTierDatingPremiumPlus59.99',
     ],
     android: [
-      // 'testing',
-      '15.99toptierdating',
-      'toptierdatingmonthly29.99',
+      'toptierdatingbasic15.99',
+      'toptierdatingpremium29.99',
       'toptierdatingpremiumplus59.99',
     ],
   }) || [];
@@ -48,18 +50,24 @@ const SubscriptionsScreen = ({navigation}) => {
     purchaseHistory,
   } = useIAP();
 
+  const dispatch = useDispatch();
+
   const [loading, setLoading] = useState(false);
 
   const handleGetSubscriptions = async () => {
     try {
       await initConnection();
       console.log('Fetching subscriptions...');
-      await getSubscriptions({skus: subscriptionSkus});
+      if (subscriptions.length === 0) {
+        await getSubscriptions({skus: subscriptionSkus});
+      }
       console.log('Subscriptions fetched:');
     } catch (error) {
       console.error('Error fetching subscriptions:', error);
     }
   };
+
+  console.log('============================');
 
   useEffect(() => {
     if (connected) {
@@ -73,17 +81,53 @@ const SubscriptionsScreen = ({navigation}) => {
   const handleBuySubscription = async product => {
     try {
       console.log('Initiating purchase for:', product);
-      await requestSubscription({
-        sku: product.productId,
+      const itemm = await requestSubscription({
+        sku: product?.productId,
         ...(product?.subscriptionOfferDetails?.[0]?.offerToken && {
           subscriptionOffers: [
             {
-              sku: product.productId,
+              sku: product?.productId,
               offerToken: product.subscriptionOfferDetails[0].offerToken,
             },
           ],
         }),
       });
+
+      console.log('first', itemm);
+      // dispatch(verifyReceipt({platform: 'ios', receiptData: itemm}));
+      dispatch(verifyReceipt({platform: 'android', receiptData: itemm[0]}))
+        .unwrap()
+        .then(() => {
+          console.log('first');
+          purchaseUpdatedListener(async purchase => {
+            const receipt = purchase.transactionReceipt;
+            console.log('second');
+
+            if (receipt) {
+              try {
+                console.log('third');
+
+                // Verify the purchase with your server and then acknowledge
+                if (
+                  purchase.purchaseStateAndroid === 1 &&
+                  !purchase.isAcknowledgedAndroid
+                ) {
+                  console.log('forth', purchase);
+
+                  const yyy = await acknowledgePurchaseAndroid({
+                    token: purchase.purchaseToken,
+                    developerPayload: purchase.developerPayloadAndroid,
+                  });
+                  console.log('Purchase acknowledged', yyy);
+                }
+
+                // Handle your purchase logic here
+              } catch (err) {
+                console.warn(err);
+              }
+            }
+          });
+        });
     } catch (error) {
       console.error('Error in handleBuySubscription:', error);
     }
@@ -91,6 +135,7 @@ const SubscriptionsScreen = ({navigation}) => {
 
   const checkCurrentPurchase = async purchase => {
     if (purchase) {
+      console.log('oooooooooooooooooo', purchase);
       try {
         const receipt = purchase.transactionReceipt;
         // console.log('receipt >>>>.', receipt);
@@ -111,7 +156,13 @@ const SubscriptionsScreen = ({navigation}) => {
               // navigation.navigate('Home');
             }
           } else {
-            await finishTransaction(purchase);
+            console.log('======+++++++++');
+            await finishTransaction({
+              purchase,
+              isConsumable: true,
+              developerPayloadAndroid: purchase.developerPayloadAndroid,
+            });
+            console.log('======-------------');
             // navigation.navigate('Home');
           }
         }
@@ -127,15 +178,22 @@ const SubscriptionsScreen = ({navigation}) => {
     }
   }, [currentPurchase]);
 
-  useEffect(() => {
-    const subscription = purchaseUpdatedListener(purchase => {
-      console.log('Purchase updated:', purchase);
-    });
+  // const handlePurchase = async () => {
+  //   await acknowledgePurchaseAndroid({
+  //     token: 'token',
+  //     developerPayload: 'developer-payload',
+  //   });
+  // };
 
-    return () => {
-      subscription.remove();
-    };
-  }, []);
+  // useEffect(() => {
+  //   const subscription = purchaseUpdatedListener(purchase => {
+  //     console.log('Purchase updated:', purchase);
+  //   });
+
+  //   return () => {
+  //     subscription.remove();
+  //   };
+  // }, []);
 
   return (
     <SafeAreaView>
@@ -156,9 +214,9 @@ const SubscriptionsScreen = ({navigation}) => {
             Choose your membership plan.
           </Text>
           <View style={{marginTop: 10}}>
-            {subscriptions.map((subscription, index) => {
+            {subscriptions?.map((subscription, index) => {
               const owned = purchaseHistory.find(
-                s => s.productId === subscription.productId,
+                s => s?.productId === subscription?.productId,
               );
               return (
                 <View style={styles.box} key={index}>
@@ -223,7 +281,7 @@ const SubscriptionsScreen = ({navigation}) => {
                 </View>
               );
             })}
-            {subscriptions.length === 0 && (
+            {subscriptions?.length === 0 && (
               <Text style={{textAlign: 'center', marginTop: 20}}>
                 No subscriptions available. Please check your Play Store
                 configuration.
