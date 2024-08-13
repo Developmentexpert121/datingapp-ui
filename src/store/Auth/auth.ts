@@ -28,8 +28,6 @@ export const ProfileData: any = createAsyncThunk(
           'profileData',
           JSON.stringify(response.data),
         );
-        // console.log('response', JSON.stringify(response));
-
         return response.data;
       }
     } catch (error: any) {
@@ -424,7 +422,9 @@ export const updateProfileData = createAsyncThunk(
     try {
       const response = await http.patch('/user/update-profile', data);
       if (response.status === 200) {
-        dispatch(ProfileData());
+        if (data.field !== 'profilePercentage') {
+          dispatch(ProfileData());
+        }
         // console.log('>>>>>>>>>>>>>>', response?.config?.data);
         return response.data;
       }
@@ -696,20 +696,18 @@ export const getReceivers = createAsyncThunk(
 export const logoutUser = createAsyncThunk(
   'auth/logoutUser',
   async (data: any, {dispatch}: any) => {
-    console.log('data', data);
     try {
       dispatch(activityLoaderStarted());
-      console.log('Reachedddddddd', data);
+
       const response = await http.delete(
         `/user/delete-account?userId=${data.senderId}`,
       );
-      console.log('response', response);
+
       if (response.status === 200) {
         dispatch(updateAuthentication());
         return response.data;
       }
     } catch (error: any) {
-      console.log('Login error', error);
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
       } else {
@@ -735,7 +733,6 @@ export const deleteUser = createAsyncThunk(
         dispatch(updateAuthentication());
         return response.data;
       }
-      console.log('response', response);
     } catch (error: any) {
       console.error('error deleteUser:', error);
       if (error.response && error.response.status === 400) {
@@ -758,7 +755,6 @@ export const deactivateUser = createAsyncThunk(
         console.log('999999999', response?.data?.message);
         return response.data;
       }
-      console.log('response', response);
     } catch (error: any) {
       console.error('error:', error);
       if (error.response && error.response.status === 400) {

@@ -64,7 +64,6 @@ const HomeScreen = () => {
             id: getUserId(),
           }),
         );
-        console.log('first');
       },
 
       err => {
