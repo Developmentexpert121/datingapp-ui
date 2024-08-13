@@ -62,7 +62,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>TopTier Dating App uses camera to take photos.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>[REASON]</string>
+	<string>TopTier Dating app uses current location to get nearby another users.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>TopTier Dating app uses current location to get nearby another users.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>

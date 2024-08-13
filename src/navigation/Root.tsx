@@ -25,6 +25,7 @@ import Subscriptions from '../screens/Profile/SubscriptionComponent/Subscription
 import exploreHome from '../screens/Explore/ExploreHome/exploreHome';
 import notifee, {AndroidImportance} from '@notifee/react-native';
 import {
+  Call,
   CallingState,
   StreamCall,
   StreamVideo,
@@ -44,7 +45,7 @@ import {
 import {EventRegister} from 'react-native-event-listeners';
 import {useDispatch} from 'react-redux';
 import MyIncomingCallUI from '../screens/ChatHome/myIncomingCallUI';
-import {View} from 'react-native';
+import {SafeAreaView, View} from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
@@ -214,49 +215,65 @@ const Root = () => {
 
   const IncomingCallHandler = () => {
     const calls = useCalls();
-    const incomingCalls = calls.filter(
-      call =>
-        call.isCreatedByMe === false &&
-        call.state.callingState === CallingState.RINGING,
-    );
+    // const incomingCalls = calls.filter(
+    //   call =>
+    //     call.isCreatedByMe === false &&
+    //     call.state.callingState === CallingState.RINGING,
+    // );
 
-    const [incomingCall] = incomingCalls;
+    // const [incomingCall] = incomingCalls;
+    // console.log('Incoming call ==>', incomingCall);
+    const [incomingCall, setIncomingCall] = useState<Call | null>(null);
 
+    useEffect(() => {
+      const incomingCalls = calls.filter(
+        call =>
+          !call.isCreatedByMe &&
+          call.state.callingState === CallingState.RINGING,
+      );
+      if (incomingCalls) {
+        setIncomingCall(incomingCalls[0] || null);
+      } else if (incomingCall) {
+        incomingCall.endCall();
+        setIncomingCall(null);
+      }
+    }, [calls]);
+    console.log('Incoming call ==>', !!incomingCall);
     if (incomingCall) {
       return (
-        <View style={{flex: 1}}>
+        <SafeAreaView style={{flex: 1}}>
           <StreamCall call={incomingCall}>
             <MyIncomingCallUI call={incomingCall} />
           </StreamCall>
-        </View>
+        </SafeAreaView>
+      );
+    } else {
+      return (
+        <AfterLoginStack.Navigator
+          screenOptions={{headerShown: false}}
+          initialRouteName="BottomTabNavigation">
+          <AfterLoginStack.Screen
+            name="BottomTabNavigation"
+            component={BottomTabNavigation}
+          />
+          <AfterLoginStack.Screen name="Settings" component={SettingsScreen} />
+          <AfterLoginStack.Screen
+            name="UpdateProfile"
+            component={UpdateProfileScreen}
+          />
+          <AfterLoginStack.Screen
+            name="Subscriptions"
+            component={Subscriptions}
+          />
+          <AfterLoginStack.Screen name="ChatScreen" component={ChatSection} />
+          <AfterLoginStack.Screen name="exploreHome" component={exploreHome} />
+          <AfterLoginStack.Screen
+            name="VideoCallRedirect"
+            component={VideoCallRedirect}
+          />
+        </AfterLoginStack.Navigator>
       );
     }
-
-    return (
-      <AfterLoginStack.Navigator
-        screenOptions={{headerShown: false}}
-        initialRouteName="BottomTabNavigation">
-        <AfterLoginStack.Screen
-          name="BottomTabNavigation"
-          component={BottomTabNavigation}
-        />
-        <AfterLoginStack.Screen name="Settings" component={SettingsScreen} />
-        <AfterLoginStack.Screen
-          name="UpdateProfile"
-          component={UpdateProfileScreen}
-        />
-        <AfterLoginStack.Screen
-          name="Subscriptions"
-          component={Subscriptions}
-        />
-        <AfterLoginStack.Screen name="ChatScreen" component={ChatSection} />
-        <AfterLoginStack.Screen name="exploreHome" component={exploreHome} />
-        <AfterLoginStack.Screen
-          name="VideoCallRedirect"
-          component={VideoCallRedirect}
-        />
-      </AfterLoginStack.Navigator>
-    );
   };
 
   const AfterLogin = () => {
