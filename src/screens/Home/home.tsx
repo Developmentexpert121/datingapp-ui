@@ -210,7 +210,6 @@ const HomeScreen = () => {
         });
     apply && setApply(false);
   }, [apply, trigger]);
-
   return (
     <View style={styles.pageContainer}>
       <HeaderComponent

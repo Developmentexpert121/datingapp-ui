@@ -36,6 +36,7 @@ const ProfileSection: React.FC = () => {
   const profileData = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
+  console.log('@@@@@@@@@@@@@@@@@@@@@@');
   const dispatch: any = useAppDispatch();
   const [profileCompletion, setProfileCompletion] = useState(0);
   const navigation = useNavigation();
@@ -49,7 +50,7 @@ const ProfileSection: React.FC = () => {
         String(profileData?.location?.longitude) || '',
         String(profileData?.location?.latitude) || '',
         profileData?.interests || '',
-        profileData?.language || '',
+        // profileData?.language || '',
         profileData?.gender || '',
         profileData?.profilePic || '',
         profileData?.work || '',

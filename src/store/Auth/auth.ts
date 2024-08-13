@@ -847,6 +847,27 @@ export const UnBlockAUser = createAsyncThunk(
   },
 );
 
+export const verifyReceipt: any = createAsyncThunk(
+  'auth/verifyReceipt',
+  async (data: any, {dispatch}: any) => {
+    try {
+      const response = await http.post('/user/verify-receipt', data);
+      if (response.status === 200) {
+        console.log('response verifyReceipt', response.data);
+        return response.data;
+      }
+    } catch (error: any) {
+      console.log('error verifyReceipt', error);
+      if (error.response && error.response.status === 400) {
+        return {error: 'Bad Request'};
+      } else {
+        throw error;
+      }
+    } finally {
+    }
+  },
+);
+
 const initialState: any = {
   data: {
     status: false,
@@ -1085,6 +1106,16 @@ const Auth: any = createSlice({
       })
       .addCase(setUserId.fulfilled, (state, action) => {
         state.userID = action?.payload?._id;
+      })
+      .addCase(verifyReceipt.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(verifyReceipt.fulfilled, (state, action) => {
+        // state.data.meLike = action.payload.notifications;
+        state.loading = false;
+      })
+      .addCase(verifyReceipt.rejected, (state, action) => {
+        state.loading = false;
       });
   },
 });

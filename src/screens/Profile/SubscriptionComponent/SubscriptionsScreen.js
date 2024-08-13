@@ -20,9 +20,6 @@ import {
   Purchase,
   withIAPContext,
 } from 'react-native-iap';
-const errorLog = ({message, error}) => {
-  console.error('An error happened:', message, error);
-};
 
 const isIos = Platform.OS === 'ios';
 
@@ -34,10 +31,10 @@ const subscriptionSkus =
       'TopTierDatingPremiumPlus59.99',
     ],
     android: [
-      'testing',
+      // 'testing',
       '15.99toptierdating',
-      // 'toptierdatingmonthly29.99',
-      // 'toptierdatingpremiumplus59.99',
+      'toptierdatingmonthly29.99',
+      'toptierdatingpremiumplus59.99',
     ],
   }) || [];
 
@@ -96,6 +93,7 @@ const SubscriptionsScreen = ({navigation}) => {
     if (purchase) {
       try {
         const receipt = purchase.transactionReceipt;
+        // console.log('receipt >>>>.', receipt);
         if (receipt) {
           if (isIos) {
             const isTestEnvironment = __DEV__;
@@ -110,15 +108,15 @@ const SubscriptionsScreen = ({navigation}) => {
 
             if (appleReceiptResponse && appleReceiptResponse.status === 0) {
               await finishTransaction(purchase);
-              navigation.navigate('Home');
+              // navigation.navigate('Home');
             }
           } else {
             await finishTransaction(purchase);
-            navigation.navigate('Home');
+            // navigation.navigate('Home');
           }
         }
       } catch (error) {
-        errorLog({message: 'checkCurrentPurchase', error});
+        console.log('error checkCurrentPurchase', error);
       }
     }
   };
