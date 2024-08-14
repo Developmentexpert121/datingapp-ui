@@ -23,6 +23,7 @@ import {
 } from 'react-native-iap';
 import {useDispatch} from 'react-redux';
 import {verifyReceipt} from '../../../store/Auth/auth';
+import CommonBackbutton from '../../../components/commonBackbutton/BackButton';
 
 const isIos = Platform.OS === 'ios';
 
@@ -93,9 +94,13 @@ const SubscriptionsScreen = ({navigation}) => {
         }),
       });
 
-      console.log('first', itemm);
-      // dispatch(verifyReceipt({platform: 'ios', receiptData: itemm}));
-      dispatch(verifyReceipt({platform: 'android', receiptData: itemm[0]}))
+      console.log('first>>>>>>>>>', itemm);
+      dispatch(
+        verifyReceipt({
+          platform: itemm.length > 0 ? 'android' : 'ios',
+          receiptData: itemm.length > 0 ? itemm[0] : itemm,
+        }),
+      )
         .unwrap()
         .then(() => {
           console.log('first');
@@ -135,23 +140,23 @@ const SubscriptionsScreen = ({navigation}) => {
 
   const checkCurrentPurchase = async purchase => {
     if (purchase) {
-      console.log('oooooooooooooooooo', purchase);
+      // console.log('oooooooooooooooooo', purchase);
       try {
         const receipt = purchase.transactionReceipt;
-        // console.log('receipt >>>>.', receipt);
+        console.log('receipt >>>>.', receipt);
         if (receipt) {
           if (isIos) {
             const isTestEnvironment = __DEV__;
-
             const appleReceiptResponse = await validateReceiptIos(
               {
                 'receipt-data': receipt,
-                password: '2393e794f5214bc59ab8387a8d2152c7',
+                password: '',
               },
               isTestEnvironment,
             );
 
             if (appleReceiptResponse && appleReceiptResponse.status === 0) {
+              console.log('======+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!++++++++');
               await finishTransaction(purchase);
               // navigation.navigate('Home');
             }
@@ -199,7 +204,7 @@ const SubscriptionsScreen = ({navigation}) => {
     <SafeAreaView>
       <ScrollView>
         <View style={{padding: 1}}>
-          {/* <CommonBackbutton title="Subscribe" /> */}
+          <CommonBackbutton title="Subscribe" />
           <Text style={styles.listItem}>
             Subscribe to some cool stuff today.
           </Text>
