@@ -276,6 +276,8 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent,
   Pressable,
+  Platform,
+  Linking,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {LockIC, UnlockIC} from '../../../assets/svgs';
@@ -386,7 +388,15 @@ const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {
     }
     return data2;
   };
-
+  const handleCancelSubscription = () => {
+    if (Platform.OS === 'ios') {
+      // Open App Store subscriptions page
+      Linking.openURL('https://apps.apple.com/account/subscriptions');
+    } else if (Platform.OS === 'android') {
+      // Open Google Play Store subscriptions page
+      Linking.openURL('https://play.google.com/store/account/subscriptions');
+    }
+  };
   return (
     <SafeAreaView style={{flex: 1}}>
       {profileData.plan === 'Free' ? (
@@ -459,9 +469,7 @@ const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {
           </Pressable>
           <Pressable
             style={styles.cancelButton}
-            onPress={() => {
-              // handle subscription cancellation
-            }}>
+            onPress={handleCancelSubscription}>
             <Text style={styles.cancelButtonText}>Cancel Subscription</Text>
           </Pressable>
         </View>
