@@ -16,6 +16,7 @@ import {io} from 'socket.io-client';
 import {onlineUser} from '../../store/reducer/authSliceState';
 import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
 const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
+import DeviceInfo from 'react-native-device-info';
 
 const getUserId = async () => {
   try {
@@ -50,20 +51,65 @@ const HomeScreen = () => {
   const [trigger, setTrigger] = useState(false);
   const [onlineUsers, setOnlineUsers] = useState<any>(null);
 
-  const getLocationAndRegister = () => {
-    Geolocation.getCurrentPosition(
-      position => {
-        const {latitude, longitude} = position.coords;
-        // console.log('latitude:', latitude);
-        // console.log('Longitude:', longitude);
+  const getLocationAndRegister = async () => {
+    const isLocationEnabled = await DeviceInfo.isLocationEnabled();
+    console.log('#############################---', isLocationEnabled);
 
-        dispatch(
-          updateProfileData({
-            field: 'location',
-            value: {latitude, longitude},
-            id: getUserId(),
-          }),
+    if (!isLocationEnabled) {
+      if (Platform.OS === 'android') {
+        Alert.alert(
+          'Location Services Disabled',
+          'Please enable location services in your device settings.',
+          [
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+            {
+              text: 'Open Settings',
+              onPress: () => {
+                Linking.openSettings(); // Opens the main settings app
+              },
+            },
+          ],
         );
+      } else if (Platform.OS === 'ios') {
+        Alert.alert(
+          'Location Services Disabled',
+          'Please enable location services in your device settings.',
+          [
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+            {
+              text: 'Open Settings',
+              onPress: () => {
+                Linking.openURL('app-settings:'); // Opens the main settings app
+              },
+            },
+          ],
+        );
+      }
+
+      return;
+    }
+
+    Geolocation.getCurrentPosition(
+      async position => {
+        const {latitude, longitude} = position.coords;
+        console.log('latitude:', latitude);
+        console.log('Longitude:', longitude);
+        const userId = await getUserId();
+        if (userId) {
+          dispatch(
+            updateProfileData({
+              field: 'location',
+              value: {latitude, longitude},
+              id: userId,
+            }),
+          );
+        }
       },
 
       err => {
@@ -93,8 +139,12 @@ const HomeScreen = () => {
           break;
         case RESULTS.GRANTED:
           console.log('The permission is granted');
-          Geolocation.requestAuthorization();
-          getLocationAndRegister();
+          if (Platform.OS === 'ios') {
+            getLocationAndRegister();
+          } else {
+            Geolocation.requestAuthorization();
+            getLocationAndRegister();
+          }
           break;
         case RESULTS.BLOCKED:
           console.log('The permission is denied and not requestable anymore');
