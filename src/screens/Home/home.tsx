@@ -53,23 +53,45 @@ const HomeScreen = () => {
 
   const getLocationAndRegister = async () => {
     const isLocationEnabled = await DeviceInfo.isLocationEnabled();
+    console.log('#############################---', isLocationEnabled);
 
     if (!isLocationEnabled) {
-      Alert.alert(
-        'Location Services Disabled',
-        'Please enable location services to proceed.',
-        [
-          {
-            text: 'Cancel',
-            onPress: () => {},
-            style: 'cancel',
-          },
-          {
-            text: 'Confirm',
-            onPress: () => {},
-          },
-        ],
-      );
+      if (Platform.OS === 'android') {
+        Alert.alert(
+          'Location Services Disabled',
+          'Please enable location services in your device settings.',
+          [
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+            {
+              text: 'Open Settings',
+              onPress: () => {
+                Linking.openSettings(); // Opens the main settings app
+              },
+            },
+          ],
+        );
+      } else if (Platform.OS === 'ios') {
+        Alert.alert(
+          'Location Services Disabled',
+          'Please enable location services in your device settings.',
+          [
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+            {
+              text: 'Open Settings',
+              onPress: () => {
+                Linking.openURL('app-settings:'); // Opens the main settings app
+              },
+            },
+          ],
+        );
+      }
+
       return;
     }
 
