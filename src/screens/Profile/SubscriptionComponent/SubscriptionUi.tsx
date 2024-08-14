@@ -421,9 +421,7 @@ const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {
         </Pressable>
         <Pressable
           style={styles.cancelButton}
-          onPress={() => {
-            onPress = {handleCancelSubscription};
-          }}>
+          onPress={handleCancelSubscription}>
           <Text style={styles.cancelButtonText}>Cancel Subscription</Text>
         </Pressable>
       </LinearGradient>
@@ -442,6 +440,8 @@ const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {
   const handleCancelSubscription = () => {
     if (Platform.OS === 'ios') {
       // Open App Store subscriptions page
+
+      console.log('023ur49y38tyhfierw');
       Linking.openURL('https://apps.apple.com/account/subscriptions');
     } else if (Platform.OS === 'android') {
       // Open Google Play Store subscriptions page
@@ -468,7 +468,7 @@ const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {
               const offsetX = event.nativeEvent.contentOffset.x;
               const index = Math.floor(offsetX / eightyPercentWidth);
               setActiveDot(index);
-              setCurrentPlanId(dataType[index].id);
+              setCurrentPlanId(dataType[index]?.id);
             }}
           />
           <View style={styles.dotsContainer}>

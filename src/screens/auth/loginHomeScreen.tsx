@@ -173,8 +173,8 @@ const LoginHomeScreen = () => {
             // If there is an error in the promise chain, set the error message and show the modal
             setMsg(error?.payload?.message);
             setActiveModal(true);
+            setLoader(false);
           });
-        setLoader(false);
       } else {
         setLoader(false);
       }
