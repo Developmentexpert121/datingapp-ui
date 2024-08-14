@@ -26,6 +26,7 @@ import * as yup from 'yup';
 import Geolocation from '@react-native-community/geolocation';
 import Loader from '../../components/Loader/Loader';
 import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
+import DeviceInfo from 'react-native-device-info';
 
 const getUserId = async () => {
   try {
@@ -130,7 +131,7 @@ const FilterSection = ({
     {value: 'Everyone', label: 'Everyone'},
   ];
 
-  const [checked, setChecked] = React.useState(profileData?.gender);
+  const [isLocationEnabled, setIsLocationEnabled] = useState(false);
 
   const handleSliderChange = (value: any) => {
     setDistance(value);
@@ -151,6 +152,10 @@ const FilterSection = ({
   const renderNotch = useCallback(() => <Notch />, []);
 
   useEffect(() => {
+    const setLocation = async () => {
+      setIsLocationEnabled(await DeviceInfo.isLocationEnabled());
+    };
+    setLocation();
     if (profileData?.ageRange) {
       const [lowStr, highStr] = profileData.ageRange.split(' ');
       const lowValue = parseInt(lowStr);
@@ -175,19 +180,49 @@ const FilterSection = ({
   const [loader, setLoader] = useState<boolean>(false);
 
   const getLocationAndRegister = () => {
+    if (!isLocationEnabled) {
+      Alert.alert(
+        'Location Services Disabled',
+        'Please enable location services to proceed.',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => {},
+            style: 'cancel',
+          },
+          {
+            text: 'Confirm',
+            onPress: () => {},
+          },
+        ],
+      );
+      return;
+    }
+
+    dispatch(
+      updateProfileData({
+        field: 'showInDistance',
+        value: !showIn,
+        id: getUserId(),
+      }),
+    ).then(() => setShowIn(!showIn));
+
     Geolocation.getCurrentPosition(
-      position => {
+      async position => {
         const {latitude, longitude} = position.coords;
         // console.log('latitude:', latitude);
         // console.log('Longitude:', longitude);
+        const userId = await getUserId();
         setLoader(false);
-        dispatch(
-          updateProfileData({
-            field: 'location',
-            value: {latitude, longitude},
-            id: getUserId(),
-          }),
-        );
+        if (userId) {
+          dispatch(
+            updateProfileData({
+              field: 'location',
+              value: {latitude, longitude},
+              id: userId,
+            }),
+          );
+        }
       },
 
       err => {
@@ -218,13 +253,7 @@ const FilterSection = ({
           break;
         case RESULTS.GRANTED:
           console.log('The permission is granted');
-          dispatch(
-            updateProfileData({
-              field: 'showInDistance',
-              value: !showIn,
-              id: getUserId(),
-            }),
-          ).then(() => setShowIn(!showIn));
+
           Geolocation.requestAuthorization();
           getLocationAndRegister();
           setLoader(true);
@@ -295,10 +324,14 @@ const FilterSection = ({
         <View style={styles.line} />
         <View
           style={
-            showIn && profileData.location !== undefined ? {} : {opacity: 0.5}
+            showIn && profileData.location !== undefined && isLocationEnabled
+              ? {}
+              : {opacity: 0.5}
           }
           pointerEvents={
-            showIn && profileData.location !== undefined ? 'auto' : 'none'
+            showIn && profileData.location !== undefined && isLocationEnabled
+              ? 'auto'
+              : 'none'
           }>
           <Slider
             style={styles.slider}
@@ -333,8 +366,9 @@ const FilterSection = ({
                 Only show people in range
               </Text>
               <TouchableOpacity
-                onPress={() => {
-                  checkLocationPermission();
+                onPress={async () => {
+                  await checkLocationPermission();
+                  setLoader(false);
                 }}>
                 <Ionicons
                   name={
