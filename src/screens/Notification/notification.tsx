@@ -132,9 +132,9 @@ const NotificationScreen = () => {
                   <Text style={styles.actionButton}>Mark as Read</Text>
                 </TouchableOpacity>
               )}
-              <TouchableOpacity onPress={() => handleView(user?._id)}>
+              {/* <TouchableOpacity onPress={() => handleView(user?._id)}>
                 <Text style={styles.actionButton}>View</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           </View>
           <View style={{marginHorizontal: 20}}>

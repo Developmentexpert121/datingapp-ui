@@ -378,9 +378,9 @@ const TinderSwipe = ({
               </ScrollView>
             </View>
           </>
-        ) : noProfilesLoader ? (
-          <Loader />
         ) : (
+          // ) : noProfilesLoader ? (
+          //   <Loader />
           <Text
             style={{
               fontFamily: 'Sansation-Bold',

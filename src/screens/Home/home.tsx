@@ -46,6 +46,7 @@ const HomeScreen = () => {
   const [distance, setDistance] = useState(50);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [data, setData] = useState<any>([]);
+  console.log('++++++++++++++', data);
   const [checkedInterests, setCheckedInterests] = useState('Everyone');
   const [checkedRelationShip, setCheckedRelationShip] = useState('');
   const [trigger, setTrigger] = useState(false);
@@ -68,7 +69,7 @@ const HomeScreen = () => {
             {
               text: 'Open Settings',
               onPress: () => {
-                Linking.openSettings(); // Opens the main settings app
+                Linking.sendIntent('android.settings.LOCATION_SOURCE_SETTINGS');
               },
             },
           ],
@@ -85,7 +86,7 @@ const HomeScreen = () => {
             {
               text: 'Open Settings',
               onPress: () => {
-                Linking.openURL('app-settings:'); // Opens the main settings app
+                Linking.openURL('App-Prefs:Privacy&path=LOCATION');
               },
             },
           ],

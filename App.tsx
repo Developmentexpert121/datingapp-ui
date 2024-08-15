@@ -80,7 +80,7 @@ const App = () => {
     return () => unsubscribe();
   }, []);
 
-  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+  // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
   return (
     <SafeAreaProvider>
       <NavigationContainer ref={navigationRef}>
