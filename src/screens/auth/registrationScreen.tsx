@@ -189,6 +189,7 @@ const RegisterScreen = () => {
   const [stepFourErrors, setStepFourErrors] = useState(false);
   const [stepFiveErrors, setStepFiveErrors] = useState(false);
   const [deviceToken, setDeviceToken] = useState<any>(null);
+  const [uploadError, setUploadError] = useState<boolean>(false);
 
   useEffect(() => {
     requestUserPermission();
@@ -506,6 +507,7 @@ const RegisterScreen = () => {
         setSteps(prev => prev + 1);
         return;
       } else {
+        setUploadError(true)
         return;
       }
     } else if (steps === 8) {
@@ -723,6 +725,8 @@ const RegisterScreen = () => {
               />
             ) : steps === 7 ? (
               <SeventhStepScreen
+                uploadError={uploadError}
+                setUploadError={setUploadError}
                 profileImages={profileImages}
                 setProfileImages={setProfileImages}
                 title="Registeration"

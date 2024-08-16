@@ -35,6 +35,8 @@ const SeventhStepScreen = ({
   setProfileImages,
   title,
   errors,
+  uploadError,
+  setUploadError,
 }: {
   profileImages: any;
   setProfileImages: any;
@@ -42,8 +44,9 @@ const SeventhStepScreen = ({
   images?: any;
   control?: any;
   errors?: any;
+  uploadError?: any;
+  setUploadError?: any;
 }) => {
-  const [uploadError, setUploadError] = useState<boolean>(false);
   const [loader, setLoader] = useState<boolean>(false);
   const dispatch: any = useAppDispatch();
 
@@ -96,8 +99,6 @@ const SeventhStepScreen = ({
   };
 
   useEffect(() => {
-    console.log('second');
-
     if (title !== 'Registration') {
       let fieldValue = profileImages?.join(',');
       dispatch(
@@ -170,6 +171,8 @@ const SeventhStepScreen = ({
     setUploadError(false);
   };
 
+  console.log(uploadError, profileImages.length);
+
   return (
     <View style={styles.container}>
       <Text style={styles.headerText}>Add Photos</Text>
@@ -206,7 +209,7 @@ const SeventhStepScreen = ({
           </TouchableOpacity>
         ))}
       </View>
-      {(uploadError || (errors && profileImages.length < 2)) && (
+      {uploadError && profileImages.length < 2 && (
         <Text style={styles.errorText}>
           Please select a minimum of 2 pictures.
         </Text>
