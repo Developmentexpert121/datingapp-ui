@@ -836,6 +836,13 @@ export const verifyReceipt: any = createAsyncThunk(
   },
 );
 
+export const cancelLoginWithGoogle: any = createAsyncThunk(
+  'activityLoader/cancelLoginWithGoogle',
+  async (data: any) => {
+    return data;
+  },
+);
+
 const initialState: any = {
   data: {
     status: false,
@@ -1083,6 +1090,16 @@ const Auth: any = createSlice({
         state.loading = false;
       })
       .addCase(verifyReceipt.rejected, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(cancelLoginWithGoogle.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(cancelLoginWithGoogle.fulfilled, (state, action) => {
+        state.data.loginwithgoogle = {};
+        state.loading = false;
+      })
+      .addCase(cancelLoginWithGoogle.rejected, (state, action) => {
         state.loading = false;
       });
   },

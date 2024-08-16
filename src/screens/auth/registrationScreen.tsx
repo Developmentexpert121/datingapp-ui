@@ -20,6 +20,7 @@ import Geolocation from '@react-native-community/geolocation';
 import {RootStackParamList} from '../../types';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {
+  cancelLoginWithGoogle,
   EmailVerification,
   GoogleLogin,
   ProfileData,
@@ -221,6 +222,8 @@ const RegisterScreen = () => {
   const loginwithgoogle: any = useAppSelector(
     (state: any) => state?.Auth?.data?.loginwithgoogle,
   );
+
+  console.log('============', loginwithgoogle, '------------', steps);
 
   const Schemas = (steps: any) => {
     if (steps === 0) {
@@ -599,6 +602,10 @@ const RegisterScreen = () => {
   };
   const onClick = async () => {
     // dispatch(GoogleLogin({}));
+    if (steps === 0) {
+      console.log('first--------------------------------------------');
+      dispatch(cancelLoginWithGoogle());
+    }
     try {
       if (!GoogleSignin.hasPlayServices()) {
         console.error('Google Play Services are not available');
@@ -616,6 +623,8 @@ const RegisterScreen = () => {
     }
     navigation.goBack();
   };
+
+  console.log('first');
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
@@ -630,6 +639,7 @@ const RegisterScreen = () => {
               {steps !== 8 ? (
                 <Ionicons
                   onPress={() => {
+                    console.log('CAlled');
                     if (steps === 1) {
                       // Only reset isEmailVerified flag if going back from step 1 to step 0
                       setIsEmailVerified(false);
