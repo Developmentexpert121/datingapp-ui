@@ -10,6 +10,7 @@ import SettingsScreen from '../screens/SettingsSection/settings';
 import UpdateProfileScreen from '../screens/UpdateProfile/updateProfile';
 import {useAppDispatch, useAppSelector} from '../store/store';
 import {
+  cancelLoginWithGoogle,
   ProfileData,
   setAuthData,
   setModal,
@@ -165,6 +166,8 @@ const Root = () => {
 
   const logoutUserButton = async () => {
     try {
+      dispatch(cancelLoginWithGoogle());
+
       if (!GoogleSignin.hasPlayServices()) {
         console.error('Google Play Services are not available');
         return;
