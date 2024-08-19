@@ -22,6 +22,7 @@ const ExploreHome = (Data: any) => {
   const [checkedInterests, setCheckedInterests] = useState('Everyone');
   const [checkedRelationShip, setCheckedRelationShip] = useState('');
   const [trigger, setTrigger] = useState(false);
+  const [noProfilesLoader, setNoProfilesLoader] = useState(false);
 
   useEffect(() => {
     dispatch(ProfileData())
@@ -36,6 +37,7 @@ const ExploreHome = (Data: any) => {
   }, []);
 
   useEffect(() => {
+    setNoProfilesLoader(true);
     if (profileData._id) {
       dispatch(
         getAllUsers({
@@ -54,6 +56,7 @@ const ExploreHome = (Data: any) => {
             return item?.habits1[4]?.optionSelected[0] == name;
           });
           setData(filteredData);
+          setNoProfilesLoader(false);
         });
     }
     apply && setApply(false);
@@ -70,6 +73,7 @@ const ExploreHome = (Data: any) => {
             currentIndex={currentIndex}
             setCurrentIndex={setCurrentIndex}
             profileData={profileData}
+            noProfilesLoader={noProfilesLoader}
           />
         </View>
       </View>

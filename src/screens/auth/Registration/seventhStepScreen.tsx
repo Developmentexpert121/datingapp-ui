@@ -167,6 +167,8 @@ const SeventhStepScreen = ({
     });
   };
 
+  console.log(title);
+
   const handleRemoveImage = async (index: number) => {
     if (profileImages.length <= 2) {
       setUploadError(true);
@@ -205,17 +207,31 @@ const SeventhStepScreen = ({
             style={[styles.imageContainerdm, !item && {borderWidth: 2}]}
             key={index}>
             {item && <Image source={{uri: item}} style={styles.dummyImagedm} />}
+            {profileImages.length < 2 && title === 'Registeration' && !item && (
+              <View
+                style={[
+                  styles.addRemoveButton,
+                  item && {transform: [{rotate: '45deg'}]},
+                ]}>
+                <Image
+                  source={require('../../../assets/images/Plus.png')}
+                  style={{width: 28, height: 28}}
+                />
+              </View>
+            )}
 
-            <View
-              style={[
-                styles.addRemoveButton,
-                item && {transform: [{rotate: '45deg'}]},
-              ]}>
-              <Image
-                source={require('../../../assets/images/Plus.png')}
-                style={{width: 28, height: 28}}
-              />
-            </View>
+            {(profileImages.length >= 3 || index >= 2) && (
+              <View
+                style={[
+                  styles.addRemoveButton,
+                  item && {transform: [{rotate: '45deg'}]},
+                ]}>
+                <Image
+                  source={require('../../../assets/images/Plus.png')}
+                  style={{width: 28, height: 28}}
+                />
+              </View>
+            )}
           </TouchableOpacity>
         ))}
       </View>
