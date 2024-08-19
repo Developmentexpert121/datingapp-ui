@@ -36,6 +36,7 @@ const ProfileSection: React.FC = () => {
   const profileData = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
+  console.log('@@@@@@@@@@@@@@@@@@@@@@');
   const dispatch: any = useAppDispatch();
   const [profileCompletion, setProfileCompletion] = useState(0);
   const navigation = useNavigation();
@@ -79,6 +80,11 @@ const ProfileSection: React.FC = () => {
       );
     }
   }, [profileData]);
+
+  const date = new Date(profileData.plan.transactionDate);
+  console.log(date.toString());
+
+  console.log(profileData.plan.productId);
 
   const profileImage = profileData?.profilePic?.split(',')[0];
 

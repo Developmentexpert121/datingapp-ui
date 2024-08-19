@@ -305,7 +305,7 @@ const ChatPage = ({
               <View style={{flexDirection: 'row', marginEnd: 10, width: '25%'}}>
                 <TouchableOpacity
                   onPress={
-                    profileData?.plan !== 'Free'
+                    profileData?.plan === 'Free'
                       ? () => {
                           navigation.navigate('Subscriptions');
                         }
@@ -328,10 +328,14 @@ const ChatPage = ({
                       ? () => {
                           navigation.navigate('Subscriptions');
                         }
-                      : () => {
+                      : profileData.plan.productId === 'PremiumPlus'
+                      ? () => {
                           setCallType('videoCall');
                           setEnableCamera(true);
                           goToCallScreen('videoCall');
+                        }
+                      : () => {
+                          navigation.navigate('Subscriptions');
                         }
                   }>
                   <View style={styles.editIcon}>

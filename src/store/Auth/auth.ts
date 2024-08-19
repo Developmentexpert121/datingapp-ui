@@ -91,9 +91,6 @@ export const GoogleLogin = createAsyncThunk(
         throw error;
       }
     }
-    //  finally {
-    // dispatch(activityLoaderFinished());
-    // }
   },
 );
 export const AppleLogin = createAsyncThunk(
@@ -125,9 +122,6 @@ export const AppleLogin = createAsyncThunk(
         throw error;
       }
     }
-    // finally {
-    //   dispatch(activityLoaderFinished());
-    // }
   },
 );
 
@@ -364,32 +358,6 @@ export const NewPasswordAdd = createAsyncThunk(
     }
   },
 );
-
-// export const UploadImage = createAsyncThunk(
-//   'auth/UploadImage',
-//   async (formData: any, {dispatch}: any) => {
-//     try {
-//       //  dispatch(activityLoaderStarted());
-//       const response = await http.post('/user/upload-pic', formData, {
-//         headers: {
-//           Accept: 'application/json',
-//           'Content-Type': 'multipart/form-data',
-//         },
-//       });
-//       if (response.status === 200) {
-//         return response.data;
-//       }
-//     } catch (error: any) {
-//       if (error.response && error.response.status === 400) {
-//         return {error: 'Bad Request'};
-//       } else {
-//         throw error;
-//       }
-//     } finally {
-//       //  dispatch(activityLoaderFinished());
-//     }
-//   },
-// );
 
 export const uploadImages = createAsyncThunk(
   'auth/uploadImages',
@@ -847,6 +815,27 @@ export const UnBlockAUser = createAsyncThunk(
   },
 );
 
+export const verifyReceipt: any = createAsyncThunk(
+  'auth/verifyReceipt',
+  async (data: any, {dispatch}: any) => {
+    try {
+      const response = await http.post('/user/verify-receipt', data);
+      if (response.status === 200) {
+        console.log('response verifyReceipt', response.data);
+        return response.data;
+      }
+    } catch (error: any) {
+      console.log('error verifyReceipt', error);
+      if (error.response && error.response.status === 400) {
+        return {error: 'Bad Request'};
+      } else {
+        throw error;
+      }
+    } finally {
+    }
+  },
+);
+
 const initialState: any = {
   data: {
     status: false,
@@ -1085,6 +1074,16 @@ const Auth: any = createSlice({
       })
       .addCase(setUserId.fulfilled, (state, action) => {
         state.userID = action?.payload?._id;
+      })
+      .addCase(verifyReceipt.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(verifyReceipt.fulfilled, (state, action) => {
+        // state.data.meLike = action.payload.notifications;
+        state.loading = false;
+      })
+      .addCase(verifyReceipt.rejected, (state, action) => {
+        state.loading = false;
       });
   },
 });

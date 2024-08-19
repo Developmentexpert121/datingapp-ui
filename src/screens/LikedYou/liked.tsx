@@ -80,7 +80,11 @@ const LikedScreen = () => {
             ? () => {
                 navigation.navigate('Subscriptions');
               }
-            : () => likeByMe(item)
+            : profileData.plan.productId === 'PremiumPlus'
+            ? () => likeByMe(item)
+            : () => {
+                navigation.navigate('Subscriptions');
+              }
         }
         // onPress={() => goToChatWith(item)}
         style={styles.card}>
