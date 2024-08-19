@@ -42,6 +42,7 @@ const UpdateProfile = () => {
     profileData?.profilePic?.split(',') || [],
   );
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [uploadError, setUploadError] = useState<boolean>(false);
 
   const getHeightInFeetAndInches = (height: number) => {
     const feet = Math.floor(height);
@@ -92,6 +93,8 @@ const UpdateProfile = () => {
       <CommonBackbutton title="Edit Profile" />
       <ScrollView showsVerticalScrollIndicator={false}>
         <SeventhStepScreen
+          uploadError={uploadError}
+          setUploadError={setUploadError}
           profileImages={profileImages}
           setProfileImages={setProfileImages}
         />

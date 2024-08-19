@@ -35,6 +35,8 @@ const SeventhStepScreen = ({
   setProfileImages,
   title,
   errors,
+  uploadError,
+  setUploadError,
 }: {
   profileImages: any;
   setProfileImages: any;
@@ -42,8 +44,9 @@ const SeventhStepScreen = ({
   images?: any;
   control?: any;
   errors?: any;
+  uploadError?: any;
+  setUploadError?: any;
 }) => {
-  const [uploadError, setUploadError] = useState<boolean>(false);
   const [loader, setLoader] = useState<boolean>(false);
   const dispatch: any = useAppDispatch();
 
@@ -96,8 +99,6 @@ const SeventhStepScreen = ({
   };
 
   useEffect(() => {
-    console.log('second');
-
     if (title !== 'Registration') {
       let fieldValue = profileImages?.join(',');
       dispatch(
@@ -111,7 +112,7 @@ const SeventhStepScreen = ({
   }, [profileImages]);
   console.log('first');
 
-  const handleImageSelection = async () => {
+  const handleImageSelection = async (index?: number) => {
     launchImageLibrary({mediaType: 'photo'}, async response => {
       if (!response?.didCancel && !response?.errorMessage) {
         setLoader(true);
@@ -141,10 +142,18 @@ const SeventhStepScreen = ({
               .unwrap()
               .then((response: any) => response.secureUrl);
 
-            setProfileImages((prevImages: any) => [
-              ...prevImages,
-              uploadedImageUrl,
-            ]);
+            if (typeof index === 'number') {
+              // Replace the existing image
+              const updatedImages = [...profileImages];
+              updatedImages[index] = uploadedImageUrl;
+              setProfileImages(updatedImages);
+            } else {
+              // Add a new image
+              setProfileImages((prevImages: any) => [
+                ...prevImages,
+                uploadedImageUrl,
+              ]);
+            }
             setUploadError(false);
           } catch (error) {
             console.error('Error uploading image:', error);
@@ -170,6 +179,8 @@ const SeventhStepScreen = ({
     setUploadError(false);
   };
 
+  console.log(uploadError, profileImages.length);
+
   return (
     <View style={styles.container}>
       <Text style={styles.headerText}>Add Photos</Text>
@@ -183,8 +194,10 @@ const SeventhStepScreen = ({
         ].map((item, index) => (
           <TouchableOpacity
             onPress={() => {
-              if (item) {
+              if (item && profileImages.length > 2) {
                 handleRemoveImage(index);
+              } else if (item && profileImages.length <= 2) {
+                handleImageSelection(index);
               } else {
                 handleImageSelection();
               }
@@ -206,7 +219,7 @@ const SeventhStepScreen = ({
           </TouchableOpacity>
         ))}
       </View>
-      {(uploadError || (errors && profileImages.length < 2)) && (
+      {uploadError && profileImages.length < 2 && (
         <Text style={styles.errorText}>
           Please select a minimum of 2 pictures.
         </Text>

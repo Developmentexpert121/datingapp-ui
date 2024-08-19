@@ -16,6 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {
+  cancelLoginWithGoogle,
   deactivateUser,
   deleteUser,
   logoutUser,
@@ -214,6 +215,7 @@ const SettingsSection = () => {
 
   const logoutUserButton = async () => {
     try {
+      dispatch(cancelLoginWithGoogle());
       // Ensure Google Sign-In is configured
       if (!GoogleSignin.hasPlayServices()) {
         console.error('Google Play Services are not available');

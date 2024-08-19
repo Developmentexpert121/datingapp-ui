@@ -20,6 +20,7 @@ import Geolocation from '@react-native-community/geolocation';
 import {RootStackParamList} from '../../types';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {
+  cancelLoginWithGoogle,
   EmailVerification,
   GoogleLogin,
   ProfileData,
@@ -188,6 +189,16 @@ const RegisterScreen = () => {
   const [stepFourErrors, setStepFourErrors] = useState(false);
   const [stepFiveErrors, setStepFiveErrors] = useState(false);
   const [deviceToken, setDeviceToken] = useState<any>(null);
+  const [uploadError, setUploadError] = useState<boolean>(false);
+
+  const clearState = () => {
+    setSelectedCountry(null);
+    setSelectedState(null);
+    setSelectedCity(null);
+    setDob('');
+    setPhone({});
+    setEmail('');
+  };
 
   useEffect(() => {
     requestUserPermission();
@@ -221,6 +232,8 @@ const RegisterScreen = () => {
   const loginwithgoogle: any = useAppSelector(
     (state: any) => state?.Auth?.data?.loginwithgoogle,
   );
+
+  console.log('============', loginwithgoogle, '------------', steps);
 
   const Schemas = (steps: any) => {
     if (steps === 0) {
@@ -328,12 +341,15 @@ const RegisterScreen = () => {
                 'userId',
                 JSON.stringify(response?._id),
               );
+
               // console.log('dfj', response?._id);
               dispatch(ProfileData());
               // If sign-up is successful, call the function to handle the navigation
               handleNavigation(response);
               dispatch(activityLoaderFinished());
               dispatch(setUserId(response?._id));
+              reset();
+              clearState();
             } else {
               // If there is an error in sign-up, check if there is an error message and set it
               if (response?.payload?.message) {
@@ -353,7 +369,6 @@ const RegisterScreen = () => {
           });
 
         dispatch(GoogleLogin({}));
-        reset();
       },
       err => {
         console.error('Error fetching location:', err);
@@ -427,6 +442,8 @@ const RegisterScreen = () => {
                   handleNavigation(response);
                   dispatch(activityLoaderFinished());
                   dispatch(setUserId(response?._id));
+                  reset();
+                  clearState();
                 } else {
                   // If there is an error in sign-up, check if there is an error message and set it
                   if (response?.payload?.message) {
@@ -446,7 +463,6 @@ const RegisterScreen = () => {
               });
             setLoader(false);
             dispatch(GoogleLogin({}));
-            reset();
           },
           style: 'cancel',
         },
@@ -503,6 +519,7 @@ const RegisterScreen = () => {
         setSteps(prev => prev + 1);
         return;
       } else {
+        setUploadError(true);
         return;
       }
     } else if (steps === 8) {
@@ -599,6 +616,11 @@ const RegisterScreen = () => {
   };
   const onClick = async () => {
     // dispatch(GoogleLogin({}));
+    if (steps === 0) {
+      reset();
+      console.log('first--------------------------------------------');
+      dispatch(cancelLoginWithGoogle());
+    }
     try {
       if (!GoogleSignin.hasPlayServices()) {
         console.error('Google Play Services are not available');
@@ -616,6 +638,8 @@ const RegisterScreen = () => {
     }
     navigation.goBack();
   };
+
+  console.log('first');
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
@@ -630,6 +654,7 @@ const RegisterScreen = () => {
               {steps !== 8 ? (
                 <Ionicons
                   onPress={() => {
+                    console.log('CAlled');
                     if (steps === 1) {
                       // Only reset isEmailVerified flag if going back from step 1 to step 0
                       setIsEmailVerified(false);
@@ -713,6 +738,8 @@ const RegisterScreen = () => {
               />
             ) : steps === 7 ? (
               <SeventhStepScreen
+                uploadError={uploadError}
+                setUploadError={setUploadError}
                 profileImages={profileImages}
                 setProfileImages={setProfileImages}
                 title="Registeration"

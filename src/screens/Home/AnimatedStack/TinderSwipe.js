@@ -25,12 +25,12 @@ const TinderSwipe = ({
   setCurrentIndex,
   profileData,
   setData,
+  noProfilesLoader,
 }) => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const [nextIndex, setNextIndex] = useState(currentIndex + 1);
   const [loader, setLoader] = useState(false);
-  const [noProfilesLoader, setNoProfilesLoader] = useState(false);
   const [currentUser, setCurrentUser] = useState();
 
   const {showOnlineUser} = useAppSelector(state => state.authSliceState);
@@ -47,13 +47,8 @@ const TinderSwipe = ({
     setNextIndex(currentIndex + 1);
   }, [currentIndex, data.length, setCurrentIndex]);
 
-  useEffect(() => {
-    if (data.length === 0) {
-      setNoProfilesLoader(true);
-    } else {
-      setNoProfilesLoader(false);
-    }
-  }, [data.length]);
+  console.log(data.length);
+  console.log(noProfilesLoader);
 
   const swipe = useRef(new Animated.ValueXY()).current;
 
@@ -378,21 +373,23 @@ const TinderSwipe = ({
               </ScrollView>
             </View>
           </>
+        ) : noProfilesLoader ? (
+          <Loader />
         ) : (
-          // ) : noProfilesLoader ? (
-          //   <Loader />
-          <Text
-            style={{
-              fontFamily: 'Sansation-Bold',
-              fontSize: 26,
-              textAlign: 'center',
-              paddingHorizontal: 20,
-              marginTop: 100,
-              alignSelf: 'center',
-            }}>
-            You have viewed all profiles! Or no profile matches your applied
-            filters!
-          </Text>
+          data.length === 0 && (
+            <Text
+              style={{
+                fontFamily: 'Sansation-Bold',
+                fontSize: 26,
+                textAlign: 'center',
+                paddingHorizontal: 20,
+                marginTop: 100,
+                alignSelf: 'center',
+              }}>
+              You have viewed all profiles! Or no profile matches your applied
+              filters!
+            </Text>
+          )
         )}
       </View>
       {loader ? <Loader /> : null}

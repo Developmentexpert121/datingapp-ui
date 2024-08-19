@@ -50,6 +50,7 @@ const HomeScreen = () => {
   const [checkedInterests, setCheckedInterests] = useState('Everyone');
   const [checkedRelationShip, setCheckedRelationShip] = useState('');
   const [trigger, setTrigger] = useState(false);
+  const [noProfilesLoader, setNoProfilesLoader] = useState(false);
   const [onlineUsers, setOnlineUsers] = useState<any>(null);
 
   const getLocationAndRegister = async () => {
@@ -238,6 +239,7 @@ const HomeScreen = () => {
   }, [onlineUsers]);
 
   useEffect(() => {
+    setNoProfilesLoader(true);
     profileData?._id &&
       dispatch(
         getAllUsers({
@@ -253,6 +255,7 @@ const HomeScreen = () => {
         .unwrap()
         .then((response: any) => {
           setData(response.users);
+          setNoProfilesLoader(false);
         });
     apply && setApply(false);
   }, [apply, trigger]);
@@ -272,6 +275,7 @@ const HomeScreen = () => {
           <View style={{marginTop: 20, borderWidth: 0}}>
             <TinderSwipe
               data={data}
+              noProfilesLoader={noProfilesLoader}
               setData={setData}
               currentIndex={currentIndex}
               setCurrentIndex={setCurrentIndex}
