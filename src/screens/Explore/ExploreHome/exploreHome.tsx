@@ -64,10 +64,9 @@ const ExploreHome = (Data: any) => {
   return (
     <SafeAreaView style={styles.pageContainer}>
       <BackButton title={name} />
-      <View style={styles.pageContainer2}>
+      {/* <View style={styles.pageContainer2}>
         <View style={{marginTop: 20, borderWidth: 0}}>
-          {/* <ExploreSwipe */}
-          <TinderSwipe
+         
             data={data}
             setData={setData}
             currentIndex={currentIndex}
@@ -76,6 +75,16 @@ const ExploreHome = (Data: any) => {
             noProfilesLoader={noProfilesLoader}
           />
         </View>
+      </View> */}
+      <View style={styles.pageContainer2}>
+        <TinderSwipe
+          data={data}
+          noProfilesLoader={noProfilesLoader}
+          setData={setData}
+          currentIndex={currentIndex}
+          setCurrentIndex={setCurrentIndex}
+          profileData={profileData}
+        />
       </View>
     </SafeAreaView>
   );

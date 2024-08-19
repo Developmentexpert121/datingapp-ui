@@ -46,7 +46,7 @@ const HomeScreen = () => {
   const [distance, setDistance] = useState(50);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [data, setData] = useState<any>([]);
-  console.log('++++++++++++++', data);
+  // console.log('++++++++++++++', data);
   const [checkedInterests, setCheckedInterests] = useState('Everyone');
   const [checkedRelationShip, setCheckedRelationShip] = useState('');
   const [trigger, setTrigger] = useState(false);
@@ -55,7 +55,7 @@ const HomeScreen = () => {
 
   const getLocationAndRegister = async () => {
     const isLocationEnabled = await DeviceInfo.isLocationEnabled();
-    console.log('#############################---', isLocationEnabled);
+    // console.log('#############################---', isLocationEnabled);
 
     if (!isLocationEnabled) {
       if (Platform.OS === 'android') {
@@ -272,16 +272,16 @@ const HomeScreen = () => {
       />
       {activeScreen === 'HOME' ? (
         <View style={styles.pageContainer2}>
-          <View style={{marginTop: 20, borderWidth: 0}}>
-            <TinderSwipe
-              data={data}
-              noProfilesLoader={noProfilesLoader}
-              setData={setData}
-              currentIndex={currentIndex}
-              setCurrentIndex={setCurrentIndex}
-              profileData={profileData}
-            />
-          </View>
+          {/* <View style={{marginTop: 20, borderWidth: 0}}> */}
+          <TinderSwipe
+            data={data}
+            noProfilesLoader={noProfilesLoader}
+            setData={setData}
+            currentIndex={currentIndex}
+            setCurrentIndex={setCurrentIndex}
+            profileData={profileData}
+          />
+          {/* </View> */}
         </View>
       ) : activeScreen === 'Filters' ? (
         <FilterSection
@@ -313,10 +313,11 @@ const styles = StyleSheet.create({
     borderWidth: 0,
   },
   pageContainer2: {
-    // flex: 1,
+    flex: 1,
     width: '100%',
     height: '90%',
     backgroundColor: '#ededed',
+    marginTop: 20,
     // borderWidth: 2,
   },
   icons: {
