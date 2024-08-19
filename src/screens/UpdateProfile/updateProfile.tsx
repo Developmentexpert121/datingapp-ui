@@ -137,9 +137,17 @@ const UpdateProfile = () => {
                   style={styles.textField}
                   // onPress={() => handleModal(item)}
                 >
-                  <Text style={{fontFamily: 'Sansation-Regular'}}>
-                    {item.name}
-                  </Text>
+                  {item.title === 'Interests' ? (
+                    item.name.split(',').map((word: any, idx: any) => (
+                      <Text key={idx} style={styles.paddedText}>
+                        {word.trim()}
+                      </Text>
+                    ))
+                  ) : (
+                    <Text style={{fontFamily: 'Sansation-Regular'}}>
+                      {item.name}
+                    </Text>
+                  )}
                 </View>
               </View>
             </View>
@@ -191,11 +199,13 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   textField: {
-    flex: 0,
     flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingHorizontal: 24,
+    maxWidth: '100%', // Ensures text doesn't overflow the container
+    overflow: 'hidden', // Hides overflow content
     justifyContent: 'center',
     alignItems: 'center',
-    columnGap: 4,
   },
   slider: {
     marginHorizontal: 20,
@@ -217,5 +227,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: 20,
+  },
+  paddedText: {
+    marginHorizontal: 4, // Adjust the horizontal padding
+    fontFamily: 'Sansation-Regular',
   },
 });
