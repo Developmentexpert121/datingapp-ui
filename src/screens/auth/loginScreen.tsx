@@ -236,7 +236,6 @@ const LoginScreen = () => {
                       setFormData({...formData, password: value})
                     }
                     secureTextEntry={!isPasswordVisible}
-                    keyboardType="visible-password"
                   />
                   <TouchableOpacity
                     onPress={() => {
