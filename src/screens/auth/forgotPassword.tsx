@@ -13,6 +13,7 @@ import {ResetPassword, VerifyOtp} from '../../store/Auth/auth';
 import OtpModal from '../../components/OtpModal/OtpModal';
 import {otpModal, toggleGlobalModal} from '../../store/reducer/authSliceState';
 import Loader from '../../components/Loader/Loader';
+import {useNavigation} from '@react-navigation/native';
 
 interface RegisterForm {
   email: string;
@@ -27,6 +28,7 @@ const schema = yup.object().shape({
 });
 
 const ForgotPassword = () => {
+  const navigation = useNavigation<any>();
   const dispatch: any = useAppDispatch();
   const [email, setEmail] = useState('');
   const [loader, setLoader] = useState<boolean>(false);
