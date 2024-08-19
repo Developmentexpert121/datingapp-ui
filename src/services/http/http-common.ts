@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {getLocalStroage} from '../../api/storage';
 import {EventRegister} from 'react-native-event-listeners';
+import Toast from 'react-native-simple-toast';
 
 const getToken = async () => {
   try {
@@ -72,6 +73,17 @@ http.interceptors.response.use(
         console.log('Logging out user due to 403 error', response.data.message);
         EventRegister.emit('LogOut');
       }
+    }
+    return Promise.reject(error);
+  },
+);
+
+http.interceptors.response.use(
+  response => response,
+  async error => {
+    const {response} = error;
+    if (response && response.status === 503) {
+      Toast.show('Server Error 503', Toast.LONG);
     }
     return Promise.reject(error);
   },

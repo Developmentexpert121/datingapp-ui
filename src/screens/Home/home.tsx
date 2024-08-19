@@ -46,7 +46,7 @@ const HomeScreen = () => {
   const [distance, setDistance] = useState(50);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [data, setData] = useState<any>([]);
-  console.log('++++++++++++++', data);
+  // console.log('++++++++++++++', data);
   const [checkedInterests, setCheckedInterests] = useState('Everyone');
   const [checkedRelationShip, setCheckedRelationShip] = useState('');
   const [trigger, setTrigger] = useState(false);
