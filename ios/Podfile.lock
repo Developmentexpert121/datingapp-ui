@@ -1375,6 +1375,8 @@ PODS:
     - React-Core
   - RNDateTimePicker (7.7.0):
     - React-Core
+  - RNDeviceInfo (11.1.0):
+    - React-Core
   - RNFBAnalytics (19.3.0):
     - Firebase/AnalyticsWithoutAdIdSupport (= 10.24.0)
     - React-Core
@@ -1523,6 +1525,7 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
+  - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - "RNFBAnalytics (from `../node_modules/@react-native-firebase/analytics`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
@@ -1717,6 +1720,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-clipboard/clipboard"
   RNDateTimePicker:
     :path: "../node_modules/@react-native-community/datetimepicker"
+  RNDeviceInfo:
+    :path: "../node_modules/react-native-device-info"
   RNFBAnalytics:
     :path: "../node_modules/@react-native-firebase/analytics"
   RNFBApp:
@@ -1853,6 +1858,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: ec53e44dc3e75b44aa2a9f37618a49c3bc080a7a
   RNCClipboard: 0a720adef5ec193aa0e3de24c3977222c7e52a37
   RNDateTimePicker: 4f3c4dbd4f908be32ec8c93f086e8924bd4a2e07
+  RNDeviceInfo: b899ce37a403a4dea52b7cb85e16e49c04a5b88e
   RNFBAnalytics: 74eebc66e5f2475f2ed3a63822ef6bc913c4b4ff
   RNFBApp: de81f7eb68c1e6107574f2b102b0dee92a9862fa
   RNFBAuth: 40b9953bc9a8e2e207843e424aa82aa84bf34057

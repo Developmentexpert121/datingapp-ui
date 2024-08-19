@@ -47,10 +47,18 @@ const HeaderComponent = (props: any) => {
       {props.activeScreen === 'HOME' ? (
         <View style={{flexDirection: 'row', gap: 20, marginRight: 10}}>
           <Pressable onPress={() => handleNotification()}>
-            <NotificationIC />
+            {/* <NotificationIC /> */}
+            <Image
+              source={require('../../../assets/images/Notification.png')}
+              style={styles.icon1}
+            />
           </Pressable>
           <Pressable onPress={() => handleFilter()}>
-            <FilterIC />
+            {/* <FilterIC /> */}
+            <Image
+              source={require('../../../assets/images/Filter_Icon.png')}
+              style={styles.icon1}
+            />
           </Pressable>
         </View>
       ) : props?.activeScreen === 'Filters' ? (
@@ -93,6 +101,12 @@ const styles = StyleSheet.create({
     marginRight: 32,
     width: 38,
     height: 39,
+  },
+  icon1: {
+    // marginLeft: 10,
+    // marginRight: 32,
+    width: 30,
+    height: 30,
   },
   title: {
     fontSize: 26,
