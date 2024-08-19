@@ -9,15 +9,15 @@ import {
   Text,
   ScrollView,
 } from 'react-native';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import TinderCard from './TinderCard';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
-import { likedAUser, superLiked } from '../../../store/Auth/auth';
+import {useAppDispatch, useAppSelector} from '../../../store/store';
+import {likedAUser, superLiked} from '../../../store/Auth/auth';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import Loader from '../../../components/Loader/Loader';
 
-const { height, width } = Dimensions.get('window');
+const {height, width} = Dimensions.get('window');
 
 const TinderSwipe = ({
   data,
@@ -25,7 +25,7 @@ const TinderSwipe = ({
   setCurrentIndex,
   profileData,
   setData,
-  noProfilesLoader
+  noProfilesLoader,
 }) => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
@@ -33,7 +33,7 @@ const TinderSwipe = ({
   const [loader, setLoader] = useState(false);
   const [currentUser, setCurrentUser] = useState();
 
-  const { showOnlineUser } = useAppSelector(state => state.authSliceState);
+  const {showOnlineUser} = useAppSelector(state => state.authSliceState);
   const isUserOnline = showOnlineUser?.includes(currentUser) || false;
   // console.log('___________', isUserOnline);
   // console.log('___________', currentUser);
@@ -47,17 +47,17 @@ const TinderSwipe = ({
     setNextIndex(currentIndex + 1);
   }, [currentIndex, data.length, setCurrentIndex]);
 
-  console.log(data.length)
-  console.log(noProfilesLoader)
+  console.log(data.length);
+  console.log(noProfilesLoader);
 
   const swipe = useRef(new Animated.ValueXY()).current;
 
   const panResponder = PanResponder.create({
     onMoveShouldSetPanResponder: () => true,
-    onPanResponderMove: (_, { dx, dy }) => {
-      swipe.setValue({ x: dx, y: dy });
+    onPanResponderMove: (_, {dx, dy}) => {
+      swipe.setValue({x: dx, y: dy});
     },
-    onPanResponderRelease: (_, { dx, dy }) => {
+    onPanResponderRelease: (_, {dx, dy}) => {
       const directionX = Math.sign(dx);
       const directionY = Math.sign(dy);
       const isActionActiveX = Math.abs(dx) > 200;
@@ -69,7 +69,7 @@ const TinderSwipe = ({
         handleChoiceHeart(directionX);
       } else {
         Animated.spring(swipe, {
-          toValue: { x: 0, y: 0 },
+          toValue: {x: 0, y: 0},
           useNativeDriver: true,
           friction: 5,
         }).start();
@@ -131,7 +131,7 @@ const TinderSwipe = ({
 
   const removeCard = useCallback(() => {
     setData(prevState => prevState.slice(1));
-    swipe.setValue({ x: 0, y: 0 });
+    swipe.setValue({x: 0, y: 0});
     setIsSuperLikeAnimating(false);
   }, [swipe]);
 
@@ -185,9 +185,9 @@ const TinderSwipe = ({
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.cos(toRadians(lat1)) *
-      Math.cos(toRadians(lat2)) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
+        Math.cos(toRadians(lat2)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const distance = R * c;
     return distance;
@@ -213,10 +213,10 @@ const TinderSwipe = ({
   };
   return (
     <>
-      <View style={{ height: '100%', width: '100%' }}>
+      <View style={{height: '100%', width: '100%'}}>
         {data.length > 0 ? (
           <>
-            <View style={{ height: 340 }}>
+            <View style={{height: 340}}>
               {data
                 .map((item, index) => {
                   const isFirst = index === 0;
@@ -234,7 +234,7 @@ const TinderSwipe = ({
                 })
                 .reverse()}
             </View>
-            <View style={{ zIndex: -1 }}>
+            <View style={{zIndex: -1}}>
               <View style={styles.icons}>
                 <TouchableOpacity
                   onPress={() => {
@@ -269,16 +269,16 @@ const TinderSwipe = ({
                 <View style={styles.locText}>
                   <Ionicons name="location-sharp" size={20} color="#AC25AC" />
                   <Text
-                    style={{ fontFamily: 'Sansation-Regular', color: 'black' }}>
+                    style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
                     {profileData.location && data[currentIndex]?.location
                       ? `${Math.round(
-                        calculateDistance(
-                          profileData.location.latitude,
-                          profileData.location.longitude,
-                          data[currentIndex].location.latitude,
-                          data[currentIndex].location.longitude,
-                        ),
-                      ).toFixed(0)} miles away`
+                          calculateDistance(
+                            profileData.location.latitude,
+                            profileData.location.longitude,
+                            data[currentIndex].location.latitude,
+                            data[currentIndex].location.longitude,
+                          ),
+                        ).toFixed(0)} miles away`
                       : 'Distance information unavailable'}
                   </Text>
                 </View>
@@ -306,7 +306,7 @@ const TinderSwipe = ({
                         {imagePath && (
                           <Image
                             source={imagePath}
-                            style={{ height: 20, width: 20 }}
+                            style={{height: 20, width: 20}}
                           />
                         )}
                         <View
@@ -338,7 +338,7 @@ const TinderSwipe = ({
                         {imagePath && (
                           <Image
                             source={imagePath}
-                            style={{ height: 20, width: 20 }}
+                            style={{height: 20, width: 20}}
                           />
                         )}
                         {item.optionSelected.map(option => (
@@ -369,25 +369,27 @@ const TinderSwipe = ({
                     </View>
                   )}
                 </View>
-                <View style={{ height: 50 }}></View>
+                <View style={{height: 50}}></View>
               </ScrollView>
             </View>
           </>
         ) : noProfilesLoader ? (
           <Loader />
-        ) : data.length === 0 && (
-          <Text
-            style={{
-              fontFamily: 'Sansation-Bold',
-              fontSize: 26,
-              textAlign: 'center',
-              paddingHorizontal: 20,
-              marginTop: 100,
-              alignSelf: 'center',
-            }}>
-            You have viewed all profiles! Or no profile matches your applied
-            filters!
-          </Text>
+        ) : (
+          data.length === 0 && (
+            <Text
+              style={{
+                fontFamily: 'Sansation-Bold',
+                fontSize: 26,
+                textAlign: 'center',
+                paddingHorizontal: 20,
+                marginTop: 100,
+                alignSelf: 'center',
+              }}>
+              You have viewed all profiles! Or no profile matches your applied
+              filters!
+            </Text>
+          )
         )}
       </View>
       {loader ? <Loader /> : null}
@@ -427,5 +429,5 @@ const styles = StyleSheet.create({
     columnGap: 4,
     margin: 5,
   },
-  icons3: { height: 50, width: 50 },
+  icons3: {height: 50, width: 50},
 });

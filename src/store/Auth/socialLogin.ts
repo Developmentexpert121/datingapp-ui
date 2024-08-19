@@ -1,6 +1,6 @@
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {appleAuth} from '@invertase/react-native-apple-authentication';
-const jwtDecode = require('jwt-decode');
+import jwtDecode from 'jwt-decode';
 // import {GOOGLE_WEB_CLIENT_ID, GOOGLE_CLIENT_ID_IOS} from '@env';
 
 const configureGoogleSignIn = async () => {

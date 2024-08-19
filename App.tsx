@@ -10,23 +10,6 @@ import {navigationRef} from './src/utils/staticNavigation';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 const App = () => {
-  // const calls = useCalls();
-
-  // const incomingCalls = calls.filter(
-  //   call =>
-  //     call.isCreatedByMe === false &&
-  //     call.state.callingState === CallingState.RINGING,
-  // );
-
-  // const [incomingCall] = incomingCalls;
-  // if (incomingCall) {
-  //   return (
-  //     <StreamCall call={incomingCall}>
-  //       <MyIncomingCallUI call={incomingCall} />
-  //     </StreamCall>
-  //   );
-  // }
-
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       await notifee.cancelAllNotifications();
@@ -51,7 +34,7 @@ const App = () => {
     return () => unsubscribe();
   }, []);
 
-  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+  // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
   return (
     <SafeAreaProvider>
       <NavigationContainer ref={navigationRef}>

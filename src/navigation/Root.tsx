@@ -26,9 +26,13 @@ import Subscriptions from '../screens/Profile/SubscriptionComponent/Subscription
 import exploreHome from '../screens/Explore/ExploreHome/exploreHome';
 import notifee, {AndroidImportance} from '@notifee/react-native';
 import {
+  Call,
+  CallingState,
+  StreamCall,
   StreamVideo,
   StreamVideoClient,
   StreamVideoRN,
+  useCalls,
 } from '@stream-io/video-react-native-sdk';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import Loader from '../components/Loader/Loader';
@@ -41,17 +45,22 @@ import {
 } from '../store/Activity/activity';
 import {EventRegister} from 'react-native-event-listeners';
 import {useDispatch} from 'react-redux';
+import MyIncomingCallUI from '../screens/ChatHome/myIncomingCallUI';
+import {SafeAreaView, View} from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
 const Root = () => {
   const userid: any = useAppSelector((state: any) => state?.Auth?.userID);
-
   const isAuthLoading = useAppSelector((state: any) => state.Auth.authLoading);
-
   const dispatch: any = useAppDispatch();
   const AfterLoginStack = createNativeStackNavigator();
   const BeforeLoginStack = createNativeStackNavigator();
+  const Dispatch = useDispatch<any>();
+  const [client, setClient] = useState<StreamVideoClient | null>(null);
+  const userdata: any = useAppSelector(
+    (state: any) => state?.Auth?.data?.userData,
+  );
 
   GoogleSignin.configure({
     webClientId:
@@ -97,14 +106,8 @@ const Root = () => {
       }
     }
   };
-  const Dispatch = useDispatch<any>();
-  const [client, setClient] = useState<StreamVideoClient | null>(null);
-  const userdata: any = useAppSelector(
-    (state: any) => state?.Auth?.data?.userData,
-  );
 
   useEffect(() => {
-    // Define an async function inside the useEffect
     const fetchData = async () => {
       try {
         const apiKey = '48e74nbgz5az';
@@ -129,7 +132,6 @@ const Root = () => {
           user: userMain,
           tokenProvider: () => token,
         });
-
         setClient(myClient);
       } catch (error) {
         console.error('Error connecting to Stream Video Client:', error);
@@ -214,13 +216,42 @@ const Root = () => {
     );
   };
 
-  const AfterLogin = () => {
-    if (!client) {
-      return <Loader />;
-    }
+  const IncomingCallHandler = () => {
+    const calls = useCalls();
+    // const incomingCalls = calls.filter(
+    //   call =>
+    //     call.isCreatedByMe === false &&
+    //     call.state.callingState === CallingState.RINGING,
+    // );
 
-    return (
-      <StreamVideo client={client}>
+    // const [incomingCall] = incomingCalls;
+    // console.log('Incoming call ==>', incomingCall);
+    const [incomingCall, setIncomingCall] = useState<Call | null>(null);
+
+    useEffect(() => {
+      const incomingCalls = calls.filter(
+        call =>
+          !call.isCreatedByMe &&
+          call.state.callingState === CallingState.RINGING,
+      );
+      if (incomingCalls) {
+        setIncomingCall(incomingCalls[0] || null);
+      } else if (incomingCall) {
+        incomingCall.endCall();
+        setIncomingCall(null);
+      }
+    }, [calls]);
+    console.log('Incoming call ==>', !!incomingCall);
+    if (incomingCall) {
+      return (
+        <SafeAreaView style={{flex: 1}}>
+          <StreamCall call={incomingCall}>
+            <MyIncomingCallUI call={incomingCall} />
+          </StreamCall>
+        </SafeAreaView>
+      );
+    } else {
+      return (
         <AfterLoginStack.Navigator
           screenOptions={{headerShown: false}}
           initialRouteName="BottomTabNavigation">
@@ -244,6 +275,18 @@ const Root = () => {
             component={VideoCallRedirect}
           />
         </AfterLoginStack.Navigator>
+      );
+    }
+  };
+
+  const AfterLogin = () => {
+    if (!client) {
+      return <Loader />;
+    }
+
+    return (
+      <StreamVideo client={client}>
+        <IncomingCallHandler />
       </StreamVideo>
     );
   };

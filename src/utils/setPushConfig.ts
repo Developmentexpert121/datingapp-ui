@@ -52,12 +52,12 @@ export function setPushConfig() {
     },
     // add the callback to be executed a call is accepted, used for navigation
     navigateAcceptCall: () => {
-      staticNavigate({name: 'VideoCallRedirect', params: undefined});
+      staticNavigate({name: 'AfterLogin', params: undefined});
     },
     // add the callback to be executed when a notification is tapped,
     // but the user did not press accept or decline, used for navigation
     navigateToIncomingCall: () => {
-      staticNavigate({name: 'VideoCallRedirect', params: undefined});
+      staticNavigate({name: 'AfterLogin', params: undefined});
     },
     // add the async callback to create a video client
     // for incoming calls in the background on a push notification
@@ -75,10 +75,11 @@ export function setPushConfig() {
       const tokenProvider = () =>
         getTokenForUser(profileData?._id).then(auth => auth.token);
 
+      const token = await tokenProvider();
       return new StreamVideoClient({
         apiKey: '48e74nbgz5az', // pass your stream api key
         user: user,
-        tokenProvider,
+        tokenProvider: () => token,
       });
     },
   });

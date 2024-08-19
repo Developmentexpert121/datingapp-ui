@@ -9,7 +9,9 @@ export default function MyOutgoingCallUI({call, goToHomeScreen}: any) {
       <StreamCall call={call}>
         <View style={styles.container}>
           <CallContent
-            onHangupCallHandler={async () => await goToHomeScreen()}
+            onHangupCallHandler={async () => {
+              await call.endCall();
+            }}
           />
         </View>
       </StreamCall>
@@ -21,7 +23,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: 'red',
   },
   text: {
     fontSize: 20,

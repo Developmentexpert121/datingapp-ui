@@ -324,7 +324,7 @@ const ChatPage = ({
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={
-                    profileData?.plan === 'Free'
+                    profileData?.plan !== 'Free'
                       ? () => {
                           navigation.navigate('Subscriptions');
                         }

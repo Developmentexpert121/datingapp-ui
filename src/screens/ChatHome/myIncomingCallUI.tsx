@@ -7,11 +7,7 @@ import {
 import React, {useEffect, useState} from 'react';
 import {Button, StyleSheet, Text, View} from 'react-native';
 
-export default function MyIncomingCallUI({
-  call,
-  goToHomeScreen,
-  userName,
-}: any) {
+export default function MyIncomingCallUI({call, userName}: any) {
   const {useCallCallingState, useCameraState} = useCallStateHooks();
 
   const callingState = useCallCallingState();
@@ -28,7 +24,7 @@ export default function MyIncomingCallUI({
         <Button
           color={'red'}
           title="End"
-          onPress={async () => await call.leave()}
+          onPress={async () => await call.reject()}
         />
       </View>
     );
@@ -37,7 +33,7 @@ export default function MyIncomingCallUI({
     <View style={styles.container}>
       <CallContent
         onHangupCallHandler={async () => {
-          await goToHomeScreen();
+          await call.endCall();
         }}
       />
     </View>
