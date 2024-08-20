@@ -84,8 +84,6 @@ const BottomModalUpdate = ({isOpen, onClose, title, value}: any) => {
 
   const [interests, setInterests] = useState<any>([]);
 
-  console.log(interests);
-
   const [selectedAvatar, setSelectedAvatar] = useState<string>('');
 
   useEffect(() => {
@@ -207,10 +205,10 @@ const BottomModalUpdate = ({isOpen, onClose, title, value}: any) => {
             <View style={{marginHorizontal: 40, rowGap: 10, marginTop: 10}}>
               <View
                 style={{
-                  flexDirection: 'row',
                   borderRadius: 15,
                   backgroundColor: '#AC25AC',
                   paddingHorizontal: 12,
+                  alignSelf: 'flex-start',
                 }}>
                 <Text
                   style={{

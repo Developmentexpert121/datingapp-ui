@@ -305,7 +305,7 @@ export const ResetPassword = createAsyncThunk(
             visible: true,
             data: {
               text: 'OK',
-              label: 'User not exists',
+              label: error.response.data.message,
             },
           }),
         );
