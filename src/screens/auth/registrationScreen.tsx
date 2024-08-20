@@ -167,7 +167,7 @@ const RegisterScreen = () => {
   const otpVerified = useAppSelector(
     (state: any) => state?.Auth?.data?.otpVerified,
   );
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const [steps, setSteps] = React.useState(0);
   const [dateStr, setDateStr] = useState<any>(null);
   const [location, setLocation] = useState<any>(null);
