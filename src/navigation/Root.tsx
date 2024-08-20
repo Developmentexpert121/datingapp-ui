@@ -109,32 +109,35 @@ const Root = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const apiKey = '48e74nbgz5az';
-        const tokenProvider = async () => {
-          const token = await Dispatch(videoCallToken({id: userdata?.id}))
-            .unwrap()
-            .then((response: any) => response.token);
-          return token;
-        };
+      console.log('videoCallToken({id: userdata?.id}) -->', userdata?.id);
+      if (!client) {
+        try {
+          const apiKey = '48e74nbgz5az';
+          const tokenProvider = async () => {
+            const token = await Dispatch(videoCallToken({id: userdata?.id}))
+              .unwrap()
+              .then((response: any) => response.token);
+            return token;
+          };
 
-        const token = await tokenProvider();
-        console.log('Stream Token', token);
+          const token = await tokenProvider();
+          console.log('Stream Token', token);
 
-        const userMain = {
-          id: userdata.id,
-          name: userdata.name,
-          image: userdata.image,
-        };
+          const userMain = {
+            id: userdata.id,
+            name: userdata.name,
+            image: userdata.image,
+          };
 
-        const myClient = new StreamVideoClient({
-          apiKey,
-          user: userMain,
-          tokenProvider: () => token,
-        });
-        setClient(myClient);
-      } catch (error) {
-        console.error('Error connecting to Stream Video Client:', error);
+          const myClient = new StreamVideoClient({
+            apiKey,
+            user: userMain,
+            tokenProvider: () => token,
+          });
+          setClient(myClient);
+        } catch (error) {
+          console.error('Error connecting to Stream Video Client:', error);
+        }
       }
     };
 
@@ -218,14 +221,7 @@ const Root = () => {
 
   const IncomingCallHandler = () => {
     const calls = useCalls();
-    // const incomingCalls = calls.filter(
-    //   call =>
-    //     call.isCreatedByMe === false &&
-    //     call.state.callingState === CallingState.RINGING,
-    // );
 
-    // const [incomingCall] = incomingCalls;
-    // console.log('Incoming call ==>', incomingCall);
     const [incomingCall, setIncomingCall] = useState<Call | null>(null);
 
     useEffect(() => {

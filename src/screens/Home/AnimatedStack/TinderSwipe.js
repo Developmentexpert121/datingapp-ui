@@ -48,8 +48,8 @@ const TinderSwipe = ({
     setNextIndex(currentIndex + 1);
   }, [currentIndex, data.length, setCurrentIndex]);
 
-  console.log(data.length);
-  console.log(noProfilesLoader);
+  // console.log(data.length);
+  // console.log(noProfilesLoader);
 
   const swipe = useRef(new Animated.ValueXY()).current;
 

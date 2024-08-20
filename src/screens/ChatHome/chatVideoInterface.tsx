@@ -1,6 +1,10 @@
 import React from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
-import {CallingState, useCalls} from '@stream-io/video-react-native-sdk';
+import {
+  CallingState,
+  StreamCall,
+  useCalls,
+} from '@stream-io/video-react-native-sdk';
 import ChatPage from './chatPage';
 import MyOutgoingCallUI from './myOutgoingCallUI';
 
@@ -23,12 +27,16 @@ const VideoCallInterface = ({
   );
 
   const [outgoingCall] = outgoingCalls;
-  // console.log(outgoingCall);
-  // console.log('outgoingCall ==>', outgoingCall);
+
   return (
     <SafeAreaView style={styles.containerMain}>
       {outgoingCall ? (
-        <MyOutgoingCallUI call={outgoingCall} goToHomeScreen={goToHomeScreen} />
+        <StreamCall call={outgoingCall}>
+          <MyOutgoingCallUI
+            call={outgoingCall}
+            goToHomeScreen={goToHomeScreen}
+          />
+        </StreamCall>
       ) : (
         <ChatPage
           user={user}
