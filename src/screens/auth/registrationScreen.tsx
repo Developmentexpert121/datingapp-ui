@@ -639,7 +639,7 @@ const RegisterScreen = () => {
     navigation.goBack();
   };
 
-  console.log('first');
+  // console.log('first');
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView

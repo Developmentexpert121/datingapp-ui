@@ -55,7 +55,7 @@ const HomeScreen = () => {
 
   const getLocationAndRegister = async () => {
     const isLocationEnabled = await DeviceInfo.isLocationEnabled();
-    // console.log('#############################---', isLocationEnabled);
+    console.log('#############################---', isLocationEnabled);
 
     if (!isLocationEnabled) {
       if (Platform.OS === 'android') {
@@ -76,6 +76,7 @@ const HomeScreen = () => {
           ],
         );
       } else if (Platform.OS === 'ios') {
+        console.log('ios location nnnn');
         Alert.alert(
           'Location Services Disabled',
           'Please enable location services in your device settings.',
@@ -132,6 +133,7 @@ const HomeScreen = () => {
       switch (result) {
         case RESULTS.UNAVAILABLE:
           console.log('This feature is not available on this device');
+          // checkLocationServices();
           break;
         case RESULTS.DENIED:
           console.log(
@@ -184,6 +186,7 @@ const HomeScreen = () => {
         ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
         : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION;
     const result = await request(permission);
+    console.log('permission permission', permission);
 
     if (result === RESULTS.GRANTED) {
       Geolocation.requestAuthorization();
@@ -259,6 +262,51 @@ const HomeScreen = () => {
         });
     apply && setApply(false);
   }, [apply, trigger]);
+
+  // async function checkLocationServices() {
+  //   if (Platform.OS === 'ios') {
+  //     console.log('iOS platform detected');
+  //     try {
+  //       const locationPermission = await check(
+  //         PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+  //       );
+  //       console.log('Location permission result:', locationPermission);
+  //       if (locationPermission === RESULTS.GRANTED) {
+  //         console.log('Location permission granted');
+  //       } else if (locationPermission === RESULTS.DENIED) {
+  //         console.log('Location permission denied');
+  //       } else if (locationPermission === RESULTS.BLOCKED) {
+  //         console.log('efkfkefmvkdkdkkk');
+  //       } else if (locationPermission === RESULTS.UNAVAILABLE) {
+  //         Alert.alert(
+  //           'Location Services Disabled',
+  //           'Please enable location services in your device settings.',
+  //           [
+  //             {
+  //               text: 'Cancel',
+  //               style: 'cancel',
+  //             },
+  //             {
+  //               text: 'Open Settings',
+  //               onPress: () => {
+  //                 Linking.openURL('App-Prefs:Privacy&path=LOCATION');
+  //               },
+  //             },
+  //           ],
+  //         );
+  //       }
+  //     } catch (error) {
+  //       console.error('Error checking location permission:', error);
+  //     }
+  //   } else if (Platform.OS === 'android') {
+  //     const isLocationEnabled = await DeviceInfo.isLocationEnabled();
+  //     console.log('Android location enabled:', isLocationEnabled);
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   checkLocationServices();
+  // }, []);
   return (
     <View style={styles.pageContainer}>
       <HeaderComponent
