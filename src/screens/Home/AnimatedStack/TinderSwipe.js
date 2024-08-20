@@ -242,7 +242,7 @@ const TinderSwipe = ({
                   })
                   .reverse()}
               </View>
-              <View style={styles.icons}>
+              <View style={[styles.icons, {zIndex: -1}]}>
                 <TouchableOpacity
                   onPress={() => {
                     handleChoiceCross(-1);
@@ -275,9 +275,9 @@ const TinderSwipe = ({
             <ScrollView
               showsVerticalScrollIndicator={false}
               style={{
-                zIndex: 10,
                 height: hp(40),
                 marginTop: hp(1),
+                zIndex: -1,
               }}
               contentContainerStyle={{
                 paddingBottom: hp(2),
