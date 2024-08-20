@@ -381,7 +381,11 @@ const SettingsSection = () => {
           setModalVisible(false);
           setActionType(null);
         }}
-        TextName={`Are you sure you want to ${actionType} your account?`}
+        TextName={`Are you sure you want to ${actionType} your account? ${
+          actionType === 'deactivate'
+            ? '(You can reactivate your account when you login.)'
+            : ''
+        }`}
       />
     </SafeAreaView>
   );

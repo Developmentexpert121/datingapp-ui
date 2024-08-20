@@ -414,11 +414,14 @@ const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {
             {new Date(profileData.plan.transactionDate).toLocaleDateString()}
           </Text>
         </Text>
-        <Pressable
-          style={styles.upgradeButton}
-          onPress={() => navigation.navigate('Subscriptions')}>
-          <Text style={styles.upgradeButtonText}>Upgrade Plan</Text>
-        </Pressable>
+        {profileData.plan.productId !== 'PremiumPlus' && (
+          <Pressable
+            style={styles.upgradeButton}
+            onPress={() => navigation.navigate('Subscriptions')}>
+            <Text style={styles.upgradeButtonText}>Upgrade Plan</Text>
+          </Pressable>
+        )}
+
         <Pressable
           style={styles.cancelButton}
           onPress={handleCancelSubscription}>
