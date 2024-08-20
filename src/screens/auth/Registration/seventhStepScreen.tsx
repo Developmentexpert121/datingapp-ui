@@ -167,7 +167,7 @@ const SeventhStepScreen = ({
     });
   };
 
-  console.log(title);
+  // console.log(title);
 
   const handleRemoveImage = async (index: number) => {
     if (profileImages.length <= 2) {

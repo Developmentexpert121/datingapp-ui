@@ -34,19 +34,19 @@ const TinderCard = ({
   });
 
   const likeOpacity = swipe.x.interpolate({
-    inputRange: [wp(15), wp(30)],
+    inputRange: [wp(5), wp(15)], // Update for slight swipe to the right
     outputRange: [0, 1],
     extrapolate: 'clamp',
   });
 
   const rejectOpacity = swipe.x.interpolate({
-    inputRange: [wp(-30), wp(-15)],
+    inputRange: [wp(-15), wp(-5)], // Update for slight swipe to the left
     outputRange: [1, 0],
     extrapolate: 'clamp',
   });
 
   const superLikeOpacity = swipe.y.interpolate({
-    inputRange: [wp(-30), wp(-10)],
+    inputRange: [wp(-70), wp(-40)], // Show only when swiped towards the top
     outputRange: [1, 0],
     extrapolate: 'clamp',
   });
