@@ -223,6 +223,7 @@ const Root = () => {
     const calls = useCalls();
 
     const [incomingCall, setIncomingCall] = useState<Call | null>(null);
+    const [currentScreen, setCurrentScreen] = useState('Home');
 
     useEffect(() => {
       const incomingCalls = calls.filter(
@@ -232,8 +233,7 @@ const Root = () => {
       );
       if (incomingCalls) {
         setIncomingCall(incomingCalls[0] || null);
-      } else if (incomingCall) {
-        incomingCall.endCall();
+      } else {
         setIncomingCall(null);
       }
     }, [calls]);

@@ -1,6 +1,9 @@
 import {
   CallContent,
+  CallEndedEvent,
   CallingState,
+  CallSessionEndedEvent,
+  CallSessionParticipantLeftEvent,
   StreamCall,
   useCallStateHooks,
   UserResponse,
@@ -24,6 +27,24 @@ export default function MyIncomingCallUI({call, userName}: any) {
     useCallStateHooks();
   const members = useCallMembers();
   const callingState = useCallCallingState();
+
+  useEffect(() => {
+    call.on('call.session_ended', (event: CallSessionEndedEvent) => {
+      console.log('call.session_ended triggered Incoming', 'event');
+    });
+    call.on(
+      'call.session_participant_left',
+      (event: CallSessionParticipantLeftEvent) => {
+        console.log(
+          'call.session_participant_left triggered Incoming',
+          'event',
+        );
+      },
+    );
+    call.on('call.ended', (event: CallEndedEvent) => {
+      console.log('call.ended triggered Incoming', 'event');
+    });
+  }, []);
 
   const membersToShow: UserResponse[] = (members || []).map(({user}) => user);
 
