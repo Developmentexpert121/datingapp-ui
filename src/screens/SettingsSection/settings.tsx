@@ -215,6 +215,13 @@ const SettingsSection = () => {
 
   const logoutUserButton = async () => {
     try {
+      dispatch(
+        updateProfileData({
+          field: 'authToken',
+          value: '',
+          id: getUserId(),
+        }),
+      );
       dispatch(cancelLoginWithGoogle());
       // Ensure Google Sign-In is configured
       if (!GoogleSignin.hasPlayServices()) {
