@@ -138,7 +138,7 @@ const UpdateProfile = () => {
                   // onPress={() => handleModal(item)}
                 >
                   {item.title === 'Interests' ? (
-                    item.name.split(',').map((word: any, idx: any) => (
+                    item?.name?.split(',').map((word: any, idx: any) => (
                       <Text key={idx} style={styles.paddedText}>
                         {word.trim()}
                       </Text>

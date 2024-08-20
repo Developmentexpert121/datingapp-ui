@@ -34,19 +34,19 @@ const TinderCard = ({
   });
 
   const likeOpacity = swipe.x.interpolate({
-    inputRange: [wp(5), wp(15)], // Update for slight swipe to the right
+    inputRange: [wp(20), wp(25)], // Update for slight swipe to the right
     outputRange: [0, 1],
     extrapolate: 'clamp',
   });
 
   const rejectOpacity = swipe.x.interpolate({
-    inputRange: [wp(-15), wp(-5)], // Update for slight swipe to the left
+    inputRange: [wp(-35), wp(-15)], // Update for slight swipe to the left
     outputRange: [1, 0],
     extrapolate: 'clamp',
   });
 
   const superLikeOpacity = swipe.y.interpolate({
-    inputRange: [wp(-70), wp(-40)], // Show only when swiped towards the top
+    inputRange: [wp(-60), wp(-35)], // Show only when swiped towards the top
     outputRange: [1, 0],
     extrapolate: 'clamp',
   });
@@ -162,8 +162,6 @@ const TinderCard = ({
         </LinearGradient>
         {isFirst && renderChoice()}
       </ImageBackground>
-
-      {/* <View style={styles.imageCountContainer}> */}
       {images.length > 1 && (
         <View style={styles.imageCountContainer}>
           {images.map((_, index) => (
@@ -179,7 +177,6 @@ const TinderCard = ({
           ))}
         </View>
       )}
-      {/* </View> */}
     </Animated.View>
   );
 };

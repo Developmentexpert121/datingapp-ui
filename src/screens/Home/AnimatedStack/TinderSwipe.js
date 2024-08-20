@@ -36,10 +36,9 @@ const TinderSwipe = ({
 
   const {showOnlineUser} = useAppSelector(state => state.authSliceState);
   const isUserOnline = showOnlineUser?.includes(currentUser) || false;
-  // console.log('___________', isUserOnline);
-  // console.log('___________', currentUser);
 
   const [isSuperLikeAnimating, setIsSuperLikeAnimating] = useState(false);
+  console.log('isSuperLikeAnimating', isSuperLikeAnimating);
 
   useEffect(() => {
     if (currentIndex === data.length) {
@@ -48,21 +47,23 @@ const TinderSwipe = ({
     setNextIndex(currentIndex + 1);
   }, [currentIndex, data.length, setCurrentIndex]);
 
-  // console.log(data.length);
-  // console.log(noProfilesLoader);
-
   const swipe = useRef(new Animated.ValueXY()).current;
+  console.log('###########', swipe);
 
   const panResponder = PanResponder.create({
     onMoveShouldSetPanResponder: () => true,
     onPanResponderMove: (_, {dx, dy}) => {
       swipe.setValue({x: dx, y: dy});
     },
+    // ##############
     onPanResponderRelease: (_, {dx, dy}) => {
       const directionX = Math.sign(dx);
+      console.log('first', directionX);
       const directionY = Math.sign(dy);
       const isActionActiveX = Math.abs(dx) > 200;
+      console.log('111111111', isActionActiveX);
       const isActionActiveY = Math.abs(dy) > 200;
+      console.log('222222222', isActionActiveY);
 
       if (isActionActiveY && directionY < 0) {
         handleChoiceSuperLike();
@@ -77,7 +78,7 @@ const TinderSwipe = ({
       }
     },
   });
-
+  // ##########
   const onSwipeRight = async () => {
     await dispatch(
       likedAUser({
@@ -114,7 +115,9 @@ const TinderSwipe = ({
         console.log('awdawd', res.success);
         if (res.success === true) {
           const targetX = hiddenTranslateX;
+          console.log('targetX', targetX);
           translateX.value = withSpring(targetX);
+          console.log('translateX.value ', translateX.value);
           setTimeout(() => {
             const updatedUsers = [...data];
             updatedUsers.splice(currentIndex, 1);

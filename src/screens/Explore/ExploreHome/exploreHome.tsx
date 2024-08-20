@@ -3,7 +3,7 @@ import {View, StyleSheet, SafeAreaView} from 'react-native';
 import {useAppDispatch, useAppSelector} from '../../../store/store';
 import {getAllUsers, ProfileData} from '../../../store/Auth/auth';
 import BackButton from '../../../components/commonBackbutton/BackButton';
-import ExploreSwipe from './AnimatedStack/ExploreSwipe';
+
 import TinderSwipe from '../../Home/AnimatedStack/TinderSwipe';
 
 const ExploreHome = (Data: any) => {
