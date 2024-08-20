@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 import {
+  Call,
   CallingState,
   StreamCall,
   useCalls,
@@ -20,22 +21,34 @@ const VideoCallInterface = ({
 }: any) => {
   const calls = useCalls();
 
-  const outgoingCalls = calls.filter(
-    call =>
-      call.isCreatedByMe === true &&
-      call.state.callingState === CallingState.RINGING,
-  );
+  // const [outgoingCall] = outgoingCalls;
 
-  const [outgoingCall] = outgoingCalls;
+  const [outgoingCall, setOutgoingCall] = useState<Call | null>(null);
+  const [currentScreen, setCurrentScreen] = useState('Home');
+
+  useEffect(() => {
+    const outgoingCalls = calls.filter(
+      call =>
+        call.isCreatedByMe === true &&
+        call.state.callingState === CallingState.RINGING,
+    );
+    if (outgoingCalls) {
+      setOutgoingCall(outgoingCalls[0] || null);
+      setCurrentScreen('Calling');
+    } else {
+      setOutgoingCall(null);
+    }
+  }, [calls]);
+
+  const endCall = () => {
+    setCurrentScreen('Home');
+  };
 
   return (
     <SafeAreaView style={styles.containerMain}>
-      {outgoingCall ? (
+      {currentScreen != 'Home' && outgoingCall ? (
         <StreamCall call={outgoingCall}>
-          <MyOutgoingCallUI
-            call={outgoingCall}
-            goToHomeScreen={goToHomeScreen}
-          />
+          <MyOutgoingCallUI call={outgoingCall} callEnded={endCall} />
         </StreamCall>
       ) : (
         <ChatPage
