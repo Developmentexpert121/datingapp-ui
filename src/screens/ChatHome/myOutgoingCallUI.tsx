@@ -1,12 +1,15 @@
 import {
   CallContent,
+  CallEndedEvent,
   CallingState,
+  CallSessionEndedEvent,
+  CallSessionParticipantLeftEvent,
   StreamCall,
   useCallStateHooks,
   useConnectedUser,
   UserResponse,
 } from '@stream-io/video-react-native-sdk';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useAppSelector} from '../../store/store';
 import {
@@ -15,7 +18,7 @@ import {
 } from 'react-native-responsive-screen';
 import {Avatar} from 'react-native-elements';
 
-export default function MyOutgoingCallUI({call, goToHomeScreen}: any) {
+export default function MyOutgoingCallUI({call, callEnded}: any) {
   const {useCallCallingState, useParticipants, useCallMembers} =
     useCallStateHooks();
   const members = useCallMembers();
@@ -26,6 +29,27 @@ export default function MyOutgoingCallUI({call, goToHomeScreen}: any) {
   // console.log('callingState outgoing ++>', callingState);
   // console.log('members outgoing++>', JSON.stringify(members));
   // console.log('membersToShow outgoing++>', JSON.stringify(membersToShow));
+
+  useEffect(() => {
+    call.on('call.session_ended', (event: CallSessionEndedEvent) => {
+      console.log('call.session_ended triggered Incoming---', 'event');
+      callEnded();
+    });
+    call.on(
+      'call.session_participant_left',
+      (event: CallSessionParticipantLeftEvent) => {
+        console.log(
+          'call.session_participant_left triggered Incoming ---',
+          'event',
+        );
+        callEnded();
+      },
+    );
+    call.on('call.ended', (event: CallEndedEvent) => {
+      console.log('call.ended triggered Incoming ---', 'event');
+      callEnded();
+    });
+  }, []);
 
   return (
     <View style={styles.container}>
