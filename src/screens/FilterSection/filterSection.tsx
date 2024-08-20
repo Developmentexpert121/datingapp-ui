@@ -181,21 +181,41 @@ const FilterSection = ({
 
   const getLocationAndRegister = () => {
     if (!isLocationEnabled) {
-      Alert.alert(
-        'Location Services Disabled',
-        'Please enable location services to proceed.',
-        [
-          {
-            text: 'Cancel',
-            onPress: () => {},
-            style: 'cancel',
-          },
-          {
-            text: 'Confirm',
-            onPress: () => {},
-          },
-        ],
-      );
+      if (Platform.OS === 'android') {
+        Alert.alert(
+          'Location Services Disabled',
+          'Please enable location services in your device settings.',
+          [
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+            {
+              text: 'Open Settings',
+              onPress: () => {
+                Linking.sendIntent('android.settings.LOCATION_SOURCE_SETTINGS');
+              },
+            },
+          ],
+        );
+      } else if (Platform.OS === 'ios') {
+        Alert.alert(
+          'Location Services Disabled',
+          'Please enable location services in your device settings.',
+          [
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+            {
+              text: 'Open Settings',
+              onPress: () => {
+                Linking.openURL('App-Prefs:Privacy&path=LOCATION');
+              },
+            },
+          ],
+        );
+      }
       return;
     }
 

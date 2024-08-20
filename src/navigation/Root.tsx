@@ -15,6 +15,7 @@ import {
   setAuthData,
   setModal,
   updateAuthentication,
+  updateProfileData,
   videoCallToken,
 } from '../store/Auth/auth';
 import BottomTabNavigation from './BottomTabNavigation';
@@ -49,6 +50,20 @@ import MyIncomingCallUI from '../screens/ChatHome/myIncomingCallUI';
 import {SafeAreaView, View} from 'react-native';
 
 const Stack = createNativeStackNavigator();
+
+const getUserId = async () => {
+  try {
+    const userId: any = await AsyncStorage.getItem('userId');
+
+    if (userId !== null) {
+      return JSON.parse(userId);
+    } else {
+      return null;
+    }
+  } catch (error) {
+    return null;
+  }
+};
 
 const Root = () => {
   const userid: any = useAppSelector((state: any) => state?.Auth?.userID);
@@ -171,6 +186,13 @@ const Root = () => {
 
   const logoutUserButton = async () => {
     try {
+      dispatch(
+        updateProfileData({
+          field: 'authToken',
+          value: '',
+          id: getUserId(),
+        }),
+      );
       dispatch(cancelLoginWithGoogle());
 
       if (!GoogleSignin.hasPlayServices()) {

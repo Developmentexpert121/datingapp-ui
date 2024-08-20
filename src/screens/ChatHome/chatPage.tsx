@@ -261,215 +261,127 @@ const ChatPage = ({
   return (
     <>
       <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={{flex: 1}}>
-            {/* header */}
-            <View style={styles.container}>
-              <View
-                style={{
-                  width: '72%',
-                  flexDirection: 'row',
-                  paddingStart: 10,
-                  alignItems: 'center',
-                  borderWidth: 0,
-                }}>
-                <Pressable style={styles.backPress}>
-                  <Ionicons
-                    onPress={() => navigation.goBack()}
-                    style={styles.backPressIcon}
-                    name="chevron-back-outline"
-                    size={30}
-                  />
-                </Pressable>
-                <Avatar
-                  source={{uri: user?.profilePic?.split(',')[0]}}
-                  rounded
-                  size={50}
+        <View style={{flex: 1}}>
+          {/* header */}
+          <View style={styles.container}>
+            <View
+              style={{
+                width: '72%',
+                flexDirection: 'row',
+                paddingStart: 10,
+                alignItems: 'center',
+                borderWidth: 0,
+              }}>
+              <Pressable style={styles.backPress}>
+                <Ionicons
+                  onPress={() => navigation.goBack()}
+                  style={styles.backPressIcon}
+                  name="chevron-back-outline"
+                  size={30}
                 />
-                <View style={{flexDirection: 'column', flex: 1}}>
-                  <Text numberOfLines={1} style={styles.stepsText}>
-                    {user?.name}
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      fontFamily: 'Sansation-Regular',
-                      marginStart: 12,
-                      // color: '#6D6D6D',
-                      color: isUserOnline ? 'green' : '#6D6D6D',
-                    }}>
-                    {isUserOnline ? 'Online' : 'Offline'}
-                  </Text>
-                </View>
-              </View>
-              <View style={{flexDirection: 'row', marginEnd: 10, width: '25%'}}>
-                <TouchableOpacity
-                  onPress={
-                    profileData?.plan === 'Free'
-                      ? () => {
-                          navigation.navigate('Subscriptions');
-                        }
-                      : () => {
-                          setCallType('audioCall');
-                          setEnableCamera1(false);
-                          goToCallScreen('audioCall');
-                        }
-                  }>
-                  <View style={styles.editIcon}>
-                    <Image
-                      source={require('../../assets/images/Phone.png/')}
-                      style={{height: 40, width: 40}}
-                    />
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={
-                    profileData?.plan !== 'Free'
-                      ? () => {
-                          navigation.navigate('Subscriptions');
-                        }
-                      : profileData.plan.productId === 'PremiumPlus'
-                      ? () => {
-                          setCallType('videoCall');
-                          setEnableCamera(true);
-                          goToCallScreen('videoCall');
-                        }
-                      : () => {
-                          navigation.navigate('Subscriptions');
-                        }
-                  }>
-                  <View style={styles.editIcon}>
-                    <Image
-                      source={require('../../assets/images/Video.png/')}
-                      style={{height: 40, width: 40}}
-                    />
-                  </View>
-                </TouchableOpacity>
+              </Pressable>
+              <Avatar
+                source={{uri: user?.profilePic?.split(',')[0]}}
+                rounded
+                size={50}
+              />
+              <View style={{flexDirection: 'column', flex: 1}}>
+                <Text numberOfLines={1} style={styles.stepsText}>
+                  {user?.name}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontFamily: 'Sansation-Regular',
+                    marginStart: 12,
+                    // color: '#6D6D6D',
+                    color: isUserOnline ? 'green' : '#6D6D6D',
+                  }}>
+                  {isUserOnline ? 'Online' : 'Offline'}
+                </Text>
               </View>
             </View>
-            {/* center */}
-            <View style={{marginTop: 10, flex: 1, borderWidth: 0}}>
-              <ScrollView
-                ref={scrollViewRef}
-                onContentSizeChange={() => {
-                  if (scrollViewRef?.current) {
-                    scrollViewRef?.current?.scrollToEnd({animated: true});
-                  }
-                }}
-                onScroll={handleScroll}>
-                <View style={{flexGrow: 1}} />
-                {isLoading && <LoadingIndicator />}
-                {/*  */}
-                {chatMessages?.map((messageItem: any, index: any) => {
-                  const isTextMessage = !messageItem.uri;
-                  const isAuthMessage =
-                    messageItem.receiver === user?._id ||
-                    messageItem.sender === user?._id;
-                  return (
-                    <>
-                      {isAuthMessage && (
-                        <View
-                          key={index}
-                          style={{
-                            flexDirection: 'row',
-                            alignSelf:
-                              messageItem?.sender === profileData?._id
-                                ? 'flex-end'
-                                : 'flex-start',
-                            margin: 10,
-                            marginBottom: 12,
-                            alignItems: 'baseline',
-                          }}>
-                          {/* Reciver Image */}
-                          {isAuthMessage &&
-                            messageItem?.sender !== profileData?._id && (
-                              <View
-                                style={{
-                                  alignSelf: 'flex-end',
-                                  marginBottom: 'auto',
-                                }}>
-                                <Image
-                                  source={{
-                                    uri: user?.profilePic?.split(',')[0],
-                                  }}
-                                  style={styles.circularImage}
-                                />
-                              </View>
-                            )}
-
-                          {/* Messages */}
-
-                          <View
-                            style={{
-                              backgroundColor:
-                                messageItem?.sender === profileData?._id
-                                  ? '#AC25AC'
-                                  : '#D9D9D9',
-                              padding: 10,
-                              marginHorizontal: 10,
-                              borderRadius: 8,
-                              maxWidth: 260,
-                              borderBottomRightRadius:
-                                messageItem?.sender === profileData?._id
-                                  ? 0
-                                  : 8,
-                              borderBottomLeftRadius:
-                                messageItem?.sender === profileData?._id
-                                  ? 8
-                                  : 0,
-                            }}>
-                            {isTextMessage && isAuthMessage ? (
-                              <Text
-                                style={{
-                                  color:
-                                    messageItem?.sender === profileData?._id
-                                      ? 'white'
-                                      : 'black',
-                                }}>
-                                {messageItem?.message}
-                              </Text>
-                            ) : (
-                              isAuthMessage && (
-                                <View>
-                                  <Image
-                                    source={{uri: messageItem.uri}}
-                                    style={[
-                                      styles.sharedImage,
-                                      {position: 'relative'},
-                                    ]}
-                                  />
-                                  <View
-                                    style={{
-                                      backgroundColor: 'white',
-                                      alignSelf: 'flex-start',
-                                      padding: 2,
-                                      borderRadius: 4,
-                                      position: 'absolute',
-                                      top: 0,
-                                      right: 0,
-                                      margin: 4,
-                                    }}>
-                                    <TouchableOpacity
-                                      onPress={() =>
-                                        saveImageToGallery(messageItem.uri)
-                                      }>
-                                      <Image
-                                        source={require('../../assets/images/download.png')}
-                                        style={{
-                                          resizeMode: 'contain',
-                                          height: hp(2),
-                                          width: wp(4),
-                                        }}
-                                      />
-                                    </TouchableOpacity>
-                                  </View>
-                                </View>
-                              )
-                            )}
-                          </View>
-
-                          {/*  Sender Image*/}
-                          {messageItem?.sender === profileData?._id && (
+            <View style={{flexDirection: 'row', marginEnd: 10, width: '25%'}}>
+              <TouchableOpacity
+                onPress={
+                  profileData?.plan === 'Free'
+                    ? () => {
+                        navigation.navigate('Subscriptions');
+                      }
+                    : () => {
+                        setCallType('audioCall');
+                        setEnableCamera1(false);
+                        goToCallScreen('audioCall');
+                      }
+                }>
+                <View style={styles.editIcon}>
+                  <Image
+                    source={require('../../assets/images/Phone.png/')}
+                    style={{height: 40, width: 40}}
+                  />
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={
+                  profileData?.plan !== 'Free'
+                    ? () => {
+                        navigation.navigate('Subscriptions');
+                      }
+                    : profileData.plan.productId === 'PremiumPlus'
+                    ? () => {
+                        setCallType('videoCall');
+                        setEnableCamera(true);
+                        goToCallScreen('videoCall');
+                      }
+                    : () => {
+                        navigation.navigate('Subscriptions');
+                      }
+                }>
+                <View style={styles.editIcon}>
+                  <Image
+                    source={require('../../assets/images/Video.png/')}
+                    style={{height: 40, width: 40}}
+                  />
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+          {/* center */}
+          <View style={{marginTop: 10, flex: 1, borderWidth: 0}}>
+            <ScrollView
+              ref={scrollViewRef}
+              onContentSizeChange={() => {
+                if (scrollViewRef?.current) {
+                  scrollViewRef?.current?.scrollToEnd({animated: true});
+                }
+              }}
+              onScroll={handleScroll}>
+              <View style={{flexGrow: 1}} />
+              {isLoading && <LoadingIndicator />}
+              {/*  */}
+              {chatMessages?.map((messageItem: any, index: any) => {
+                const isTextMessage = !messageItem.uri;
+                const isAuthMessage =
+                  messageItem.receiver === user?._id ||
+                  messageItem.sender === user?._id;
+                return (
+                  <>
+                    {isAuthMessage && (
+                      <View
+                        key={index}
+                        style={{
+                          flexDirection: 'row',
+                          alignSelf:
+                            messageItem?.sender === profileData?._id
+                              ? 'flex-end'
+                              : 'flex-start',
+                          margin: 10,
+                          marginBottom: 12,
+                          alignItems: 'baseline',
+                        }}>
+                        {/* Reciver Image */}
+                        {isAuthMessage &&
+                          messageItem?.sender !== profileData?._id && (
                             <View
                               style={{
                                 alignSelf: 'flex-end',
@@ -477,62 +389,144 @@ const ChatPage = ({
                               }}>
                               <Image
                                 source={{
-                                  uri: profileData?.profilePic?.split(',')[0],
+                                  uri: user?.profilePic?.split(',')[0],
                                 }}
                                 style={styles.circularImage}
                               />
                             </View>
                           )}
-                        </View>
-                      )}
-                    </>
-                  );
-                })}
-              </ScrollView>
-            </View>
 
-            {/* footer */}
-            {user?.deactivate === false && user?.isBlocked === false ? (
+                        {/* Messages */}
+
+                        <View
+                          style={{
+                            backgroundColor:
+                              messageItem?.sender === profileData?._id
+                                ? '#AC25AC'
+                                : '#D9D9D9',
+                            padding: 10,
+                            marginHorizontal: 10,
+                            borderRadius: 8,
+                            maxWidth: 260,
+                            borderBottomRightRadius:
+                              messageItem?.sender === profileData?._id ? 0 : 8,
+                            borderBottomLeftRadius:
+                              messageItem?.sender === profileData?._id ? 8 : 0,
+                          }}>
+                          {isTextMessage && isAuthMessage ? (
+                            <Text
+                              style={{
+                                color:
+                                  messageItem?.sender === profileData?._id
+                                    ? 'white'
+                                    : 'black',
+                              }}>
+                              {messageItem?.message}
+                            </Text>
+                          ) : (
+                            isAuthMessage && (
+                              <View>
+                                <Image
+                                  source={{uri: messageItem.uri}}
+                                  style={[
+                                    styles.sharedImage,
+                                    {position: 'relative'},
+                                  ]}
+                                />
+                                <View
+                                  style={{
+                                    backgroundColor: 'white',
+                                    alignSelf: 'flex-start',
+                                    padding: 2,
+                                    borderRadius: 4,
+                                    position: 'absolute',
+                                    top: 0,
+                                    right: 0,
+                                    margin: 4,
+                                  }}>
+                                  <TouchableOpacity
+                                    onPress={() =>
+                                      saveImageToGallery(messageItem.uri)
+                                    }>
+                                    <Image
+                                      source={require('../../assets/images/download.png')}
+                                      style={{
+                                        resizeMode: 'contain',
+                                        height: hp(2),
+                                        width: wp(4),
+                                      }}
+                                    />
+                                  </TouchableOpacity>
+                                </View>
+                              </View>
+                            )
+                          )}
+                        </View>
+
+                        {/*  Sender Image*/}
+                        {messageItem?.sender === profileData?._id && (
+                          <View
+                            style={{
+                              alignSelf: 'flex-end',
+                              marginBottom: 'auto',
+                            }}>
+                            <Image
+                              source={{
+                                uri: profileData?.profilePic?.split(',')[0],
+                              }}
+                              style={styles.circularImage}
+                            />
+                          </View>
+                        )}
+                      </View>
+                    )}
+                  </>
+                );
+              })}
+            </ScrollView>
+          </View>
+
+          {/* footer */}
+          {user?.deactivate === false && user?.isBlocked === false ? (
+            <View
+              style={[
+                styles.inputView,
+                isKeyboardVisible && {marginBottom: 40},
+              ]}>
               <View
-                style={[
-                  styles.inputView,
-                  isKeyboardVisible && {marginBottom: 40},
-                ]}>
-                <View
-                  style={{borderWidth: 1, width: '88%', flexDirection: 'row'}}>
-                  <TextInput
-                    value={inputMessage}
-                    onChangeText={setInputMessage}
-                    placeholder="Type your message..."
-                    placeholderTextColor="gray"
-                    style={styles.input}
+                style={{borderWidth: 1, width: '88%', flexDirection: 'row'}}>
+                <TextInput
+                  value={inputMessage}
+                  onChangeText={setInputMessage}
+                  placeholder="Type your message..."
+                  placeholderTextColor="gray"
+                  style={styles.input}
+                />
+                <TouchableOpacity onPress={handleMediaSelection}>
+                  <Image
+                    source={require('../../assets/images/documentUpload.png')}
+                    style={{height: 40, width: 40, alignSelf: 'center'}}
                   />
-                  <TouchableOpacity onPress={handleMediaSelection}>
-                    <Image
-                      source={require('../../assets/images/documentUpload.png')}
-                      style={{height: 40, width: 40, alignSelf: 'center'}}
-                    />
-                  </TouchableOpacity>
-                </View>
-                <TouchableOpacity style={styles.sendButton}>
-                  <SendIC onPress={handleSendMessage} />
                 </TouchableOpacity>
               </View>
-            ) : (
-              <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                <Text
-                  style={{
-                    fontFamily: 'Sansation-Regular',
-                    color: 'red',
-                    fontSize: 20,
-                  }}>
-                  This user is {user?.deactivate === true && 'Deactivate '}
-                  {user?.isBlocked === true && ' Blocked'}
-                </Text>
-              </View>
-            )}
-          </View>
-        </TouchableWithoutFeedback>
+              <TouchableOpacity style={styles.sendButton}>
+                <SendIC onPress={handleSendMessage} />
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+              <Text
+                style={{
+                  fontFamily: 'Sansation-Regular',
+                  color: 'red',
+                  fontSize: 20,
+                }}>
+                This user is {user?.deactivate === true && 'Deactivate '}
+                {user?.isBlocked === true && ' Blocked'}
+              </Text>
+            </View>
+          )}
+        </View>
       </KeyboardAvoidingView>
     </>
   );
