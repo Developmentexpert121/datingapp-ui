@@ -261,7 +261,6 @@ const ChatPage = ({
   return (
     <>
       <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
-        {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
         <View style={{flex: 1}}>
           {/* header */}
           <View style={styles.container}>
@@ -528,7 +527,6 @@ const ChatPage = ({
             </View>
           )}
         </View>
-        {/* </TouchableWithoutFeedback> */}
       </KeyboardAvoidingView>
     </>
   );
