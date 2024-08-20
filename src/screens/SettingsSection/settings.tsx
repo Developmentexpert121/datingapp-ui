@@ -240,18 +240,7 @@ const SettingsSection = () => {
       .unwrap()
       .then(async (res: any) => {
         console.log('Delete User res', res);
-
-        try {
-          const isSignedIn = await GoogleSignin.isSignedIn();
-          if (isSignedIn) {
-            await GoogleSignin.signOut();
-          }
-          dispatch(logoutUser({senderId: profileData._id}));
-          dispatch(updateAuthentication());
-          await authTokenRemove();
-        } catch (error) {
-          console.error(error, 'error');
-        }
+        logoutUserButton();
       });
     //
   };
@@ -260,17 +249,7 @@ const SettingsSection = () => {
       .unwrap()
       .then(async (res: any) => {
         console.log('Delete User res', res);
-
-        try {
-          const isSignedIn = await GoogleSignin.isSignedIn();
-          if (isSignedIn) {
-            await GoogleSignin.signOut();
-          }
-          dispatch(logoutUser({senderId: profileData._id}));
-          await authTokenRemove();
-        } catch (error) {
-          console.error(error, 'error');
-        }
+        logoutUserButton();
       });
   };
 

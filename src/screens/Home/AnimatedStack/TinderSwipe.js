@@ -16,6 +16,7 @@ import {likedAUser, superLiked} from '../../../store/Auth/auth';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import Loader from '../../../components/Loader/Loader';
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const {height, width} = Dimensions.get('window');
 
@@ -212,29 +213,35 @@ const TinderSwipe = ({
     4: require('../../../assets/images/moon.png'),
   };
   return (
-    <>
-      <View style={{height: '100%', width: '100%'}}>
+    <View style={{flex: 1}}>
+      <View
+        style={{
+          height: '100%',
+          width: '100%',
+        }}>
         {data.length > 0 ? (
           <>
-            <View style={{height: 340}}>
-              {data
-                .map((item, index) => {
-                  const isFirst = index === 0;
-                  const dragHandlers = isFirst ? panResponder.panHandlers : {};
-                  return (
-                    <TinderCard
-                      key={item._id} // Use unique identifier
-                      swipe={swipe}
-                      item={item}
-                      setCurrentUser={setCurrentUser}
-                      isFirst={isFirst}
-                      {...dragHandlers}
-                    />
-                  );
-                })
-                .reverse()}
-            </View>
-            <View style={{zIndex: -1}}>
+            <View>
+              <View style={{height: 340}}>
+                {data
+                  .map((item, index) => {
+                    const isFirst = index === 0;
+                    const dragHandlers = isFirst
+                      ? panResponder.panHandlers
+                      : {};
+                    return (
+                      <TinderCard
+                        key={item._id} // Use unique identifier
+                        swipe={swipe}
+                        item={item}
+                        setCurrentUser={setCurrentUser}
+                        isFirst={isFirst}
+                        {...dragHandlers}
+                      />
+                    );
+                  })
+                  .reverse()}
+              </View>
               <View style={styles.icons}>
                 <TouchableOpacity
                   onPress={() => {
@@ -264,8 +271,19 @@ const TinderSwipe = ({
                   />
                 </TouchableOpacity>
               </View>
-              <ScrollView showsVerticalScrollIndicator={false}>
-                {/* Location */}
+            </View>
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              style={{
+                zIndex: 10,
+                height: hp(40),
+                marginTop: hp(1),
+              }}
+              contentContainerStyle={{
+                paddingBottom: hp(2),
+              }}>
+              {/* Location */}
+              <TouchableOpacity activeOpacity={1}>
                 <View style={styles.locText}>
                   <Ionicons name="location-sharp" size={20} color="#AC25AC" />
                   <Text
@@ -369,9 +387,9 @@ const TinderSwipe = ({
                     </View>
                   )}
                 </View>
-                <View style={{height: 50}}></View>
-              </ScrollView>
-            </View>
+                <View style={{height: 10}}></View>
+              </TouchableOpacity>
+            </ScrollView>
           </>
         ) : noProfilesLoader ? (
           <Loader />
@@ -393,7 +411,7 @@ const TinderSwipe = ({
         )}
       </View>
       {loader ? <Loader /> : null}
-    </>
+    </View>
   );
 };
 
@@ -411,7 +429,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 20,
-    alignSelf: 'flex-start',
+    alignSelf: '-stflexart',
     marginTop: 15,
   },
   container: {
