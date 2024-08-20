@@ -22,27 +22,29 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import {Avatar} from 'react-native-elements';
-export default function MyIncomingCallUI({call, userName}: any) {
-  const {useCallCallingState, useParticipants, useCallMembers} =
-    useCallStateHooks();
+export default function MyIncomingCallUI({call, userName, callEnded}: any) {
+  const {useCallCallingState, useCallMembers} = useCallStateHooks();
   const members = useCallMembers();
   const callingState = useCallCallingState();
 
   useEffect(() => {
     call.on('call.session_ended', (event: CallSessionEndedEvent) => {
-      console.log('call.session_ended triggered Incoming', 'event');
+      console.log('call.session_ended triggered Incoming---', 'event');
+      callEnded();
     });
     call.on(
       'call.session_participant_left',
       (event: CallSessionParticipantLeftEvent) => {
         console.log(
-          'call.session_participant_left triggered Incoming',
+          'call.session_participant_left triggered Incoming ---',
           'event',
         );
+        callEnded();
       },
     );
     call.on('call.ended', (event: CallEndedEvent) => {
-      console.log('call.ended triggered Incoming', 'event');
+      console.log('call.ended triggered Incoming ---', 'event');
+      callEnded();
     });
   }, []);
 
@@ -114,6 +116,7 @@ export default function MyIncomingCallUI({call, userName}: any) {
         <CallContent
           onHangupCallHandler={async () => {
             await call.endCall();
+            callEnded();
           }}
         />
       )}

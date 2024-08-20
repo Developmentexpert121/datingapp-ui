@@ -255,16 +255,20 @@ const Root = () => {
       );
       if (incomingCalls) {
         setIncomingCall(incomingCalls[0] || null);
+        setCurrentScreen('Calling');
       } else {
         setIncomingCall(null);
       }
     }, [calls]);
     console.log('Incoming call ==>', !!incomingCall);
-    if (incomingCall) {
+    if (currentScreen != 'Home' && incomingCall) {
+      const endCall = () => {
+        setCurrentScreen('Home');
+      };
       return (
         <SafeAreaView style={{flex: 1}}>
           <StreamCall call={incomingCall}>
-            <MyIncomingCallUI call={incomingCall} />
+            <MyIncomingCallUI call={incomingCall} callEnded={endCall} />
           </StreamCall>
         </SafeAreaView>
       );
