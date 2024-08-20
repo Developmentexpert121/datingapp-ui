@@ -24,6 +24,7 @@ import {
 import {useDispatch} from 'react-redux';
 import {verifyReceipt} from '../../../store/Auth/auth';
 import CommonBackbutton from '../../../components/commonBackbutton/BackButton';
+import {CommonActions} from '@react-navigation/native';
 
 const isIos = Platform.OS === 'ios';
 
@@ -124,6 +125,12 @@ const SubscriptionsScreen = ({navigation}) => {
                     developerPayload: purchase.developerPayloadAndroid,
                   });
                   console.log('Purchase acknowledged', yyy);
+                  navigation.dispatch(
+                    CommonActions.reset({
+                      index: 0,
+                      routes: [{name: 'BottomTabNavigation'}],
+                    }),
+                  );
                 }
 
                 // Handle your purchase logic here
