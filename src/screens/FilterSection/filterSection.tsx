@@ -246,7 +246,7 @@ const FilterSection = ({
       },
 
       err => {
-        console.error('Error fetching location:', err);
+        console.error('Error fetching location:22222', err);
         setLoader(false);
       },
       {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}, // Increased timeout to 30000ms (30 seconds)

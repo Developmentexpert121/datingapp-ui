@@ -73,7 +73,7 @@ export function setPushConfig() {
         image: profileData?.profilePic,
       };
       const tokenProvider = () =>
-        getTokenForUser(profileData?._id).then(auth => auth.token);
+        getTokenForUser(profileData?._id).then(auth => auth?.token);
 
       const token = await tokenProvider();
       return new StreamVideoClient({

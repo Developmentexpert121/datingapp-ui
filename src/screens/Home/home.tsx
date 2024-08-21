@@ -116,7 +116,7 @@ const HomeScreen = () => {
       },
 
       err => {
-        console.error('Error fetching location:', err);
+        console.error('Error fetching location:333333', err);
       },
       {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}, // Increased timeout to 30000ms (30 seconds)
     );

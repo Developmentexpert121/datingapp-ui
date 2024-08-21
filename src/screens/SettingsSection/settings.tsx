@@ -180,7 +180,7 @@ const SettingsSection = () => {
         reset();
       },
       err => {
-        console.error('Error fetching location:', err);
+        console.error('Error fetching location: 44444', err);
         setLoader(false);
         setError(err.message);
         setPermissionStatus('denied');

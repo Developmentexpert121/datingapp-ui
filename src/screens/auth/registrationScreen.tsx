@@ -371,7 +371,7 @@ const RegisterScreen = () => {
         dispatch(GoogleLogin({}));
       },
       err => {
-        console.error('Error fetching location:', err);
+        console.error('Error fetching location:1111', err);
         setLoader(false);
         setError(err.message);
         setPermissionStatus('denied');
