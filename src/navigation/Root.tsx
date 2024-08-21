@@ -47,7 +47,7 @@ import {
 import {EventRegister} from 'react-native-event-listeners';
 import {useDispatch} from 'react-redux';
 import MyIncomingCallUI from '../screens/ChatHome/myIncomingCallUI';
-import {SafeAreaView, View} from 'react-native';
+import {PermissionsAndroid, Platform, SafeAreaView, View} from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
@@ -98,6 +98,10 @@ const Root = () => {
   }, []);
 
   const requestUserPermission = async () => {
+    if (Platform.OS === 'android')
+      PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+      );
     let deviceToken = await getLocalStroage('deviceToken');
     if (!deviceToken) {
       try {

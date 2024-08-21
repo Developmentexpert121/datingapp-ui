@@ -40,41 +40,6 @@ import MyIncomingCallUI from './src/screens/ChatHome/myIncomingCallUI';
 import {PermissionsAndroid, Platform} from 'react-native';
 
 const App = () => {
-  // const calls = useCalls();
-
-  // const incomingCalls = calls.filter(
-  //   call =>
-  //     call.isCreatedByMe === false &&
-  //     call.state.callingState === CallingState.RINGING,
-  // );
-
-  // const [incomingCall] = incomingCalls;
-  // if (incomingCall) {
-  //   return (
-  //     <StreamCall call={incomingCall}>
-  //       <MyIncomingCallUI call={incomingCall} />
-  //     </StreamCall>
-  //   );
-  // }
-  useEffect(() => {
-    if (Platform.OS === 'android')
-      PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
-      );
-    async function requestUserPermission() {
-      const authStatus = await messaging().requestPermission();
-      const token = await messaging().getToken();
-      const enabled =
-        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
-      if (enabled) {
-      }
-    }
-
-    requestUserPermission();
-  }, []);
-
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       await notifee.cancelAllNotifications();
@@ -99,7 +64,6 @@ const App = () => {
     return () => unsubscribe();
   }, []);
 
-  // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
   return (
     <SafeAreaProvider>
       <NavigationContainer ref={navigationRef}>
