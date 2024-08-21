@@ -101,7 +101,7 @@ const TinderSwipe = ({
     )
       .unwrap()
       .then(res => {
-        console.log('awdawdssssss', res);
+        // console.log('awdawdssssss', res);
         if (res.success === true) {
           const targetX = hiddenTranslateX;
           translateX.value = withSpring(targetX);
@@ -125,12 +125,12 @@ const TinderSwipe = ({
     )
       .unwrap()
       .then(res => {
-        console.log('awdawd', res.success);
+        // console.log('awdawd', res.success);
         if (res.success === true) {
           const targetX = hiddenTranslateX;
-          console.log('targetX', targetX);
+          // console.log('targetX', targetX);
           translateX.value = withSpring(targetX);
-          console.log('translateX.value ', translateX.value);
+          // console.log('translateX.value ', translateX.value);
           setTimeout(() => {
             const updatedUsers = [...data];
             updatedUsers.splice(currentIndex, 1);
@@ -165,7 +165,7 @@ const TinderSwipe = ({
   // Like..........
   const handleChoiceHeart = useCallback(
     direction => {
-      console.log('Directyion ===>', direction);
+      // console.log('Directyion ===>', direction);
       Animated.timing(swipe.x, {
         toValue: direction * width * 1.5,
         duration: 500,
