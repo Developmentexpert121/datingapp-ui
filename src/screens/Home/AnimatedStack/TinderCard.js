@@ -26,33 +26,37 @@ const TinderCard = ({
   swipe,
   currentUser,
   setCurrentUser,
-  showSuperLikeIcon, // Use the prop here
   ...rest
 }) => {
-  console.log('showSuperLikeIcon...........', showSuperLikeIcon);
-
   const rotate = swipe.x.interpolate({
     inputRange: [wp(-100), 0, wp(100)],
     outputRange: ['8deg', '0deg', '-8deg'],
   });
 
   const likeOpacity = swipe.x.interpolate({
-    inputRange: [wp(20), wp(25)],
+    inputRange: [wp(5), wp(15)],
     outputRange: [0, 1],
     extrapolate: 'clamp',
   });
 
   const rejectOpacity = swipe.x.interpolate({
-    inputRange: [wp(-35), wp(-15)],
+    inputRange: [wp(-15), wp(-5)],
     outputRange: [1, 0],
     extrapolate: 'clamp',
   });
 
-  const superLikeOpacity = swipe.y.interpolate({
-    inputRange: [wp(-30), wp(-10)],
-    outputRange: [1, 0],
-    extrapolate: 'clamp',
-  });
+  const superLikeOpacity = Animated.multiply(
+    swipe.x.interpolate({
+      inputRange: [wp(-5), wp(0), wp(5)],
+      outputRange: [0, 1, 0],
+      extrapolate: 'clamp',
+    }),
+    swipe.y.interpolate({
+      inputRange: [wp(-15), wp(-5)], // Y-axis range
+      outputRange: [1, 0],
+      extrapolate: 'clamp', // Keep the opacity within 0 to 1
+    }),
+  );
 
   const renderChoice = useCallback(() => {
     return (
@@ -79,22 +83,20 @@ const TinderCard = ({
             style={{transform: [{rotate: '45deg'}]}}
           />
         </Animated.View>
-        {showSuperLikeIcon && (
-          <Animated.View
-            style={[
-              {position: 'absolute', top: 80, alignSelf: 'center'},
-              {opacity: superLikeOpacity},
-            ]}>
-            <SuperLikeIC
-              width={250}
-              height={250}
-              style={{transform: [{rotate: '-5deg'}]}}
-            />
-          </Animated.View>
-        )}
+        <Animated.View
+          style={[
+            {position: 'absolute', top: 80, alignSelf: 'center'},
+            {opacity: superLikeOpacity},
+          ]}>
+          <SuperLikeIC
+            width={250}
+            height={250}
+            style={{transform: [{rotate: '-5deg'}]}}
+          />
+        </Animated.View>
       </>
     );
-  }, [likeOpacity, rejectOpacity, superLikeOpacity, showSuperLikeIcon]);
+  }, [likeOpacity, rejectOpacity, superLikeOpacity]);
 
   const images = item.profilePic.split(',');
   const [currentIndex, setCurrentIndex] = useState(0);

@@ -38,9 +38,7 @@ const TinderSwipe = ({
   const isUserOnline = showOnlineUser?.includes(currentUser) || false;
 
   const [isSuperLikeAnimating, setIsSuperLikeAnimating] = useState(false);
-  console.log('isSuperLikeAnimating.....', isSuperLikeAnimating);
-
-  const [showSuperLikeIcon, setShowSuperLikeIcon] = useState(false);
+  // console.log('isSuperLikeAnimating.....', isSuperLikeAnimating);
 
   useEffect(() => {
     if (currentIndex === data.length) {
@@ -50,23 +48,27 @@ const TinderSwipe = ({
   }, [currentIndex, data.length, setCurrentIndex]);
 
   const swipe = useRef(new Animated.ValueXY()).current;
-  console.log('###########', swipe);
-  // New state to control visibility
 
   const panResponder = PanResponder.create({
     onMoveShouldSetPanResponder: () => true,
     onPanResponderMove: (_, {dx, dy}) => {
       swipe.setValue({x: dx, y: dy});
-      const angleInRadians = Math.atan2(dy, dx);
-      const angleInDegrees = (angleInRadians * 180) / Math.PI;
-      const absoluteAngle = Math.abs(angleInDegrees);
-
-      // Update the Super Like icon visibility based on the swipe angle
-      setShowSuperLikeIcon(absoluteAngle >= 88 && absoluteAngle <= 92);
+      // console.log('swipe ', swipe);
+      // const angleInRadians = Math.atan2(dy, dx);
+      // const angleInDegrees = (angleInRadians * 180) / Math.PI;
+      // const absoluteAngle = Math.abs(angleInDegrees);
+      // console.log(
+      //   'absoluteAngle:-',
+      //   absoluteAngle.toFixed(2),
+      //   '   dx:-',
+      //   dx.toFixed(2),
+      //   '  dy:-',
+      //   dy.toFixed(2),
+      // );
     },
     onPanResponderRelease: (_, {dx, dy}) => {
       const directionX = Math.sign(dx);
-      const isActionActiveX = Math.abs(dx) > 10;
+      const isActionActiveX = Math.abs(dx) > 57;
       const isActionActiveY = Math.abs(dy) > 10;
 
       const angleInRadians = Math.atan2(dy, dx);
@@ -74,12 +76,11 @@ const TinderSwipe = ({
       const absoluteAngle = Math.abs(angleInDegrees);
 
       const isStrictUpwardSwipe =
-        absoluteAngle >= 89 && absoluteAngle <= 91 && dy < -100;
-      console.log('isStrictUpwardSwipe!!!!!!!!', isStrictUpwardSwipe);
+        absoluteAngle >= 80 && absoluteAngle <= 100 && dy < -70;
 
       if (isStrictUpwardSwipe) {
         handleChoiceSuperLike(isActionActiveY);
-      } else if (isActionActiveX && dy < 0) {
+      } else if (isActionActiveX) {
         handleChoiceHeart(directionX);
       } else {
         Animated.spring(swipe, {
@@ -88,8 +89,6 @@ const TinderSwipe = ({
           friction: 5,
         }).start();
       }
-
-      setShowSuperLikeIcon(false); // Hide the icon after swipe is completed
     },
   });
 
@@ -197,10 +196,8 @@ const TinderSwipe = ({
   }, [removeCard, swipe.y, onSwipeTop, isSuperLikeAnimating]);
 
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
-    console.log('+++++++++++++++++++', lat1, lon1, lat2, lon2);
     const R = 3958.8; // Earth radius in miles
     const dLat = toRadians(lat2 - lat1);
-    console.log('dLat', dLat);
     const dLon = toRadians(lon2 - lon1);
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
@@ -255,7 +252,6 @@ const TinderSwipe = ({
                         item={item}
                         setCurrentUser={setCurrentUser}
                         isFirst={isFirst}
-                        showSuperLikeIcon={showSuperLikeIcon}
                         {...dragHandlers}
                       />
                     );
