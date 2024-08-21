@@ -29,7 +29,7 @@ const TinderCard = ({
   showSuperLikeIcon, // Use the prop here
   ...rest
 }) => {
-  console.log('showSuperLikeIcon...........', showSuperLikeIcon);
+  // console.log('showSuperLikeIcon...........', showSuperLikeIcon);
 
   const rotate = swipe.x.interpolate({
     inputRange: [wp(-100), 0, wp(100)],

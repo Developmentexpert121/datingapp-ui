@@ -55,7 +55,7 @@ const HomeScreen = () => {
 
   const getLocationAndRegister = async () => {
     const isLocationEnabled = await DeviceInfo.isLocationEnabled();
-    console.log('#############################---', isLocationEnabled);
+    // console.log('#############################---', isLocationEnabled);
 
     if (!isLocationEnabled) {
       if (Platform.OS === 'android') {
@@ -101,8 +101,8 @@ const HomeScreen = () => {
     Geolocation.getCurrentPosition(
       async position => {
         const {latitude, longitude} = position.coords;
-        console.log('latitude:', latitude);
-        console.log('Longitude:', longitude);
+        // console.log('latitude:', latitude);
+        // console.log('Longitude:', longitude);
         const userId = await getUserId();
         if (userId) {
           dispatch(

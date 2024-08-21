@@ -530,7 +530,7 @@ export const getAllUsers = createAsyncThunk(
 export const getChatUsersList = createAsyncThunk(
   'auth/getChatUsersList',
   async ({userId}: any) => {
-    console.log('Chat api user ID', userId);
+    // console.log('Chat api user ID', userId);
     try {
       const response = await http.get('/users/chatlist', {
         params: {

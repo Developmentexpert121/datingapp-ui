@@ -258,6 +258,8 @@ const ChatPage = ({
     }
   };
 
+  console.log(profileData.plan.productId);
+
   return (
     <>
       <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
@@ -323,17 +325,20 @@ const ChatPage = ({
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={
-                  profileData?.plan !== 'Free'
+                  profileData?.plan === 'Free'
                     ? () => {
                         navigation.navigate('Subscriptions');
                       }
                     : profileData.plan.productId === 'PremiumPlus'
                     ? () => {
+                        console.log('first');
                         setCallType('videoCall');
                         setEnableCamera(true);
                         goToCallScreen('videoCall');
                       }
                     : () => {
+                        console.log('second');
+
                         navigation.navigate('Subscriptions');
                       }
                 }>

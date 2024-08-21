@@ -124,7 +124,7 @@ const Root = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log('videoCallToken({id: userdata?.id}) -->', userdata?.id);
+      // console.log('videoCallToken({id: userdata?.id}) -->', userdata?.id);
       if (!client) {
         try {
           const apiKey = '48e74nbgz5az';
@@ -136,7 +136,7 @@ const Root = () => {
           };
 
           const token = await tokenProvider();
-          console.log('Stream Token', token);
+          // console.log('Stream Token', token);
 
           const userMain = {
             id: userdata.id,

@@ -38,7 +38,7 @@ const TinderSwipe = ({
   const isUserOnline = showOnlineUser?.includes(currentUser) || false;
 
   const [isSuperLikeAnimating, setIsSuperLikeAnimating] = useState(false);
-  console.log('isSuperLikeAnimating.....', isSuperLikeAnimating);
+  // console.log('isSuperLikeAnimating.....', isSuperLikeAnimating);
 
   const [showSuperLikeIcon, setShowSuperLikeIcon] = useState(false);
 
@@ -50,7 +50,7 @@ const TinderSwipe = ({
   }, [currentIndex, data.length, setCurrentIndex]);
 
   const swipe = useRef(new Animated.ValueXY()).current;
-  console.log('###########', swipe);
+  // console.log('###########', swipe);
   // New state to control visibility
 
   const panResponder = PanResponder.create({
@@ -75,7 +75,7 @@ const TinderSwipe = ({
 
       const isStrictUpwardSwipe =
         absoluteAngle >= 89 && absoluteAngle <= 91 && dy < -100;
-      console.log('isStrictUpwardSwipe!!!!!!!!', isStrictUpwardSwipe);
+      // console.log('isStrictUpwardSwipe!!!!!!!!', isStrictUpwardSwipe);
 
       if (isStrictUpwardSwipe) {
         handleChoiceSuperLike(isActionActiveY);
@@ -102,7 +102,7 @@ const TinderSwipe = ({
     )
       .unwrap()
       .then(res => {
-        console.log('awdawdssssss', res);
+        // console.log('awdawdssssss', res);
         if (res.success === true) {
           const targetX = hiddenTranslateX;
           translateX.value = withSpring(targetX);
@@ -126,12 +126,12 @@ const TinderSwipe = ({
     )
       .unwrap()
       .then(res => {
-        console.log('awdawd', res.success);
+        // console.log('awdawd', res.success);
         if (res.success === true) {
           const targetX = hiddenTranslateX;
-          console.log('targetX', targetX);
+          // console.log('targetX', targetX);
           translateX.value = withSpring(targetX);
-          console.log('translateX.value ', translateX.value);
+          // console.log('translateX.value ', translateX.value);
           setTimeout(() => {
             const updatedUsers = [...data];
             updatedUsers.splice(currentIndex, 1);
@@ -166,7 +166,7 @@ const TinderSwipe = ({
   // Like..........
   const handleChoiceHeart = useCallback(
     direction => {
-      console.log('Directyion ===>', direction);
+      // console.log('Directyion ===>', direction);
       Animated.timing(swipe.x, {
         toValue: direction * width * 1.5,
         duration: 500,
@@ -197,10 +197,10 @@ const TinderSwipe = ({
   }, [removeCard, swipe.y, onSwipeTop, isSuperLikeAnimating]);
 
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
-    console.log('+++++++++++++++++++', lat1, lon1, lat2, lon2);
+    // console.log('+++++++++++++++++++', lat1, lon1, lat2, lon2);
     const R = 3958.8; // Earth radius in miles
     const dLat = toRadians(lat2 - lat1);
-    console.log('dLat', dLat);
+    // console.log('dLat', dLat);
     const dLon = toRadians(lon2 - lon1);
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +

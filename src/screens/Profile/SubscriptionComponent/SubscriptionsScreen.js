@@ -150,7 +150,7 @@ const SubscriptionsScreen = ({navigation}) => {
       // console.log('oooooooooooooooooo', purchase);
       try {
         const receipt = purchase.transactionReceipt;
-        console.log('receipt >>>>.', receipt);
+        // console.log('receipt >>>>.', receipt);
         if (receipt) {
           if (isIos) {
             const isTestEnvironment = __DEV__;
