@@ -404,10 +404,12 @@ const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {
         start={{x: 0, y: 0.5}}
         end={{x: 0.5, y: 3}}
         style={styles.box}>
-        <Text style={styles.currentPlanText}>
-          Your current plan is{' '}
-          <Text style={styles.planName}>{profileData.plan.productId}</Text>
-        </Text>
+        <View style={{width: '100%'}}>
+          <Text style={styles.currentPlanText}>
+            Your current plan is{' '}
+            <Text style={styles.planName}>{profileData.plan.productId}</Text>
+          </Text>
+        </View>
         <Text style={styles.planDetailText}>
           Plan bought on{' '}
           <Text style={styles.planDate}>
@@ -625,6 +627,8 @@ const styles = StyleSheet.create({
     color: '#333',
     fontFamily: 'Sansation-Bold',
     marginBottom: 10,
+    flexDirection: 'row',
+    textAlign: 'center',
   },
   planName: {
     color: '#AC25AC',

@@ -26,10 +26,10 @@ const TinderCard = ({
   swipe,
   currentUser,
   setCurrentUser,
-  showSuperLikeIcon, // Added to handle icon visibility
+  showSuperLikeIcon, // Use the prop here
   ...rest
 }) => {
-  console.log('*****************', showSuperLikeIcon);
+  console.log('showSuperLikeIcon...........', showSuperLikeIcon);
 
   const rotate = swipe.x.interpolate({
     inputRange: [wp(-100), 0, wp(100)],
@@ -49,7 +49,7 @@ const TinderCard = ({
   });
 
   const superLikeOpacity = swipe.y.interpolate({
-    inputRange: [wp(-30), wp(-10)], // Show only when swiped towards the top
+    inputRange: [wp(-30), wp(-10)],
     outputRange: [1, 0],
     extrapolate: 'clamp',
   });
@@ -79,19 +79,19 @@ const TinderCard = ({
             style={{transform: [{rotate: '45deg'}]}}
           />
         </Animated.View>
-        {/* {showSuperLikeIcon && ( */}
-        <Animated.View
-          style={[
-            {position: 'absolute', top: 80, alignSelf: 'center'},
-            {opacity: superLikeOpacity},
-          ]}>
-          <SuperLikeIC
-            width={250}
-            height={250}
-            style={{transform: [{rotate: '-5deg'}]}}
-          />
-        </Animated.View>
-        {/* )} */}
+        {showSuperLikeIcon && (
+          <Animated.View
+            style={[
+              {position: 'absolute', top: 80, alignSelf: 'center'},
+              {opacity: superLikeOpacity},
+            ]}>
+            <SuperLikeIC
+              width={250}
+              height={250}
+              style={{transform: [{rotate: '-5deg'}]}}
+            />
+          </Animated.View>
+        )}
       </>
     );
   }, [likeOpacity, rejectOpacity, superLikeOpacity, showSuperLikeIcon]);

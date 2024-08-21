@@ -40,6 +40,8 @@ const TinderSwipe = ({
   const [isSuperLikeAnimating, setIsSuperLikeAnimating] = useState(false);
   console.log('isSuperLikeAnimating.....', isSuperLikeAnimating);
 
+  const [showSuperLikeIcon, setShowSuperLikeIcon] = useState(false);
+
   useEffect(() => {
     if (currentIndex === data.length) {
       setCurrentIndex(0);
@@ -55,10 +57,12 @@ const TinderSwipe = ({
     onMoveShouldSetPanResponder: () => true,
     onPanResponderMove: (_, {dx, dy}) => {
       swipe.setValue({x: dx, y: dy});
-
       const angleInRadians = Math.atan2(dy, dx);
       const angleInDegrees = (angleInRadians * 180) / Math.PI;
       const absoluteAngle = Math.abs(angleInDegrees);
+
+      // Update the Super Like icon visibility based on the swipe angle
+      setShowSuperLikeIcon(absoluteAngle >= 88 && absoluteAngle <= 92);
     },
     onPanResponderRelease: (_, {dx, dy}) => {
       const directionX = Math.sign(dx);
@@ -70,7 +74,8 @@ const TinderSwipe = ({
       const absoluteAngle = Math.abs(angleInDegrees);
 
       const isStrictUpwardSwipe =
-        absoluteAngle >= 88 && absoluteAngle <= 92 && dy < -100;
+        absoluteAngle >= 89 && absoluteAngle <= 91 && dy < -100;
+      console.log('isStrictUpwardSwipe!!!!!!!!', isStrictUpwardSwipe);
 
       if (isStrictUpwardSwipe) {
         handleChoiceSuperLike(isActionActiveY);
@@ -83,7 +88,8 @@ const TinderSwipe = ({
           friction: 5,
         }).start();
       }
-      // Hide icon after swipe is completed
+
+      setShowSuperLikeIcon(false); // Hide the icon after swipe is completed
     },
   });
 
@@ -244,11 +250,12 @@ const TinderSwipe = ({
                       : {};
                     return (
                       <TinderCard
-                        key={item._id} // Use unique identifier
+                        key={item._id}
                         swipe={swipe}
                         item={item}
                         setCurrentUser={setCurrentUser}
                         isFirst={isFirst}
+                        showSuperLikeIcon={showSuperLikeIcon}
                         {...dragHandlers}
                       />
                     );
