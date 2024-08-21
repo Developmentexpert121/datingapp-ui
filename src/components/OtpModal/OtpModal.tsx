@@ -107,7 +107,13 @@ const OtpModal = ({
       style={{backgroundColor: 'transparent', margin: 0}}>
       <View style={styles.modal}>
         <View style={styles.modalstyle}>
-          <TouchableOpacity onPress={onClose} style={{alignSelf: 'flex-end'}}>
+          <TouchableOpacity
+            onPress={() => {
+              onClose?.();
+              setResendAllowed(true);
+              setErrorMessage('');
+            }}
+            style={{alignSelf: 'flex-end'}}>
             <CrossIconIC />
           </TouchableOpacity>
           <Label
