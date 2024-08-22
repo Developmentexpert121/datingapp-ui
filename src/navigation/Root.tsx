@@ -115,7 +115,6 @@ const Root = () => {
           authStatus === messaging.AuthorizationStatus.PROVISIONAL;
         if (enabled) {
           const token = await messaging().getToken();
-          console.log('DeviceToken==> ', token);
           await setLocalStorage('deviceToken', token);
         } else {
           console.log('Authorization status:', authStatus);
@@ -128,7 +127,6 @@ const Root = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      // console.log('videoCallToken({id: userdata?.id}) -->', userdata?.id);
       if (!client) {
         try {
           const apiKey = '48e74nbgz5az';
@@ -140,7 +138,6 @@ const Root = () => {
           };
 
           const token = await tokenProvider();
-          // console.log('Stream Token', token);
 
           const userMain = {
             id: userdata.id,

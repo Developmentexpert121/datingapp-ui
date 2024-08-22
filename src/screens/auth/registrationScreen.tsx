@@ -332,7 +332,6 @@ const RegisterScreen = () => {
               dispatch(activityLoaderStarted());
               let token: string = response?.token;
               setLocalStorage('token', token);
-              // console.log('..............', token);
               await AsyncStorage.setItem(
                 'authToken',
                 JSON.stringify(response?.token),
@@ -342,7 +341,6 @@ const RegisterScreen = () => {
                 JSON.stringify(response?._id),
               );
 
-              // console.log('dfj', response?._id);
               dispatch(ProfileData());
               // If sign-up is successful, call the function to handle the navigation
               handleNavigation(response);
@@ -427,7 +425,6 @@ const RegisterScreen = () => {
                   dispatch(activityLoaderStarted());
                   let token: string = response?.token;
                   setLocalStorage('token', token);
-                  // console.log('..............', token);
                   await AsyncStorage.setItem(
                     'authToken',
                     JSON.stringify(response?.token),
@@ -436,7 +433,6 @@ const RegisterScreen = () => {
                     'userId',
                     JSON.stringify(response?._id),
                   );
-                  // console.log('dfj', response?._id);
                   dispatch(ProfileData());
                   // If sign-up is successful, call the function to handle the navigation
                   handleNavigation(response);
@@ -639,7 +635,6 @@ const RegisterScreen = () => {
     navigation.goBack();
   };
 
-  // console.log('first');
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView

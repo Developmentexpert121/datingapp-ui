@@ -147,7 +147,6 @@ const SubscriptionsScreen = ({navigation}) => {
 
   const checkCurrentPurchase = async purchase => {
     if (purchase) {
-      // console.log('oooooooooooooooooo', purchase);
       try {
         const receipt = purchase.transactionReceipt;
         // console.log('receipt >>>>.', receipt);
@@ -232,9 +231,9 @@ const SubscriptionsScreen = ({navigation}) => {
               );
               return (
                 <View style={styles.box} key={index}>
-                  {subscription?.introductoryPriceSubscriptionPeriodIOS && (
+                  {/* {subscription?.introductoryPriceSubscriptionPeriodIOS && (
                     <Text style={styles.specialTag}>SPECIAL OFFER</Text>
-                  )}
+                  )} */}
                   <View
                     style={{
                       flex: 1,
@@ -330,7 +329,7 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: 'center',
-    backgroundColor: 'mediumseagreen',
+    backgroundColor: '#AC25AC',
     borderRadius: 8,
     padding: 10,
   },

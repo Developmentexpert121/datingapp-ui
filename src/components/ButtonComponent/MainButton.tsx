@@ -3,25 +3,39 @@ import React, {useState} from 'react';
 import SmallLoader from '../Loader/SmallLoader';
 
 const MainButton = (props: any) => {
-  const {onPress, ButtonName, buttonStyle, loading, disabled} = props;
+  const {
+    onPress,
+    ButtonName,
+    buttonStyle,
+    loading,
+    disabled: externalDisabled,
+  } = props;
 
   // State to manage the loading visibility
   const [showLoader, setShowLoader] = useState<boolean>(false);
 
+  // State to manage button disabled status internally
+  const [internalDisabled, setInternalDisabled] = useState<boolean>(false);
+
   // Function to handle button press
   const _onPress = () => {
-    // setShowLoader(true); // Show loader when button is pressed
+    setShowLoader(true); // Show loader when button is pressed
+    setInternalDisabled(true); // Disable button after first click
     onPress && onPress(); // Call the onPress function passed from props
+
     setTimeout(() => {
-      // setShowLoader(false); // Hide loader after 2 seconds
-    }, 1500);
+      setShowLoader(false); // Hide loader after 1.5 seconds
+      setInternalDisabled(false); // Enable button after 1.5 seconds
+    }, 2000);
   };
 
   return (
     <TouchableOpacity
+      activeOpacity={0.1}
       style={[styles.button, buttonStyle]}
       onPress={_onPress}
-      disabled={disabled}>
+      disabled={internalDisabled || externalDisabled} // Button disabled condition
+    >
       {showLoader ? (
         <SmallLoader />
       ) : (

@@ -230,8 +230,6 @@ const FilterSection = ({
     Geolocation.getCurrentPosition(
       async position => {
         const {latitude, longitude} = position.coords;
-        // console.log('latitude:', latitude);
-        // console.log('Longitude:', longitude);
         const userId = await getUserId();
         setLoader(false);
         if (userId) {
