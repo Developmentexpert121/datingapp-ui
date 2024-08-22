@@ -17,6 +17,10 @@ import {onlineUser} from '../../store/reducer/authSliceState';
 import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
 const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 import DeviceInfo from 'react-native-device-info';
+import Modal from 'react-native-modal';
+import Label from '../../components/Label';
+import MainButton from '../../components/ButtonComponent/MainButton';
+import {useNavigation} from '@react-navigation/native';
 
 const getUserId = async () => {
   try {
@@ -33,6 +37,8 @@ const getUserId = async () => {
 };
 
 const HomeScreen = () => {
+  const navigation = useNavigation();
+
   const [activeScreen, setActiveScreen] = useState('HOME');
   const [apply, setApply] = useState(false);
   const dispatch: any = useAppDispatch();
@@ -52,6 +58,8 @@ const HomeScreen = () => {
   const [trigger, setTrigger] = useState(false);
   const [noProfilesLoader, setNoProfilesLoader] = useState(false);
   const [onlineUsers, setOnlineUsers] = useState<any>(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [reason, setReason] = useState('');
 
   const getLocationAndRegister = async () => {
     const isLocationEnabled = await DeviceInfo.isLocationEnabled();
@@ -328,6 +336,8 @@ const HomeScreen = () => {
             currentIndex={currentIndex}
             setCurrentIndex={setCurrentIndex}
             profileData={profileData}
+            setModalOpen={setModalOpen}
+            setReason={setReason}
           />
           {/* </View> */}
         </View>
@@ -349,6 +359,50 @@ const HomeScreen = () => {
       ) : (
         <NotificationScreen />
       )}
+      <Modal
+        style={{backgroundColor: 'transparent', margin: 0}}
+        isVisible={modalOpen}
+        animationIn="slideInDown"
+        animationOut="slideOutDown"
+        animationInTiming={600}
+        animationOutTiming={1000}
+        backdropTransitionInTiming={600}
+        backdropTransitionOutTiming={1000}>
+        <View style={styles.modal}>
+          <View style={styles.modalstyle}>
+            <Label
+              text={`You have reached your daily limit of ${
+                reason === 'like'
+                  ? 'Likes'
+                  : reason === 'superLike' && 'Super Likes'
+              }. To get more, Subscribe to a bigger plan!`}
+              style={styles.textstyle}
+            />
+
+            <MainButton
+              style={{
+                width: '85%',
+                marginTop: 30,
+              }}
+              ButtonName="Subscribe!"
+              onPress={() => {
+                navigation.navigate('Subscriptions');
+                setModalOpen(false);
+              }}
+            />
+            <MainButton
+              style={{
+                width: '85%',
+                marginTop: 30,
+              }}
+              ButtonName="Cancel"
+              onPress={() => {
+                setModalOpen(false);
+              }}
+            />
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -376,6 +430,32 @@ const styles = StyleSheet.create({
     marginVertical: 12,
     borderWidth: 5,
     borderColor: 'red',
+  },
+  textstyle: {
+    // width: "50%",
+    fontSize: 18,
+    // fontWeight: "400",
+    lineHeight: 36,
+    color: '#071731',
+    textAlign: 'center',
+    paddingHorizontal: 30,
+    marginTop: 20,
+  },
+  modalstyle: {
+    // minHeight: 230,
+    width: '90%',
+    backgroundColor: '#FFF',
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: 20,
+  },
+  modal: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    // position: 'absolute',
+    zIndex: 4,
   },
 });
 

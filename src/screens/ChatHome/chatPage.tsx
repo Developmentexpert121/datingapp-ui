@@ -38,6 +38,9 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
+import Modal from 'react-native-modal';
+import Label from '../../components/Label';
+import MainButton from '../../components/ButtonComponent/MainButton';
 // const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 
 const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
@@ -73,6 +76,9 @@ const ChatPage = ({
   const [skip, setSkip] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [reason, setReason] = useState('');
+
   const scrollViewRef = useRef<ScrollView>(null);
   const isUserOnline: any = showOnlineUser?.includes(user?._id) || false;
   useEffect(() => {
@@ -258,8 +264,6 @@ const ChatPage = ({
     }
   };
 
-  console.log(profileData.plan.productId);
-
   return (
     <>
       <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
@@ -308,7 +312,8 @@ const ChatPage = ({
                 onPress={
                   profileData?.plan === 'Free'
                     ? () => {
-                        navigation.navigate('Subscriptions');
+                        setModalOpen(true);
+                        setReason('audio');
                       }
                     : () => {
                         setCallType('audioCall');
@@ -327,19 +332,18 @@ const ChatPage = ({
                 onPress={
                   profileData?.plan === 'Free'
                     ? () => {
-                        navigation.navigate('Subscriptions');
+                        setModalOpen(true);
+                        setReason('video');
                       }
                     : profileData.plan.productId === 'PremiumPlus'
                     ? () => {
-                        console.log('first');
                         setCallType('videoCall');
                         setEnableCamera(true);
                         goToCallScreen('videoCall');
                       }
                     : () => {
-                        console.log('second');
-
-                        navigation.navigate('Subscriptions');
+                        setModalOpen(true);
+                        setReason('video');
                       }
                 }>
                 <View style={styles.editIcon}>
@@ -533,6 +537,52 @@ const ChatPage = ({
           )}
         </View>
       </KeyboardAvoidingView>
+      <Modal
+        style={{backgroundColor: 'transparent', margin: 0}}
+        isVisible={modalOpen}
+        animationIn="slideInDown"
+        animationOut="slideOutDown"
+        animationInTiming={600}
+        animationOutTiming={1000}
+        backdropTransitionInTiming={600}
+        backdropTransitionOutTiming={1000}>
+        <View style={styles.modal}>
+          <View style={styles.modalstyle}>
+            <Label
+              text={`To access ${
+                reason === 'audio' ? 'Audio' : reason === 'video' && 'Video'
+              } Calling you will need to atleast subscribe to the ${
+                reason === 'audio'
+                  ? 'Basic'
+                  : reason === 'video' && 'PremiumPlus'
+              } Plan`}
+              style={styles.textstyle}
+            />
+
+            <MainButton
+              style={{
+                width: '85%',
+                marginTop: 30,
+              }}
+              ButtonName="Subscribe!"
+              onPress={() => {
+                navigation.navigate('Subscriptions');
+                setModalOpen(false);
+              }}
+            />
+            <MainButton
+              style={{
+                width: '85%',
+                marginTop: 30,
+              }}
+              ButtonName="Cancel"
+              onPress={() => {
+                setModalOpen(false);
+              }}
+            />
+          </View>
+        </View>
+      </Modal>
     </>
   );
 };
@@ -605,5 +655,31 @@ const styles = StyleSheet.create({
     color: '#007BFF',
     fontSize: 14,
     marginTop: 5,
+  },
+  textstyle: {
+    // width: "50%",
+    fontSize: 18,
+    // fontWeight: "400",
+    lineHeight: 36,
+    color: '#071731',
+    textAlign: 'center',
+    paddingHorizontal: 30,
+    marginTop: 20,
+  },
+  modalstyle: {
+    // minHeight: 230,
+    width: '90%',
+    backgroundColor: '#FFF',
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: 20,
+  },
+  modal: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    // position: 'absolute',
+    zIndex: 4,
   },
 });
