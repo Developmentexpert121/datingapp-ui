@@ -41,7 +41,6 @@ export const authSice = createSlice({
       state.isLoggedin = payload;
     },
     onlineUser: (state, {payload}) => {
-      // console.log('lswfreiqhfitehifgtjruae', payload);
       state.showOnlineUser = payload;
     },
     countrycitystate: (state, {payload}) => {

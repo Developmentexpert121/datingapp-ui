@@ -25,6 +25,7 @@ import {useDispatch} from 'react-redux';
 import {verifyReceipt} from '../../../store/Auth/auth';
 import CommonBackbutton from '../../../components/commonBackbutton/BackButton';
 import {CommonActions} from '@react-navigation/native';
+import {useAppSelector} from '../../../store/store';
 
 const isIos = Platform.OS === 'ios';
 
@@ -43,18 +44,19 @@ const subscriptionSkus =
   }) || [];
 
 const SubscriptionsScreen = ({navigation}) => {
+  const profileData = useAppSelector(state => state?.Auth?.data?.profileData);
+
   const {
     connected,
     subscriptions,
     getSubscriptions,
     currentPurchase,
     finishTransaction,
-    purchaseHistory,
   } = useIAP();
 
   const dispatch = useDispatch();
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handleGetSubscriptions = async () => {
     try {
@@ -69,14 +71,17 @@ const SubscriptionsScreen = ({navigation}) => {
     }
   };
 
-  console.log('============================');
+  console.log('============================', loading);
 
   useEffect(() => {
+    setLoading(true);
     if (connected) {
       handleGetSubscriptions();
       console.log('connected', connected);
+      setLoading(false);
     } else {
       console.log('Not connected to IAP');
+      setLoading(false);
     }
   }, [connected]);
 
@@ -227,9 +232,6 @@ const SubscriptionsScreen = ({navigation}) => {
           </Text>
           <View style={{marginTop: 10}}>
             {subscriptions?.map((subscription, index) => {
-              const owned = purchaseHistory.find(
-                s => s?.productId === subscription?.productId,
-              );
               return (
                 <View style={styles.box} key={index}>
                   {subscription?.introductoryPriceSubscriptionPeriodIOS && (
@@ -269,7 +271,7 @@ const SubscriptionsScreen = ({navigation}) => {
                   <Text style={{paddingBottom: 20}}>
                     {subscription.description}
                   </Text>
-                  {owned ? (
+                  {profileData.plan.productId === subscription.name ? (
                     <>
                       <Text style={{textAlign: 'center', marginBottom: 10}}>
                         You are Subscribed to this plan!

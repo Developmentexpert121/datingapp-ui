@@ -69,19 +69,15 @@ export const MyProfilSlice = createSlice({
   },
   extraReducers: builder => {
     builder.addCase(profileUpdate.pending, state => {
-      console.log('pending');
-
       state.loading = true;
     });
     builder.addCase(profileUpdate.fulfilled, (state, {payload}) => {
-      console.log('fulfilled');
       setLocalStorage('isProfileCompleted', true);
       state.userData = payload.data;
       state.loading = false;
     });
     builder.addCase(profileUpdate.rejected, (state, {payload}) => {
       state.loading = false;
-      console.log(payload, 'rejected');
     });
     builder.addCase(getProfile.pending, state => {
       state.loading = true;
