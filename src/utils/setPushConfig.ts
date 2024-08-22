@@ -67,18 +67,25 @@ export function setPushConfig() {
       const profileData: any = await AsyncStorage.getItem('profileData');
 
       if (!profileData) return undefined;
-      const user = {
+      const apiKey = '48e74nbgz5az';
+      const tokenProvider = async () => {
+        const token = await getTokenForUser(profileData?._id).then(
+          auth => auth?.token,
+        );
+        return token;
+      };
+
+      const token = await tokenProvider();
+
+      const userMain = {
         id: profileData?._id,
         name: profileData?.name,
         image: profileData?.profilePic,
       };
-      const tokenProvider = () =>
-        getTokenForUser(profileData?._id).then(auth => auth?.token);
 
-      const token = await tokenProvider();
       return new StreamVideoClient({
-        apiKey: '48e74nbgz5az', // pass your stream api key
-        user: user,
+        apiKey,
+        user: userMain,
         tokenProvider: () => token,
       });
     },
