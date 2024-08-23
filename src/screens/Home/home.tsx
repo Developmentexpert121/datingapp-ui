@@ -4,6 +4,7 @@ import HeaderComponent from '../../components/Dashboard/header/header';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {
   ProfileData,
+  SetLocation,
   getAllUsers,
   updateProfileData,
 } from '../../store/Auth/auth';
@@ -17,6 +18,7 @@ import {onlineUser} from '../../store/reducer/authSliceState';
 import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
 const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 import DeviceInfo from 'react-native-device-info';
+import GetLocation from 'react-native-get-location';
 
 const getUserId = async () => {
   try {
@@ -39,7 +41,6 @@ const HomeScreen = () => {
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-
   const [low, setLow] = useState<number>(18);
   const [high, setHigh] = useState<number>(56);
   const [showIn, setShowIn] = useState(false);
@@ -53,9 +54,14 @@ const HomeScreen = () => {
   const [noProfilesLoader, setNoProfilesLoader] = useState(false);
   const [onlineUsers, setOnlineUsers] = useState<any>(null);
 
+  const location: any = useAppSelector(
+    (state: any) => state?.Auth?.data?.location,
+  );
+
+  console.log('Location on home screen ', location);
+
   const getLocationAndRegister = async () => {
     const isLocationEnabled = await DeviceInfo.isLocationEnabled();
-    // console.log('#############################---', isLocationEnabled);
 
     if (!isLocationEnabled) {
       if (Platform.OS === 'android') {
@@ -197,7 +203,8 @@ const HomeScreen = () => {
   };
 
   useEffect(() => {
-    checkLocationPermission();
+    // checkLocationPermission();
+    getlatestLocation();
     dispatch(ProfileData())
       .unwrap()
       .then((res: any) => {
@@ -263,50 +270,40 @@ const HomeScreen = () => {
     apply && setApply(false);
   }, [apply, trigger]);
 
-  // async function checkLocationServices() {
-  //   if (Platform.OS === 'ios') {
-  //     console.log('iOS platform detected');
-  //     try {
-  //       const locationPermission = await check(
-  //         PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
-  //       );
-  //       console.log('Location permission result:', locationPermission);
-  //       if (locationPermission === RESULTS.GRANTED) {
-  //         console.log('Location permission granted');
-  //       } else if (locationPermission === RESULTS.DENIED) {
-  //         console.log('Location permission denied');
-  //       } else if (locationPermission === RESULTS.BLOCKED) {
-  //         console.log('efkfkefmvkdkdkkk');
-  //       } else if (locationPermission === RESULTS.UNAVAILABLE) {
-  //         Alert.alert(
-  //           'Location Services Disabled',
-  //           'Please enable location services in your device settings.',
-  //           [
-  //             {
-  //               text: 'Cancel',
-  //               style: 'cancel',
-  //             },
-  //             {
-  //               text: 'Open Settings',
-  //               onPress: () => {
-  //                 Linking.openURL('App-Prefs:Privacy&path=LOCATION');
-  //               },
-  //             },
-  //           ],
-  //         );
-  //       }
-  //     } catch (error) {
-  //       console.error('Error checking location permission:', error);
-  //     }
-  //   } else if (Platform.OS === 'android') {
-  //     const isLocationEnabled = await DeviceInfo.isLocationEnabled();
-  //     console.log('Android location enabled:', isLocationEnabled);
-  //   }
-  // }
+  useEffect(() => {
+    setUserLcoation();
+  }, [location]);
 
-  // useEffect(() => {
-  //   checkLocationServices();
-  // }, []);
+  const setUserLcoation = async () => {
+    const userId = await getUserId();
+    if (userId && location) {
+      dispatch(
+        updateProfileData({
+          field: 'location',
+          value: {latitude: location?.latitude, longitude: location.longitude},
+          id: userId,
+        }),
+      );
+    }
+  };
+
+  const getlatestLocation = () => {
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 60000,
+    })
+      .then(location => {
+        dispatch(
+          SetLocation({
+            latitude: location.latitude,
+            longitude: location.longitude,
+          }),
+        );
+      })
+      .catch(error => {
+        dispatch(SetLocation(undefined));
+      });
+  };
   return (
     <View style={styles.pageContainer}>
       <HeaderComponent

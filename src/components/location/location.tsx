@@ -16,11 +16,18 @@ import {
 } from 'react-native-responsive-screen';
 import Loader from '../Loader/Loader';
 import MainButton from '../ButtonComponent/MainButton';
+import {useDispatch} from 'react-redux';
+import {SetLocation} from '../../store/Auth/auth';
+import {useAppSelector} from '../../store/store';
 
 const LocationCheckComponent = () => {
-  const [location, setLocation] = useState<Location | undefined>();
+  const dispatch = useDispatch<any>();
+  // const [location, setLocation] = useState<Location | undefined>();
   const [loader, setLoader] = useState(true);
   const [errorType, setErrorType] = useState('');
+  const location: any = useAppSelector(
+    (state: any) => state?.Auth?.data?.location,
+  );
 
   useEffect(() => {
     getLocation();
@@ -33,14 +40,25 @@ const LocationCheckComponent = () => {
       timeout: 60000,
     })
       .then(location => {
-        console.log('Locatio details ==>', location);
-        setLocation(location);
+        console.log(
+          'latitude- ',
+          location.latitude,
+          ' longitude- ',
+          location.longitude,
+        );
+        setLoader(false);
+        dispatch(
+          SetLocation({
+            latitude: location.latitude,
+            longitude: location.longitude,
+          }),
+        );
       })
       .catch(error => {
         const {code, message} = error;
-        console.log('code ', code, 'message ', message);
+        // console.log('code ', code, 'message ', message);
+        dispatch(SetLocation(undefined));
         setLoader(false);
-        setLocation(undefined);
         if (message == 'Authorization denied') {
           setErrorType('Authorization denied');
           showAlert(
@@ -77,10 +95,6 @@ const LocationCheckComponent = () => {
     }
   };
 
-  console.log('is location ', location);
-  console.log('is loader ', loader);
-
-  // Show alert with optional settings redirect
   const showAlert = (
     title: string,
     message: string,
