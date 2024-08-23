@@ -54,157 +54,14 @@ const HomeScreen = () => {
   const [noProfilesLoader, setNoProfilesLoader] = useState(false);
   const [onlineUsers, setOnlineUsers] = useState<any>(null);
 
-  const location: any = useAppSelector(
-    (state: any) => state?.Auth?.data?.location,
-  );
+  // const location: any = useAppSelector(
+  //   (state: any) => state?.Auth?.data?.location,
+  // );
 
-  console.log('Location on home screen ', location);
-
-  const getLocationAndRegister = async () => {
-    const isLocationEnabled = await DeviceInfo.isLocationEnabled();
-
-    if (!isLocationEnabled) {
-      if (Platform.OS === 'android') {
-        Alert.alert(
-          'Location Services Disabled',
-          'Please enable location services in your device settings.',
-          [
-            {
-              text: 'Cancel',
-              style: 'cancel',
-            },
-            {
-              text: 'Open Settings',
-              onPress: () => {
-                Linking.sendIntent('android.settings.LOCATION_SOURCE_SETTINGS');
-              },
-            },
-          ],
-        );
-      } else if (Platform.OS === 'ios') {
-        console.log('ios location nnnn');
-        Alert.alert(
-          'Location Services Disabled',
-          'Please enable location services in your device settings.',
-          [
-            {
-              text: 'Cancel',
-              style: 'cancel',
-            },
-            {
-              text: 'Open Settings',
-              onPress: () => {
-                Linking.openURL('App-Prefs:Privacy&path=LOCATION');
-              },
-            },
-          ],
-        );
-      }
-
-      return;
-    }
-
-    Geolocation.getCurrentPosition(
-      async position => {
-        const {latitude, longitude} = position.coords;
-        // console.log('latitude:', latitude);
-        // console.log('Longitude:', longitude);
-        const userId = await getUserId();
-        if (userId) {
-          dispatch(
-            updateProfileData({
-              field: 'location',
-              value: {latitude, longitude},
-              id: userId,
-            }),
-          );
-        }
-      },
-
-      err => {
-        console.error('Error fetching location:333333', err);
-      },
-      {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}, // Increased timeout to 30000ms (30 seconds)
-    );
-  };
-
-  const checkLocationPermission = async () => {
-    try {
-      const permission =
-        Platform.OS === 'ios'
-          ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
-          : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION;
-      const result = await check(permission);
-
-      switch (result) {
-        case RESULTS.UNAVAILABLE:
-          console.log('This feature is not available on this device');
-          // checkLocationServices();
-          break;
-        case RESULTS.DENIED:
-          console.log(
-            'The permission has not been requested / is denied but requestable',
-          );
-          requestLocationPermission();
-          break;
-        case RESULTS.GRANTED:
-          console.log('The permission is granted');
-          if (Platform.OS === 'ios') {
-            getLocationAndRegister();
-          } else {
-            Geolocation.requestAuthorization();
-            getLocationAndRegister();
-          }
-          break;
-        case RESULTS.BLOCKED:
-          console.log('The permission is denied and not requestable anymore');
-          showSettingsAlert();
-          break;
-      }
-    } catch (error) {
-      console.error('Failed to check permission:', error);
-    }
-  };
-
-  const showSettingsAlert = () => {
-    Alert.alert(
-      'Location Permission',
-      'The app needs location access to provide this feature. Please go to the app settings and enable location permissions.',
-      [
-        {
-          text: 'Cancel',
-          onPress: () => {},
-          style: 'cancel',
-        },
-        {
-          text: 'Open Settings',
-          onPress: () => {
-            Linking.openSettings();
-          },
-        },
-      ],
-    );
-  };
-
-  const requestLocationPermission = async () => {
-    const permission =
-      Platform.OS === 'ios'
-        ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
-        : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION;
-    const result = await request(permission);
-    console.log('permission permission', permission);
-
-    if (result === RESULTS.GRANTED) {
-      Geolocation.requestAuthorization();
-      getLocationAndRegister();
-    } else if (result === RESULTS.BLOCKED) {
-      showSettingsAlert();
-    }
-  };
+  // console.log('Location on home screen ', location)
 
   useEffect(() => {
-    // checkLocationPermission();
-    getlatestLocation();
+    // getlatestLocation();
     dispatch(ProfileData())
       .unwrap()
       .then((res: any) => {
@@ -270,40 +127,40 @@ const HomeScreen = () => {
     apply && setApply(false);
   }, [apply, trigger]);
 
-  useEffect(() => {
-    setUserLcoation();
-  }, [location]);
+  // useEffect(() => {
+  //   setUserLcoation();
+  // }, [location]);
 
-  const setUserLcoation = async () => {
-    const userId = await getUserId();
-    if (userId && location) {
-      dispatch(
-        updateProfileData({
-          field: 'location',
-          value: {latitude: location?.latitude, longitude: location.longitude},
-          id: userId,
-        }),
-      );
-    }
-  };
+  // const setUserLcoation = async () => {
+  //   const userId = await getUserId();
+  //   if (userId && location) {
+  //     dispatch(
+  //       updateProfileData({
+  //         field: 'location',
+  //         value: {latitude: location?.latitude, longitude: location.longitude},
+  //         id: userId,
+  //       }),
+  //     );
+  //   }
+  // };
 
-  const getlatestLocation = () => {
-    GetLocation.getCurrentPosition({
-      enableHighAccuracy: true,
-      timeout: 60000,
-    })
-      .then(location => {
-        dispatch(
-          SetLocation({
-            latitude: location.latitude,
-            longitude: location.longitude,
-          }),
-        );
-      })
-      .catch(error => {
-        dispatch(SetLocation(undefined));
-      });
-  };
+  // const getlatestLocation = () => {
+  //   GetLocation.getCurrentPosition({
+  //     enableHighAccuracy: true,
+  //     timeout: 60000,
+  //   })
+  //     .then(location => {
+  //       dispatch(
+  //         SetLocation({
+  //           latitude: location.latitude,
+  //           longitude: location.longitude,
+  //         }),
+  //       );
+  //     })
+  //     .catch(error => {
+  //       dispatch(SetLocation(undefined));
+  //     });
+  // };
   return (
     <View style={styles.pageContainer}>
       <HeaderComponent
