@@ -62,11 +62,11 @@
 	<key>NSCameraUsageDescription</key>
 	<string>TopTier Dating App uses camera to take photos.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>TopTier Dating app uses current location to get nearby another users.</string>
+	<string>We need your location at all times and when the app is in the background to provide comprehensive location-based features.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>TopTier Dating app uses current location to get nearby another users.</string>
+	<string>We need your location at all times to provide location-based features.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>TopTier Dating app using current location to get nearby another users.</string>
+	<string>We need your location while the app is in use to provide location-based features.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>TopTier Dating app uses microphone to call.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>

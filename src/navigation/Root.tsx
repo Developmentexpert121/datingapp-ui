@@ -25,7 +25,6 @@ import ForgotPassword from '../screens/auth/forgotPassword';
 import NewPassword from '../screens/auth/newPassword';
 import Subscriptions from '../screens/Profile/SubscriptionComponent/SubscriptionsScreen';
 import exploreHome from '../screens/Explore/ExploreHome/exploreHome';
-import notifee, {AndroidImportance} from '@notifee/react-native';
 import {
   Call,
   CallingState,
@@ -38,12 +37,6 @@ import {
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import Loader from '../components/Loader/Loader';
 import {getLocalStroage, setLocalStorage} from '../api/storage';
-import io from 'socket.io-client';
-import {onlineUser} from '../store/reducer/authSliceState';
-import {
-  activityLoaderFinished,
-  activityLoaderStarted,
-} from '../store/Activity/activity';
 import {EventRegister} from 'react-native-event-listeners';
 import {useDispatch} from 'react-redux';
 import MyIncomingCallUI from '../screens/ChatHome/myIncomingCallUI';
