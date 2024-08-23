@@ -76,7 +76,7 @@ const LocationCheckComponent = () => {
     Alert.alert(title, message, buttons);
   };
 
-  return location?.altitude && location.longitude ? null : (
+  return true ? null : (
     <View
       style={{
         flex: 1,
