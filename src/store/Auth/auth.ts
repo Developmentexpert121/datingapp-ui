@@ -843,6 +843,13 @@ export const cancelLoginWithGoogle: any = createAsyncThunk(
   },
 );
 
+export const SetLocation: any = createAsyncThunk(
+  'activityLoader/SetLocation',
+  async (data: any) => {
+    return data;
+  },
+);
+
 const initialState: any = {
   data: {
     status: false,
@@ -863,6 +870,7 @@ const initialState: any = {
     signInInfo: '',
     otpVerified: false,
     checkDevice: false,
+    location: {},
   },
   userID: null,
   token: null,
@@ -1101,6 +1109,9 @@ const Auth: any = createSlice({
       })
       .addCase(cancelLoginWithGoogle.rejected, (state, action) => {
         state.loading = false;
+      })
+      .addCase(SetLocation.fulfilled, (state, action) => {
+        state.data.location = action.payload;
       });
   },
 });

@@ -4,6 +4,7 @@ import HeaderComponent from '../../components/Dashboard/header/header';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {
   ProfileData,
+  SetLocation,
   getAllUsers,
   updateProfileData,
 } from '../../store/Auth/auth';
@@ -17,6 +18,7 @@ import {onlineUser} from '../../store/reducer/authSliceState';
 import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
 const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 import DeviceInfo from 'react-native-device-info';
+import GetLocation from 'react-native-get-location';
 
 const getUserId = async () => {
   try {
@@ -39,7 +41,6 @@ const HomeScreen = () => {
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-
   const [low, setLow] = useState<number>(18);
   const [high, setHigh] = useState<number>(56);
   const [showIn, setShowIn] = useState(false);
@@ -51,6 +52,12 @@ const HomeScreen = () => {
   const [trigger, setTrigger] = useState(false);
   const [noProfilesLoader, setNoProfilesLoader] = useState(false);
   const [onlineUsers, setOnlineUsers] = useState<any>(null);
+
+  const location: any = useAppSelector(
+    (state: any) => state?.Auth?.data?.location,
+  );
+
+  console.log('Location on home screen ', location);
 
   const getLocationAndRegister = async () => {
     const isLocationEnabled = await DeviceInfo.isLocationEnabled();
@@ -192,7 +199,8 @@ const HomeScreen = () => {
   };
 
   useEffect(() => {
-    checkLocationPermission();
+    // checkLocationPermission();
+    getlatestLocation();
     dispatch(ProfileData())
       .unwrap()
       .then((res: any) => {
@@ -258,6 +266,40 @@ const HomeScreen = () => {
     apply && setApply(false);
   }, [apply, trigger]);
 
+  useEffect(() => {
+    setUserLcoation();
+  }, [location]);
+
+  const setUserLcoation = async () => {
+    const userId = await getUserId();
+    if (userId && location) {
+      dispatch(
+        updateProfileData({
+          field: 'location',
+          value: {latitude: location?.latitude, longitude: location.longitude},
+          id: userId,
+        }),
+      );
+    }
+  };
+
+  const getlatestLocation = () => {
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 60000,
+    })
+      .then(location => {
+        dispatch(
+          SetLocation({
+            latitude: location.latitude,
+            longitude: location.longitude,
+          }),
+        );
+      })
+      .catch(error => {
+        dispatch(SetLocation(undefined));
+      });
+  };
   return (
     <View style={styles.pageContainer}>
       <HeaderComponent

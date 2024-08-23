@@ -1,51 +1,87 @@
 import React, {useEffect, useState} from 'react';
 import {
   Alert,
-  PermissionsAndroid,
-  Button,
   Platform,
   Linking,
   View,
+  Image,
+  SafeAreaView,
+  Text,
+  StyleSheet,
 } from 'react-native';
-// import Geolocation from '@react-native-community/geolocation';
-import {check, request, PERMISSIONS} from 'react-native-permissions';
 import GetLocation, {Location} from 'react-native-get-location';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
+import Loader from '../Loader/Loader';
+import MainButton from '../ButtonComponent/MainButton';
+import {useDispatch} from 'react-redux';
+import {SetLocation} from '../../store/Auth/auth';
+import {useAppSelector} from '../../store/store';
+
 const LocationCheckComponent = () => {
-  const [location, setLocation] = useState<Location>();
+  const dispatch = useDispatch<any>();
+  // const [location, setLocation] = useState<Location | undefined>();
+  const [loader, setLoader] = useState(true);
+  const [errorType, setErrorType] = useState('');
+  const location: any = useAppSelector(
+    (state: any) => state?.Auth?.data?.location,
+  );
 
   useEffect(() => {
     getLocation();
   }, []);
 
   const getLocation = () => {
+    setLoader(true);
     GetLocation.getCurrentPosition({
       enableHighAccuracy: true,
       timeout: 60000,
     })
       .then(location => {
-        console.log('Locatio details ==>', location);
-        setLocation(location);
+        console.log(
+          'latitude- ',
+          location.latitude,
+          ' longitude- ',
+          location.longitude,
+        );
+        setLoader(false);
+        dispatch(
+          SetLocation({
+            latitude: location.latitude,
+            longitude: location.longitude,
+          }),
+        );
       })
       .catch(error => {
         const {code, message} = error;
-        console.log(code, message);
+        // console.log('code ', code, 'message ', message);
+        dispatch(SetLocation(undefined));
+        setLoader(false);
         if (message == 'Authorization denied') {
+          setErrorType('Authorization denied');
           showAlert(
-            'Location Permission Required',
-            'Please enable location permission in settings.',
+            'App Location Permission Required',
+            'Please enable App location ',
             true,
             Linking.openSettings,
           );
         } else if (message == 'Location not available') {
+          setErrorType('Location not available');
           showAlert(
-            'Location Permission Required',
-            'Please enable location permission in settings.',
+            'Device Location Permission Required',
+            'Please enable Device location ',
             true,
             openLocationSettings,
+          );
+        } else {
+          setErrorType('Authorization denied');
+          showAlert(
+            'App Location Permission Required',
+            'Please enable App location ',
+            true,
+            Linking.openSettings,
           );
         }
       });
@@ -59,7 +95,6 @@ const LocationCheckComponent = () => {
     }
   };
 
-  // Show alert with optional settings redirect
   const showAlert = (
     title: string,
     message: string,
@@ -76,20 +111,90 @@ const LocationCheckComponent = () => {
     Alert.alert(title, message, buttons);
   };
 
-  return true ? null : (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        backgroundColor: 'white',
-        position: 'absolute',
-        height: hp(100),
-        width: wp(100),
-        zIndex: 1,
-      }}>
-      <Button title="Check Location Permissions" onPress={getLocation} />
-    </View>
+  return location ? null : (
+    <SafeAreaView style={style.container}>
+      {loader ? (
+        <Loader />
+      ) : (
+        <View style={style.contentContainer}>
+          <View
+            style={{
+              alignItems: 'center',
+            }}>
+            <Image
+              source={require('../../assets/images/LoginTop.png')}
+              style={style.img1}
+            />
+            <View style={style.img2View}>
+              <Image
+                source={require('../../assets/images/locationImage.gif')}
+                style={style.img2}
+              />
+            </View>
+          </View>
+
+          <Text style={style.label1}>Oops</Text>
+          <Text style={style.label2}>
+            You need to allow acess to location in order to use DatingApp
+          </Text>
+
+          <MainButton
+            buttonStyle={{width: '75%'}}
+            ButtonName={'Try Again'}
+            onPress={getLocation}
+          />
+        </View>
+      )}
+    </SafeAreaView>
   );
 };
+
+const style = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#FFC7FF',
+    position: 'absolute',
+    height: hp(100),
+    width: wp(100),
+    zIndex: 1,
+  },
+  contentContainer: {
+    flex: 1,
+    backgroundColor: '#FFC7FF',
+    paddingTop: hp(5),
+    alignItems: 'center',
+  },
+  img1: {
+    resizeMode: 'contain',
+    width: wp(36),
+    height: hp(18),
+  },
+  img2: {
+    resizeMode: 'contain',
+    width: wp(90),
+    height: hp(31),
+  },
+  img2View: {
+    width: wp(90),
+    height: hp(31),
+    borderRadius: hp(5),
+    overflow: 'hidden',
+    marginTop: hp(5),
+  },
+  label1: {
+    fontSize: hp(3),
+    marginVertical: hp(2),
+    color: '#000',
+    fontWeight: 'bold',
+  },
+  label2: {
+    fontSize: hp(2),
+    color: '#000',
+    textAlign: 'center',
+    width: wp(80),
+    lineHeight: hp(3),
+    marginBottom: hp(3),
+  },
+});
 
 export default LocationCheckComponent;
