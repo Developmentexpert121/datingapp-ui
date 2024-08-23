@@ -13,7 +13,9 @@ import {useAppDispatch} from './src/store/store';
 
 const App = () => {
   const dispatch: any = useAppDispatch();
+
   useEffect(() => {
+    // Foreground notification handling
     const unsubscribe = messaging().onMessage(async (remoteMessage: any) => {
       await notifee.cancelAllNotifications();
       const channelId = await notifee.createChannel({
@@ -33,12 +35,11 @@ const App = () => {
         },
       });
 
-      // Navigate to the screen based on the data payload
+      // Handle notification press in the foreground
       notifee.onForegroundEvent(async ({type, detail}) => {
         if (type === EventType.PRESS) {
           console.log('User tapped the notification in the foreground');
 
-          // Navigate based on notification data when tapped
           if (remoteMessage?.data?.screen) {
             if (remoteMessage.data.screen === 'VideoCallRedirect') {
               await dispatch(
@@ -50,6 +51,39 @@ const App = () => {
         }
       });
     });
+
+    // Background notification handling
+    messaging().setBackgroundMessageHandler(async (remoteMessage: any) => {
+      console.log('Message handled in the background!', remoteMessage);
+
+      // Handle notification data when app is in background
+      if (remoteMessage?.data?.screen) {
+        if (remoteMessage.data.screen === 'VideoCallRedirect') {
+          await dispatch(
+            videoCallUser({user: JSON.parse(remoteMessage.data.userData)}),
+          );
+        }
+        navigationRef.current?.navigate(remoteMessage.data.screen);
+      }
+    });
+
+    // Handle notification when app is opened from a killed state
+    messaging()
+      .getInitialNotification()
+      .then(async (remoteMessage: any) => {
+        if (remoteMessage) {
+          console.log('App opened from a killed state!', remoteMessage);
+
+          if (remoteMessage?.data?.screen) {
+            if (remoteMessage.data.screen === 'VideoCallRedirect') {
+              await dispatch(
+                videoCallUser({user: JSON.parse(remoteMessage.data.userData)}),
+              );
+            }
+            navigationRef.current?.navigate(remoteMessage.data.screen);
+          }
+        }
+      });
 
     return () => unsubscribe();
   }, []);
