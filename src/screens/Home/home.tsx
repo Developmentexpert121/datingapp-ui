@@ -9,16 +9,17 @@ import {
   updateProfileData,
 } from '../../store/Auth/auth';
 import FilterSection from '../FilterSection/filterSection';
-import NotificationScreen from '../Notification/notification';
 import TinderSwipe from './AnimatedStack/TinderSwipe';
 import Geolocation from '@react-native-community/geolocation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {io} from 'socket.io-client';
-import {onlineUser} from '../../store/reducer/authSliceState';
+import {navigation, onlineUser} from '../../store/reducer/authSliceState';
 import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
 const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 import DeviceInfo from 'react-native-device-info';
 import GetLocation from 'react-native-get-location';
+import HomeHeader from '../../components/Headers/HomeHeader';
+import {useNavigation} from '@react-navigation/native';
 
 const getUserId = async () => {
   try {
@@ -35,7 +36,9 @@ const getUserId = async () => {
 };
 
 const HomeScreen = () => {
+  const navigation = useNavigation();
   const [activeScreen, setActiveScreen] = useState('HOME');
+  console.log('active screeennn', activeScreen);
   const [apply, setApply] = useState(false);
   const dispatch: any = useAppDispatch();
   const profileData: any = useAppSelector(
@@ -300,6 +303,9 @@ const HomeScreen = () => {
         dispatch(SetLocation(undefined));
       });
   };
+  useEffect(() => {
+    setActiveScreen('HOME');
+  }, []);
   return (
     <View style={styles.pageContainer}>
       <HeaderComponent
@@ -310,10 +316,14 @@ const HomeScreen = () => {
         applyClick={() => {
           setActiveScreen('HOME');
         }}
+        ClickNotification={() => navigation.navigate('NotificationScreen')}
       />
+      {/* <HomeHeader
+        ClickNotification={() => navigation.navigate('NotificationScreen')}
+        ClickFilter={() => navigation.navigate('filterSection')}
+      /> */}
       {activeScreen === 'HOME' ? (
         <View style={styles.pageContainer2}>
-          {/* <View style={{marginTop: 20, borderWidth: 0}}> */}
           <TinderSwipe
             data={data}
             noProfilesLoader={noProfilesLoader}
@@ -322,7 +332,6 @@ const HomeScreen = () => {
             setCurrentIndex={setCurrentIndex}
             profileData={profileData}
           />
-          {/* </View> */}
         </View>
       ) : activeScreen === 'Filters' ? (
         <FilterSection
@@ -339,9 +348,7 @@ const HomeScreen = () => {
           high={high}
           setHigh={setHigh}
         />
-      ) : (
-        <NotificationScreen />
-      )}
+      ) : null}
     </View>
   );
 };
@@ -359,7 +366,6 @@ const styles = StyleSheet.create({
     height: '90%',
     backgroundColor: '#ededed',
     marginTop: 20,
-    // borderWidth: 2,
   },
   icons: {
     flexDirection: 'row',

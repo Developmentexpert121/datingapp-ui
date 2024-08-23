@@ -27,6 +27,8 @@ export type RootStackParamList = {
   NewPassword: any;
   exploreHome: any;
   AfterLogin: any;
+  filterSection: any;
+  NotificationScreen: any;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =

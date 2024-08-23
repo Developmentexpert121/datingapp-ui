@@ -13,6 +13,8 @@ import {getNotifications, handleNotificationRead} from '../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../../components/Loader/Loader';
 
+import CommonBackbutton from '../../components/commonBackbutton/BackButton';
+
 const getUserId = async () => {
   try {
     const userId: any = await AsyncStorage.getItem('userId');
@@ -152,6 +154,7 @@ const NotificationScreen = () => {
 
   return (
     <View style={styles.container}>
+      <CommonBackbutton title="Notification" />
       {loading ? (
         <View style={styles.loadingContainer}>
           <Loader />

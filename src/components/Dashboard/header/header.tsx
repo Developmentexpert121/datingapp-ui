@@ -46,7 +46,7 @@ const HeaderComponent = (props: any) => {
 
       {props.activeScreen === 'HOME' ? (
         <View style={{flexDirection: 'row', gap: 20, marginRight: 10}}>
-          <Pressable onPress={() => handleNotification()}>
+          <Pressable onPress={props?.ClickNotification}>
             {/* <NotificationIC /> */}
             <Image
               source={require('../../../assets/images/Notification.png')}

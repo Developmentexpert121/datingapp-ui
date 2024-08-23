@@ -41,6 +41,8 @@ import {EventRegister} from 'react-native-event-listeners';
 import {useDispatch} from 'react-redux';
 import MyIncomingCallUI from '../screens/ChatHome/myIncomingCallUI';
 import {PermissionsAndroid, Platform, SafeAreaView, View} from 'react-native';
+import filterSection from '../screens/FilterSection/filterSection';
+import NotificationScreen from '../screens/Notification/notification';
 
 const Stack = createNativeStackNavigator();
 
@@ -276,6 +278,14 @@ const Root = () => {
             component={BottomTabNavigation}
           />
           <AfterLoginStack.Screen name="Settings" component={SettingsScreen} />
+          <AfterLoginStack.Screen
+            name="filterSection"
+            component={filterSection}
+          />
+          <AfterLoginStack.Screen
+            name="NotificationScreen"
+            component={NotificationScreen}
+          />
           <AfterLoginStack.Screen
             name="UpdateProfile"
             component={UpdateProfileScreen}
