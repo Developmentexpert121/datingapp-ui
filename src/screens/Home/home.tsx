@@ -17,7 +17,7 @@ import {navigation, onlineUser} from '../../store/reducer/authSliceState';
 import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
 const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 import DeviceInfo from 'react-native-device-info';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import Modal from 'react-native-modal';
 import Label from '../../components/Label';
 import MainButton from '../../components/ButtonComponent/MainButton';
@@ -39,7 +39,6 @@ const getUserId = async () => {
 const HomeScreen = () => {
   const navigation = useNavigation();
   const [activeScreen, setActiveScreen] = useState('HOME');
-  console.log('active screeennn', activeScreen);
   const [apply, setApply] = useState(false);
   const dispatch: any = useAppDispatch();
   const profileData: any = useAppSelector(
@@ -58,6 +57,22 @@ const HomeScreen = () => {
   const [onlineUsers, setOnlineUsers] = useState<any>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [reason, setReason] = useState('');
+
+  const initialRouteValue = useAppSelector(
+    (state: any) => state.ActivityLoader.initialRouteValue,
+  );
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (initialRouteValue === 'LikedScreen') {
+        console.log('Calllllleddd');
+        navigation.navigate(initialRouteValue);
+      }
+    }, 2000); // 2 seconds delay
+
+    // Cleanup the timer if the component unmounts before the timeout is finished
+    return () => clearTimeout(timer);
+  }, [initialRouteValue]);
 
   // const location: any = useAppSelector(
   //   (state: any) => state?.Auth?.data?.location,

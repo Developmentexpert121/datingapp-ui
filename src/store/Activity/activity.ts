@@ -30,10 +30,17 @@ export const footerStatus = createAsyncThunk(
 export const videoCallUser = createAsyncThunk(
   'activityLoader/videoCallUser',
   async (data: any) => {
-    // console.log('8972348762374576');
     return data;
   },
 );
+
+export const initialRouteSetter = createAsyncThunk(
+  'activityLoader/initialRouteSetter',
+  async (data: any) => {
+    return data;
+  },
+);
+
 export const authSice = createSlice({
   name: 'auth',
   initialState,
@@ -48,7 +55,6 @@ export const authSice = createSlice({
 export const clientData = createAsyncThunk(
   'activityLoader/clientData',
   async (data: any) => {
-    // console.log('8972348762374576');
     return data;
   },
 );
@@ -60,6 +66,7 @@ const ActivityLoader: any = createSlice({
     footerStatus: 'HOME',
     user: null,
     clientData: null,
+    initialRouteValue: null,
   },
   reducers: {},
   extraReducers: builder => {
@@ -94,7 +101,13 @@ const ActivityLoader: any = createSlice({
         state.loading = false;
         state.clientData = action.payload;
       })
-      .addCase(clientData.rejected, state => {});
+      .addCase(clientData.rejected, state => {})
+      .addCase(initialRouteSetter.pending, state => {})
+      .addCase(initialRouteSetter.fulfilled, (state: any, action: any) => {
+        state.loading = false;
+        state.initialRouteValue = action.payload;
+      })
+      .addCase(initialRouteSetter.rejected, state => {});
   },
 });
 
