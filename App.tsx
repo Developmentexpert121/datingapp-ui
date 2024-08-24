@@ -9,7 +9,7 @@ import InternetModal from './src/components/Modals/InternetModal';
 import {navigationRef} from './src/utils/staticNavigation';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import LocationCheckComponent from './src/components/location/location';
-import {videoCallUser} from './src/store/Activity/activity';
+import {initialRouteSetter, videoCallUser} from './src/store/Activity/activity';
 import {useAppDispatch} from './src/store/store';
 
 const App = () => {
@@ -76,6 +76,7 @@ const App = () => {
           console.log('App opened from a killed state!', remoteMessage);
 
           if (remoteMessage?.data?.screen) {
+            await dispatch(initialRouteSetter(remoteMessage.data.screen));
             if (remoteMessage.data.screen === 'VideoCallRedirect') {
               await dispatch(
                 videoCallUser({user: JSON.parse(remoteMessage.data.userData)}),

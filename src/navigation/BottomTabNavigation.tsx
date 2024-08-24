@@ -49,6 +49,7 @@ const HomeStack = () => {
     </HStack.Navigator>
   );
 };
+
 const BottomTabNavigation = () => {
   return (
     <Tab.Navigator

@@ -63,6 +63,28 @@ const HomeScreen = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [reason, setReason] = useState('');
 
+  const initialRouteValue = useAppSelector(
+    (state: any) => state.ActivityLoader.initialRouteValue,
+  );
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (initialRouteValue === 'LikedScreen') {
+        console.log('Calllllleddd');
+        navigation.navigate(initialRouteValue);
+      }
+    }, 2000); // 2 seconds delay
+
+    // Cleanup the timer if the component unmounts before the timeout is finished
+    return () => clearTimeout(timer);
+  }, [initialRouteValue]);
+
+  // const location: any = useAppSelector(
+  //   (state: any) => state?.Auth?.data?.location,
+  // );
+
+  // console.log('Location on home screen ', location)
+
   useEffect(() => {
     fetchNewData();
   }, []);
