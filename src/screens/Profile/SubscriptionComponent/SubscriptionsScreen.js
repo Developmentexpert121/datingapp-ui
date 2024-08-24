@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   FlatList,
 } from 'react-native';
+import RNRestart from 'react-native-restart';
 
 import {
   initConnection,
@@ -146,18 +147,14 @@ const SubscriptionsScreen = ({navigation}) => {
                   purchase.purchaseStateAndroid === 1 &&
                   !purchase.isAcknowledgedAndroid
                 ) {
-                  const yyy = await acknowledgePurchaseAndroid({
+                  await acknowledgePurchaseAndroid({
                     token: purchase.purchaseToken,
                     developerPayload: purchase.developerPayloadAndroid,
                   });
-                  navigation.dispatch(
-                    CommonActions.reset({
-                      index: 0,
-                      routes: [{name: 'BottomTabNavigation'}],
-                    }),
-                  );
+                  RNRestart.Restart();
                 }
               } catch (err) {
+                RNRestart.Restart();
                 console.error('error', err);
               }
             }
@@ -187,15 +184,19 @@ const SubscriptionsScreen = ({navigation}) => {
               await finishTransaction(purchase);
             }
           } else {
+            console.log('.............');
             await finishTransaction({
               purchase,
-              isConsumable: true,
+              isConsumable: false,
               developerPayloadAndroid: purchase.developerPayloadAndroid,
             });
+            console.log('!!!!!!!!!!!!!!!!!', purchase);
+            console.log('!!!!!!!!!!!!!!!22', isConsumable);
+            console.log('!!!!!!!!!!!!!!!333', developerPayloadAndroid);
           }
         }
       } catch (error) {
-        console.error('checkCurrentPurchase', error);
+        console.error('checkCurrentPurchase----', error);
       }
     }
   };

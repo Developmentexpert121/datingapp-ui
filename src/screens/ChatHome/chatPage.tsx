@@ -60,7 +60,7 @@ const ChatPage = ({
   setEnableCamera1,
   setCallType,
 }: Props) => {
-  const navigation = useNavigation();
+  const navigation: any = useNavigation();
   const dispatch: any = useAppDispatch();
 
   const profileData: any = useAppSelector(
@@ -565,7 +565,7 @@ const ChatPage = ({
               }}
               ButtonName="Subscribe!"
               onPress={() => {
-                navigation.navigate('Subscriptions');
+                navigation.navigate('ProfileSection');
                 setModalOpen(false);
               }}
             />

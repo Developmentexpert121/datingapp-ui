@@ -105,6 +105,8 @@ const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
+  console.log('ttttt', profileData.plan.cancellationDate);
+
   const navigation = useNavigation();
   const [activeDot, setActiveDot] = useState(0);
   const [currentPlanId, setCurrentPlanId] = useState(0);
@@ -158,12 +160,20 @@ const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {
             <Text style={styles.upgradeButtonText}>Upgrade Plan</Text>
           </Pressable>
         )}
-
-        <Pressable
-          style={styles.cancelButton}
-          onPress={handleCancelSubscription}>
-          <Text style={styles.cancelButtonText}>Cancel Subscription</Text>
-        </Pressable>
+        {profileData.plan.cancellationDate ? (
+          <Text style={[styles.planDetailText, {marginTop: 6}]}>
+            Your subscription will end on:{' '}
+            <Text style={styles.planDate}>
+              {new Date(profileData.plan.cancellationDate).toLocaleDateString()}
+            </Text>
+          </Text>
+        ) : (
+          <Pressable
+            style={styles.cancelButton}
+            onPress={handleCancelSubscription}>
+            <Text style={styles.cancelButtonText}>Cancel Subscription</Text>
+          </Pressable>
+        )}
       </LinearGradient>
     );
 
@@ -365,6 +375,7 @@ const styles = StyleSheet.create({
     color: '#666',
     fontFamily: 'Sansation-Regular',
     marginBottom: 20,
+    textAlign: 'center',
   },
   planDate: {
     color: '#AC25AC',
