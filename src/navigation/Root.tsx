@@ -63,10 +63,6 @@ const getUserId = async () => {
 const Root = () => {
   const userid: any = useAppSelector((state: any) => state?.Auth?.userID);
   const isAuthLoading = useAppSelector((state: any) => state.Auth.authLoading);
-  const initialRouteValue = useAppSelector(
-    (state: any) => state.ActivityLoader.initialRouteValue,
-  );
-
   const dispatch: any = useAppDispatch();
   const AfterLoginStack = createNativeStackNavigator();
   const BeforeLoginStack = createNativeStackNavigator();
@@ -276,11 +272,7 @@ const Root = () => {
       return (
         <AfterLoginStack.Navigator
           screenOptions={{headerShown: false}}
-          initialRouteName={
-            initialRouteValue === 'VideoCallRedirect'
-              ? initialRouteValue
-              : 'BottomTabNavigation'
-          }>
+          initialRouteName="BottomTabNavigation">
           <AfterLoginStack.Screen
             name="BottomTabNavigation"
             component={BottomTabNavigation}

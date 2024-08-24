@@ -341,15 +341,9 @@ const FilterSection = ({
         <View
           style={
             // showIn && profileData.location !== undefined && isLocationEnabled
-            showIn 
-              ? {}
-              : {opacity: 0.5}
+            showIn ? {} : {opacity: 0.5}
           }
-          pointerEvents={
-            showIn 
-              ? 'auto'
-              : 'none'
-          }>
+          pointerEvents={showIn ? 'auto' : 'none'}>
           <Slider
             style={styles.slider}
             minimumValue={4}
@@ -386,13 +380,14 @@ const FilterSection = ({
                 onPress={async () => {
                   // await checkLocationPermission();
                   setLoader(false);
-                  setShowIn((prev:any) => !prev)
+                  setShowIn((prev: any) => !prev);
                   dispatch(
                     updateProfileData({
                       field: 'showInDistance',
                       value: !showIn,
                       id: getUserId(),
-                    }))
+                    }),
+                  );
                 }}>
                 <Ionicons
                   name={

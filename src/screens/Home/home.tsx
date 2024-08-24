@@ -63,15 +63,15 @@ const HomeScreen = () => {
   );
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (initialRouteValue === 'LikedScreen') {
+    if (initialRouteValue) {
+      const timer = setTimeout(() => {
         console.log('Calllllleddd');
         navigation.navigate(initialRouteValue);
-      }
-    }, 2000); // 2 seconds delay
+      }, 2000); // 2 seconds delay
 
-    // Cleanup the timer if the component unmounts before the timeout is finished
-    return () => clearTimeout(timer);
+      // Cleanup the timer if the component unmounts before the timeout is finished
+      return () => clearTimeout(timer);
+    }
   }, [initialRouteValue]);
 
   // const location: any = useAppSelector(
