@@ -26,7 +26,7 @@ const MainButton = (props: any) => {
     setTimeout(() => {
       setShowLoader(false); // Hide loader after 1.5 seconds
       setInternalDisabled(false); // Enable button after 1.5 seconds
-    }, 2000);
+    }, 1000);
   };
 
   return (

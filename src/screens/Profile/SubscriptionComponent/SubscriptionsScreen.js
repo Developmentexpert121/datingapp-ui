@@ -193,7 +193,7 @@ const SubscriptionsScreen = ({navigation}) => {
   }, [currentPurchase]);
   console.log('!!!!!!!!!!!!!!!!!!!!!!!!! subscriptions', subscriptions);
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex: 1, borderWidth: 5}}>
       <ScrollView>
         <View style={{padding: 1}}>
           <CommonBackbutton title="Subscribe" />
