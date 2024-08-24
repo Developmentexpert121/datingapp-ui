@@ -170,7 +170,7 @@ const style = StyleSheet.create({
     height: hp(18),
   },
   img2: {
-    resizeMode: 'contain',
+    resizeMode: 'cover',
     width: wp(90),
     height: hp(32),
   },

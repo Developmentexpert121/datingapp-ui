@@ -411,8 +411,6 @@ const TinderSwipe = ({
               </TouchableOpacity>
             </ScrollView>
           </>
-        ) : noProfilesLoader ? (
-          <Loader />
         ) : (
           data.length === 0 && (
             <Text
@@ -449,7 +447,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 20,
-    alignSelf: '-stflexart',
+    alignSelf: 'flex-start',
     marginTop: 15,
   },
   container: {
