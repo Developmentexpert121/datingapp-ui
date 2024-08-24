@@ -172,11 +172,11 @@ const style = StyleSheet.create({
   img2: {
     resizeMode: 'contain',
     width: wp(90),
-    height: hp(31),
+    height: hp(32),
   },
   img2View: {
     width: wp(90),
-    height: hp(31),
+    height: hp(32),
     borderRadius: hp(5),
     overflow: 'hidden',
     marginTop: hp(5),
