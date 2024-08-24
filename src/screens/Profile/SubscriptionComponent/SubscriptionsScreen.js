@@ -71,7 +71,30 @@ const SubscriptionsScreen = ({navigation}) => {
     }
   };
 
-  console.log('============================', loading);
+  console.log('============================', subscriptions);
+
+  useEffect(() => {
+    if (subscriptions && isIos) {
+      subscriptions.map(sub => {
+        let name;
+        switch (sub.title) {
+          case 'TopTier Dating Premium':
+            name = 'Premium';
+            break;
+          case 'TopTier Dating':
+            name = 'Basic';
+            break;
+          case 'TopTier Dating Premium Plus ':
+            name = 'PremiumPlus';
+            break;
+          default:
+            name = 'Unknown';
+            break;
+        }
+        return {...sub, name};
+      });
+    }
+  }, [subscriptions]);
 
   useEffect(() => {
     setLoading(true);
