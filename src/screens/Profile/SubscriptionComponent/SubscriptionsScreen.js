@@ -26,6 +26,7 @@ import {verifyReceipt} from '../../../store/Auth/auth';
 import CommonBackbutton from '../../../components/commonBackbutton/BackButton';
 import {CommonActions} from '@react-navigation/native';
 import Loader from '../../../components/Loader/Loader';
+import {useAppSelector} from '../../../store/store';
 
 const isIos = Platform.OS === 'ios';
 
@@ -44,18 +45,19 @@ const subscriptionSkus =
   }) || [];
 
 const SubscriptionsScreen = ({navigation}) => {
+  const profileData = useAppSelector(state => state?.Auth?.data?.profileData);
+
   const {
     connected,
     subscriptions,
     getSubscriptions,
     currentPurchase,
     finishTransaction,
-    purchaseHistory,
   } = useIAP();
 
   const dispatch = useDispatch();
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [loadingSubscriptions, setLoadingSubscriptions] = useState(true); // New state for initial loading
 
   const handleGetSubscriptions = async () => {
@@ -75,11 +77,14 @@ const SubscriptionsScreen = ({navigation}) => {
   };
 
   useEffect(() => {
+    setLoading(true);
     if (connected) {
       handleGetSubscriptions();
       console.log('connected', connected);
+      setLoading(false);
     } else {
       console.log('Not connected to IAP');
+      setLoading(false);
     }
   }, [connected]);
 
@@ -210,9 +215,6 @@ const SubscriptionsScreen = ({navigation}) => {
               <Loader size="large" />
             ) : (
               subscriptions?.map((subscription, index) => {
-                const owned = purchaseHistory.find(
-                  s => s?.productId === subscription?.productId,
-                );
                 return (
                   <View style={styles.box} key={index}>
                     <View
@@ -249,7 +251,7 @@ const SubscriptionsScreen = ({navigation}) => {
                     <Text style={{paddingBottom: 20}}>
                       {subscription.description}
                     </Text>
-                    {owned ? (
+                    {profileData.plan.productId === subscription.name ? (
                       <>
                         <Text style={{textAlign: 'center', marginBottom: 10}}>
                           You are Subscribed to this plan!

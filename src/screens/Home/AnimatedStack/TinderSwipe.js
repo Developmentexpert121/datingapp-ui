@@ -27,6 +27,8 @@ const TinderSwipe = ({
   profileData,
   setData,
   noProfilesLoader,
+  setModalOpen,
+  setReason,
 }) => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
@@ -111,7 +113,8 @@ const TinderSwipe = ({
             setData(updatedUsers);
           }, 1000);
         } else {
-          navigation.navigate('Subscriptions');
+          setModalOpen(true);
+          setReason('like');
         }
       });
   };
@@ -137,7 +140,8 @@ const TinderSwipe = ({
             setData(updatedUsers);
           }, 1000);
         } else {
-          navigation.navigate('Subscriptions');
+          setModalOpen(true);
+          setReason('superLike');
         }
       });
   };

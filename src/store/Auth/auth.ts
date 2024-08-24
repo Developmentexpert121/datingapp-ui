@@ -697,7 +697,6 @@ export const deleteUser = createAsyncThunk(
   async (data: any, {dispatch}: any) => {
     // console.log('data', data);
     try {
-      console.log('swjdfguwgyduwye');
       dispatch(activityLoaderStarted());
       const response = await http.delete(
         `/user/delete-account?userId=${data.senderId}`,
@@ -722,11 +721,9 @@ export const deleteUser = createAsyncThunk(
 export const deactivateUser = createAsyncThunk(
   'auth/deleteUser',
   async (data: any, {dispatch}: any) => {
-    console.log('deactivateUser', data);
     try {
       const response = await http.post('/user/deactivateAccount', data);
       if (response.status === 200) {
-        console.log('999999999', response?.data?.message);
         return response.data;
       }
     } catch (error: any) {
@@ -806,7 +803,6 @@ export const blockAUser = createAsyncThunk(
 export const UnBlockAUser = createAsyncThunk(
   'auth/likedAUser',
   async (data: any, {dispatch}: any) => {
-    console.log('selectedUser._id', data);
     try {
       const response = await http.post('/user/unBlockUser', data);
       if (response.status === 200) {
@@ -830,7 +826,6 @@ export const verifyReceipt: any = createAsyncThunk(
     try {
       const response = await http.post('/user/verify-receipt', data);
       if (response.status === 200) {
-        console.log('response verifyReceipt', response.data);
         return response.data;
       }
     } catch (error: any) {
@@ -945,7 +940,6 @@ const Auth: any = createSlice({
           state.data.signInInfo = action.payload.error; // Assuming the error field is set properly on unsuccessful login
         }
         if (!state.userID) {
-          console.log('UserId ==>', action.payload.data._id);
           state.userID = action.payload.data._id;
         }
       })
@@ -1045,12 +1039,10 @@ const Auth: any = createSlice({
         state.loading = true;
       })
       .addCase(likedAUser.fulfilled, (state, action) => {
-        console.log('oooooooooooo');
         state.data.userLike = action.payload.notifications;
         state.loading = false;
       })
       .addCase(likedAUser.rejected, (state, action: any) => {
-        console.log('CAllllllllllllllled', action.payload.status);
         if (action.payload.status === 403) {
           state.data.checkDevice = !state.data.checkDevice;
         }

@@ -90,6 +90,24 @@
             </intent-filter>
         </service>
         <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="com.toptierdating" />
+            </intent-filter>
+        </receiver>
+
+        <service
             android:name="app.notifee.core.ForegroundService"
             tools:replace="android:foregroundServiceType"
             android:stopWithTask="true"

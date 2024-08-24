@@ -20,6 +20,9 @@ import {likedAUser, likedMe, superLiked} from '../../store/Auth/auth';
 import {BlurView} from '@react-native-community/blur';
 import Loader from '../../components/Loader/Loader';
 import {SuperLikeIC} from '../../assets/svgs';
+import Modal from 'react-native-modal';
+import Label from '../../components/Label';
+import MainButton from '../../components/ButtonComponent/MainButton';
 
 const LikedScreen = () => {
   const profileData: any = useAppSelector(
@@ -28,6 +31,8 @@ const LikedScreen = () => {
   const dispatch: any = useAppDispatch();
   const [likeData, setLikeData] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [modalOpen, setModalOpen] = useState(false);
+
   const navigation: any = useNavigation();
   const goToChatWith = async (user: any) => {
     await dispatch(videoCallUser({user: user}))
@@ -78,12 +83,12 @@ const LikedScreen = () => {
         onPress={
           profileData?.plan === 'Free'
             ? () => {
-                navigation.navigate('Subscriptions');
+                setModalOpen(true);
               }
             : profileData.plan.productId === 'PremiumPlus'
             ? () => likeByMe(item)
             : () => {
-                navigation.navigate('Subscriptions');
+                setModalOpen(true);
               }
         }
         // onPress={() => goToChatWith(item)}
@@ -149,6 +154,46 @@ const LikedScreen = () => {
           />
         </View>
       )}
+      <Modal
+        style={{backgroundColor: 'transparent', margin: 0}}
+        isVisible={modalOpen}
+        animationIn="slideInDown"
+        animationOut="slideOutDown"
+        animationInTiming={600}
+        animationOutTiming={1000}
+        backdropTransitionInTiming={600}
+        backdropTransitionOutTiming={1000}>
+        <View style={styles.modal}>
+          <View style={styles.modalstyle}>
+            <Label
+              text={`To check who likes you Subscribe to a bigger plan!`}
+              style={styles.textstyle}
+            />
+
+            <MainButton
+              style={{
+                width: '85%',
+                marginTop: 30,
+              }}
+              ButtonName="Subscribe!"
+              onPress={() => {
+                navigation.navigate('Subscriptions');
+                setModalOpen(false);
+              }}
+            />
+            <MainButton
+              style={{
+                width: '85%',
+                marginTop: 30,
+              }}
+              ButtonName="Cancel"
+              onPress={() => {
+                setModalOpen(false);
+              }}
+            />
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -236,6 +281,32 @@ const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
+  },
+  textstyle: {
+    // width: "50%",
+    fontSize: 18,
+    // fontWeight: "400",
+    lineHeight: 36,
+    color: '#071731',
+    textAlign: 'center',
+    paddingHorizontal: 30,
+    marginTop: 20,
+  },
+  modalstyle: {
+    // minHeight: 230,
+    width: '90%',
+    backgroundColor: '#FFF',
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: 20,
+  },
+  modal: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    // position: 'absolute',
+    zIndex: 4,
   },
 });
 

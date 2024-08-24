@@ -19,7 +19,7 @@ export const googleLogin = async () => {
   configureGoogleSignIn();
   try {
     await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
-    console.log('00000000', GoogleSignin);
+
     const userInfo = await GoogleSignin.signIn();
     return userInfo?.user;
   } catch (error) {
