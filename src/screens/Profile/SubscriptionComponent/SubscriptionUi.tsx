@@ -445,7 +445,6 @@ const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {
   const handleCancelSubscription = () => {
     if (Platform.OS === 'ios') {
       // Open App Store subscriptions page
-
       console.log('023ur49y38tyhfierw');
       Linking.openURL('https://apps.apple.com/account/subscriptions');
     } else if (Platform.OS === 'android') {

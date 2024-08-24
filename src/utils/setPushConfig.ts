@@ -52,7 +52,7 @@ export function setPushConfig() {
     },
     // add the callback to be executed a call is accepted, used for navigation
     navigateAcceptCall: () => {
-      staticNavigate({name: 'AfterLogin', params: undefined});
+      // staticNavigate({name: 'AfterLogin', params: undefined});
     },
     // add the callback to be executed when a notification is tapped,
     // but the user did not press accept or decline, used for navigation

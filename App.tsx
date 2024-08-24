@@ -8,6 +8,7 @@ import {withIAPContext} from 'react-native-iap';
 import InternetModal from './src/components/Modals/InternetModal';
 import {navigationRef} from './src/utils/staticNavigation';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import LocationCheckComponent from './src/components/location/location';
 import {videoCallUser} from './src/store/Activity/activity';
 import {useAppDispatch} from './src/store/store';
 
@@ -89,7 +90,8 @@ const App = () => {
   }, []);
 
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider style={{flex: 1}}>
+      <LocationCheckComponent />
       <NavigationContainer ref={navigationRef}>
         <Root />
         <GlobalModal />

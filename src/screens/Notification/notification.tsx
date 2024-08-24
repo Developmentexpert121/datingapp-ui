@@ -13,6 +13,8 @@ import {getNotifications, handleNotificationRead} from '../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../../components/Loader/Loader';
 
+import CommonBackbutton from '../../components/commonBackbutton/BackButton';
+
 const getUserId = async () => {
   try {
     const userId: any = await AsyncStorage.getItem('userId');
@@ -48,7 +50,9 @@ const NotificationScreen = () => {
       dispatch(getNotifications({userId: profileData?._id}))
         .unwrap()
         .then((response: any) => {
-          setAllNotifications(response.newNotifications);
+          // setAllNotifications(response.newNotifications);
+          const reversedNotifications = response.newNotifications.reverse();
+          setAllNotifications(reversedNotifications);
           setLoading(false);
         })
         .catch(() => {
@@ -103,13 +107,13 @@ const NotificationScreen = () => {
   };
 
   const renderNotificationItem = ({item}: any) => {
-    const user = allUsers.find((u: any) => u._id === item.senderUserId);
-    console.log('first', user);
+    // const user = allUsers.find((u: any) => u._id === item.senderUserId);
+    // console.log('first', user);
     return (
       <View style={styles.notificationItem}>
         <View style={{alignSelf: 'flex-start'}}>
           <Image
-            source={{uri: user?.profilePic?.split(',')[0]}}
+            source={{uri: item?.profilePic?.split(',')[0]}}
             style={styles.userImage}
           />
         </View>
@@ -122,13 +126,13 @@ const NotificationScreen = () => {
           }}>
           <View style={{rowGap: 10, marginBottom: 6}}>
             <View style={styles.notificationText}>
-              <Text style={styles.title}>{user?.name}</Text>
+              <Text style={styles.title}>{item?.name}</Text>
               <Text style={styles.subtitle}>
                 {item.type === 'like' && 'Has liked your profile'}
               </Text>
             </View>
             <View style={{flexDirection: 'row'}}>
-              {!user?.isRead && (
+              {!item?.isRead && (
                 <TouchableOpacity onPress={() => handleMarkAsRead(item._id)}>
                   <Text style={styles.actionButton}>Mark as Read</Text>
                 </TouchableOpacity>
@@ -150,6 +154,7 @@ const NotificationScreen = () => {
 
   return (
     <View style={styles.container}>
+      <CommonBackbutton title="Notification" />
       {loading ? (
         <View style={styles.loadingContainer}>
           <Loader />

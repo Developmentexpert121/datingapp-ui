@@ -110,7 +110,6 @@ const SeventhStepScreen = ({
       );
     }
   }, [profileImages]);
-  console.log('first');
 
   const handleImageSelection = async (index?: number) => {
     launchImageLibrary({mediaType: 'photo'}, async response => {
@@ -166,8 +165,6 @@ const SeventhStepScreen = ({
       }
     });
   };
-
-  // console.log(title);
 
   const handleRemoveImage = async (index: number) => {
     if (profileImages.length <= 2) {

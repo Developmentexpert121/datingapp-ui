@@ -4,23 +4,23 @@ import HeaderComponent from '../../components/Dashboard/header/header';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {
   ProfileData,
+  SetLocation,
   getAllUsers,
   updateProfileData,
 } from '../../store/Auth/auth';
 import FilterSection from '../FilterSection/filterSection';
-import NotificationScreen from '../Notification/notification';
 import TinderSwipe from './AnimatedStack/TinderSwipe';
 import Geolocation from '@react-native-community/geolocation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {io} from 'socket.io-client';
-import {onlineUser} from '../../store/reducer/authSliceState';
+import {navigation, onlineUser} from '../../store/reducer/authSliceState';
 import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
 const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 import DeviceInfo from 'react-native-device-info';
+import { useNavigation } from '@react-navigation/native';
 import Modal from 'react-native-modal';
 import Label from '../../components/Label';
 import MainButton from '../../components/ButtonComponent/MainButton';
-import {useNavigation} from '@react-navigation/native';
 
 const getUserId = async () => {
   try {
@@ -38,21 +38,19 @@ const getUserId = async () => {
 
 const HomeScreen = () => {
   const navigation = useNavigation();
-
   const [activeScreen, setActiveScreen] = useState('HOME');
+  console.log('active screeennn', activeScreen);
   const [apply, setApply] = useState(false);
   const dispatch: any = useAppDispatch();
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-
   const [low, setLow] = useState<number>(18);
   const [high, setHigh] = useState<number>(56);
   const [showIn, setShowIn] = useState(false);
   const [distance, setDistance] = useState(50);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [data, setData] = useState<any>([]);
-  // console.log('++++++++++++++', data);
   const [checkedInterests, setCheckedInterests] = useState('Everyone');
   const [checkedRelationShip, setCheckedRelationShip] = useState('');
   const [trigger, setTrigger] = useState(false);
@@ -61,151 +59,14 @@ const HomeScreen = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [reason, setReason] = useState('');
 
-  const getLocationAndRegister = async () => {
-    const isLocationEnabled = await DeviceInfo.isLocationEnabled();
-    // console.log('#############################---', isLocationEnabled);
+  // const location: any = useAppSelector(
+  //   (state: any) => state?.Auth?.data?.location,
+  // );
 
-    if (!isLocationEnabled) {
-      if (Platform.OS === 'android') {
-        Alert.alert(
-          'Location Services Disabled',
-          'Please enable location services in your device settings.',
-          [
-            {
-              text: 'Cancel',
-              style: 'cancel',
-            },
-            {
-              text: 'Open Settings',
-              onPress: () => {
-                Linking.sendIntent('android.settings.LOCATION_SOURCE_SETTINGS');
-              },
-            },
-          ],
-        );
-      } else if (Platform.OS === 'ios') {
-        console.log('ios location nnnn');
-        Alert.alert(
-          'Location Services Disabled',
-          'Please enable location services in your device settings.',
-          [
-            {
-              text: 'Cancel',
-              style: 'cancel',
-            },
-            {
-              text: 'Open Settings',
-              onPress: () => {
-                Linking.openURL('App-Prefs:Privacy&path=LOCATION');
-              },
-            },
-          ],
-        );
-      }
-
-      return;
-    }
-
-    Geolocation.getCurrentPosition(
-      async position => {
-        const {latitude, longitude} = position.coords;
-        // console.log('latitude:', latitude);
-        // console.log('Longitude:', longitude);
-        const userId = await getUserId();
-        if (userId) {
-          dispatch(
-            updateProfileData({
-              field: 'location',
-              value: {latitude, longitude},
-              id: userId,
-            }),
-          );
-        }
-      },
-
-      err => {
-        console.error('Error fetching location:333333', err);
-      },
-      {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}, // Increased timeout to 30000ms (30 seconds)
-    );
-  };
-
-  const checkLocationPermission = async () => {
-    try {
-      const permission =
-        Platform.OS === 'ios'
-          ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
-          : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION;
-      const result = await check(permission);
-
-      switch (result) {
-        case RESULTS.UNAVAILABLE:
-          console.log('This feature is not available on this device');
-          // checkLocationServices();
-          break;
-        case RESULTS.DENIED:
-          console.log(
-            'The permission has not been requested / is denied but requestable',
-          );
-          requestLocationPermission();
-          break;
-        case RESULTS.GRANTED:
-          console.log('The permission is granted');
-          if (Platform.OS === 'ios') {
-            getLocationAndRegister();
-          } else {
-            Geolocation.requestAuthorization();
-            getLocationAndRegister();
-          }
-          break;
-        case RESULTS.BLOCKED:
-          console.log('The permission is denied and not requestable anymore');
-          showSettingsAlert();
-          break;
-      }
-    } catch (error) {
-      console.error('Failed to check permission:', error);
-    }
-  };
-
-  const showSettingsAlert = () => {
-    Alert.alert(
-      'Location Permission',
-      'The app needs location access to provide this feature. Please go to the app settings and enable location permissions.',
-      [
-        {
-          text: 'Cancel',
-          onPress: () => {},
-          style: 'cancel',
-        },
-        {
-          text: 'Open Settings',
-          onPress: () => {
-            Linking.openSettings();
-          },
-        },
-      ],
-    );
-  };
-
-  const requestLocationPermission = async () => {
-    const permission =
-      Platform.OS === 'ios'
-        ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
-        : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION;
-    const result = await request(permission);
-    console.log('permission permission', permission);
-
-    if (result === RESULTS.GRANTED) {
-      Geolocation.requestAuthorization();
-      getLocationAndRegister();
-    } else if (result === RESULTS.BLOCKED) {
-      showSettingsAlert();
-    }
-  };
+  // console.log('Location on home screen ', location)
 
   useEffect(() => {
-    checkLocationPermission();
+    // getlatestLocation();
     dispatch(ProfileData())
       .unwrap()
       .then((res: any) => {
@@ -271,50 +132,43 @@ const HomeScreen = () => {
     apply && setApply(false);
   }, [apply, trigger]);
 
-  // async function checkLocationServices() {
-  //   if (Platform.OS === 'ios') {
-  //     console.log('iOS platform detected');
-  //     try {
-  //       const locationPermission = await check(
-  //         PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
-  //       );
-  //       console.log('Location permission result:', locationPermission);
-  //       if (locationPermission === RESULTS.GRANTED) {
-  //         console.log('Location permission granted');
-  //       } else if (locationPermission === RESULTS.DENIED) {
-  //         console.log('Location permission denied');
-  //       } else if (locationPermission === RESULTS.BLOCKED) {
-  //         console.log('efkfkefmvkdkdkkk');
-  //       } else if (locationPermission === RESULTS.UNAVAILABLE) {
-  //         Alert.alert(
-  //           'Location Services Disabled',
-  //           'Please enable location services in your device settings.',
-  //           [
-  //             {
-  //               text: 'Cancel',
-  //               style: 'cancel',
-  //             },
-  //             {
-  //               text: 'Open Settings',
-  //               onPress: () => {
-  //                 Linking.openURL('App-Prefs:Privacy&path=LOCATION');
-  //               },
-  //             },
-  //           ],
-  //         );
-  //       }
-  //     } catch (error) {
-  //       console.error('Error checking location permission:', error);
-  //     }
-  //   } else if (Platform.OS === 'android') {
-  //     const isLocationEnabled = await DeviceInfo.isLocationEnabled();
-  //     console.log('Android location enabled:', isLocationEnabled);
-  //   }
-  // }
-
   // useEffect(() => {
-  //   checkLocationServices();
-  // }, []);
+  //   setUserLcoation();
+  // }, [location]);
+
+  // const setUserLcoation = async () => {
+  //   const userId = await getUserId();
+  //   if (userId && location) {
+  //     dispatch(
+  //       updateProfileData({
+  //         field: 'location',
+  //         value: {latitude: location?.latitude, longitude: location.longitude},
+  //         id: userId,
+  //       }),
+  //     );
+  //   }
+  // };
+
+  // const getlatestLocation = () => {
+  //   GetLocation.getCurrentPosition({
+  //     enableHighAccuracy: true,
+  //     timeout: 60000,
+  //   })
+  //     .then(location => {
+  //       dispatch(
+  //         SetLocation({
+  //           latitude: location.latitude,
+  //           longitude: location.longitude,
+  //         }),
+  //       );
+  //     })
+  //     .catch(error => {
+  //       dispatch(SetLocation(undefined));
+  //     });
+  // };
+  useEffect(() => {
+    setActiveScreen('HOME');
+  }, []);
   return (
     <View style={styles.pageContainer}>
       <HeaderComponent
@@ -325,10 +179,14 @@ const HomeScreen = () => {
         applyClick={() => {
           setActiveScreen('HOME');
         }}
+        ClickNotification={() => navigation.navigate('NotificationScreen')}
       />
+      {/* <HomeHeader
+        ClickNotification={() => navigation.navigate('NotificationScreen')}
+        ClickFilter={() => navigation.navigate('filterSection')}
+      /> */}
       {activeScreen === 'HOME' ? (
         <View style={styles.pageContainer2}>
-          {/* <View style={{marginTop: 20, borderWidth: 0}}> */}
           <TinderSwipe
             data={data}
             noProfilesLoader={noProfilesLoader}
@@ -339,7 +197,6 @@ const HomeScreen = () => {
             setModalOpen={setModalOpen}
             setReason={setReason}
           />
-          {/* </View> */}
         </View>
       ) : activeScreen === 'Filters' ? (
         <FilterSection
@@ -356,9 +213,7 @@ const HomeScreen = () => {
           high={high}
           setHigh={setHigh}
         />
-      ) : (
-        <NotificationScreen />
-      )}
+      ) : null}
       <Modal
         style={{backgroundColor: 'transparent', margin: 0}}
         isVisible={modalOpen}
@@ -420,7 +275,6 @@ const styles = StyleSheet.create({
     height: '90%',
     backgroundColor: '#ededed',
     marginTop: 20,
-    // borderWidth: 2,
   },
   icons: {
     flexDirection: 'row',

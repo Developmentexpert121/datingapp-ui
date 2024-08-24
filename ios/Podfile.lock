@@ -1314,6 +1314,8 @@ PODS:
     - React-jsi (= 0.73.1)
     - React-logger (= 0.73.1)
     - React-perflogger (= 0.73.1)
+  - ReactNativeGetLocation (4.0.1):
+    - React-Core
   - ReactNativeIncallManager (4.2.0):
     - React-Core
   - RecaptchaInterop (100.0.0)
@@ -1473,6 +1475,7 @@ DEPENDENCIES:
   - React-runtimescheduler (from `../node_modules/react-native/ReactCommon/react/renderer/runtimescheduler`)
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - ReactNativeGetLocation (from `../node_modules/react-native-get-location`)
   - ReactNativeIncallManager (from `../node_modules/react-native-incall-manager`)
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - "RNAppleAuthentication (from `../node_modules/@invertase/react-native-apple-authentication`)"
@@ -1661,6 +1664,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/utils"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  ReactNativeGetLocation:
+    :path: "../node_modules/react-native-get-location"
   ReactNativeIncallManager:
     :path: "../node_modules/react-native-incall-manager"
   rn-fetch-blob:
@@ -1804,6 +1809,7 @@ SPEC CHECKSUMS:
   React-runtimescheduler: 83d1cc129804991a02f378f5d7094467d0aed15e
   React-utils: fefa27e6d4a5b733f5e76cf8802ccf023ff8cc94
   ReactCommon: 73242ec9768e71688f35ad97ae3d0709a0f66435
+  ReactNativeGetLocation: b4379a01dff72507d9abce5f4d569b98abef7761
   ReactNativeIncallManager: bfc9c67358cd524882a7c4116dcb311ac2293d4b
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba

@@ -72,7 +72,6 @@ const ChatSection = () => {
     : [];
 
   const fetchData = async () => {
-    // console.log('Fetch chat user list api hit');
     try {
       const response = await dispatch(
         getChatUsersList({userId: profileData._id}),

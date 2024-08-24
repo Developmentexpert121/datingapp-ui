@@ -6,12 +6,10 @@ import {
   Platform,
   ImageBackground,
   Linking,
-  Keyboard,
   Animated,
   TextInput,
   SafeAreaView,
 } from 'react-native';
-import messaging from '@react-native-firebase/messaging';
 
 import React, {useEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';

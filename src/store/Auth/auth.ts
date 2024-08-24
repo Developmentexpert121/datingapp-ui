@@ -373,6 +373,7 @@ export const uploadImages = createAsyncThunk(
         return response.data;
       }
     } catch (error: any) {
+      console.log('upload Image');
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
       } else {
@@ -440,11 +441,11 @@ export const superLiked = createAsyncThunk(
     try {
       const response = await http.post('/user/superLike', data);
       if (response.status === 200) {
-        // console.log('Like by meeee', response);
+        console.log('superLiked done');
         return response.data;
       }
     } catch (error: any) {
-      console.log('superLiked');
+      console.log('superLiked', error);
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
       } else {
@@ -465,7 +466,6 @@ export const likedMe = createAsyncThunk(
           id: data.id,
         },
       });
-
       if (response.status === 200) {
         return response.data;
       }
@@ -570,6 +570,7 @@ export const getNotifications = createAsyncThunk(
         return response.data;
       }
     } catch (error: any) {
+      console.log('getNotifications', error);
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
       } else {
@@ -590,6 +591,7 @@ export const handleNotificationRead = createAsyncThunk(
         return response.data;
       }
     } catch (error: any) {
+      console.log('handleNotificationRead', error);
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
       } else {
@@ -609,6 +611,7 @@ export const sendAMessage = createAsyncThunk(
         return response.data;
       }
     } catch (error: any) {
+      console.log('sendAMessage', sendAMessage);
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
       } else {
@@ -631,6 +634,7 @@ export const reciveMessages = createAsyncThunk(
         return response.data;
       }
     } catch (error: any) {
+      console.log('reciveMessages', error);
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
       } else {
@@ -652,6 +656,7 @@ export const getReceivers = createAsyncThunk(
         return response.data;
       }
     } catch (error: any) {
+      console.log('getReceivers', error);
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
       } else {
@@ -676,6 +681,7 @@ export const logoutUser = createAsyncThunk(
         return response.data;
       }
     } catch (error: any) {
+      console.log('logoutUser', error);
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
       } else {
@@ -766,6 +772,7 @@ export const videoCallToken = createAsyncThunk(
         return response.data;
       }
     } catch (error: any) {
+      console.log('videoCallToken', error);
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
       } else {
@@ -783,6 +790,7 @@ export const blockAUser = createAsyncThunk(
         return response.data;
       }
     } catch (error: any) {
+      console.log('blockAUser', error);
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
       } else {
@@ -801,6 +809,7 @@ export const UnBlockAUser = createAsyncThunk(
         return response.data;
       }
     } catch (error: any) {
+      console.log('error UnBlockAUser', error);
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
       } else {
@@ -838,6 +847,13 @@ export const cancelLoginWithGoogle: any = createAsyncThunk(
   },
 );
 
+export const SetLocation: any = createAsyncThunk(
+  'activityLoader/SetLocation',
+  async (data: any) => {
+    return data;
+  },
+);
+
 const initialState: any = {
   data: {
     status: false,
@@ -858,6 +874,7 @@ const initialState: any = {
     signInInfo: '',
     otpVerified: false,
     checkDevice: false,
+    location: {},
   },
   userID: null,
   token: null,
@@ -1093,6 +1110,9 @@ const Auth: any = createSlice({
       })
       .addCase(cancelLoginWithGoogle.rejected, (state, action) => {
         state.loading = false;
+      })
+      .addCase(SetLocation.fulfilled, (state, action) => {
+        state.data.location = action.payload;
       });
   },
 });
