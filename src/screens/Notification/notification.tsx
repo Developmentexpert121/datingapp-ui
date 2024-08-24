@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator,
+  SafeAreaView,
 } from 'react-native';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {getNotifications, handleNotificationRead} from '../../store/Auth/auth';
@@ -153,7 +154,7 @@ const NotificationScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <CommonBackbutton title="Notification" />
       {loading ? (
         <View style={styles.loadingContainer}>
@@ -170,7 +171,7 @@ const NotificationScreen = () => {
           keyExtractor={(item: any) => item._id}
         />
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 

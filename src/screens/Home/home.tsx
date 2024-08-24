@@ -42,7 +42,7 @@ import {
 // };
 
 const HomeScreen = () => {
-  const navigation = useNavigation();
+  const navigation: any = useNavigation();
   const [activeScreen, setActiveScreen] = useState('HOME');
   const [apply, setApply] = useState(false);
   const dispatch: any = useAppDispatch();
@@ -245,7 +245,7 @@ const HomeScreen = () => {
               }}
               ButtonName="Subscribe!"
               onPress={() => {
-                navigation.navigate('Subscriptions');
+                navigation.navigate('ProfileSection');
                 setModalOpen(false);
               }}
             />

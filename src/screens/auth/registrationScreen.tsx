@@ -295,16 +295,15 @@ const RegisterScreen = () => {
     // Geolocation.getCurrentPosition(
     //   (position: any) => {
     //     const {latitude, longitude} = position.coords;
-       
 
     //     // Call registration API here
-     
+
     //   },
     //   err => {
-        // console.error('Error fetching location:1111', err);
-        // setLoader(false);
-        // setError(err.message);
-        // setPermissionStatus('denied');
+    // console.error('Error fetching location:1111', err);
+    // setLoader(false);
+    // setError(err.message);
+    // setPermissionStatus('denied');
     //   },
     //   {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}, // Increased timeout to 30000ms (30 seconds)
     // );
@@ -313,12 +312,12 @@ const RegisterScreen = () => {
       timeout: 60000,
     })
       .then(location => {
-        console.log(
-          'latitude- ',
-          location.latitude,
-          ' longitude- ',
-          location.longitude,
-        );
+        // console.log(
+        //   'latitude- ',
+        //   location.latitude,
+        //   ' longitude- ',
+        //   location.longitude,
+        // );
         setLoader(false);
         dispatch(
           SetLocation({
@@ -326,7 +325,7 @@ const RegisterScreen = () => {
             longitude: location.longitude,
           }),
         );
-        Register(data ,location.latitude,location.longitude, )
+        Register(data, location.latitude, location.longitude);
       })
       .catch(error => {
         const {code, message} = error;
@@ -390,7 +389,11 @@ const RegisterScreen = () => {
   //   getLocationAndRegister(data);
   // };
 
-  const Register = (data: RegisterForm , latitude :number ,longitude:number ) =>{
+  const Register = (
+    data: RegisterForm,
+    latitude: number,
+    longitude: number,
+  ) => {
     setLocation({latitude, longitude});
     setPermissionStatus('granted');
     dispatch(
@@ -420,7 +423,8 @@ const RegisterScreen = () => {
             city: city,
             deviceToken: deviceToken,
           }),
-    ).unwrap()
+    )
+      .unwrap()
       .then(async (response: any) => {
         if (response?.payload?.redirect === 'Steps') {
           await navigation.navigate('Register');
@@ -433,10 +437,7 @@ const RegisterScreen = () => {
             'authToken',
             JSON.stringify(response?.token),
           );
-          await AsyncStorage.setItem(
-            'userId',
-            JSON.stringify(response?._id),
-          );
+          await AsyncStorage.setItem('userId', JSON.stringify(response?._id));
 
           // console.log('dfj', response?._id);
           dispatch(ProfileData());
@@ -463,88 +464,88 @@ const RegisterScreen = () => {
         setActiveModal(true);
       });
     dispatch(GoogleLogin({}));
-  }
+  };
 
   const showPermissionPopup = (data: RegisterForm) => {
-    getLocationAndRegister(data)
+    getLocationAndRegister(data);
     // Alert.alert(
-      // 'Location Permission',
-      // 'This app needs access to your location to provide the service.',
-      // [
-      //   {
-      //     text: 'Cancel',
-          // onPress: async () => {
-          //   dispatch(
-          //     loginwithgoogle.email
-          //       ? RegisterSignUp({
-          //           ...data,
-          //           phoneNumber: phone,
-          //           distance: `${distance}mi`,
-          //           profilePic: profileImages?.join(','),
-          //           dob: dob,
-          //           country: country,
-          //           state: state,
-          //           city: city,
-          //           email: loginwithgoogle.email,
-          //           deviceToken: deviceToken,
-          //         })
-          //       : RegisterSignUp({
-          //           ...data,
-          //           phoneNumber: phone,
-          //           distance: `${distance}mi`,
-          //           profilePic: profileImages?.join(','),
-          //           dob: dob,
-          //           country: country,
-          //           state: state,
-          //           city: city,
-          //           deviceToken: deviceToken,
-          //         }),
-          //   )
-          //     .unwrap()
-          //     .then(async (response: any) => {
-          //       if (response?.payload?.redirect === 'Steps') {
-          //         await navigation.navigate('Register');
-          //       } else if (response?.redirect === 'Dashboard') {
-          //         dispatch(activityLoaderStarted());
-          //         let token: string = response?.token;
-          //         setLocalStorage('token', token);
-          //         // console.log('..............', token);
-          //         await AsyncStorage.setItem(
-          //           'authToken',
-          //           JSON.stringify(response?.token),
-          //         );
-          //         await AsyncStorage.setItem(
-          //           'userId',
-          //           JSON.stringify(response?._id),
-          //         );
-          //         // console.log('dfj', response?._id);
-          //         dispatch(ProfileData());
-          //         // If sign-up is successful, call the function to handle the navigation
-          //         handleNavigation(response);
-          //         dispatch(activityLoaderFinished());
-          //         dispatch(setUserId(response?._id));
-          //         reset();
-          //         clearState();
-          //       } else {
-          //         // If there is an error in sign-up, check if there is an error message and set it
-          //         if (response?.payload?.message) {
-          //           setMsg(response?.payload?.message);
-          //         }
-          //         // Show the modal with the error message
-          //         setActiveModal(true);
-          //       }
+    // 'Location Permission',
+    // 'This app needs access to your location to provide the service.',
+    // [
+    //   {
+    //     text: 'Cancel',
+    // onPress: async () => {
+    //   dispatch(
+    //     loginwithgoogle.email
+    //       ? RegisterSignUp({
+    //           ...data,
+    //           phoneNumber: phone,
+    //           distance: `${distance}mi`,
+    //           profilePic: profileImages?.join(','),
+    //           dob: dob,
+    //           country: country,
+    //           state: state,
+    //           city: city,
+    //           email: loginwithgoogle.email,
+    //           deviceToken: deviceToken,
+    //         })
+    //       : RegisterSignUp({
+    //           ...data,
+    //           phoneNumber: phone,
+    //           distance: `${distance}mi`,
+    //           profilePic: profileImages?.join(','),
+    //           dob: dob,
+    //           country: country,
+    //           state: state,
+    //           city: city,
+    //           deviceToken: deviceToken,
+    //         }),
+    //   )
+    //     .unwrap()
+    //     .then(async (response: any) => {
+    //       if (response?.payload?.redirect === 'Steps') {
+    //         await navigation.navigate('Register');
+    //       } else if (response?.redirect === 'Dashboard') {
+    //         dispatch(activityLoaderStarted());
+    //         let token: string = response?.token;
+    //         setLocalStorage('token', token);
+    //         // console.log('..............', token);
+    //         await AsyncStorage.setItem(
+    //           'authToken',
+    //           JSON.stringify(response?.token),
+    //         );
+    //         await AsyncStorage.setItem(
+    //           'userId',
+    //           JSON.stringify(response?._id),
+    //         );
+    //         // console.log('dfj', response?._id);
+    //         dispatch(ProfileData());
+    //         // If sign-up is successful, call the function to handle the navigation
+    //         handleNavigation(response);
+    //         dispatch(activityLoaderFinished());
+    //         dispatch(setUserId(response?._id));
+    //         reset();
+    //         clearState();
+    //       } else {
+    //         // If there is an error in sign-up, check if there is an error message and set it
+    //         if (response?.payload?.message) {
+    //           setMsg(response?.payload?.message);
+    //         }
+    //         // Show the modal with the error message
+    //         setActiveModal(true);
+    //       }
 
-          //       setLoader(false);
-          //     })
-          //     .catch((error: any) => {
-          //       console.error('.......error', error);
-          //       // If there is an error in the promise chain, set the error message and show the modal
-          //       setMsg(error?.payload?.message);
-          //       setActiveModal(true);
-          //     });
-          //   setLoader(false);
-          //   dispatch(GoogleLogin({}));
-          // },
+    //       setLoader(false);
+    //     })
+    //     .catch((error: any) => {
+    //       console.error('.......error', error);
+    //       // If there is an error in the promise chain, set the error message and show the modal
+    //       setMsg(error?.payload?.message);
+    //       setActiveModal(true);
+    //     });
+    //   setLoader(false);
+    //   dispatch(GoogleLogin({}));
+    // },
     //       style: 'cancel',
     //     },
     //     {
@@ -699,7 +700,7 @@ const RegisterScreen = () => {
     // dispatch(GoogleLogin({}));
     if (steps === 0) {
       reset();
-      console.log('first--------------------------------------------');
+      // console.log('first--------------------------------------------');
       dispatch(cancelLoginWithGoogle());
     }
     try {

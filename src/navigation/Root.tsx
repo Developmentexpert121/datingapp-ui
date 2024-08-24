@@ -260,7 +260,7 @@ const Root = () => {
         setIncomingCall(null);
       }
     }, [calls]);
-    console.log('Incoming call ==>', !!incomingCall);
+    // console.log('Incoming call ==>', !!incomingCall);
     if (currentScreen != 'Home' && incomingCall) {
       const endCall = () => {
         setCurrentScreen('Home');
