@@ -76,14 +76,14 @@ const SubscriptionsScreen = ({navigation}) => {
     }
   };
 
-  console.log('============================', subscriptions);
+  const [showSubscriptions, setShowSubscriptions] = useState([]);
 
   useEffect(() => {
     if (subscriptions && isIos) {
-      subscriptions.map(sub => {
+      const data = subscriptions.map(sub => {
         let name;
         switch (sub.title) {
-          case 'TopTier Dating Premium':
+          case 'TopTier Dating Premimum':
             name = 'Premium';
             break;
           case 'TopTier Dating':
@@ -98,6 +98,9 @@ const SubscriptionsScreen = ({navigation}) => {
         }
         return {...sub, name};
       });
+      setShowSubscriptions(data);
+    } else {
+      setShowSubscriptions(subscriptions);
     }
   }, [subscriptions]);
 
@@ -216,9 +219,9 @@ const SubscriptionsScreen = ({navigation}) => {
       checkCurrentPurchase(currentPurchase);
     }
   }, [currentPurchase]);
-  console.log('!!!!!!!!!!!!!!!!!!!!!!!!! subscriptions', subscriptions);
+  console.log('!!!!!!!!!!!!!!!!!!!!!!!!! subscriptions', showSubscriptions);
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex: 1}}>
       <ScrollView>
         <View style={{padding: 1}}>
           <CommonBackbutton title="Subscribe" />
@@ -239,7 +242,7 @@ const SubscriptionsScreen = ({navigation}) => {
             {loadingSubscriptions ? ( // Show loader if loadingSubscriptions is true
               <Loader size="large" />
             ) : (
-              subscriptions?.map((subscription, index) => {
+              showSubscriptions?.map((subscription, index) => {
                 return (
                   <View style={styles.box} key={index}>
                     <View
