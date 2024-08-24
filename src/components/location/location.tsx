@@ -40,12 +40,12 @@ const LocationCheckComponent = () => {
       timeout: 60000,
     })
       .then(location => {
-        console.log(
-          'latitude- ',
-          location.latitude,
-          ' longitude- ',
-          location.longitude,
-        );
+        // console.log(
+        //   'latitude- ',
+        //   location.latitude,
+        //   ' longitude- ',
+        //   location.longitude,
+        // );
         setLoader(false);
         dispatch(
           SetLocation({

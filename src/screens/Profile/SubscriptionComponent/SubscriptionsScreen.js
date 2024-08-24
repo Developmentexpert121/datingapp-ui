@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ActivityIndicator,
+  FlatList,
 } from 'react-native';
 
 import {
@@ -64,7 +65,6 @@ const SubscriptionsScreen = ({navigation}) => {
     try {
       setLoadingSubscriptions(true); // Show loader
       await initConnection();
-      console.log('Fetching subscriptions...');
       if (subscriptions.length === 0) {
         await getSubscriptions({skus: subscriptionSkus});
       }
@@ -118,11 +118,6 @@ const SubscriptionsScreen = ({navigation}) => {
 
   const handleBuySubscription = async product => {
     try {
-      console.log(
-        'Initiating purchase for::::::::::::::::::::::::::::::::',
-        product,
-      );
-
       const itemm = await requestSubscription({
         sku: product?.productId,
         ...(product?.subscriptionOfferDetails?.[0]?.offerToken && {
@@ -135,7 +130,6 @@ const SubscriptionsScreen = ({navigation}) => {
         }),
       });
 
-      console.log('first>>>>>>>>>', itemm);
       dispatch(
         verifyReceipt({
           platform: itemm.length > 0 ? 'android' : 'ios',
@@ -144,26 +138,18 @@ const SubscriptionsScreen = ({navigation}) => {
       )
         .unwrap()
         .then(() => {
-          console.log('first');
           purchaseUpdatedListener(async purchase => {
             const receipt = purchase.transactionReceipt;
-            console.log('second');
-
             if (receipt) {
               try {
-                console.log('third');
-
                 if (
                   purchase.purchaseStateAndroid === 1 &&
                   !purchase.isAcknowledgedAndroid
                 ) {
-                  console.log('forth', purchase);
-
                   const yyy = await acknowledgePurchaseAndroid({
                     token: purchase.purchaseToken,
                     developerPayload: purchase.developerPayloadAndroid,
                   });
-                  console.log('Purchase acknowledged', yyy);
                   navigation.dispatch(
                     CommonActions.reset({
                       index: 0,
@@ -172,7 +158,7 @@ const SubscriptionsScreen = ({navigation}) => {
                   );
                 }
               } catch (err) {
-                console.warn(err);
+                console.error('error', err);
               }
             }
           });
@@ -209,7 +195,7 @@ const SubscriptionsScreen = ({navigation}) => {
           }
         }
       } catch (error) {
-        console.log('error checkCurrentPurchase', error);
+        console.error('checkCurrentPurchase', error);
       }
     }
   };
@@ -219,110 +205,113 @@ const SubscriptionsScreen = ({navigation}) => {
       checkCurrentPurchase(currentPurchase);
     }
   }, [currentPurchase]);
-  console.log('!!!!!!!!!!!!!!!!!!!!!!!!! subscriptions', showSubscriptions);
   return (
-    <SafeAreaView style={{flex: 1, borderWidth: 5}}>
-      <ScrollView>
-        <View style={{padding: 1}}>
-          <CommonBackbutton title="Subscribe" />
-          <Text style={styles.listItem}>
-            Subscribe to some cool stuff today.
-          </Text>
-          <Text
+    <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+      <CommonBackbutton title="Subscribe" />
+      <Text style={styles.listItem}>Subscribe to some cool stuff today.</Text>
+      <Text
+        style={{
+          ...styles.listItem,
+          fontWeight: '500',
+          textAlign: 'center',
+          marginTop: 10,
+          fontSize: 18,
+        }}>
+        Choose your membership plan.
+      </Text>
+
+      <View style={{marginTop: 10}}>
+        {loadingSubscriptions ? ( // Show loader if loadingSubscriptions is true
+          <View
             style={{
-              ...styles.listItem,
-              fontWeight: '500',
-              textAlign: 'center',
-              marginTop: 10,
-              fontSize: 18,
+              height: '80%',
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}>
-            Choose your membership plan.
-          </Text>
-          <View style={{marginTop: 10}}>
-            {loadingSubscriptions ? ( // Show loader if loadingSubscriptions is true
-              <Loader size="large" />
-            ) : (
-              showSubscriptions?.map((subscription, index) => {
-                return (
-                  <View style={styles.box} key={index}>
-                    <View
-                      style={{
-                        flex: 1,
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        marginTop: 10,
-                      }}>
-                      <Text
-                        style={{
-                          paddingBottom: 10,
-                          fontWeight: 'bold',
-                          fontSize: 18,
-                          textTransform: 'uppercase',
-                        }}>
-                        {subscription.title}
-                      </Text>
-                      <Text
-                        style={{
-                          paddingBottom: 20,
-                          fontWeight: 'bold',
-                          fontSize: 18,
-                        }}>
-                        {subscription.localizedPrice}
-                      </Text>
-                    </View>
-                    {subscription?.introductoryPriceSubscriptionPeriodIOS && (
-                      <Text>
-                        Free for 1{' '}
-                        {subscription.introductoryPriceSubscriptionPeriodIOS}
-                      </Text>
-                    )}
-                    <Text style={{paddingBottom: 20}}>
-                      {subscription.description}
-                    </Text>
-                    {profileData.plan.productId === subscription.name ? (
-                      <>
-                        <Text style={{textAlign: 'center', marginBottom: 10}}>
-                          You are Subscribed to this plan!
-                        </Text>
-                        <TouchableOpacity
-                          style={[styles.button, {backgroundColor: '#0071bc'}]}
-                          onPress={() => navigation.navigate('Home')}>
-                          <Text style={styles.buttonText}>Continue to App</Text>
-                        </TouchableOpacity>
-                      </>
-                    ) : (
-                      !loading && (
-                        <TouchableOpacity
-                          style={styles.button}
-                          onPress={() => handleBuySubscription(subscription)}>
-                          <Text style={styles.buttonText}>Subscribe</Text>
-                        </TouchableOpacity>
-                      )
-                    )}
-                    {loading && (
-                      <ActivityIndicator size="large" color={'#AC25AC'} />
-                    )}
-                  </View>
-                );
-              })
-            )}
-            {subscriptions?.length === 0 && !loadingSubscriptions && (
-              <Text style={{textAlign: 'center', marginTop: 20}}>
-                No subscriptions available. Please check your Play Store
-                configuration.
-              </Text>
-            )}
+            <Loader size="large" />
           </View>
-        </View>
-      </ScrollView>
+        ) : (
+          <FlatList
+            data={showSubscriptions}
+            keyExtractor={(item, index) => index.toString()} // or use `item.id` if available
+            renderItem={({item: subscription}) => (
+              <View style={styles.box}>
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginTop: 10,
+                  }}>
+                  <Text
+                    style={{
+                      paddingBottom: 10,
+                      fontWeight: 'bold',
+                      fontSize: 15,
+                      textTransform: 'uppercase',
+                    }}>
+                    {subscription.title}
+                  </Text>
+                  <Text
+                    style={{
+                      paddingBottom: 20,
+                      fontWeight: 'bold',
+                      fontSize: 18,
+                      color: '#AC25AC',
+                    }}>
+                    {isIos
+                      ? subscription.localizedPrice
+                      : subscription?.subscriptionOfferDetails?.[0]
+                          ?.pricingPhases?.pricingPhaseList?.[0]
+                          ?.formattedPrice}
+                  </Text>
+                </View>
+
+                <Text style={{paddingBottom: 20}}>
+                  {subscription.description}
+                </Text>
+
+                {profileData.plan.productId === subscription.name ? (
+                  <>
+                    <Text style={{textAlign: 'center', marginBottom: 10}}>
+                      You are Subscribed to this plan!
+                    </Text>
+                    <TouchableOpacity
+                      style={[styles.button, {backgroundColor: '#0071bc'}]}
+                      onPress={() => navigation.navigate('Home')}>
+                      <Text style={styles.buttonText}>Continue to App</Text>
+                    </TouchableOpacity>
+                  </>
+                ) : (
+                  !loading && (
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => handleBuySubscription(subscription)}>
+                      <Text style={styles.buttonText}>Subscribe</Text>
+                    </TouchableOpacity>
+                  )
+                )}
+
+                {loading && (
+                  <ActivityIndicator size="large" color={'#AC25AC'} />
+                )}
+              </View>
+            )}
+          />
+        )}
+        {subscriptions?.length === 0 && !loadingSubscriptions && (
+          <Text style={{textAlign: 'center', marginTop: 20}}>
+            No subscriptions available. Please check your Play Store
+            configuration.
+          </Text>
+        )}
+      </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginBottom: 20,
-  },
   listItem: {
     fontSize: 16,
     paddingLeft: 8,
@@ -340,6 +329,15 @@ const styles = StyleSheet.create({
     shadowOffset: {height: 16, width: 0},
     shadowOpacity: 0.1,
     shadowRadius: 12,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
   button: {
     alignItems: 'center',
@@ -352,16 +350,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
     textTransform: 'uppercase',
-  },
-  specialTag: {
-    color: 'white',
-    backgroundColor: 'crimson',
-    width: 125,
-    padding: 4,
-    fontWeight: 'bold',
-    fontSize: 12,
-    borderRadius: 7,
-    marginBottom: 2,
   },
 });
 
