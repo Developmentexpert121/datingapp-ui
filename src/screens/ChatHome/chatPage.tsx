@@ -182,7 +182,6 @@ const ChatPage = ({
 
     launchImageLibrary(options, async response => {
       if (response.didCancel) {
-        console.log('User cancelled image picker');
       } else if (response.errorCode) {
         console.error('ImagePicker Error: ', response.errorMessage);
       } else if (response.assets && response.assets.length > 0) {
@@ -258,8 +257,6 @@ const ChatPage = ({
     }
   };
 
-  console.log(profileData.plan.productId);
-
   return (
     <>
       <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
@@ -331,14 +328,11 @@ const ChatPage = ({
                       }
                     : profileData.plan.productId === 'PremiumPlus'
                     ? () => {
-                        console.log('first');
                         setCallType('videoCall');
                         setEnableCamera(true);
                         goToCallScreen('videoCall');
                       }
                     : () => {
-                        console.log('second');
-
                         navigation.navigate('Subscriptions');
                       }
                 }>

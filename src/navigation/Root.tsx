@@ -41,6 +41,8 @@ import {EventRegister} from 'react-native-event-listeners';
 import {useDispatch} from 'react-redux';
 import MyIncomingCallUI from '../screens/ChatHome/myIncomingCallUI';
 import {PermissionsAndroid, Platform, SafeAreaView, View} from 'react-native';
+import filterSection from '../screens/FilterSection/filterSection';
+import NotificationScreen from '../screens/Notification/notification';
 
 const Stack = createNativeStackNavigator();
 
@@ -108,7 +110,6 @@ const Root = () => {
           authStatus === messaging.AuthorizationStatus.PROVISIONAL;
         if (enabled) {
           const token = await messaging().getToken();
-          console.log('DeviceToken==> ', token);
           await setLocalStorage('deviceToken', token);
         } else {
           console.log('Authorization status:', authStatus);
@@ -121,7 +122,6 @@ const Root = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      // console.log('videoCallToken({id: userdata?.id}) -->', userdata?.id);
       if (!client) {
         try {
           const apiKey = '48e74nbgz5az';
@@ -133,7 +133,6 @@ const Root = () => {
           };
 
           const token = await tokenProvider();
-          // console.log('Stream Token', token);
 
           const userMain = {
             id: userdata.id,
@@ -279,6 +278,14 @@ const Root = () => {
             component={BottomTabNavigation}
           />
           <AfterLoginStack.Screen name="Settings" component={SettingsScreen} />
+          <AfterLoginStack.Screen
+            name="filterSection"
+            component={filterSection}
+          />
+          <AfterLoginStack.Screen
+            name="NotificationScreen"
+            component={NotificationScreen}
+          />
           <AfterLoginStack.Screen
             name="UpdateProfile"
             component={UpdateProfileScreen}

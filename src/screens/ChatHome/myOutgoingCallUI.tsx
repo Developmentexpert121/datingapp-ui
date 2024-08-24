@@ -26,10 +26,6 @@ export default function MyOutgoingCallUI({call, callEnded}: any) {
 
   const membersToShow: UserResponse[] = (members || []).map(({user}) => user);
 
-  // console.log('callingState outgoing ++>', callingState);
-  // console.log('members outgoing++>', JSON.stringify(members));
-  // console.log('membersToShow outgoing++>', JSON.stringify(membersToShow));
-
   useEffect(() => {
     call.on('call.session_ended', (event: CallSessionEndedEvent) => {
       console.log('call.session_ended triggered Incoming---', 'event');

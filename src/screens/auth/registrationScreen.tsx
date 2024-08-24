@@ -720,7 +720,6 @@ const RegisterScreen = () => {
     navigation.goBack();
   };
 
-  // console.log('first');
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView

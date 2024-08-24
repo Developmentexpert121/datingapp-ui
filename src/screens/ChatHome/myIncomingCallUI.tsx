@@ -50,10 +50,6 @@ export default function MyIncomingCallUI({call, userName, callEnded}: any) {
 
   const membersToShow: UserResponse[] = (members || []).map(({user}) => user);
 
-  // console.log('callingState outgoing ++>', callingState);
-  // console.log('members outgoing++>', JSON.stringify(members));
-  // console.log('membersToShow outgoing++>', JSON.stringify(membersToShow));
-
   return (
     <View style={styles.container}>
       {callingState === CallingState.RINGING ? (
