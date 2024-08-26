@@ -5,7 +5,7 @@ import {Controller} from 'react-hook-form';
 const SixthStepScreen = ({hobbies, control, errors}: any) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tell use about yourself!</Text>
+      <Text style={styles.title}>Tell us about yourself!</Text>
       <Text style={styles.paragraph}>
         You like what you like. Now, let everyone know.
       </Text>

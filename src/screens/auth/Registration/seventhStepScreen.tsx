@@ -191,21 +191,30 @@ const SeventhStepScreen = ({
           ...profileImages,
           ...Array(Math.max(6 - (profileImages?.length || 0), 0)),
         ].map((item, index) => (
-          <TouchableOpacity
-            onPress={() => {
-              if (item && profileImages.length > 2) {
-                handleRemoveImage(index);
-              } else if (item && profileImages.length <= 2) {
-                handleImageSelection(index);
-              } else {
-                handleImageSelection();
-              }
-            }}
-            style={[styles.imageContainerdm, !item && {borderWidth: 2}]}
-            key={index}>
+          <View
+            // onPress={() => {
+            //   if (item && profileImages.length > 2) {
+            //     handleRemoveImage(index);
+            //   } else if (item && profileImages.length <= 2) {
+            //     handleImageSelection(index);
+            //   } else {
+            //     handleImageSelection();
+            //   }
+            // }}
+            style={[styles.imageContainerdm, !item && {borderWidth: 2}]}>
             {item && <Image source={{uri: item}} style={styles.dummyImagedm} />}
             {profileImages.length < 2 && title === 'Registeration' && !item && (
-              <View
+              <TouchableOpacity
+                onPress={() => {
+                  if (item && profileImages.length > 2) {
+                    handleRemoveImage(index);
+                  } else if (item && profileImages.length <= 2) {
+                    handleImageSelection(index);
+                  } else {
+                    handleImageSelection();
+                  }
+                }}
+                key={index}
                 style={[
                   styles.addRemoveButton,
                   item && {transform: [{rotate: '45deg'}]},
@@ -214,11 +223,21 @@ const SeventhStepScreen = ({
                   source={require('../../../assets/images/Plus.png')}
                   style={{width: 28, height: 28}}
                 />
-              </View>
+              </TouchableOpacity>
             )}
 
             {(profileImages.length >= 3 || index >= 2) && (
-              <View
+              <TouchableOpacity
+                onPress={() => {
+                  if (item && profileImages.length > 2) {
+                    handleRemoveImage(index);
+                  } else if (item && profileImages.length <= 2) {
+                    handleImageSelection(index);
+                  } else {
+                    handleImageSelection();
+                  }
+                }}
+                key={index}
                 style={[
                   styles.addRemoveButton,
                   item && {transform: [{rotate: '45deg'}]},
@@ -227,9 +246,9 @@ const SeventhStepScreen = ({
                   source={require('../../../assets/images/Plus.png')}
                   style={{width: 28, height: 28}}
                 />
-              </View>
+              </TouchableOpacity>
             )}
-          </TouchableOpacity>
+          </View>
         ))}
       </View>
       {uploadError && profileImages.length < 2 && (
