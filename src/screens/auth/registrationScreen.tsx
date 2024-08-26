@@ -58,11 +58,12 @@ import {
 } from '../../store/Activity/activity';
 import {googleLogin} from '../../store/Auth/socialLogin';
 import {useNavigation} from '@react-navigation/native';
-import {setLocalStorage} from '../../api/storage';
+import {getLocalStroage, setLocalStorage} from '../../api/storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getProfile} from '../../store/slice/myProfileSlice/myProfileAction';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import GetLocation from 'react-native-get-location';
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 type Props = NativeStackScreenProps<RootStackParamList, 'Register'>;
 
 interface RegisterForm {
@@ -208,24 +209,36 @@ const RegisterScreen = () => {
   }, []);
 
   const requestUserPermission = async () => {
-    try {
-      const authStatus = await messaging().requestPermission({
-        sound: true,
-        alert: true,
-        badge: true,
-      });
-      const enabled =
-        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-      if (enabled) {
-        const token = await messaging().getToken();
-        setDeviceToken(token);
-      } else {
-        console.log('Authorization status:', authStatus);
-      }
-    } catch (error) {
-      console.error('Error requesting permission:', error);
+    const authStatus = await messaging().requestPermission({
+      sound: true,
+      alert: true,
+      badge: true,
+    });
+    const token = await getLocalStroage('deviceToken');
+    if (token) {
+      const token = await messaging().getToken();
+      setDeviceToken(token);
+    } else {
+      console.log('Authorization status:', authStatus);
     }
+    // try {
+    //   const authStatus = await messaging().requestPermission({
+    //     sound: true,
+    //     alert: true,
+    //     badge: true,
+    //   });
+    //   const enabled =
+    //     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+    //     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+    //   if (enabled) {
+    //     const token = await messaging().getToken();
+    //     setDeviceToken(token);
+    //   } else {
+    //     console.log('Authorization status:', authStatus);
+    //   }
+    // } catch (error) {
+    //   console.error('Error requesting permission:', error);
+    // }
   };
 
   const dispatch: any = useAppDispatch();
@@ -292,21 +305,6 @@ const RegisterScreen = () => {
       setValue('email', loginwithgoogle.email);
     }
     setLoader(true);
-    // Geolocation.getCurrentPosition(
-    //   (position: any) => {
-    //     const {latitude, longitude} = position.coords;
-
-    //     // Call registration API here
-
-    //   },
-    //   err => {
-    // console.error('Error fetching location:1111', err);
-    // setLoader(false);
-    // setError(err.message);
-    // setPermissionStatus('denied');
-    //   },
-    //   {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}, // Increased timeout to 30000ms (30 seconds)
-    // );
     GetLocation.getCurrentPosition({
       enableHighAccuracy: true,
       timeout: 60000,
@@ -383,11 +381,6 @@ const RegisterScreen = () => {
 
     Alert.alert(title, message, buttons);
   };
-
-  // const requestLocationPermission = (data: RegisterForm) => {
-  //   // Geolocation.requestAuthorization();
-  //   getLocationAndRegister(data);
-  // };
 
   const Register = (
     data: RegisterForm,
@@ -468,92 +461,6 @@ const RegisterScreen = () => {
 
   const showPermissionPopup = (data: RegisterForm) => {
     getLocationAndRegister(data);
-    // Alert.alert(
-    // 'Location Permission',
-    // 'This app needs access to your location to provide the service.',
-    // [
-    //   {
-    //     text: 'Cancel',
-    // onPress: async () => {
-    //   dispatch(
-    //     loginwithgoogle.email
-    //       ? RegisterSignUp({
-    //           ...data,
-    //           phoneNumber: phone,
-    //           distance: `${distance}mi`,
-    //           profilePic: profileImages?.join(','),
-    //           dob: dob,
-    //           country: country,
-    //           state: state,
-    //           city: city,
-    //           email: loginwithgoogle.email,
-    //           deviceToken: deviceToken,
-    //         })
-    //       : RegisterSignUp({
-    //           ...data,
-    //           phoneNumber: phone,
-    //           distance: `${distance}mi`,
-    //           profilePic: profileImages?.join(','),
-    //           dob: dob,
-    //           country: country,
-    //           state: state,
-    //           city: city,
-    //           deviceToken: deviceToken,
-    //         }),
-    //   )
-    //     .unwrap()
-    //     .then(async (response: any) => {
-    //       if (response?.payload?.redirect === 'Steps') {
-    //         await navigation.navigate('Register');
-    //       } else if (response?.redirect === 'Dashboard') {
-    //         dispatch(activityLoaderStarted());
-    //         let token: string = response?.token;
-    //         setLocalStorage('token', token);
-    //         // console.log('..............', token);
-    //         await AsyncStorage.setItem(
-    //           'authToken',
-    //           JSON.stringify(response?.token),
-    //         );
-    //         await AsyncStorage.setItem(
-    //           'userId',
-    //           JSON.stringify(response?._id),
-    //         );
-    //         // console.log('dfj', response?._id);
-    //         dispatch(ProfileData());
-    //         // If sign-up is successful, call the function to handle the navigation
-    //         handleNavigation(response);
-    //         dispatch(activityLoaderFinished());
-    //         dispatch(setUserId(response?._id));
-    //         reset();
-    //         clearState();
-    //       } else {
-    //         // If there is an error in sign-up, check if there is an error message and set it
-    //         if (response?.payload?.message) {
-    //           setMsg(response?.payload?.message);
-    //         }
-    //         // Show the modal with the error message
-    //         setActiveModal(true);
-    //       }
-
-    //       setLoader(false);
-    //     })
-    //     .catch((error: any) => {
-    //       console.error('.......error', error);
-    //       // If there is an error in the promise chain, set the error message and show the modal
-    //       setMsg(error?.payload?.message);
-    //       setActiveModal(true);
-    //     });
-    //   setLoader(false);
-    //   dispatch(GoogleLogin({}));
-    // },
-    //       style: 'cancel',
-    //     },
-    //     {
-    //       text: 'Allow',
-    //       onPress: () => requestLocationPermission(data),
-    //     },
-    //   ],
-    // );
   };
 
   //******************************************** */
@@ -726,7 +633,7 @@ const RegisterScreen = () => {
       <KeyboardAvoidingView
         behavior="padding"
         keyboardVerticalOffset={
-          Platform.OS === 'ios' ? StatusBar.currentHeight || 0 : 0
+          Platform.OS === 'ios' ? StatusBar.currentHeight || 0 : hp(3)
         }
         style={{flex: 1}}>
         <View style={{flex: 1}}>
@@ -830,12 +737,21 @@ const RegisterScreen = () => {
               <EighthStepScreen />
             ) : null}
           </View>
-
-          <MainButton
-            buttonStyle={{width: '90%'}}
-            ButtonName={steps === 0 ? 'Continue' : steps < 8 ? 'Next' : 'Done'}
-            onPress={handleSubmit(onSubmit)}
-          />
+          <View
+            style={{
+              height: hp(7),
+              backgroundColor: '#fff',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <MainButton
+              buttonStyle={{width: '90%'}}
+              ButtonName={
+                steps === 0 ? 'Continue' : steps < 8 ? 'Next' : 'Done'
+              }
+              onPress={handleSubmit(onSubmit)}
+            />
+          </View>
         </View>
       </KeyboardAvoidingView>
 
