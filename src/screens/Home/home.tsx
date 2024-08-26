@@ -27,19 +27,19 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 
-// const getUserId = async () => {
-//   try {
-//     const userId: any = await AsyncStorage.getItem('userId');
+const getUserId = async () => {
+  try {
+    const userId: any = await AsyncStorage.getItem('userId');
 
-//     if (userId !== null) {
-//       return JSON.parse(userId);
-//     } else {
-//       return null;
-//     }
-//   } catch (error) {
-//     return null;
-//   }
-// };
+    if (userId !== null) {
+      return JSON.parse(userId);
+    } else {
+      return null;
+    }
+  } catch (error) {
+    return null;
+  }
+};
 
 const HomeScreen = () => {
   const navigation: any = useNavigation();
@@ -70,23 +70,27 @@ const HomeScreen = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       if (initialRouteValue === 'LikedScreen') {
-        console.log('Calllllleddd');
         navigation.navigate(initialRouteValue);
       }
-    }, 2000); // 2 seconds delay
-
-    // Cleanup the timer if the component unmounts before the timeout is finished
+    }, 2000);
     return () => clearTimeout(timer);
   }, [initialRouteValue]);
 
-  // const location: any = useAppSelector(
-  //   (state: any) => state?.Auth?.data?.location,
-  // );
-
-  // console.log('Location on home screen ', location)
+  const location: any = useAppSelector(
+    (state: any) => state?.Auth?.data?.location,
+  );
 
   useEffect(() => {
     fetchNewData();
+    if (location?.latitude) {
+      dispatch(
+        updateProfileData({
+          field: 'location',
+          value: {latitude: location.latitude, longitude: location.longitude},
+          id: getUserId(),
+        }),
+      );
+    }
   }, []);
 
   useEffect(() => {

@@ -395,7 +395,7 @@ export const updateProfileData = createAsyncThunk(
         if (data.field !== 'profilePercentage') {
           dispatch(ProfileData());
         }
-        // console.log('>>>>>>>>>>>>>>', response?.config?.data);
+        // console.log('lotion api >>>>>>>>>>>>>>', response?.data);
         return response.data;
       }
     } catch (error: any) {
