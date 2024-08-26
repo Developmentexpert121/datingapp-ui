@@ -177,7 +177,7 @@ const LikedScreen = () => {
               }}
               ButtonName="Subscribe!"
               onPress={() => {
-                navigation.navigate('Subscriptions');
+                navigation.navigate('ProfileSection');
                 setModalOpen(false);
               }}
             />

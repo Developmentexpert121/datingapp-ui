@@ -40,12 +40,12 @@ const LocationCheckComponent = () => {
       timeout: 60000,
     })
       .then(location => {
-        console.log(
-          'latitude- ',
-          location.latitude,
-          ' longitude- ',
-          location.longitude,
-        );
+        // console.log(
+        //   'latitude- ',
+        //   location.latitude,
+        //   ' longitude- ',
+        //   location.longitude,
+        // );
         setLoader(false);
         dispatch(
           SetLocation({
@@ -170,7 +170,7 @@ const style = StyleSheet.create({
     height: hp(18),
   },
   img2: {
-    resizeMode: 'contain',
+    resizeMode: 'cover',
     width: wp(90),
     height: hp(32),
   },

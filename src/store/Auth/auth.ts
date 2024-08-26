@@ -20,6 +20,7 @@ interface authData {
 export const ProfileData: any = createAsyncThunk(
   'auth/ProfileData',
   async () => {
+    // console.log('first');
     try {
       const response: any = await http.get(`/user/profile`);
       if (response.status === 200) {
@@ -50,7 +51,7 @@ export const setAuthData: any = createAsyncThunk(
 
       // console.log('test()((()()()', userIdRes, authTokenRes);
       if (userIdRes && authTokenRes) {
-        console.log('Go to profile data api ---->');
+        // console.log('Go to profile data api ---->');
         dispatch(ProfileData());
       }
       return {token: authTokenRes, userId: userIdRes, profileRes: profileRes};

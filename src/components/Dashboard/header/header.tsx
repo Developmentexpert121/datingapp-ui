@@ -22,7 +22,7 @@ const HeaderComponent = (props: any) => {
   return (
     <SafeAreaView style={styles.topNavigation}>
       <Pressable>
-        {props.activeScreen === 'HOME' || props.activeScreen === 'Filters' ? (
+        {props.activeScreen === 'HOME' ? (
           <Image
             source={require('../../../assets/images/logIcon.png')}
             style={styles.icon}
@@ -65,7 +65,7 @@ const HeaderComponent = (props: any) => {
         <TouchableOpacity
           onPress={() => {
             props.applyClick();
-            props.setApply();
+            // props.setApply();
           }}
           // onPress={() => props?.setActiveScreen('HOME')}
           style={{marginRight: 30}}>

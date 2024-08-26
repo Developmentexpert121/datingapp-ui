@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {View, StyleSheet, Platform, Alert, Linking} from 'react-native';
 import HeaderComponent from '../../components/Dashboard/header/header';
 import {useAppDispatch, useAppSelector} from '../../store/store';
@@ -17,27 +17,32 @@ import {navigation, onlineUser} from '../../store/reducer/authSliceState';
 import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
 const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 import DeviceInfo from 'react-native-device-info';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import Modal from 'react-native-modal';
 import Label from '../../components/Label';
 import MainButton from '../../components/ButtonComponent/MainButton';
+import Loader from '../../components/Loader/Loader';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
 
-const getUserId = async () => {
-  try {
-    const userId: any = await AsyncStorage.getItem('userId');
+// const getUserId = async () => {
+//   try {
+//     const userId: any = await AsyncStorage.getItem('userId');
 
-    if (userId !== null) {
-      return JSON.parse(userId);
-    } else {
-      return null;
-    }
-  } catch (error) {
-    return null;
-  }
-};
+//     if (userId !== null) {
+//       return JSON.parse(userId);
+//     } else {
+//       return null;
+//     }
+//   } catch (error) {
+//     return null;
+//   }
+// };
 
 const HomeScreen = () => {
-  const navigation = useNavigation();
+  const navigation: any = useNavigation();
   const [activeScreen, setActiveScreen] = useState('HOME');
   const [apply, setApply] = useState(false);
   const dispatch: any = useAppDispatch();
@@ -81,19 +86,8 @@ const HomeScreen = () => {
   // console.log('Location on home screen ', location)
 
   useEffect(() => {
-    // getlatestLocation();
-    dispatch(ProfileData())
-      .unwrap()
-      .then((res: any) => {
-        if (res.data.location !== undefined) {
-          setShowIn(res.data.showInDistance);
-        }
-        setDistance(parseInt(res.data.distance));
-        setCheckedInterests(res.data.interests);
-        setCheckedRelationShip(res.data.partnerType);
-        setTrigger(true);
-      });
-  }, [apply]);
+    fetchNewData();
+  }, []);
 
   useEffect(() => {
     socket.emit('user_connected', profileData?._id);
@@ -125,74 +119,69 @@ const HomeScreen = () => {
     dispatch(onlineUser(onlineUsers));
   }, [onlineUsers]);
 
-  useEffect(() => {
-    setNoProfilesLoader(true);
-    profileData?._id &&
-      dispatch(
-        getAllUsers({
-          userId: profileData._id,
-          checkedInterests: checkedInterests,
-          showIn: showIn,
-          distance: distance,
-          low: low,
-          high: high,
-          checkedRelationShip: checkedRelationShip,
-        }),
-      )
-        .unwrap()
-        .then((response: any) => {
-          setData(response.users);
-          setNoProfilesLoader(false);
-        });
-    apply && setApply(false);
-  }, [apply, trigger]);
-
-  // useEffect(() => {
-  //   setUserLcoation();
-  // }, [location]);
-
-  // const setUserLcoation = async () => {
-  //   const userId = await getUserId();
-  //   if (userId && location) {
-  //     dispatch(
-  //       updateProfileData({
-  //         field: 'location',
-  //         value: {latitude: location?.latitude, longitude: location.longitude},
-  //         id: userId,
-  //       }),
-  //     );
-  //   }
-  // };
-
-  // const getlatestLocation = () => {
-  //   GetLocation.getCurrentPosition({
-  //     enableHighAccuracy: true,
-  //     timeout: 60000,
-  //   })
-  //     .then(location => {
-  //       dispatch(
-  //         SetLocation({
-  //           latitude: location.latitude,
-  //           longitude: location.longitude,
-  //         }),
-  //       );
-  //     })
-  //     .catch(error => {
-  //       dispatch(SetLocation(undefined));
-  //     });
-  // };
-  useEffect(() => {
+  const fetchNewData = () => {
     setActiveScreen('HOME');
-  }, []);
+    setNoProfilesLoader(true);
+    dispatch(ProfileData())
+      .unwrap()
+      .then((res: any) => {
+        if (res.data.location !== undefined) {
+          setShowIn(res.data.showInDistance);
+        }
+        setDistance(parseInt(res.data.distance));
+        setCheckedInterests(res.data.interests);
+        setCheckedRelationShip(res.data.partnerType);
+        setTrigger(true);
+      })
+      .then(() => {
+        dispatch(
+          getAllUsers({
+            userId: profileData._id,
+            checkedInterests: checkedInterests,
+            showIn: showIn,
+            distance: distance,
+            low: low,
+            high: high,
+            checkedRelationShip: checkedRelationShip,
+          }),
+        )
+          .unwrap()
+          .then((response: any) => {
+            setData(response.users);
+            setNoProfilesLoader(false);
+          });
+      });
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        setActiveScreen('HOME');
+      };
+    }, []),
+  );
   return (
     <View style={styles.pageContainer}>
+      {noProfilesLoader && (
+        <View
+          style={{
+            height: hp(90),
+            width: '100%',
+            position: 'absolute',
+            zIndex: 20,
+          }}>
+          <Loader color="#fff" />
+        </View>
+      )}
+
       <HeaderComponent
         showNotifications={true}
         setActiveScreen={setActiveScreen}
         activeScreen={activeScreen}
-        setApply={() => setApply(true)}
+        // setApply={() => )}
         applyClick={() => {
           setActiveScreen('HOME');
+          fetchNewData();
         }}
         ClickNotification={() => navigation.navigate('NotificationScreen')}
       />
@@ -256,7 +245,7 @@ const HomeScreen = () => {
               }}
               ButtonName="Subscribe!"
               onPress={() => {
-                navigation.navigate('Subscriptions');
+                navigation.navigate('ProfileSection');
                 setModalOpen(false);
               }}
             />
@@ -274,6 +263,9 @@ const HomeScreen = () => {
         </View>
       </Modal>
     </View>
+    // <View style={{flex:1}}>
+    //   {noProfilesLoader && <View style={{height:'90%' , width:'100%' , position:'absolute' , zIndex:2}}><Loader/></View>}
+    // </View>
   );
 };
 
