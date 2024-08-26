@@ -82,7 +82,6 @@ const App = () => {
                 videoCallUser({user: JSON.parse(remoteMessage.data.userData)}),
               );
             }
-            navigationRef.current?.navigate(remoteMessage.data.screen);
           }
         }
       });

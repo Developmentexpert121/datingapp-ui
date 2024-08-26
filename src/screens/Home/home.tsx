@@ -1,22 +1,15 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {View, StyleSheet, Platform, Alert, Linking} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import HeaderComponent from '../../components/Dashboard/header/header';
 import {useAppDispatch, useAppSelector} from '../../store/store';
-import {
-  ProfileData,
-  SetLocation,
-  getAllUsers,
-  updateProfileData,
-} from '../../store/Auth/auth';
+import {ProfileData, getAllUsers} from '../../store/Auth/auth';
 import FilterSection from '../FilterSection/filterSection';
 import TinderSwipe from './AnimatedStack/TinderSwipe';
-import Geolocation from '@react-native-community/geolocation';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {io} from 'socket.io-client';
-import {navigation, onlineUser} from '../../store/reducer/authSliceState';
-import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
+import {onlineUser} from '../../store/reducer/authSliceState';
+
 const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
-import DeviceInfo from 'react-native-device-info';
+
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import Modal from 'react-native-modal';
 import Label from '../../components/Label';
@@ -43,37 +36,33 @@ const getUserId = async () => {
 
 const HomeScreen = () => {
   const navigation: any = useNavigation();
-  const [activeScreen, setActiveScreen] = useState('HOME');
-  const [apply, setApply] = useState(false);
+
   const dispatch: any = useAppDispatch();
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-  const [low, setLow] = useState<number>(18);
-  const [high, setHigh] = useState<number>(56);
-  const [showIn, setShowIn] = useState(false);
-  const [distance, setDistance] = useState(50);
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [data, setData] = useState<any>([]);
-  const [checkedInterests, setCheckedInterests] = useState('Everyone');
-  const [checkedRelationShip, setCheckedRelationShip] = useState('');
-  const [trigger, setTrigger] = useState(false);
+  const [activeScreen, setActiveScreen] = useState('HOME');
   const [noProfilesLoader, setNoProfilesLoader] = useState(false);
   const [onlineUsers, setOnlineUsers] = useState<any>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [reason, setReason] = useState('');
+  const [filterData, setFilterData] = useState({});
 
   const initialRouteValue = useAppSelector(
     (state: any) => state.ActivityLoader.initialRouteValue,
   );
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (initialRouteValue === 'LikedScreen') {
+    if (initialRouteValue) {
+      const timer = setTimeout(() => {
         navigation.navigate(initialRouteValue);
-      }
-    }, 2000);
-    return () => clearTimeout(timer);
+      }, 2000); // 2 seconds delay
+
+      return () => clearTimeout(timer);
+    }
   }, [initialRouteValue]);
 
   const location: any = useAppSelector(
@@ -129,24 +118,40 @@ const HomeScreen = () => {
     dispatch(ProfileData())
       .unwrap()
       .then((res: any) => {
-        if (res.data.location !== undefined) {
-          setShowIn(res.data.showInDistance);
-        }
-        setDistance(parseInt(res.data.distance));
-        setCheckedInterests(res.data.interests);
-        setCheckedRelationShip(res.data.partnerType);
-        setTrigger(true);
+        console.log('res?.data?.ageRange', res?.data?.ageRange);
+        const [lowStr, highStr] = res?.data?.ageRange
+          ? res?.data?.ageRange?.split(' ')
+          : '18 56'.split(' ');
+        const lowValue = parseInt(lowStr);
+        const highValue = parseInt(highStr);
+
+        console.log(lowStr, '  ', highStr);
+        setFilterData({
+          showIn: res.data.showInDistance,
+          distance: parseInt(res.data.distance),
+          checkedInterests: res.data.interests,
+          checkedRelationShip: res.data.partnerType,
+          low: lowValue,
+          high: highValue,
+        });
       })
       .then(() => {
+        const [lowStr, highStr] = profileData?.ageRange
+          ? profileData?.ageRange?.split(' ')
+          : '18 56'.split(' ');
+
+        const lowValue = parseInt(lowStr);
+        const highValue = parseInt(highStr);
+
         dispatch(
           getAllUsers({
-            userId: profileData._id,
-            checkedInterests: checkedInterests,
-            showIn: showIn,
-            distance: distance,
-            low: low,
-            high: high,
-            checkedRelationShip: checkedRelationShip,
+            userId: profileData?._id,
+            checkedInterests: profileData?.interests,
+            showIn: profileData?.showInDistance,
+            distance: parseInt(profileData?.distance),
+            low: lowValue ?? 18,
+            high: highValue ?? 56,
+            checkedRelationShip: profileData?.partnerType,
           }),
         )
           .unwrap()
@@ -164,6 +169,7 @@ const HomeScreen = () => {
       };
     }, []),
   );
+
   return (
     <View style={styles.pageContainer}>
       {noProfilesLoader && (
@@ -207,20 +213,7 @@ const HomeScreen = () => {
           />
         </View>
       ) : activeScreen === 'Filters' ? (
-        <FilterSection
-          showIn={showIn}
-          setShowIn={setShowIn}
-          checkedInterests={checkedInterests}
-          setCheckedInterests={setCheckedInterests}
-          checkedRelationShip={checkedRelationShip}
-          setCheckedRelationShip={setCheckedRelationShip}
-          distance={distance}
-          setDistance={setDistance}
-          low={low}
-          setLow={setLow}
-          high={high}
-          setHigh={setHigh}
-        />
+        <FilterSection filterData={filterData} setFilterData={setFilterData} />
       ) : null}
       <Modal
         style={{backgroundColor: 'transparent', margin: 0}}

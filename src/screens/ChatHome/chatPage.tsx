@@ -109,11 +109,19 @@ const ChatPage = ({
 
   useEffect(() => {
     socket.on('chat message', msg => {
-      if (msg.sender !== profileData?._id) {
+      if (
+        msg.receiver === profileData?._id &&
+        msg.sender === user?._id
+        // (msg.sender === profileData?._id && msg.receiver === user?._id)
+      ) {
         setChatMessages((prevMessages: any) => [...prevMessages, msg]);
       }
     });
-  }, []);
+
+    return () => {
+      socket.off('chat message');
+    };
+  }, [profileData, user]);
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -143,9 +151,15 @@ const ChatPage = ({
   }, [skip]);
 
   useEffect(() => {
-    const userId = profileData?._id;
-    socket.emit('join', userId);
-  }, [profileData]);
+    // Ensure the socket is joined to the correct room for the current conversation
+    if (profileData?._id && user?._id) {
+      socket.emit('join', {userId: profileData._id, otherUserId: user._id});
+    }
+
+    return () => {
+      socket.off('join');
+    };
+  }, []);
 
   const handleSendMessage = useCallback(() => {
     if (inputMessage !== '') {
