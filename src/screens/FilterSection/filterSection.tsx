@@ -62,30 +62,12 @@ interface UpdateForm {
 
 const schema = yup.object().shape({});
 
-const FilterSection = ({
-  showIn,
-  setShowIn,
-  checkedInterests,
-  setCheckedInterests,
-  checkedRelationShip,
-  setCheckedRelationShip,
-  distance,
-  setDistance,
-  low,
-  setLow,
-  high,
-  setHigh,
-}: any) => {
+const FilterSection = ({filterData, setFilterData}: any) => {
   const dispatch: any = useAppDispatch();
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-  useEffect(() => {
-    setCheckedInterests(profileData?.interests);
-  }, [profileData?.interests]);
-  useEffect(() => {
-    setCheckedRelationShip(profileData?.partnerType);
-  }, [profileData?.partnerType]);
+
   const {
     control,
     formState: {errors},
@@ -93,12 +75,7 @@ const FilterSection = ({
     defaultValues,
     resolver: yupResolver<any>(schema),
   });
-  const options = [
-    {label: 'Male', value: 'first'},
-    {label: 'Female', value: 'second'},
-    {label: 'Non-Binary', value: 'third'},
-    {label: 'Transgender', value: 'fourth'},
-  ];
+
   const RelationShip = [
     {
       id: '1',
@@ -131,10 +108,11 @@ const FilterSection = ({
     {value: 'Everyone', label: 'Everyone'},
   ];
 
-  const [isLocationEnabled, setIsLocationEnabled] = useState(false);
-
   const handleSliderChange = (value: any) => {
-    setDistance(value);
+    setFilterData((prev: any) => ({
+      ...prev,
+      distance: value,
+    }));
     dispatch(
       updateProfileData({
         field: 'distance',
@@ -143,27 +121,22 @@ const FilterSection = ({
       }),
     );
   };
-  const [minValue, setMinValue] = useState(18);
-  const [maxValue, setMaxValue] = useState(56);
+
   const renderThumb = useCallback(() => <Thumb />, []);
   const renderRail = useCallback(() => <Rail />, []);
   const renderRailSelected = useCallback(() => <RailSelected />, []);
   const renderLabel = useCallback((value: any) => <Label text={value} />, []);
   const renderNotch = useCallback(() => <Notch />, []);
 
-  useEffect(() => {
-    if (profileData?.ageRange) {
-      const [lowStr, highStr] = profileData.ageRange.split(' ');
-      const lowValue = parseInt(lowStr);
-      const highValue = parseInt(highStr);
-      setLow(lowValue);
-      setHigh(highValue);
-    }
-  }, []);
-
   const handleValueChange = (newLow: any, newHigh: any) => {
-    setLow(newLow);
-    setHigh(newHigh);
+    setFilterData((prev: any) => ({
+      ...prev,
+      low: newLow,
+    }));
+    setFilterData((prev: any) => ({
+      ...prev,
+      high: newHigh,
+    }));
     dispatch(
       updateProfileData({
         field: 'ageRange',
@@ -334,21 +307,21 @@ const FilterSection = ({
         <View style={styles.distance}>
           <Text style={styles.textName}>Distance Preference</Text>
           <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
-            {distance} Mi
+            {filterData.distance} Mi
           </Text>
         </View>
         <View style={styles.line} />
         <View
           style={
             // showIn && profileData.location !== undefined && isLocationEnabled
-            showIn ? {} : {opacity: 0.5}
+            filterData.showIn ? {} : {opacity: 0.5}
           }
-          pointerEvents={showIn ? 'auto' : 'none'}>
+          pointerEvents={filterData.showIn ? 'auto' : 'none'}>
           <Slider
             style={styles.slider}
             minimumValue={4}
             maximumValue={50}
-            value={distance}
+            value={filterData.distance}
             onSlidingComplete={handleSliderChange}
             step={1}
             thumbTintColor="#AC25AC"
@@ -380,18 +353,24 @@ const FilterSection = ({
                 onPress={async () => {
                   // await checkLocationPermission();
                   setLoader(false);
-                  setShowIn((prev: any) => !prev);
+                  setFilterData((prev: any) => ({
+                    ...prev,
+                    showIn: !prev.showIn,
+                  }));
+
                   dispatch(
                     updateProfileData({
                       field: 'showInDistance',
-                      value: !showIn,
+                      value: !filterData.showIn,
                       id: getUserId(),
                     }),
                   );
                 }}>
                 <Ionicons
                   name={
-                    showIn === true ? 'radio-button-on' : 'radio-button-off'
+                    filterData.showIn === true
+                      ? 'radio-button-on'
+                      : 'radio-button-off'
                   }
                   size={25}
                   color="#AC25AC"
@@ -433,7 +412,11 @@ const FilterSection = ({
                       </Text>
                       <TouchableOpacity
                         onPress={() => {
-                          setCheckedInterests(item?.value);
+                          setFilterData((prev: any) => ({
+                            ...prev,
+                            checkedInterests: item?.value,
+                          }));
+
                           dispatch(
                             updateProfileData({
                               field: 'interests',
@@ -444,7 +427,7 @@ const FilterSection = ({
                         }}>
                         <Ionicons
                           name={
-                            checkedInterests === item?.value
+                            filterData.checkedInterests === item?.value
                               ? 'radio-button-on'
                               : 'radio-button-off'
                           }
@@ -465,16 +448,16 @@ const FilterSection = ({
         <View style={styles.distance}>
           <Text style={styles.textName}>Age Range</Text>
           <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
-            {low + '-' + high}
+            {filterData.low + '-' + filterData.high}
           </Text>
         </View>
         <View style={styles.line} />
         <RangeSlider
           style={[styles.slider, {marginVertical: 14}]}
-          min={minValue}
-          max={maxValue}
-          low={low}
-          high={high}
+          min={18}
+          max={56}
+          low={filterData.low}
+          high={filterData.high}
           step={1}
           floatingLabel
           renderThumb={renderThumb}
@@ -514,7 +497,10 @@ const FilterSection = ({
                   </Text>
                   <TouchableOpacity
                     onPress={() => {
-                      setCheckedRelationShip(item.name);
+                      setFilterData((prev: any) => ({
+                        ...prev,
+                        checkedRelationShip: item?.name,
+                      }));
                       dispatch(
                         updateProfileData({
                           field: 'partnerType',
@@ -525,7 +511,7 @@ const FilterSection = ({
                     }}>
                     <Ionicons
                       name={
-                        checkedRelationShip === item.name
+                        filterData.checkedRelationShip === item.name
                           ? 'radio-button-on'
                           : 'radio-button-off'
                       }
