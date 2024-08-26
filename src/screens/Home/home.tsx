@@ -2,7 +2,12 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import HeaderComponent from '../../components/Dashboard/header/header';
 import {useAppDispatch, useAppSelector} from '../../store/store';
-import {ProfileData, getAllUsers} from '../../store/Auth/auth';
+import {
+  ProfileData,
+  SetNewFilter,
+  getAllUsers,
+  updateProfileData,
+} from '../../store/Auth/auth';
 import FilterSection from '../FilterSection/filterSection';
 import TinderSwipe from './AnimatedStack/TinderSwipe';
 import {io} from 'socket.io-client';
@@ -19,6 +24,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const getUserId = async () => {
   try {
@@ -50,10 +56,13 @@ const HomeScreen = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [reason, setReason] = useState('');
   const [filterData, setFilterData] = useState({});
+  // const [SelectedFilterData, setSelectedFilterData] = useState({});
 
   const initialRouteValue = useAppSelector(
     (state: any) => state.ActivityLoader.initialRouteValue,
   );
+
+  console.log('SelectedFilterData =======>', filterData);
 
   useEffect(() => {
     if (initialRouteValue) {
@@ -118,7 +127,7 @@ const HomeScreen = () => {
     dispatch(ProfileData())
       .unwrap()
       .then((res: any) => {
-        console.log('res?.data?.ageRange', res?.data?.ageRange);
+        console.log('res?.data?.ageRange ||||||||', res?.data?.interests);
         const [lowStr, highStr] = res?.data?.ageRange
           ? res?.data?.ageRange?.split(' ')
           : '18 56'.split(' ');
@@ -170,6 +179,20 @@ const HomeScreen = () => {
     }, []),
   );
 
+  const onPressApply = () => {
+    setNoProfilesLoader(true);
+    console.log('latest filter ====++>', {
+      id: profileData._id,
+      data: filterData,
+    });
+    dispatch(SetNewFilter({id: profileData._id, data: filterData}))
+      .unwrap()
+      .then((res: any) => {
+        console.log('AppFilter response  ==>', res);
+        fetchNewData();
+      });
+  };
+
   return (
     <View style={styles.pageContainer}>
       {noProfilesLoader && (
@@ -191,7 +214,7 @@ const HomeScreen = () => {
         // setApply={() => )}
         applyClick={() => {
           setActiveScreen('HOME');
-          fetchNewData();
+          onPressApply();
         }}
         ClickNotification={() => navigation.navigate('NotificationScreen')}
       />
@@ -213,7 +236,10 @@ const HomeScreen = () => {
           />
         </View>
       ) : activeScreen === 'Filters' ? (
-        <FilterSection filterData={filterData} setFilterData={setFilterData} />
+        <FilterSection
+          filterData={filterData}
+          setSelectedFilterData={setFilterData}
+        />
       ) : null}
       <Modal
         style={{backgroundColor: 'transparent', margin: 0}}

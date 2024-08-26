@@ -27,6 +27,16 @@ import Geolocation from '@react-native-community/geolocation';
 import Loader from '../../components/Loader/Loader';
 import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
 import DeviceInfo from 'react-native-device-info';
+import {useFocusEffect} from '@react-navigation/native';
+
+interface UserPreferences {
+  checkedInterests: string; // "Everyone"
+  checkedRelationShip: string; // "Long term partner"
+  distance: number; // 34
+  high: number; // 53
+  low: number; // 20
+  showIn: boolean; // true
+}
 
 const getUserId = async () => {
   try {
@@ -62,12 +72,23 @@ interface UpdateForm {
 
 const schema = yup.object().shape({});
 
-const FilterSection = ({filterData, setFilterData}: any) => {
+const FilterSection = ({filterData, setSelectedFilterData}: any) => {
   const dispatch: any = useAppDispatch();
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
+  const [loader, setLoader] = useState<boolean>(false);
+  // const [CurrentFilterData, setCurrentFilterData] = useState<UserPreferences>({
+  //   checkedInterests: '',
+  //   checkedRelationShip: '',
+  //   distance: 0,
+  //   high: 0,
+  //   low: 0,
+  //   showIn: false,
+  // });
 
+  // console.log(CurrentFilterData);
+  //
   const {
     control,
     formState: {errors},
@@ -75,6 +96,21 @@ const FilterSection = ({filterData, setFilterData}: any) => {
     defaultValues,
     resolver: yupResolver<any>(schema),
   });
+
+  // useEffect(() => {
+  //   setSelectedFilterData(CurrentFilterData);
+  // }, [CurrentFilterData]);
+
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     setCurrentFilterData(filterData);
+  //     return () => {
+  //       console.log('Return Filter', CurrentFilterData);
+  //     };
+  //   }, []),
+  // );
+
+  // console.log('filterData==>', filterData);
 
   const RelationShip = [
     {
@@ -109,18 +145,20 @@ const FilterSection = ({filterData, setFilterData}: any) => {
   ];
 
   const handleSliderChange = (value: any) => {
-    setFilterData((prev: any) => ({
+    setSelectedFilterData((prev: any) => ({
       ...prev,
       distance: value,
     }));
-    dispatch(
-      updateProfileData({
-        field: 'distance',
-        value: value,
-        id: getUserId(),
-      }),
-    );
+    // dispatch(
+    //   updateProfileData({
+    //     field: 'distance',
+    //     value: value,
+    //     id: getUserId(),
+    //   }),
+    // );
   };
+
+  console.log('CurrentFilterData', filterData);
 
   const renderThumb = useCallback(() => <Thumb />, []);
   const renderRail = useCallback(() => <Rail />, []);
@@ -129,24 +167,22 @@ const FilterSection = ({filterData, setFilterData}: any) => {
   const renderNotch = useCallback(() => <Notch />, []);
 
   const handleValueChange = (newLow: any, newHigh: any) => {
-    setFilterData((prev: any) => ({
+    setSelectedFilterData((prev: any) => ({
       ...prev,
       low: newLow,
     }));
-    setFilterData((prev: any) => ({
+    setSelectedFilterData((prev: any) => ({
       ...prev,
       high: newHigh,
     }));
-    dispatch(
-      updateProfileData({
-        field: 'ageRange',
-        value: `${newLow} ${newHigh}`,
-        id: getUserId(),
-      }),
-    );
+    // dispatch(
+    //   updateProfileData({
+    //     field: 'ageRange',
+    //     value: `${newLow} ${newHigh}`,
+    //     id: getUserId(),
+    //   }),
+    // );
   };
-
-  const [loader, setLoader] = useState<boolean>(false);
 
   // const getLocationAndRegister = () => {
   //   if (!isLocationEnabled) {
@@ -301,232 +337,234 @@ const FilterSection = ({filterData, setFilterData}: any) => {
   // };
 
   return (
-    <ScrollView style={{marginTop: 10}} showsVerticalScrollIndicator={false}>
-      {/* Distance Preference */}
-      <View style={styles.boxContainer}>
-        <View style={styles.distance}>
-          <Text style={styles.textName}>Distance Preference</Text>
-          <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
-            {filterData.distance} Mi
-          </Text>
-        </View>
-        <View style={styles.line} />
-        <View
-          style={
-            // showIn && profileData.location !== undefined && isLocationEnabled
-            filterData.showIn ? {} : {opacity: 0.5}
-          }
-          pointerEvents={filterData.showIn ? 'auto' : 'none'}>
-          <Slider
-            style={styles.slider}
-            minimumValue={4}
-            maximumValue={50}
-            value={filterData.distance}
-            onSlidingComplete={handleSliderChange}
-            step={1}
-            thumbTintColor="#AC25AC"
-            minimumTrackTintColor="#AC25AC"
-            maximumTrackTintColor="gray"
-            thumbStyle={styles.thumbStyle}
-          />
-        </View>
-        <Controller
-          name={'showInDistance'}
-          control={control}
-          render={() => (
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginHorizontal: 20,
-              }}>
-              <Text
-                style={{
-                  fontFamily: 'Sansation-Regular',
-                  marginTop: 2,
-                  marginBottom: 8,
-                  color: 'black',
-                }}>
-                Only show people in range
-              </Text>
-              <TouchableOpacity
-                onPress={async () => {
-                  // await checkLocationPermission();
-                  setLoader(false);
-                  setFilterData((prev: any) => ({
-                    ...prev,
-                    showIn: !prev.showIn,
-                  }));
-
-                  dispatch(
-                    updateProfileData({
-                      field: 'showInDistance',
-                      value: !filterData.showIn,
-                      id: getUserId(),
-                    }),
-                  );
-                }}>
-                <Ionicons
-                  name={
-                    filterData.showIn === true
-                      ? 'radio-button-on'
-                      : 'radio-button-off'
-                  }
-                  size={25}
-                  color="#AC25AC"
-                />
-              </TouchableOpacity>
-            </View>
-          )}
-        />
-      </View>
-      {/* Show Me */}
-      <View style={styles.boxContainer}>
-        <Text style={styles.textName}>Show Me</Text>
-        <View style={styles.line} />
-        <View>
-          {options2.map(item => {
-            return (
-              <View key={item?.value} style={styles.radio}>
-                <Controller
-                  name={'interests'}
-                  control={control}
-                  defaultValue="Man"
-                  render={() => (
-                    <View
-                      style={{
-                        flex: 1,
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                      }}>
-                      <Text
-                        style={[
-                          {
-                            color: errors?.interests ? 'red' : 'black',
-                            fontFamily: 'Sansation-Regular',
-                            paddingBottom: 8,
-                          },
-                        ]}>
-                        {item?.label}
-                      </Text>
-                      <TouchableOpacity
-                        onPress={() => {
-                          setFilterData((prev: any) => ({
-                            ...prev,
-                            checkedInterests: item?.value,
-                          }));
-
-                          dispatch(
-                            updateProfileData({
-                              field: 'interests',
-                              value: item.value,
-                              id: getUserId(),
-                            }),
-                          );
-                        }}>
-                        <Ionicons
-                          name={
-                            filterData.checkedInterests === item?.value
-                              ? 'radio-button-on'
-                              : 'radio-button-off'
-                          }
-                          size={25}
-                          color="#AC25AC"
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  )}
-                />
-              </View>
-            );
-          })}
-        </View>
-      </View>
-      {/* Age Range */}
-      <View style={styles.boxContainer}>
-        <View style={styles.distance}>
-          <Text style={styles.textName}>Age Range</Text>
-          <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
-            {filterData.low + '-' + filterData.high}
-          </Text>
-        </View>
-        <View style={styles.line} />
-        <RangeSlider
-          style={[styles.slider, {marginVertical: 14}]}
-          min={18}
-          max={56}
-          low={filterData.low}
-          high={filterData.high}
-          step={1}
-          floatingLabel
-          renderThumb={renderThumb}
-          renderRail={renderRail}
-          renderRailSelected={renderRailSelected}
-          renderLabel={renderLabel}
-          renderNotch={renderNotch}
-          onSliderTouchEnd={handleValueChange}
-        />
-      </View>
-      {/* RelationShip goals */}
-      <View style={styles.boxContainer}>
-        <Text style={styles.textName}>RelationShip Goals</Text>
-        <View style={styles.line} />
-        {RelationShip.map(item => (
-          <View key={item.id} style={styles.radio}>
-            <Controller
-              name={'partnerType'}
-              control={control}
-              render={() => (
-                <View
-                  style={{
-                    flex: 1,
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                  }}>
-                  <Text
-                    style={[
-                      {
-                        color: errors?.partnerType ? 'red' : 'black',
-                        fontFamily: 'Sansation-Regular',
-                        paddingBottom: 8,
-                      },
-                    ]}>
-                    {item.name}
-                  </Text>
-                  <TouchableOpacity
-                    onPress={() => {
-                      setFilterData((prev: any) => ({
-                        ...prev,
-                        checkedRelationShip: item?.name,
-                      }));
-                      dispatch(
-                        updateProfileData({
-                          field: 'partnerType',
-                          value: item.name,
-                          id: getUserId(),
-                        }),
-                      );
-                    }}>
-                    <Ionicons
-                      name={
-                        filterData.checkedRelationShip === item.name
-                          ? 'radio-button-on'
-                          : 'radio-button-off'
-                      }
-                      size={25}
-                      color="#AC25AC"
-                    />
-                  </TouchableOpacity>
-                </View>
-              )}
+    <View>
+      <ScrollView style={{marginTop: 10}} showsVerticalScrollIndicator={false}>
+        {/* Distance Preference */}
+        <View style={styles.boxContainer}>
+          <View style={styles.distance}>
+            <Text style={styles.textName}>Distance Preference</Text>
+            <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
+              {filterData.distance} Mi
+            </Text>
+          </View>
+          <View style={styles.line} />
+          <View
+            style={
+              // showIn && profileData.location !== undefined && isLocationEnabled
+              filterData.showIn ? {} : {opacity: 0.5}
+            }
+            pointerEvents={filterData.showIn ? 'auto' : 'none'}>
+            <Slider
+              style={styles.slider}
+              minimumValue={4}
+              maximumValue={50}
+              value={filterData.distance}
+              onSlidingComplete={handleSliderChange}
+              step={1}
+              thumbTintColor="#AC25AC"
+              minimumTrackTintColor="#AC25AC"
+              maximumTrackTintColor="gray"
+              thumbStyle={styles.thumbStyle}
             />
           </View>
-        ))}
-      </View>
-      {/* Gender */}
-      {/* <View style={styles.boxContainer}>
+          <Controller
+            name={'showInDistance'}
+            control={control}
+            render={() => (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginHorizontal: 20,
+                }}>
+                <Text
+                  style={{
+                    fontFamily: 'Sansation-Regular',
+                    marginTop: 2,
+                    marginBottom: 8,
+                    color: 'black',
+                  }}>
+                  Only show people in range
+                </Text>
+                <TouchableOpacity
+                  onPress={async () => {
+                    // await checkLocationPermission();
+                    setLoader(false);
+                    setSelectedFilterData((prev: any) => ({
+                      ...filterData,
+                      showIn: !prev.showIn,
+                    }));
+
+                    // dispatch(
+                    //   updateProfileData({
+                    //     field: 'showInDistance',
+                    //     value: !filterData.showIn,
+                    //     id: getUserId(),
+                    //   }),
+                    // );
+                  }}>
+                  <Ionicons
+                    name={
+                      filterData.showIn === true
+                        ? 'radio-button-on'
+                        : 'radio-button-off'
+                    }
+                    size={25}
+                    color="#AC25AC"
+                  />
+                </TouchableOpacity>
+              </View>
+            )}
+          />
+        </View>
+        {/* Show Me */}
+        <View style={styles.boxContainer}>
+          <Text style={styles.textName}>Show Me</Text>
+          <View style={styles.line} />
+          <View>
+            {options2.map(item => {
+              return (
+                <View key={item?.value} style={styles.radio}>
+                  <Controller
+                    name={'interests'}
+                    control={control}
+                    defaultValue="Man"
+                    render={() => (
+                      <View
+                        style={{
+                          flex: 1,
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                        }}>
+                        <Text
+                          style={[
+                            {
+                              color: errors?.interests ? 'red' : 'black',
+                              fontFamily: 'Sansation-Regular',
+                              paddingBottom: 8,
+                            },
+                          ]}>
+                          {item?.label}
+                        </Text>
+                        <TouchableOpacity
+                          onPress={() => {
+                            setSelectedFilterData((prev: any) => ({
+                              ...prev,
+                              checkedInterests: item?.value,
+                            }));
+
+                            // dispatch(
+                            //   updateProfileData({
+                            //     field: 'interests',
+                            //     value: item.value,
+                            //     id: getUserId(),
+                            //   }),
+                            // );
+                          }}>
+                          <Ionicons
+                            name={
+                              filterData.checkedInterests === item?.value
+                                ? 'radio-button-on'
+                                : 'radio-button-off'
+                            }
+                            size={25}
+                            color="#AC25AC"
+                          />
+                        </TouchableOpacity>
+                      </View>
+                    )}
+                  />
+                </View>
+              );
+            })}
+          </View>
+        </View>
+        {/* Age Range */}
+        <View style={styles.boxContainer}>
+          <View style={styles.distance}>
+            <Text style={styles.textName}>Age Range</Text>
+            <Text style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
+              {filterData.low + '-' + filterData.high}
+            </Text>
+          </View>
+          <View style={styles.line} />
+          <RangeSlider
+            style={[styles.slider, {marginVertical: 14}]}
+            min={18}
+            max={56}
+            low={filterData.low}
+            high={filterData.high}
+            step={1}
+            floatingLabel
+            renderThumb={renderThumb}
+            renderRail={renderRail}
+            renderRailSelected={renderRailSelected}
+            renderLabel={renderLabel}
+            renderNotch={renderNotch}
+            onSliderTouchEnd={handleValueChange}
+          />
+        </View>
+        {/* RelationShip goals */}
+        <View style={styles.boxContainer}>
+          <Text style={styles.textName}>RelationShip Goals</Text>
+          <View style={styles.line} />
+          {RelationShip.map(item => (
+            <View key={item.id} style={styles.radio}>
+              <Controller
+                name={'partnerType'}
+                control={control}
+                render={() => (
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}>
+                    <Text
+                      style={[
+                        {
+                          color: errors?.partnerType ? 'red' : 'black',
+                          fontFamily: 'Sansation-Regular',
+                          paddingBottom: 8,
+                        },
+                      ]}>
+                      {item.name}
+                    </Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setSelectedFilterData((prev: any) => ({
+                          ...prev,
+                          checkedRelationShip: item?.name,
+                        }));
+                        // dispatch(
+                        //   updateProfileData({
+                        //     field: 'partnerType',
+                        //     value: item.name,
+                        //     id: getUserId(),
+                        //   }),
+                        // );
+                      }}>
+                      <Ionicons
+                        name={
+                          filterData.checkedRelationShip === item.name
+                            ? 'radio-button-on'
+                            : 'radio-button-off'
+                        }
+                        size={25}
+                        color="#AC25AC"
+                      />
+                    </TouchableOpacity>
+                  </View>
+                )}
+              />
+            </View>
+          ))}
+        </View>
+
+        {/* Gender */}
+        {/* <View style={styles.boxContainer}>
         <Text style={styles.textName}>Gender</Text>
         <View style={styles.line} />
         {options.map(item => (
@@ -580,8 +618,9 @@ const FilterSection = ({filterData, setFilterData}: any) => {
           </View>
         ))}
       </View> */}
-      {loader && <Loader />}
-    </ScrollView>
+        {loader && <Loader />}
+      </ScrollView>
+    </View>
   );
 };
 

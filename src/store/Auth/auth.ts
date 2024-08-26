@@ -821,6 +821,26 @@ export const UnBlockAUser = createAsyncThunk(
   },
 );
 
+export const SetNewFilter = createAsyncThunk(
+  'auth/SetNewFilter',
+  async (data: any, {dispatch}: any) => {
+    try {
+      console.log('Filter data +++++++++> ' , data)
+      const response = await http.post('/user/updateFilter', data);
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error: any) {
+      console.log('error filterUpdate', error);
+      if (error.response && error.response.status === 400) {
+        return {error: 'Bad Request'};
+      } else {
+        throw error;
+      }
+    } 
+  },
+);
+
 export const verifyReceipt: any = createAsyncThunk(
   'auth/verifyReceipt',
   async (data: any, {dispatch}: any) => {
@@ -1114,7 +1134,9 @@ const Auth: any = createSlice({
       })
       .addCase(SetLocation.fulfilled, (state, action) => {
         state.data.location = action.payload;
-      });
+      })  .addCase(SetNewFilter.fulfilled, (state, action) => {
+        console.log('Filter response ==>',action.payload) 
+      });;
   },
 });
 
