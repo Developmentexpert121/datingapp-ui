@@ -36,18 +36,15 @@ import {
 
 const HomeScreen = () => {
   const navigation: any = useNavigation();
-  const [activeScreen, setActiveScreen] = useState('HOME');
 
   const dispatch: any = useAppDispatch();
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-  const [low, setLow] = useState<number>(18);
-  const [high, setHigh] = useState<number>(56);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [data, setData] = useState<any>([]);
-
+  const [activeScreen, setActiveScreen] = useState('HOME');
   const [noProfilesLoader, setNoProfilesLoader] = useState(false);
   const [onlineUsers, setOnlineUsers] = useState<any>(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -64,7 +61,6 @@ const HomeScreen = () => {
         navigation.navigate(initialRouteValue);
       }, 2000); // 2 seconds delay
 
-      // Cleanup the timer if the component unmounts before the timeout is finished
       return () => clearTimeout(timer);
     }
   }, [initialRouteValue]);
@@ -146,8 +142,8 @@ const HomeScreen = () => {
             checkedInterests: profileData?.interests,
             showIn: profileData?.showInDistance,
             distance: parseInt(profileData?.distance),
-            low: lowValue ?? low,
-            high: highValue ?? high,
+            low: lowValue ?? 18,
+            high: highValue ?? 56,
             checkedRelationShip: profileData?.partnerType,
           }),
         )
@@ -166,6 +162,7 @@ const HomeScreen = () => {
       };
     }, []),
   );
+
   return (
     <View style={styles.pageContainer}>
       {noProfilesLoader && (
