@@ -495,6 +495,7 @@ export const getAllUsers = createAsyncThunk(
       low,
       high,
       checkedRelationShip,
+      page,
     }: any,
     {dispatch}: any,
   ) => {
@@ -509,6 +510,7 @@ export const getAllUsers = createAsyncThunk(
           low: low,
           high: high,
           partnerType: checkedRelationShip,
+          page: page,
         },
       });
       if (response.status === 200) {

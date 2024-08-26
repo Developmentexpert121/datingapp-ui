@@ -48,7 +48,7 @@ const BottomModalUpdate = ({isOpen, onClose, title, value}: any) => {
     (state: any) => state?.Auth?.data?.profileData,
   );
   const Data = [
-    {text: 'Lodo'},
+    {text: 'Ludo'},
     {text: 'Cricket'},
     {text: 'Football'},
     {text: 'Shopping'},
