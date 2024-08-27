@@ -86,17 +86,18 @@ const LikedScreen = () => {
             ? () => {
                 setModalOpen(true);
               }
-            : profileData.plan.productId !== 'PremiumPlus'
-            ? () => likeByMe(item)
-            : () => {
-                setModalOpen(true);
-              }
+            : // profileData.plan.productId !== 'PremiumPlus'
+              // ?
+              () => likeByMe(item)
+          // : () => {
+          //     setModalOpen(true);
+          //   }
         }
         style={styles.card}>
         <ImageBackground
-          source={{uri: item.profilePic?.split(',')[0]}}
+          source={{uri: item?.profilePic?.split(',')[0]}}
           style={styles.image}>
-          {profileData?.plan === 'Free' && item.type !== 'superLike' ? (
+          {profileData?.plan === 'Free' ? (
             <BlurView
               style={styles.absolute}
               blurType="light"

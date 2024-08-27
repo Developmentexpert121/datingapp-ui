@@ -42,7 +42,6 @@ const SecondStepScreen = ({partnerType, control, errors}: any) => {
       name: 'Still figuring it out',
       image: <InrestOutIC />,
     },
-    // Add more avatars as needed
   ];
 
   return (
