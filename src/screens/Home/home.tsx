@@ -56,11 +56,15 @@ const HomeScreen = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [reason, setReason] = useState('');
   const [filterData, setFilterData] = useState({});
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
 
   const initialRouteValue = useAppSelector(
     (state: any) => state.ActivityLoader.initialRouteValue,
   );
+
+  useEffect(() => {
+    fetchNewData(1);
+  }, []);
 
   useEffect(() => {
     // console.log('-------->>', data.length, 'page ', page);
