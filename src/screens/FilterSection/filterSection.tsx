@@ -351,9 +351,9 @@ const FilterSection = ({filterData, setSelectedFilterData}: any) => {
           <View
             style={
               // showIn && profileData.location !== undefined && isLocationEnabled
-              filterData.showIn ? {} : {opacity: 0.5}
+              filterData.showInDistance ? {} : {opacity: 0.5}
             }
-            pointerEvents={filterData.showIn ? 'auto' : 'none'}>
+            pointerEvents={filterData.showInDistance ? 'auto' : 'none'}>
             <Slider
               style={styles.slider}
               minimumValue={4}
@@ -392,7 +392,7 @@ const FilterSection = ({filterData, setSelectedFilterData}: any) => {
                     setLoader(false);
                     setSelectedFilterData((prev: any) => ({
                       ...filterData,
-                      showIn: !prev.showIn,
+                      showInDistance: !prev.showInDistance,
                     }));
 
                     // dispatch(
@@ -405,7 +405,7 @@ const FilterSection = ({filterData, setSelectedFilterData}: any) => {
                   }}>
                   <Ionicons
                     name={
-                      filterData.showIn === true
+                      filterData.showInDistance === true
                         ? 'radio-button-on'
                         : 'radio-button-off'
                     }

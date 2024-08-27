@@ -63,7 +63,7 @@ const HomeScreen = () => {
   );
 
   useEffect(() => {
-    console.log('--------', data.length);
+    // console.log('-------->>', data.length, 'page ', page);
     if (currentIndex === data.length) {
       // Check if at the end of the current data
       setPage(prevPage => {
@@ -148,7 +148,7 @@ const HomeScreen = () => {
         const highValue = parseInt(highStr);
 
         setFilterData({
-          showIn: res.data.showInDistance,
+          showInDistance: res.data.showInDistance,
           distance: parseInt(res.data.distance),
           interests: res.data.interests,
           partnerType: res.data.partnerType,
@@ -194,7 +194,7 @@ const HomeScreen = () => {
 
     console.log(lowStr, '  ', highStr);
     setFilterData({
-      showIn: profileData.showInDistance,
+      showInDistance: profileData.showInDistance,
       distance: parseInt(profileData.distance),
       interests: profileData.interests,
       partnerType: profileData.partnerType,
@@ -221,6 +221,7 @@ const HomeScreen = () => {
       .unwrap()
       .then((res: any) => {
         console.log('AppFilter response  ==>', res);
+        setPage(1);
         fetchNewData(1);
       });
   };
