@@ -105,7 +105,6 @@ const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-  console.log('ttttt', profileData.plan.cancellationDate);
 
   const navigation = useNavigation();
   const [activeDot, setActiveDot] = useState(0);
