@@ -158,7 +158,7 @@ const FilterSection = ({filterData, setSelectedFilterData}: any) => {
     // );
   };
 
-  console.log('CurrentFilterData', filterData);
+  // console.log('CurrentFilterData', filterData);
 
   const renderThumb = useCallback(() => <Thumb />, []);
   const renderRail = useCallback(() => <Rail />, []);
@@ -451,7 +451,7 @@ const FilterSection = ({filterData, setSelectedFilterData}: any) => {
                           onPress={() => {
                             setSelectedFilterData((prev: any) => ({
                               ...prev,
-                              checkedInterests: item?.value,
+                              interests: item?.value,
                             }));
 
                             // dispatch(
@@ -464,7 +464,7 @@ const FilterSection = ({filterData, setSelectedFilterData}: any) => {
                           }}>
                           <Ionicons
                             name={
-                              filterData.checkedInterests === item?.value
+                              filterData.interests === item?.value
                                 ? 'radio-button-on'
                                 : 'radio-button-off'
                             }
@@ -536,7 +536,7 @@ const FilterSection = ({filterData, setSelectedFilterData}: any) => {
                       onPress={() => {
                         setSelectedFilterData((prev: any) => ({
                           ...prev,
-                          checkedRelationShip: item?.name,
+                          partnerType: item?.name,
                         }));
                         // dispatch(
                         //   updateProfileData({
@@ -548,7 +548,7 @@ const FilterSection = ({filterData, setSelectedFilterData}: any) => {
                       }}>
                       <Ionicons
                         name={
-                          filterData.checkedRelationShip === item.name
+                          filterData.partnerType === item.name
                             ? 'radio-button-on'
                             : 'radio-button-off'
                         }

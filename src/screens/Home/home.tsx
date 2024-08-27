@@ -62,7 +62,7 @@ const HomeScreen = () => {
     (state: any) => state.ActivityLoader.initialRouteValue,
   );
 
-  console.log('SelectedFilterData =======>', filterData);
+  // console.log('SelectedFilterData =======>', filterData);
 
   useEffect(() => {
     if (initialRouteValue) {
@@ -138,8 +138,8 @@ const HomeScreen = () => {
         setFilterData({
           showIn: res.data.showInDistance,
           distance: parseInt(res.data.distance),
-          checkedInterests: res.data.interests,
-          checkedRelationShip: res.data.partnerType,
+          interests: res.data.interests,
+          partnerType: res.data.partnerType,
           low: lowValue,
           high: highValue,
         });
@@ -169,6 +169,24 @@ const HomeScreen = () => {
             setNoProfilesLoader(false);
           });
       });
+  };
+
+  const BackPressed = () => {
+    const [lowStr, highStr] = profileData?.ageRange
+      ? profileData?.ageRange?.split(' ')
+      : '18 56'.split(' ');
+    const lowValue = parseInt(lowStr);
+    const highValue = parseInt(highStr);
+
+    console.log(lowStr, '  ', highStr);
+    setFilterData({
+      showIn: profileData.showInDistance,
+      distance: parseInt(profileData.distance),
+      interests: profileData.interests,
+      partnerType: profileData.partnerType,
+      low: lowValue,
+      high: highValue,
+    });
   };
 
   useFocusEffect(
@@ -215,6 +233,10 @@ const HomeScreen = () => {
         applyClick={() => {
           setActiveScreen('HOME');
           onPressApply();
+        }}
+        OnBackPress={() => {
+          setActiveScreen('HOME');
+          BackPressed();
         }}
         ClickNotification={() => navigation.navigate('NotificationScreen')}
       />

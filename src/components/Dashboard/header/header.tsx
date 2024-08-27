@@ -29,7 +29,7 @@ const HeaderComponent = (props: any) => {
           />
         ) : (
           <Ionicons
-            onPress={() => props?.setActiveScreen('HOME')}
+            onPress={props?.OnBackPress}
             style={styles.backPressIcon}
             name="chevron-back-outline"
             size={30}
