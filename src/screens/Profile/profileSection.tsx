@@ -45,7 +45,7 @@ const ProfileSection: React.FC = () => {
     if (profileData) {
       let filledFieldsCount = 0;
       const fields = [
-        profileData?.phone || '',
+        profileData?.phone?.number || '',
         profileData?.email || '',
         String(profileData?.location?.longitude) || '',
         String(profileData?.location?.latitude) || '',
@@ -54,9 +54,9 @@ const ProfileSection: React.FC = () => {
         profileData?.gender || '',
         profileData?.profilePic || '',
         profileData?.work || '',
-        profileData?.education || '',
         profileData?.allInterests || '',
         profileData?.partnerType || '',
+        // profileData?.education || '',
       ];
 
       fields.forEach(field => {

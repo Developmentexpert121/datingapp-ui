@@ -395,7 +395,7 @@ export const updateProfileData = createAsyncThunk(
         if (data.field !== 'profilePercentage') {
           dispatch(ProfileData());
         }
-        // console.log('>>>>>>>>>>>>>>', response?.config?.data);
+        // console.log('lotion api >>>>>>>>>>>>>>', response?.data);
         return response.data;
       }
     } catch (error: any) {
@@ -848,6 +848,26 @@ export const UnBlockAUser = createAsyncThunk(
   },
 );
 
+export const SetNewFilter = createAsyncThunk(
+  'auth/SetNewFilter',
+  async (data: any, {dispatch}: any) => {
+    try {
+      console.log('Filter data +++++++++> ' , data)
+      const response = await http.post('/user/updateFilter', data);
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error: any) {
+      console.log('error filterUpdate', error);
+      if (error.response && error.response.status === 400) {
+        return {error: 'Bad Request'};
+      } else {
+        throw error;
+      }
+    } 
+  },
+);
+
 export const verifyReceipt: any = createAsyncThunk(
   'auth/verifyReceipt',
   async (data: any, {dispatch}: any) => {
@@ -1152,6 +1172,8 @@ const Auth: any = createSlice({
       })
       .addCase(getUserDataOnId.rejected, (state, action) => {
         state.loading = false;
+      })  .addCase(SetNewFilter.fulfilled, (state, action) => {
+        console.log('Filter response ==>',action.payload) 
       });
   },
 });

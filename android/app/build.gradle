@@ -83,7 +83,7 @@ android {
         applicationId "com.toptierdating"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 17
+        versionCode 18
         versionName "1.0.0"
         resConfigs "en", "US"
         manifestPlaceholders = [
@@ -130,6 +130,7 @@ dependencies {
     implementation project(':react-native-iap')
     implementation 'com.google.firebase:firebase-analytics:17.3.0'
     implementation project(':react-native-push-notification')
+    implementation 'com.android.billingclient:billing:5.0.0' // or a compatible version
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")

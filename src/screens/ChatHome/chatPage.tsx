@@ -13,6 +13,7 @@ import {
   ActivityIndicator,
   ScrollView,
   Alert,
+  Platform,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -279,7 +280,11 @@ const ChatPage = ({
 
   return (
     <>
-      <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? hp(6) : 0}
+        //@ts-ignore
+        behavior={Platform.OS == 'ios' ? 'padding' : 'undefined'}>
         <View style={{flex: 1}}>
           {/* header */}
           <View style={styles.container}>
@@ -513,11 +518,7 @@ const ChatPage = ({
 
           {/* footer */}
           {user?.deactivate === false && user?.isBlocked === false ? (
-            <View
-              style={[
-                styles.inputView,
-                isKeyboardVisible && {marginBottom: 40},
-              ]}>
+            <View style={[styles.inputView]}>
               <View
                 style={{borderWidth: 1, width: '88%', flexDirection: 'row'}}>
                 <TextInput

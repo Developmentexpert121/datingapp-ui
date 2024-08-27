@@ -60,7 +60,10 @@ const SubscriptionsScreen = ({navigation}) => {
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(true);
-  const [loadingSubscriptions, setLoadingSubscriptions] = useState(true); // New state for initial loading
+  const [loadingSubscriptions, setLoadingSubscriptions] = useState(true);
+
+  // console.log('subscriptions....', subscriptions);
+  // console.log('requestSubscription.....', requestSubscription);
 
   const handleGetSubscriptions = async () => {
     try {
@@ -78,6 +81,7 @@ const SubscriptionsScreen = ({navigation}) => {
   };
 
   const [showSubscriptions, setShowSubscriptions] = useState([]);
+  // console.log('///////////////////////', showSubscriptions);
 
   useEffect(() => {
     if (subscriptions && isIos) {
@@ -109,7 +113,7 @@ const SubscriptionsScreen = ({navigation}) => {
     setLoading(true);
     if (connected) {
       handleGetSubscriptions();
-      console.log('connected', connected);
+      console.log('connected..', connected);
       setLoading(false);
     } else {
       console.log('Not connected to IAP');
@@ -119,22 +123,35 @@ const SubscriptionsScreen = ({navigation}) => {
 
   const handleBuySubscription = async product => {
     try {
-      const itemm = await requestSubscription({
+      // console.log('!!!!!!!!!1', itemm);
+      // console.log('!!!!!!!!!2', product?.productId);
+      // console.log('!!!!!!!!!3', product.subscriptionOfferDetails[0].offerToken);
+      // console.log('Product Details:4', product);
+      // console.log('Product ID:5', product?.productId);
+      // console.log(
+      //   'Subscription Offer Details:6',
+      //   product?.subscriptionOfferDetails,
+      // );
+      // console.log(
+      //   'Offer Token:7',
+      //   product?.subscriptionOfferDetails?.[0]?.offerToken,
+      // );
+      let itemm = await requestSubscription({
         sku: product?.productId,
         ...(product?.subscriptionOfferDetails?.[0]?.offerToken && {
           subscriptionOffers: [
             {
               sku: product?.productId,
-              offerToken: product.subscriptionOfferDetails[0].offerToken,
+              offerToken: product?.subscriptionOfferDetails[0]?.offerToken,
             },
           ],
         }),
       });
-
+      console.log('1111111111111111');
       dispatch(
         verifyReceipt({
-          platform: itemm.length > 0 ? 'android' : 'ios',
-          receiptData: itemm.length > 0 ? itemm[0] : itemm,
+          platform: itemm?.length > 0 ? 'android' : 'ios',
+          receiptData: itemm?.length > 0 ? itemm[0] : itemm,
         }),
       )
         .unwrap()
@@ -153,6 +170,8 @@ const SubscriptionsScreen = ({navigation}) => {
                   });
                 }
               } catch (err) {
+                console.error('receipt error', err);
+                RNRestart.Restart();
                 console.error('error', err);
               }
             }

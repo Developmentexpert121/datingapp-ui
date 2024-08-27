@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, SafeAreaView} from 'react-native';
+import {View, StyleSheet, SafeAreaView, ActivityIndicator} from 'react-native';
 import {useAppDispatch, useAppSelector} from '../../../store/store';
 import {getAllUsers, ProfileData} from '../../../store/Auth/auth';
 import BackButton from '../../../components/commonBackbutton/BackButton';
-
 import TinderSwipe from '../../Home/AnimatedStack/TinderSwipe';
+import Loader from '../../../components/Loader/Loader';
 
 const ExploreHome = (Data: any) => {
   const {name}: any = Data.route.params || {};
@@ -23,6 +23,16 @@ const ExploreHome = (Data: any) => {
   const [checkedRelationShip, setCheckedRelationShip] = useState('');
   const [trigger, setTrigger] = useState(false);
   const [noProfilesLoader, setNoProfilesLoader] = useState(false);
+  const [loading, setLoading] = useState(true); // New loading state
+
+  useEffect(() => {
+    // Show the loader for 2 seconds on initial mount
+    const timer = setTimeout(() => {
+      setLoading(false); // Hide loader after 2 seconds
+    }, 2000);
+
+    return () => clearTimeout(timer); // Cleanup the timer
+  }, []);
 
   useEffect(() => {
     dispatch(ProfileData())
@@ -61,21 +71,19 @@ const ExploreHome = (Data: any) => {
     }
     apply && setApply(false);
   }, [apply, trigger]);
+
+  if (loading) {
+    // Show loader while loading is true
+    return (
+      <SafeAreaView style={styles.loaderContainer}>
+        <Loader />
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.pageContainer}>
       <BackButton title={name} />
-      {/* <View style={styles.pageContainer2}>
-        <View style={{marginTop: 20, borderWidth: 0}}>
-         
-            data={data}
-            setData={setData}
-            currentIndex={currentIndex}
-            setCurrentIndex={setCurrentIndex}
-            profileData={profileData}
-            noProfilesLoader={noProfilesLoader}
-          />
-        </View>
-      </View> */}
       <View style={styles.pageContainer2}>
         <TinderSwipe
           data={data}
@@ -101,6 +109,12 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
+    backgroundColor: '#ededed',
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: '#ededed',
   },
 });

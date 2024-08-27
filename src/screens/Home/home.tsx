@@ -2,7 +2,12 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import HeaderComponent from '../../components/Dashboard/header/header';
 import {useAppDispatch, useAppSelector} from '../../store/store';
-import {ProfileData, getAllUsers} from '../../store/Auth/auth';
+import {
+  ProfileData,
+  SetNewFilter,
+  getAllUsers,
+  updateProfileData,
+} from '../../store/Auth/auth';
 import FilterSection from '../FilterSection/filterSection';
 import TinderSwipe from './AnimatedStack/TinderSwipe';
 import {io} from 'socket.io-client';
@@ -19,20 +24,21 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// const getUserId = async () => {
-//   try {
-//     const userId: any = await AsyncStorage.getItem('userId');
+const getUserId = async () => {
+  try {
+    const userId: any = await AsyncStorage.getItem('userId');
 
-//     if (userId !== null) {
-//       return JSON.parse(userId);
-//     } else {
-//       return null;
-//     }
-//   } catch (error) {
-//     return null;
-//   }
-// };
+    if (userId !== null) {
+      return JSON.parse(userId);
+    } else {
+      return null;
+    }
+  } catch (error) {
+    return null;
+  }
+};
 
 const HomeScreen = () => {
   const navigation: any = useNavigation();
@@ -57,8 +63,8 @@ const HomeScreen = () => {
   );
 
   useEffect(() => {
-    console.log('--------', data.length);
-    if (currentIndex === data.length) {
+    // console.log('-------->>', data.length, 'page ', page);
+    if (currentIndex === data.length && !noProfilesLoader) {
       // Check if at the end of the current data
       setPage(prevPage => {
         const newPage = prevPage + 1;
@@ -78,15 +84,25 @@ const HomeScreen = () => {
     }
   }, [initialRouteValue]);
 
-  // const location: any = useAppSelector(
-  //   (state: any) => state?.Auth?.data?.location,
-  // );
-
-  // console.log('Location on home screen ', location)
+  const location: any = useAppSelector(
+    (state: any) => state?.Auth?.data?.location,
+  );
 
   // useEffect(() => {
   //   fetchNewData();
   // }, []);
+  useEffect(() => {
+    // fetchNewData();
+    if (location?.latitude) {
+      dispatch(
+        updateProfileData({
+          field: 'location',
+          value: {latitude: location.latitude, longitude: location.longitude},
+          id: getUserId(),
+        }),
+      );
+    }
+  }, []);
 
   useEffect(() => {
     socket.emit('user_connected', profileData?._id);
@@ -132,31 +148,24 @@ const HomeScreen = () => {
         const highValue = parseInt(highStr);
 
         setFilterData({
-          showIn: res.data.showInDistance,
+          showInDistance: res.data.showInDistance,
           distance: parseInt(res.data.distance),
-          checkedInterests: res.data.interests,
-          checkedRelationShip: res.data.partnerType,
+          interests: res.data.interests,
+          partnerType: res.data.partnerType,
           low: lowValue,
           high: highValue,
         });
-      })
-      .then(() => {
-        const [lowStr, highStr] = profileData?.ageRange
-          ? profileData?.ageRange?.split(' ')
-          : '18 56'.split(' ');
 
-        const lowValue = parseInt(lowStr);
-        const highValue = parseInt(highStr);
-
+        // console.log(' res.data.?.partnerType', res.data.partnerType);
         dispatch(
           getAllUsers({
-            userId: profileData?._id,
-            checkedInterests: profileData?.interests,
-            showIn: profileData?.showInDistance,
-            distance: parseInt(profileData?.distance),
+            userId: res.data._id,
+            checkedInterests: res.data.interests,
+            showIn: res.data.showInDistance,
+            distance: parseInt(res.data.distance),
             low: lowValue ?? 18,
             high: highValue ?? 56,
-            checkedRelationShip: profileData?.partnerType,
+            checkedRelationShip: res.data.partnerType,
             page: newPage,
           }),
         )
@@ -169,6 +178,24 @@ const HomeScreen = () => {
       });
   };
 
+  const BackPressed = () => {
+    const [lowStr, highStr] = profileData?.ageRange
+      ? profileData?.ageRange?.split(' ')
+      : '18 56'.split(' ');
+    const lowValue = parseInt(lowStr);
+    const highValue = parseInt(highStr);
+
+    console.log(lowStr, '  ', highStr);
+    setFilterData({
+      showInDistance: profileData.showInDistance,
+      distance: parseInt(profileData.distance),
+      interests: profileData.interests,
+      partnerType: profileData.partnerType,
+      low: lowValue,
+      high: highValue,
+    });
+  };
+
   useFocusEffect(
     useCallback(() => {
       return () => {
@@ -176,6 +203,21 @@ const HomeScreen = () => {
       };
     }, []),
   );
+
+  const onPressApply = () => {
+    setNoProfilesLoader(true);
+    console.log('latest filter ====++>', {
+      id: profileData._id,
+      data: filterData,
+    });
+    dispatch(SetNewFilter({id: profileData._id, data: filterData}))
+      .unwrap()
+      .then((res: any) => {
+        console.log('AppFilter response  ==>', res);
+        setPage(1);
+        fetchNewData(1);
+      });
+  };
 
   return (
     <View style={styles.pageContainer}>
@@ -198,7 +240,11 @@ const HomeScreen = () => {
         // setApply={() => )}
         applyClick={() => {
           setActiveScreen('HOME');
-          fetchNewData(1);
+          onPressApply();
+        }}
+        OnBackPress={() => {
+          setActiveScreen('HOME');
+          BackPressed();
         }}
         ClickNotification={() => navigation.navigate('NotificationScreen')}
       />
@@ -220,7 +266,10 @@ const HomeScreen = () => {
           />
         </View>
       ) : activeScreen === 'Filters' ? (
-        <FilterSection filterData={filterData} setFilterData={setFilterData} />
+        <FilterSection
+          filterData={filterData}
+          setSelectedFilterData={setFilterData}
+        />
       ) : null}
       <Modal
         style={{backgroundColor: 'transparent', margin: 0}}
