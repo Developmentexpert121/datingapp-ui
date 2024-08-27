@@ -35,6 +35,7 @@ const LikedScreen = () => {
 
   const navigation: any = useNavigation();
   const goToChatWith = async (user: any) => {
+    console.log('........');
     await dispatch(videoCallUser({user: user}))
       .unwrap()
       .then(() => navigation.navigate('ChatSection'));
@@ -85,13 +86,12 @@ const LikedScreen = () => {
             ? () => {
                 setModalOpen(true);
               }
-            : profileData.plan.productId === 'PremiumPlus'
+            : profileData.plan.productId !== 'PremiumPlus'
             ? () => likeByMe(item)
             : () => {
                 setModalOpen(true);
               }
         }
-        // onPress={() => goToChatWith(item)}
         style={styles.card}>
         <ImageBackground
           source={{uri: item.profilePic?.split(',')[0]}}
@@ -117,7 +117,6 @@ const LikedScreen = () => {
               }}
             />
           )}
-
           <LinearGradient
             colors={['rgba(0,0,0,0)', 'rgba(0,0,0,0.8)']}
             style={styles.gradient}></LinearGradient>
