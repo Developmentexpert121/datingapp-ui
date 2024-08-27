@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   Image,
   StyleSheet,
+  Alert,
+  Linking,
 } from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {request, PERMISSIONS} from 'react-native-permissions';
@@ -53,15 +55,15 @@ const SeventhStepScreen = ({
 
   const requestPermissions = async () => {
     if (Platform.OS === 'android') {
-      await requestAndroidPermissions();
+      return await requestAndroidPermissions();
     } else {
-      await requestIOSPermissions();
+      return await requestIOSPermissions();
     }
   };
 
-  useEffect(() => {
-    requestPermissions();
-  }, []);
+  // useEffect(() => {
+  //   requestPermissions();
+  // }, []);
 
   const requestAndroidPermissions = async () => {
     try {
@@ -70,17 +72,34 @@ const SeventhStepScreen = ({
         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
         PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
       ]);
+
+      console.log(granted);
+
       if (
-        granted['android.permission.CAMERA'] === 'granted' &&
-        granted['android.permission.WRITE_EXTERNAL_STORAGE'] === 'granted' &&
-        granted['android.permission.READ_EXTERNAL_STORAGE'] === 'granted'
+        granted['android.permission.CAMERA'] ===
+          PermissionsAndroid.RESULTS.GRANTED &&
+        granted['android.permission.WRITE_EXTERNAL_STORAGE'] ===
+          PermissionsAndroid.RESULTS.GRANTED &&
+        granted['android.permission.READ_EXTERNAL_STORAGE'] ===
+          PermissionsAndroid.RESULTS.GRANTED
       ) {
-        // Permissions granted
+        return true;
+      } else if (
+        granted['android.permission.CAMERA'] ===
+          PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN ||
+        granted['android.permission.WRITE_EXTERNAL_STORAGE'] ===
+          PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN ||
+        granted['android.permission.READ_EXTERNAL_STORAGE'] ===
+          PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN
+      ) {
+        showPermissionAlert();
+        return false;
       } else {
-        // Permissions denied
+        return false;
       }
     } catch (err) {
       console.warn(err);
+      return false;
     }
   };
 
@@ -90,13 +109,27 @@ const SeventhStepScreen = ({
       const photoPermission = await request(PERMISSIONS.IOS.PHOTO_LIBRARY);
 
       if (cameraPermission === 'granted' && photoPermission === 'granted') {
-        // Permissions granted
+        return true;
       } else {
-        // Permissions denied
+        showPermissionAlert();
+        return false;
       }
     } catch (err) {
       console.warn(err);
+      return false;
     }
+  };
+
+  const showPermissionAlert = () => {
+    Alert.alert(
+      'Permissions Required',
+      'Please go to your app settings and enable the necessary permissions.',
+      [
+        {text: 'Cancel', style: 'cancel'},
+        {text: 'Open Settings', onPress: () => Linking.openSettings()},
+      ],
+      {cancelable: true},
+    );
   };
 
   useEffect(() => {
@@ -113,6 +146,14 @@ const SeventhStepScreen = ({
   }, [profileImages]);
 
   const handleImageSelection = async (index?: number) => {
+    const hasPermission: any = await requestPermissions();
+
+    console.log('-----', hasPermission);
+
+    if (!hasPermission) {
+      console.warn('Permissions not granted.');
+      return;
+    }
     try {
       const image = await ImagePicker.openPicker({
         width: 800,
@@ -178,8 +219,6 @@ const SeventhStepScreen = ({
     setProfileImages(updatedImages);
     setUploadError(false);
   };
-
-  console.log(uploadError, profileImages.length);
 
   return (
     <View style={styles.container}>
