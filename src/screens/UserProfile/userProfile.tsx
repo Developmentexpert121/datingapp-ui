@@ -53,7 +53,8 @@ const UserProfile = () => {
     setCurrentIndex(0);
   }, [userDataOnId]);
 
-  console.log('--------------------', showOnlineUser);
+  // console.log('--------------------', userDataOnId?.name);
+  // console.log('--------------------', JSON.stringify(userDataOnId));
 
   const isUserOnline: any = showOnlineUser?.includes(user?._id) || false;
 
@@ -109,20 +110,22 @@ const UserProfile = () => {
 
   return (
     <View style={styles.pageContainer}>
-      <View style={styles.container}>
-        <View style={styles.backPress}>
-          <Ionicons
-            onPress={() => navigation.goBack()}
-            style={styles.backPressIcon}
-            name="chevron-back-outline"
-            size={30}
-          />
+      {!loader && (
+        <View style={styles.container}>
+          <View style={styles.backPress}>
+            <Ionicons
+              onPress={() => navigation.goBack()}
+              style={styles.backPressIcon}
+              name="chevron-back-outline"
+              size={30}
+            />
+          </View>
+          <Text style={styles.stepsText}>
+            {userDataOnId?.name},{' ' + userDataOnId?.age}
+          </Text>
+          <View style={{width: 40}} />
         </View>
-        <Text style={styles.stepsText}>
-          {userDataOnId.name},{' ' + userDataOnId.age}
-        </Text>
-        <View style={{width: 40}} />
-      </View>
+      )}
       {loader ? (
         <Loader />
       ) : (
@@ -185,7 +188,9 @@ const UserProfile = () => {
                           {/* <Text style={styles.name}>
                             {userDataOnId.name},{' ' + userDataOnId.age}
                           </Text> */}
-                          <Text style={styles.bio}>{userDataOnId.hobbies}</Text>
+                          <Text style={styles.bio}>
+                            {userDataOnId?.hobbies}
+                          </Text>
                         </View>
                       </LinearGradient>
                     </ImageBackground>
@@ -229,8 +234,8 @@ const UserProfile = () => {
                       {profileData.location && userDataOnId?.location
                         ? `${Math.round(
                             calculateDistance(
-                              profileData.location.latitude,
-                              profileData.location.longitude,
+                              profileData?.location.latitude,
+                              profileData?.location.longitude,
                               userDataOnId?.location.latitude,
                               userDataOnId?.location.longitude,
                             ),
