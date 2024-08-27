@@ -64,7 +64,7 @@ const HomeScreen = () => {
 
   useEffect(() => {
     // console.log('-------->>', data.length, 'page ', page);
-    if (currentIndex === data.length) {
+    if (currentIndex === data.length && !noProfilesLoader) {
       // Check if at the end of the current data
       setPage(prevPage => {
         const newPage = prevPage + 1;
@@ -155,24 +155,17 @@ const HomeScreen = () => {
           low: lowValue,
           high: highValue,
         });
-      })
-      .then(() => {
-        const [lowStr, highStr] = profileData?.ageRange
-          ? profileData?.ageRange?.split(' ')
-          : '18 56'.split(' ');
 
-        const lowValue = parseInt(lowStr);
-        const highValue = parseInt(highStr);
-
+        // console.log(' res.data.?.partnerType', res.data.partnerType);
         dispatch(
           getAllUsers({
-            userId: profileData?._id,
-            checkedInterests: profileData?.interests,
-            showIn: profileData?.showInDistance,
-            distance: parseInt(profileData?.distance),
+            userId: res.data._id,
+            checkedInterests: res.data.interests,
+            showIn: res.data.showInDistance,
+            distance: parseInt(res.data.distance),
             low: lowValue ?? 18,
             high: highValue ?? 56,
-            checkedRelationShip: profileData?.partnerType,
+            checkedRelationShip: res.data.partnerType,
             page: newPage,
           }),
         )

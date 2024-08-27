@@ -9,6 +9,7 @@ import {
   Animated,
   TextInput,
   SafeAreaView,
+  Keyboard,
 } from 'react-native';
 
 import React, {useEffect, useState} from 'react';
@@ -48,7 +49,7 @@ const LoginScreen = () => {
     password: false,
   });
 
-  const [keyboardHeight] = useState(new Animated.Value(0));
+  // const [keyboardHeight] = useState(new Animated.Value(0));
 
   // useEffect(() => {
   //   const keyboardWillShow = Keyboard.addListener('keyboardWillShow', event => {
@@ -73,7 +74,7 @@ const LoginScreen = () => {
   //   };
   // }, []);
 
-  const [deviceToken, setDeviceToken] = useState<any>(null);
+  // const [deviceToken, setDeviceToken] = useState<any>(null);
 
   const onSubmit = async (data: LoginForm) => {
     let deviceToken = await getLocalStroage('deviceToken');
@@ -154,7 +155,9 @@ const LoginScreen = () => {
           contentContainerStyle={styles.scrollViewContent}
           keyboardShouldPersistTaps="handled"
           enableOnAndroid={true}
-          extraHeight={Platform.select({android: 200})}>
+          pagingEnabled
+          // extraHeight={Platform.select({android: 200})}
+          extraScrollHeight={Platform.OS === 'android' ? -hp(40) : 0}>
           <View style={styles.container}>
             <View style={styles.imageContainer}>
               <ImageBackground
