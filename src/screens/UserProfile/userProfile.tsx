@@ -118,6 +118,8 @@ const UserProfile = () => {
             size={30}
           />
         </View>
+        <Text style={styles.stepsText}>Profile</Text>
+        <View style={{width: 40}} />
       </View>
       {loader ? (
         <Loader />
@@ -178,7 +180,9 @@ const UserProfile = () => {
                           zIndex: 2,
                         }}>
                         <View style={styles.cardInner}>
-                          <Text style={styles.name}>{userDataOnId.name}</Text>
+                          <Text style={styles.name}>
+                            {userDataOnId.name},{' ' + userDataOnId.age}
+                          </Text>
                           <Text style={styles.bio}>{userDataOnId.hobbies}</Text>
                         </View>
                       </LinearGradient>
@@ -387,6 +391,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     columnGap: 4,
     margin: 5,
+  },
+  stepsText: {
+    color: 'black',
+    fontSize: 24,
+    fontFamily: 'Sansation-Bold',
   },
   icons3: {height: 50, width: 50},
 

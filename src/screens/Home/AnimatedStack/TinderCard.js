@@ -116,6 +116,23 @@ const TinderCard = ({
     );
   };
 
+  const calculateAge = dob => {
+    const birthDate = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDifference = today.getMonth() - birthDate.getMonth();
+
+    // Adjust age if the birth date hasn't occurred yet this year
+    if (
+      monthDifference < 0 ||
+      (monthDifference === 0 && today.getDate() < birthDate.getDate())
+    ) {
+      age--;
+    }
+
+    return age;
+  };
+
   return (
     <Animated.View
       style={[
@@ -164,7 +181,9 @@ const TinderCard = ({
             zIndex: 2,
           }}>
           <View style={styles.cardInner}>
-            <Text style={styles.name}>{item.name}</Text>
+            <Text style={styles.name}>
+              {item.name},{' ' + calculateAge(item.dob)}
+            </Text>
             <Text style={styles.bio}>{item.hobbies}</Text>
           </View>
         </LinearGradient>

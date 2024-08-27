@@ -123,7 +123,9 @@ const LikedScreen = () => {
             style={styles.gradient}></LinearGradient>
           {profileData?.plan !== 'Free' || item.type === 'superLike' ? (
             <View style={styles.cardInner}>
-              <Text style={styles.name}>{item.name}</Text>
+              <Text style={styles.name}>
+                {item.name},{' ' + item.age}
+              </Text>
               <Text style={styles.bio}>{item.hobbies}</Text>
             </View>
           ) : null}

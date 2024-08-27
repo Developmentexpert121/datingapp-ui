@@ -45,7 +45,7 @@ const HomeScreen = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [data, setData] = useState<any>([]);
   const [activeScreen, setActiveScreen] = useState('HOME');
-  const [noProfilesLoader, setNoProfilesLoader] = useState(false);
+  const [noProfilesLoader, setNoProfilesLoader] = useState(true);
   const [onlineUsers, setOnlineUsers] = useState<any>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [reason, setReason] = useState('');
