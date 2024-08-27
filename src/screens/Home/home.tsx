@@ -56,13 +56,23 @@ const HomeScreen = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [reason, setReason] = useState('');
   const [filterData, setFilterData] = useState({});
-  // const [SelectedFilterData, setSelectedFilterData] = useState({});
+  const [page, setPage] = useState(0);
 
   const initialRouteValue = useAppSelector(
     (state: any) => state.ActivityLoader.initialRouteValue,
   );
 
-  // console.log('SelectedFilterData =======>', filterData);
+  useEffect(() => {
+    console.log('--------', data.length);
+    if (currentIndex === data.length) {
+      // Check if at the end of the current data
+      setPage(prevPage => {
+        const newPage = prevPage + 1;
+        fetchNewData(newPage); // Fetch more data
+        return newPage;
+      });
+    }
+  }, [currentIndex, data.length]);
 
   useEffect(() => {
     if (initialRouteValue) {
@@ -78,8 +88,11 @@ const HomeScreen = () => {
     (state: any) => state?.Auth?.data?.location,
   );
 
+  // useEffect(() => {
+  //   fetchNewData();
+  // }, []);
   useEffect(() => {
-    fetchNewData();
+    // fetchNewData();
     if (location?.latitude) {
       dispatch(
         updateProfileData({
@@ -121,20 +134,19 @@ const HomeScreen = () => {
     dispatch(onlineUser(onlineUsers));
   }, [onlineUsers]);
 
-  const fetchNewData = () => {
+  const fetchNewData = (newPage: any) => {
+    console.log('0000000000000000', newPage);
     setActiveScreen('HOME');
     setNoProfilesLoader(true);
     dispatch(ProfileData())
       .unwrap()
       .then((res: any) => {
-        console.log('res?.data?.ageRange ||||||||', res?.data?.interests);
         const [lowStr, highStr] = res?.data?.ageRange
           ? res?.data?.ageRange?.split(' ')
           : '18 56'.split(' ');
         const lowValue = parseInt(lowStr);
         const highValue = parseInt(highStr);
 
-        console.log(lowStr, '  ', highStr);
         setFilterData({
           showIn: res.data.showInDistance,
           distance: parseInt(res.data.distance),
@@ -161,10 +173,12 @@ const HomeScreen = () => {
             low: lowValue ?? 18,
             high: highValue ?? 56,
             checkedRelationShip: profileData?.partnerType,
+            page: newPage,
           }),
         )
           .unwrap()
           .then((response: any) => {
+            console.log('======', response.currentPage);
             setData(response.users);
             setNoProfilesLoader(false);
           });
@@ -207,7 +221,7 @@ const HomeScreen = () => {
       .unwrap()
       .then((res: any) => {
         console.log('AppFilter response  ==>', res);
-        fetchNewData();
+        fetchNewData(1);
       });
   };
 
