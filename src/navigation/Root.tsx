@@ -43,6 +43,7 @@ import MyIncomingCallUI from '../screens/ChatHome/myIncomingCallUI';
 import {PermissionsAndroid, Platform, SafeAreaView, View} from 'react-native';
 import filterSection from '../screens/FilterSection/filterSection';
 import NotificationScreen from '../screens/Notification/notification';
+import userProfile from '../screens/UserProfile/userProfile';
 
 const Stack = createNativeStackNavigator();
 
@@ -300,6 +301,7 @@ const Root = () => {
             name="VideoCallRedirect"
             component={VideoCallRedirect}
           />
+          <AfterLoginStack.Screen name="userProfile" component={userProfile} />
         </AfterLoginStack.Navigator>
       );
     }

@@ -288,22 +288,25 @@ const ChatPage = ({
         <View style={{flex: 1}}>
           {/* header */}
           <View style={styles.container}>
-            <View
+            <Pressable
               style={{
                 width: '72%',
                 flexDirection: 'row',
                 paddingStart: 10,
                 alignItems: 'center',
                 borderWidth: 0,
+              }}
+              onPress={() => {
+                navigation.navigate('userProfile');
               }}>
-              <Pressable style={styles.backPress}>
+              <View style={styles.backPress}>
                 <Ionicons
                   onPress={() => navigation.goBack()}
                   style={styles.backPressIcon}
                   name="chevron-back-outline"
                   size={30}
                 />
-              </Pressable>
+              </View>
               <Avatar
                 source={{uri: user?.profilePic?.split(',')[0]}}
                 rounded
@@ -324,7 +327,7 @@ const ChatPage = ({
                   {isUserOnline ? 'Online' : 'Offline'}
                 </Text>
               </View>
-            </View>
+            </Pressable>
             <View style={{flexDirection: 'row', marginEnd: 10, width: '25%'}}>
               <TouchableOpacity
                 onPress={

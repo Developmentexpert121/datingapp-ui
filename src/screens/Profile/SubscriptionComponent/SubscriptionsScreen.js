@@ -151,10 +151,8 @@ const SubscriptionsScreen = ({navigation}) => {
                     token: purchase.purchaseToken,
                     developerPayload: purchase.developerPayloadAndroid,
                   });
-                  RNRestart.Restart();
                 }
               } catch (err) {
-                RNRestart.Restart();
                 console.error('error', err);
               }
             }
@@ -182,17 +180,15 @@ const SubscriptionsScreen = ({navigation}) => {
 
             if (appleReceiptResponse && appleReceiptResponse.status === 0) {
               await finishTransaction(purchase);
+              navigation.navigate('Home');
             }
           } else {
-            console.log('.............');
             await finishTransaction({
               purchase,
               isConsumable: false,
               developerPayloadAndroid: purchase.developerPayloadAndroid,
             });
-            console.log('!!!!!!!!!!!!!!!!!', purchase);
-            console.log('!!!!!!!!!!!!!!!22', isConsumable);
-            console.log('!!!!!!!!!!!!!!!333', developerPayloadAndroid);
+            navigation.navigate('Home');
           }
         }
       } catch (error) {

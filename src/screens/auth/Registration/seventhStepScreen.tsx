@@ -16,6 +16,7 @@ import {updateProfileData, uploadImages} from '../../../store/Auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../../../components/Loader/Loader';
 import ImageResizer from 'react-native-image-resizer'; // Add this library for image resizing
+import ImagePicker from 'react-native-image-crop-picker';
 
 const getUserId = async () => {
   try {
@@ -112,58 +113,58 @@ const SeventhStepScreen = ({
   }, [profileImages]);
 
   const handleImageSelection = async (index?: number) => {
-    launchImageLibrary({mediaType: 'photo'}, async response => {
-      if (!response?.didCancel && !response?.errorMessage) {
+    try {
+      const image = await ImagePicker.openPicker({
+        width: 800,
+        height: 800,
+        cropping: true,
+        compressImageQuality: 0.8,
+      });
+
+      if (image) {
         setLoader(true);
 
-        if (response?.assets && response.assets.length > 0) {
-          try {
-            const asset: any = response.assets[0];
+        // Resize the image
+        const resizedImage = await ImageResizer.createResizedImage(
+          image.path,
+          800, // new width
+          800, // new height
+          'JPEG',
+          80, // quality
+        );
 
-            // Resize the image
-            const resizedImage = await ImageResizer.createResizedImage(
-              asset.uri,
-              800, // new width
-              800, // new height
-              'JPEG',
-              80, // quality
-            );
+        const formData = new FormData();
+        formData.append('image', {
+          name: resizedImage.name,
+          fileName: resizedImage.name,
+          type: image.mime,
+          uri: resizedImage.uri,
+        });
 
-            const formData = new FormData();
-            formData.append('image', {
-              name: resizedImage.name,
-              fileName: resizedImage.name,
-              type: asset.type,
-              uri: resizedImage.uri,
-            });
+        const uploadedImageUrl = await dispatch(uploadImages(formData))
+          .unwrap()
+          .then((response: any) => response.secureUrl);
 
-            const uploadedImageUrl = await dispatch(uploadImages(formData))
-              .unwrap()
-              .then((response: any) => response.secureUrl);
-
-            if (typeof index === 'number') {
-              // Replace the existing image
-              const updatedImages = [...profileImages];
-              updatedImages[index] = uploadedImageUrl;
-              setProfileImages(updatedImages);
-            } else {
-              // Add a new image
-              setProfileImages((prevImages: any) => [
-                ...prevImages,
-                uploadedImageUrl,
-              ]);
-            }
-            setUploadError(false);
-          } catch (error) {
-            console.error('Error uploading image:', error);
-            setUploadError(true);
-          }
+        if (typeof index === 'number') {
+          // Replace the existing image
+          const updatedImages = [...profileImages];
+          updatedImages[index] = uploadedImageUrl;
+          setProfileImages(updatedImages);
         } else {
-          setUploadError(true);
+          // Add a new image
+          setProfileImages((prevImages: any) => [
+            ...prevImages,
+            uploadedImageUrl,
+          ]);
         }
+        setUploadError(false);
         setLoader(false);
       }
-    });
+    } catch (error) {
+      console.error('Error selecting or cropping image:', error);
+      setUploadError(true);
+      setLoader(false);
+    }
   };
 
   const handleRemoveImage = async (index: number) => {
