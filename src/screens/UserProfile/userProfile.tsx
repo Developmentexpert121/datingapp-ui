@@ -118,7 +118,9 @@ const UserProfile = () => {
             size={30}
           />
         </View>
-        <Text style={styles.stepsText}>Profile</Text>
+        <Text style={styles.stepsText}>
+          {userDataOnId.name},{' ' + userDataOnId.age}
+        </Text>
         <View style={{width: 40}} />
       </View>
       {loader ? (
@@ -180,9 +182,9 @@ const UserProfile = () => {
                           zIndex: 2,
                         }}>
                         <View style={styles.cardInner}>
-                          <Text style={styles.name}>
+                          {/* <Text style={styles.name}>
                             {userDataOnId.name},{' ' + userDataOnId.age}
-                          </Text>
+                          </Text> */}
                           <Text style={styles.bio}>{userDataOnId.hobbies}</Text>
                         </View>
                       </LinearGradient>
