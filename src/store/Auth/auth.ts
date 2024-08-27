@@ -484,6 +484,31 @@ export const likedMe = createAsyncThunk(
   },
 );
 
+export const getUserDataOnId: any = createAsyncThunk(
+  'auth/getUserDataOnId',
+  async (data: any, {dispatch}: any) => {
+    try {
+      const response = await http.get('/user/getUserDataOnId', {
+        params: {
+          id: data.id,
+        },
+      });
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error: any) {
+      console.error('error LikidMe', error);
+      if (error.response && error.response.status === 400) {
+        return {error: 'Bad Request'};
+      } else {
+        // console.log(error.response);
+        console.log('------------------');
+        throw error;
+      }
+    }
+  },
+);
+
 export const getAllUsers = createAsyncThunk(
   'auth/getAllUsers',
   async (
@@ -878,6 +903,7 @@ const initialState: any = {
     otpVerified: false,
     checkDevice: false,
     location: {},
+    userDataOnId: null,
   },
   userID: null,
   token: null,
@@ -1116,6 +1142,16 @@ const Auth: any = createSlice({
       })
       .addCase(SetLocation.fulfilled, (state, action) => {
         state.data.location = action.payload;
+      })
+      .addCase(getUserDataOnId.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(getUserDataOnId.fulfilled, (state, action) => {
+        state.data.userDataOnId = action.payload.user;
+        state.loading = false;
+      })
+      .addCase(getUserDataOnId.rejected, (state, action) => {
+        state.loading = false;
       });
   },
 });
