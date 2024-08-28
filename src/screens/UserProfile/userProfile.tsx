@@ -3,6 +3,7 @@ import {
   Dimensions,
   Image,
   ImageBackground,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -115,7 +116,7 @@ const UserProfile = () => {
   };
 
   return (
-    <View style={styles.pageContainer}>
+    <SafeAreaView style={styles.pageContainer}>
       {!loader && (
         <View style={styles.container}>
           <View style={styles.backPress}>
@@ -401,7 +402,7 @@ const UserProfile = () => {
           </View>
         </View>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 
