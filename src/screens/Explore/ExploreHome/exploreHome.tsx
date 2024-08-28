@@ -29,7 +29,7 @@ const ExploreHome = (Data: any) => {
     // Show the loader for 2 seconds on initial mount
     const timer = setTimeout(() => {
       setLoading(false); // Hide loader after 2 seconds
-    }, 3000);
+    }, 3500);
 
     return () => clearTimeout(timer); // Cleanup the timer
   }, []);
