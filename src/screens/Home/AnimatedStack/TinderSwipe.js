@@ -105,6 +105,8 @@ const TinderSwipe = ({
       .then(res => {
         // console.log('awdawdssssss', res);
         if (res.success === true) {
+          setData(prevState => prevState.slice(1));
+          removeCard();
           const targetX = hiddenTranslateX;
           translateX.value = withSpring(targetX);
           setTimeout(() => {
@@ -113,6 +115,7 @@ const TinderSwipe = ({
             setData(updatedUsers);
           }, 1000);
         } else {
+          removeCard();
           setModalOpen(true);
           setReason('like');
         }
@@ -130,8 +133,9 @@ const TinderSwipe = ({
       .then(res => {
         // console.log('awdawd', res.success);
         if (res.success === true) {
+          setData(prevState => prevState.slice(1));
+          removeCard();
           const targetX = hiddenTranslateX;
-          // console.log('targetX', targetX);
           translateX.value = withSpring(targetX);
           // console.log('translateX.value ', translateX.value);
           setTimeout(() => {
@@ -140,6 +144,7 @@ const TinderSwipe = ({
             setData(updatedUsers);
           }, 1000);
         } else {
+          removeCard();
           setModalOpen(true);
           setReason('superLike');
         }
@@ -148,10 +153,10 @@ const TinderSwipe = ({
 
   // ######################
   const onSwipeLeft = async () => {
+    setData(prevState => prevState.slice(1));
     // Implement your logic here if needed
   };
   const removeCard = useCallback(() => {
-    setData(prevState => prevState.slice(1));
     swipe.setValue({x: 0, y: 0});
     setIsSuperLikeAnimating(false);
   }, [swipe]);
@@ -163,6 +168,7 @@ const TinderSwipe = ({
         duration: 500,
         useNativeDriver: true,
       }).start(removeCard);
+      setData(prevState => prevState.slice(1));
     },
     [removeCard, swipe.x],
   );
@@ -180,7 +186,6 @@ const TinderSwipe = ({
         } else {
           onSwipeLeft();
         }
-        removeCard();
       });
     },
     [removeCard, swipe.x, onSwipeRight, onSwipeLeft],
@@ -195,7 +200,6 @@ const TinderSwipe = ({
       useNativeDriver: true,
     }).start(() => {
       onSwipeTop();
-      removeCard();
     });
   }, [removeCard, swipe.y, onSwipeTop, isSuperLikeAnimating]);
 
