@@ -154,6 +154,7 @@ const TinderSwipe = ({
   // ######################
   const onSwipeLeft = async () => {
     setData(prevState => prevState.slice(1));
+    removeCard();
     // Implement your logic here if needed
   };
   const removeCard = useCallback(() => {

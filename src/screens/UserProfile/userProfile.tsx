@@ -20,7 +20,13 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import {useDispatch} from 'react-redux';
-import {getUserDataOnId, likedAUser, superLiked} from '../../store/Auth/auth';
+import {
+  getUserDataOnId,
+  likedAUser,
+  likedMe,
+  rejectUser,
+  superLiked,
+} from '../../store/Auth/auth';
 import LinearGradient from 'react-native-linear-gradient';
 const {height, width} = Dimensions.get('window');
 
@@ -213,7 +219,19 @@ const UserProfile = () => {
                 </View>
                 {page === 'Liked' && (
                   <View style={[styles.icons, {zIndex: -1}]}>
-                    <TouchableOpacity onPress={() => {}}>
+                    <TouchableOpacity
+                      onPress={async () => {
+                        await dispatch(
+                          rejectUser({
+                            userId: profileData._id,
+                            userIdToReject: user._id,
+                          }),
+                        )
+                          .unwrap()
+                          .then(async () => {
+                            navigation.navigate('LikedScreen');
+                          });
+                      }}>
                       <Image
                         source={require('../../assets/images/Cross.png')}
                         style={styles.icons3}

@@ -852,7 +852,7 @@ export const SetNewFilter = createAsyncThunk(
   'auth/SetNewFilter',
   async (data: any, {dispatch}: any) => {
     try {
-      console.log('Filter data +++++++++> ' , data)
+      console.log('Filter data +++++++++> ', data);
       const response = await http.post('/user/updateFilter', data);
       if (response.status === 200) {
         return response.data;
@@ -864,7 +864,7 @@ export const SetNewFilter = createAsyncThunk(
       } else {
         throw error;
       }
-    } 
+    }
   },
 );
 
@@ -884,6 +884,26 @@ export const verifyReceipt: any = createAsyncThunk(
         throw error;
       }
     } finally {
+    }
+  },
+);
+
+export const rejectUser = createAsyncThunk(
+  'auth/rejectUser',
+  async (data: any, {dispatch}: any) => {
+    try {
+      console.log('Filter data +++++++++> ', data);
+      const response = await http.post('/user/rejectUser', data);
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error: any) {
+      console.log('error filterUpdate', error);
+      if (error.response && error.response.status === 400) {
+        return {error: 'Bad Request'};
+      } else {
+        throw error;
+      }
     }
   },
 );
@@ -1172,8 +1192,9 @@ const Auth: any = createSlice({
       })
       .addCase(getUserDataOnId.rejected, (state, action) => {
         state.loading = false;
-      })  .addCase(SetNewFilter.fulfilled, (state, action) => {
-        console.log('Filter response ==>',action.payload) 
+      })
+      .addCase(SetNewFilter.fulfilled, (state, action) => {
+        console.log('Filter response ==>', action.payload);
       });
   },
 });

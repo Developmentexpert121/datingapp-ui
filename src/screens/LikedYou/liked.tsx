@@ -1,5 +1,5 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -52,9 +52,11 @@ const LikedScreen = () => {
     navigation.navigate('userProfile');
   };
 
-  useEffect(() => {
-    LikedUser();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      LikedUser();
+    }, []),
+  );
 
   const renderGridItem = ({item}: {item: any}) => {
     return (
