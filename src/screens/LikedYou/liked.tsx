@@ -34,12 +34,6 @@ const LikedScreen = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const navigation: any = useNavigation();
-  const goToChatWith = async (user: any) => {
-    console.log('........');
-    await dispatch(videoCallUser({user: user}))
-      .unwrap()
-      .then(() => navigation.navigate('ChatSection'));
-  };
 
   const LikedUser = async () => {
     try {
@@ -51,27 +45,11 @@ const LikedScreen = () => {
       setLoading(false);
     }
   };
-  const likeByMe = async (item: any) => {
-    if (item.type === 'like') {
-      await dispatch(
-        likedAUser({
-          likerId: profileData?._id,
-          userIdBeingLiked: item?._id,
-        }),
-      )
-        .unwrap()
-        .then(() => goToChatWith(item));
-    } else if (item.type === 'superLike') {
-      await dispatch(
-        superLiked({
-          likerId: profileData?._id,
-          userIdBeingLiked: item?._id,
-        }),
-      )
-        .unwrap()
-        .then(() => goToChatWith(item));
-      console.log(':::::::::::::::::::::');
-    }
+
+  const goToUserProfile = async (user: any) => {
+    console.log(user);
+    await dispatch(videoCallUser({user: user, page: 'Liked'}));
+    navigation.navigate('userProfile');
   };
 
   useEffect(() => {
@@ -86,12 +64,7 @@ const LikedScreen = () => {
             ? () => {
                 setModalOpen(true);
               }
-            : // profileData.plan.productId !== 'PremiumPlus'
-              // ?
-              () => likeByMe(item)
-          // : () => {
-          //     setModalOpen(true);
-          //   }
+            : () => goToUserProfile(item)
         }
         style={styles.card}>
         <ImageBackground

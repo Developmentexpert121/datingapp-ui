@@ -296,11 +296,9 @@ const ChatPage = ({
                 alignItems: 'center',
                 borderWidth: 0,
               }}
-
-              // onPress={() => {
-              // navigation.navigate('userProfile');
-              // }}
-            >
+              onPress={() => {
+                navigation.navigate('userProfile');
+              }}>
               <View style={styles.backPress}>
                 <Ionicons
                   onPress={() => navigation.goBack()}

@@ -67,6 +67,7 @@ const ActivityLoader: any = createSlice({
     user: null,
     clientData: null,
     initialRouteValue: null,
+    page: '',
   },
   reducers: {},
   extraReducers: builder => {
@@ -95,6 +96,7 @@ const ActivityLoader: any = createSlice({
       })
       .addCase(videoCallUser?.fulfilled, (state: any, action: any) => {
         state.user = action.payload.user;
+        state.page = action.payload.page;
       })
       .addCase(clientData.pending, state => {})
       .addCase(clientData.fulfilled, (state: any, action: any) => {

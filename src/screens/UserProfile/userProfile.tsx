@@ -20,14 +20,14 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import {useDispatch} from 'react-redux';
-import {getUserDataOnId} from '../../store/Auth/auth';
+import {getUserDataOnId, likedAUser, superLiked} from '../../store/Auth/auth';
 import LinearGradient from 'react-native-linear-gradient';
 const {height, width} = Dimensions.get('window');
 
 const UserProfile = () => {
   const navigation: any = useNavigation();
 
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
 
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
@@ -38,9 +38,9 @@ const UserProfile = () => {
   );
 
   const user: any = useAppSelector((state: any) => state?.ActivityLoader?.user);
-  const {showOnlineUser}: any = useAppSelector(state => state.authSliceState);
+  const page: any = useAppSelector((state: any) => state?.ActivityLoader?.page);
 
-  console.log(userDataOnId);
+  const {showOnlineUser}: any = useAppSelector(state => state.authSliceState);
 
   const [images, setImages] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -211,6 +211,51 @@ const UserProfile = () => {
                     )}
                   </View>
                 </View>
+                {page === 'Liked' && (
+                  <View style={[styles.icons, {zIndex: -1}]}>
+                    <TouchableOpacity onPress={() => {}}>
+                      <Image
+                        source={require('../../assets/images/Cross.png')}
+                        style={styles.icons3}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={async () => {
+                        if (user.type === 'superLike') {
+                          setLoader(true);
+                          await dispatch(
+                            superLiked({
+                              likerId: profileData?._id,
+                              userIdBeingLiked: user?._id,
+                            }),
+                          )
+                            .unwrap()
+                            .then(() => {
+                              setLoader(false);
+                              navigation.navigate('ChatSection');
+                            });
+                        } else if (user.type === 'like') {
+                          setLoader(true);
+                          await dispatch(
+                            likedAUser({
+                              likerId: profileData?._id,
+                              userIdBeingLiked: user?._id,
+                            }),
+                          )
+                            .unwrap()
+                            .then(() => {
+                              setLoader(false);
+                              navigation.navigate('ChatSection');
+                            });
+                        }
+                      }}>
+                      <Image
+                        source={require('../../assets/images/Heart.png')}
+                        style={styles.icons3}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                )}
               </View>
               <ScrollView
                 showsVerticalScrollIndicator={false}
