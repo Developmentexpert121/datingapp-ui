@@ -93,6 +93,23 @@ const ProfileSection: React.FC = () => {
     const completedLength = (percentage / 100) * circumference;
     return [completedLength, circumference];
   };
+
+  const calculateAge = (dob: any) => {
+    const birthDate = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDifference = today.getMonth() - birthDate.getMonth();
+
+    // Adjust age if the birth date hasn't occurred yet this year
+    if (
+      monthDifference < 0 ||
+      (monthDifference === 0 && today.getDate() < birthDate.getDate())
+    ) {
+      age--;
+    }
+
+    return age;
+  };
   return (
     <SafeAreaView style={{flex: 1}}>
       <CommonBackbutton title="Profile" />
@@ -146,7 +163,9 @@ const ProfileSection: React.FC = () => {
             </TouchableOpacity>
           </View>
           <View style={styles.userInfo}>
-            <Text style={styles.userName}>{profileData?.name}</Text>
+            <Text style={styles.userName}>
+              {profileData?.name},{' ' + calculateAge(profileData.dob)}
+            </Text>
             <View style={styles.userLocationContainer}>
               <Ionicons name="location" size={20} color="#AC25AC" />
               <Text style={styles.userLocationText}>
