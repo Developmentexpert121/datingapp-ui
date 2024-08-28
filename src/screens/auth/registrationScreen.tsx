@@ -249,8 +249,6 @@ const RegisterScreen = () => {
     (state: any) => state?.Auth?.data?.loginwithgoogle,
   );
 
-  console.log('============', loginwithgoogle, '------------', steps);
-
   const Schemas = (steps: any) => {
     if (steps === 0) {
       return yupResolver<any>(loginwithgoogle.email ? schemawith : schema);
@@ -607,7 +605,6 @@ const RegisterScreen = () => {
     // dispatch(GoogleLogin({}));
     if (steps === 0) {
       reset();
-      // console.log('first--------------------------------------------');
       dispatch(cancelLoginWithGoogle());
     }
     try {
