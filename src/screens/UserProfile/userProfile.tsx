@@ -221,6 +221,7 @@ const UserProfile = () => {
                   <View style={[styles.icons, {zIndex: -1}]}>
                     <TouchableOpacity
                       onPress={async () => {
+                        setLoader(true);
                         await dispatch(
                           rejectUser({
                             userId: profileData._id,
@@ -229,6 +230,7 @@ const UserProfile = () => {
                         )
                           .unwrap()
                           .then(async () => {
+                            setLoader(false);
                             navigation.navigate('LikedScreen');
                           });
                       }}>
