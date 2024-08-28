@@ -68,24 +68,21 @@ const SeventhStepScreen = ({
   const requestAndroidPermissions = async () => {
     try {
       const granted = await PermissionsAndroid.requestMultiple([
-        PermissionsAndroid.PERMISSIONS.CAMERA,
-        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES,
         PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
       ]);
 
+      console.log('----------------------', granted);
+
       if (
-        granted['android.permission.CAMERA'] ===
-          PermissionsAndroid.RESULTS.GRANTED &&
-        granted['android.permission.WRITE_EXTERNAL_STORAGE'] ===
-          PermissionsAndroid.RESULTS.GRANTED &&
+        granted['android.permission.READ_MEDIA_IMAGES'] ===
+          PermissionsAndroid.RESULTS.GRANTED ||
         granted['android.permission.READ_EXTERNAL_STORAGE'] ===
           PermissionsAndroid.RESULTS.GRANTED
       ) {
         return true;
       } else if (
-        granted['android.permission.CAMERA'] ===
-          PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN ||
-        granted['android.permission.WRITE_EXTERNAL_STORAGE'] ===
+        granted['android.permission.READ_MEDIA_IMAGES'] ===
           PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN ||
         granted['android.permission.READ_EXTERNAL_STORAGE'] ===
           PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN
