@@ -73,8 +73,6 @@ const SeventhStepScreen = ({
         PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
       ]);
 
-      console.log(granted);
-
       if (
         granted['android.permission.CAMERA'] ===
           PermissionsAndroid.RESULTS.GRANTED &&
@@ -108,14 +106,30 @@ const SeventhStepScreen = ({
       const cameraPermission = await request(PERMISSIONS.IOS.CAMERA);
       const photoPermission = await request(PERMISSIONS.IOS.PHOTO_LIBRARY);
 
+      console.log(cameraPermission, '===-----=====', photoPermission);
+
       if (cameraPermission === 'granted' && photoPermission === 'granted') {
         return true;
-      } else {
+      } else if (
+        cameraPermission === 'blocked' ||
+        photoPermission === 'blocked'
+      ) {
         showPermissionAlert();
+        return false;
+      } else if (
+        cameraPermission === 'unavailable' ||
+        photoPermission === 'unavailable'
+      ) {
+        Alert.alert(
+          'Unavailable',
+          'Permissions are unavailable on this device.',
+        );
+        return false;
+      } else {
         return false;
       }
     } catch (err) {
-      console.warn(err);
+      console.warn('Error requesting permissions:', err);
       return false;
     }
   };
@@ -146,13 +160,15 @@ const SeventhStepScreen = ({
   }, [profileImages]);
 
   const handleImageSelection = async (index?: number) => {
-    const hasPermission: any = await requestPermissions();
+    if (Platform.OS === 'android') {
+      const hasPermission: any = await requestPermissions();
 
-    console.log('-----', hasPermission);
+      console.log('-----', hasPermission);
 
-    if (!hasPermission) {
-      console.warn('Permissions not granted.');
-      return;
+      if (!hasPermission) {
+        console.warn('Permissions not granted.');
+        return;
+      }
     }
     try {
       const image = await ImagePicker.openPicker({
@@ -201,8 +217,11 @@ const SeventhStepScreen = ({
         setUploadError(false);
         setLoader(false);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error selecting or cropping image:', error);
+      if (error.message === 'User did not grant library permission.') {
+        showPermissionAlert();
+      }
       setUploadError(true);
       setLoader(false);
     }
