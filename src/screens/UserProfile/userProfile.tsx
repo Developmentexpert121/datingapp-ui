@@ -60,9 +60,6 @@ const UserProfile = () => {
     setCurrentIndex(0);
   }, [userDataOnId]);
 
-  // console.log('--------------------', userDataOnId?.name);
-  // console.log('--------------------', JSON.stringify(userDataOnId));
-
   const isUserOnline: any = showOnlineUser?.includes(user?._id) || false;
 
   const handleNextImage = () => {

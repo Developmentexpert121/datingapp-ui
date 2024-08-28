@@ -226,7 +226,7 @@ const ChatSection = () => {
                 fontFamily: 'Sansation-Regular',
                 color: 'red',
               }}>
-              Unbolck
+              Bolck
             </Text>
           ) : (
             <>
@@ -238,7 +238,6 @@ const ChatSection = () => {
                 }}>
                 {getTimeAgo(item.chat?.timestamp)}
               </Text>
-              {/* {item.chat?.message ? <DoubleTickIC /> : null} */}
             </>
           )}
         </View>

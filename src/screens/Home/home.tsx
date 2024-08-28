@@ -159,7 +159,7 @@ const HomeScreen = () => {
   }, [onlineUsers]);
 
   const fetchNewData = (newPage: any) => {
-    console.log('0000000000000000', newPage);
+    // console.log('0000000000000000', newPage);
     setActiveScreen('HOME');
     setNoProfilesLoader(true);
     dispatch(ProfileData())
@@ -195,7 +195,7 @@ const HomeScreen = () => {
         )
           .unwrap()
           .then((response: any) => {
-            console.log('======', response.currentPage);
+            // console.log('======', response.currentPage);
             setData(response.users);
             setNoProfilesLoader(false);
           });
