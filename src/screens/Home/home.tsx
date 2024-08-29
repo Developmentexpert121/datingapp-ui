@@ -195,7 +195,8 @@ const HomeScreen = () => {
             high: highValue ?? 65,
             checkedRelationShip: res.data.partnerType,
             page: newPage,
-            viewedUsers: newPage === 1 ? [] : JSON.stringify(viewedUsers),
+            viewedUsers:
+              newPage === 1 ? JSON.stringify([]) : JSON.stringify(viewedUsers),
           }),
         )
           .unwrap()
