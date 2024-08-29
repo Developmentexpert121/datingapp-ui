@@ -259,7 +259,28 @@ const SeventhStepScreen = ({
             // }}
             style={[styles.imageContainerdm, !item && {borderWidth: 2}]}>
             {item && <Image source={{uri: item}} style={styles.dummyImagedm} />}
-            {profileImages.length < 2 && title === 'Registeration' && !item && (
+            {profileImages.length < 2 && title === 'Registeration' && !item ? (
+              <TouchableOpacity
+                onPress={() => {
+                  if (item && profileImages.length > 2) {
+                    handleRemoveImage(index);
+                  } else if (item && profileImages.length <= 2) {
+                    handleImageSelection(index);
+                  } else {
+                    handleImageSelection();
+                  }
+                }}
+                key={index}
+                style={[
+                  styles.addRemoveButton,
+                  item && {transform: [{rotate: '45deg'}]},
+                ]}>
+                <Image
+                  source={require('../../../assets/images/Plus.png')}
+                  style={{width: 28, height: 28}}
+                />
+              </TouchableOpacity>
+            ) : (
               <TouchableOpacity
                 onPress={() => {
                   if (item && profileImages.length > 2) {

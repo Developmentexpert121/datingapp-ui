@@ -168,8 +168,10 @@ const TinderSwipe = ({
         toValue: direction * width,
         duration: 500,
         useNativeDriver: true,
-      }).start(removeCard);
-      setData(prevState => prevState.slice(1));
+      }).start(() => {
+        setData(prevState => prevState.slice(1));
+        removeCard();
+      });
     },
     [removeCard, swipe.x],
   );

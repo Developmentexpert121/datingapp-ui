@@ -517,22 +517,23 @@ export const getAllUsers = createAsyncThunk(
       high,
       checkedRelationShip,
       page,
+      viewedUsers,
     }: any,
     {dispatch}: any,
   ) => {
     try {
       // console.log('.d;alfjlajgfladfsg;lad;gh;');
-      const response = await http.get('/user/getUsers', {
-        params: {
-          id: userId,
-          checkedInterests: checkedInterests,
-          showIn: showIn,
-          distance: distance,
-          low: low,
-          high: high,
-          partnerType: checkedRelationShip,
-          page: page,
-        },
+
+      const response = await http.post('/user/getUsers', {
+        id: userId,
+        checkedInterests: checkedInterests,
+        showIn: showIn,
+        distance: distance,
+        low: low,
+        high: high,
+        partnerType: checkedRelationShip,
+        page: page,
+        viewedUsers: viewedUsers,
       });
       if (response.status === 200) {
         // console.log('getUsers', response.data);
