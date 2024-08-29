@@ -283,6 +283,23 @@ const ChatPage = ({
     const minutes = date.getMinutes();
     return `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
   };
+  const getFormattedDate = (timestamp: string) => {
+    const messageDate = new Date(timestamp);
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+
+    const isToday = messageDate.toDateString() === today.toDateString();
+    const isYesterday = messageDate.toDateString() === yesterday.toDateString();
+
+    if (isToday) {
+      return 'Today';
+    } else if (isYesterday) {
+      return 'Yesterday';
+    } else {
+      return messageDate.toLocaleDateString();
+    }
+  };
 
   return (
     <>
@@ -387,7 +404,6 @@ const ChatPage = ({
             {isLoading && <LoadingIndicator />}
             <FlatList
               data={chatMessages}
-              // style={{flex: 1}}
               //@ts-ignore
               ref={scrollViewRef}
               contentContainerStyle={{flexGrow: 1}}
@@ -397,13 +413,35 @@ const ChatPage = ({
                 }
               }}
               onScroll={handleScroll}
+              keyExtractor={(item, index) => item.timestamp + index}
               renderItem={({item, index}) => {
                 const isTextMessage = !item?.uri;
                 const isAuthMessage =
                   item?.receiver === user?._id || item?.sender === user?._id;
 
+                const currentMessageDate = getFormattedDate(item.timestamp);
+                const previousMessageDate =
+                  index > 0
+                    ? getFormattedDate(chatMessages[index - 1].timestamp)
+                    : null;
+
+                const shouldDisplayDate =
+                  index === 0 || currentMessageDate !== previousMessageDate;
+
                 return (
                   <View style={{borderWidth: 0}}>
+                    {shouldDisplayDate && (
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          color: 'gray',
+                          marginVertical: 10,
+                          fontSize: 14,
+                        }}>
+                        {currentMessageDate}
+                      </Text>
+                    )}
+
                     {isAuthMessage && (
                       <View
                         key={index}
