@@ -70,7 +70,7 @@ const ChatPage = ({
   );
   const [inputMessage, setInputMessage] = useState('');
   const [chatMessages, setChatMessages] = useState<any>([]);
-  console.log('------------', chatMessages);
+  // console.log('------------', chatMessages);
   const [messageCount, setMessageCount] = useState(0);
   const [limit, setLimit] = useState(10);
   const [skip, setSkip] = useState(0);
