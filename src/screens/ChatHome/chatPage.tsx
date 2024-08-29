@@ -9,7 +9,6 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Keyboard,
-  ActivityIndicator,
   ScrollView,
   Alert,
   Platform,
@@ -80,9 +79,15 @@ const ChatPage = ({
   const [reason, setReason] = useState('');
 
   const scrollViewRef = useRef<ScrollView>(null);
-  console.log('111111');
+  // console.log('111111');
 
   const isUserOnline: any = showOnlineUser?.includes(user?._id) || false;
+  useEffect(() => {
+    if (scrollViewRef.current && chatMessages.length) {
+      scrollViewRef.current.scrollToEnd({animated: true});
+    }
+  }, [chatMessages]);
+
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
@@ -319,7 +324,6 @@ const ChatPage = ({
                 flexDirection: 'row',
                 paddingStart: 10,
                 alignItems: 'center',
-                borderWidth: 0,
               }}
               onPress={() => {
                 navigation.navigate('userProfile');
@@ -440,7 +444,7 @@ const ChatPage = ({
                   index === 0 || currentMessageDate !== previousMessageDate;
 
                 return (
-                  <View style={{borderWidth: 0}}>
+                  <View style={{}}>
                     {shouldDisplayDate && (
                       <Text
                         style={{
@@ -467,7 +471,7 @@ const ChatPage = ({
                           alignItems: 'baseline',
                         }}>
                         {/* Receiver Image */}
-                        {isAuthMessage && item.sender !== profileData?._id && (
+                        {isAuthMessage && item?.sender !== profileData?._id && (
                           <View
                             style={{
                               alignSelf: 'flex-end',
@@ -483,79 +487,89 @@ const ChatPage = ({
                         )}
 
                         {/* Messages */}
-                        <View
-                          style={{
-                            backgroundColor:
-                              item.sender === profileData?._id
-                                ? '#AC25AC'
-                                : '#D9D9D9',
-                            padding: 10,
-                            marginHorizontal: 10,
-                            borderRadius: 8,
-                            maxWidth: 260,
-                            borderBottomRightRadius:
-                              item.sender === profileData?._id ? 0 : 8,
-                            borderBottomLeftRadius:
-                              item.sender === profileData?._id ? 8 : 0,
-                          }}>
-                          {isTextMessage && isAuthMessage ? (
-                            <Text
-                              style={{
-                                color:
-                                  item.sender === profileData?._id
-                                    ? 'white'
-                                    : 'black',
-                              }}>
-                              {item?.message}
-                            </Text>
-                          ) : (
-                            isAuthMessage && (
-                              <View>
-                                <Image
-                                  source={{uri: item.uri}}
-                                  style={[
-                                    styles.sharedImage,
-                                    {position: 'relative'},
-                                  ]}
-                                />
-                                <View
-                                  style={{
-                                    backgroundColor: 'white',
-                                    alignSelf: 'flex-start',
-                                    padding: 2,
-                                    borderRadius: 4,
-                                    position: 'absolute',
-                                    top: 0,
-                                    right: 0,
-                                    margin: 4,
-                                  }}>
-                                  <TouchableOpacity
-                                    onPress={() =>
-                                      saveImageToGallery(item?.uri)
-                                    }>
-                                    <Image
-                                      source={require('../../assets/images/download.png')}
-                                      style={{
-                                        resizeMode: 'contain',
-                                        height: hp(2),
-                                        width: wp(4),
-                                      }}
-                                    />
-                                  </TouchableOpacity>
+                        <View style={{borderWidth: 0}}>
+                          <View
+                            style={{
+                              backgroundColor:
+                                item?.sender === profileData?._id
+                                  ? '#AC25AC'
+                                  : '#D9D9D9',
+                              padding: 10,
+                              marginHorizontal: 10,
+                              borderRadius: 8,
+                              maxWidth: 260,
+                              borderBottomRightRadius:
+                                item?.sender === profileData?._id ? 0 : 8,
+                              borderBottomLeftRadius:
+                                item?.sender === profileData?._id ? 8 : 0,
+                            }}>
+                            {isTextMessage && isAuthMessage ? (
+                              <Text
+                                style={{
+                                  color:
+                                    item?.sender === profileData?._id
+                                      ? 'white'
+                                      : 'black',
+                                }}>
+                                {item?.message}
+                              </Text>
+                            ) : (
+                              isAuthMessage && (
+                                <View>
+                                  <Image
+                                    source={{uri: item?.uri}}
+                                    style={[
+                                      styles.sharedImage,
+                                      {position: 'relative'},
+                                    ]}
+                                  />
+                                  <View
+                                    style={{
+                                      backgroundColor: 'white',
+                                      alignSelf: 'flex-start',
+                                      padding: 2,
+                                      borderRadius: 4,
+                                      position: 'absolute',
+                                      top: 0,
+                                      right: 0,
+                                      margin: 4,
+                                    }}>
+                                    <TouchableOpacity
+                                      onPress={() =>
+                                        saveImageToGallery(item?.uri)
+                                      }>
+                                      <Image
+                                        source={require('../../assets/images/download.png')}
+                                        style={{
+                                          resizeMode: 'contain',
+                                          height: hp(2),
+                                          width: wp(4),
+                                        }}
+                                      />
+                                    </TouchableOpacity>
+                                  </View>
                                 </View>
-                              </View>
-                            )
-                          )}
+                              )
+                            )}
+                          </View>
                           {/* Display timestamp */}
                           <Text
                             style={{
                               fontSize: 12,
                               color:
                                 item?.sender === profileData?._id
-                                  ? 'white'
+                                  ? 'black'
                                   : 'black',
+                              textAlign:
+                                item?.sender === profileData?._id
+                                  ? 'right'
+                                  : 'left',
+                              marginRight:
+                                item?.sender === profileData?._id ? 12 : 0,
+
+                              marginLeft:
+                                item?.sender === profileData?._id ? 0 : 12,
                               marginTop: 5,
-                              textAlign: 'right',
                             }}>
                             {formatTime(item?.timestamp)}
                           </Text>
