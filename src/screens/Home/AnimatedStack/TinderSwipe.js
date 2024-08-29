@@ -165,7 +165,7 @@ const TinderSwipe = ({
   const handleChoiceCross = useCallback(
     direction => {
       Animated.timing(swipe.x, {
-        toValue: direction * width,
+        toValue: direction * width * 1.5,
         duration: 500,
         useNativeDriver: true,
       }).start(() => {
@@ -178,7 +178,6 @@ const TinderSwipe = ({
   // Like..........
   const handleChoiceHeart = useCallback(
     direction => {
-      // console.log('Directyion ===>', direction);
       Animated.timing(swipe.x, {
         toValue: direction * width * 1.5,
         duration: 500,
