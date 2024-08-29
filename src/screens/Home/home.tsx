@@ -59,8 +59,6 @@ const HomeScreen = () => {
   const [page, setPage] = useState(1);
   const [viewedUsers, setViewedUsers] = useState<any>([]);
 
-  console.log(viewedUsers);
-
   const initialRouteValue = useAppSelector(
     (state: any) => state.ActivityLoader.initialRouteValue,
   );
