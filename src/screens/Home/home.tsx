@@ -163,6 +163,7 @@ const HomeScreen = () => {
 
   const fetchNewData = (newPage: any) => {
     // console.log('0000000000000000', newPage);
+    console.log('-=-=-=-=-=-=-', viewedUsers);
     setActiveScreen('HOME');
     setNoProfilesLoader(true);
     dispatch(ProfileData())
@@ -194,7 +195,7 @@ const HomeScreen = () => {
             high: highValue ?? 65,
             checkedRelationShip: res.data.partnerType,
             page: newPage,
-            viewedUsers: JSON.stringify(viewedUsers),
+            viewedUsers: newPage === 1 ? [] : JSON.stringify(viewedUsers),
           }),
         )
           .unwrap()
@@ -239,6 +240,7 @@ const HomeScreen = () => {
 
   const onPressApply = () => {
     setNoProfilesLoader(true);
+    setViewedUsers([]);
     console.log('latest filter ====++>', {
       id: profileData._id,
       data: filterData,
