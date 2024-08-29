@@ -6,6 +6,7 @@ import {
   ScrollView,
   Alert,
   SafeAreaView,
+  Pressable,
 } from 'react-native';
 import React, {useState, useCallback, useEffect} from 'react';
 import CommonBackbutton from '../../components/commonBackbutton/BackButton';
@@ -32,6 +33,7 @@ import Loader from '../../components/Loader/Loader';
 import GlobalModal from '../../components/Modals/GlobalModal';
 import ConfirmModal from '../../components/Modals/ConfirmModal';
 import {StreamVideoRN} from '@stream-io/video-react-native-sdk';
+import PhoneInput from '../../components/AppTextInput/PhoneInput';
 
 interface UpdateForm {
   name: string;
@@ -96,7 +98,7 @@ const SettingsSection = () => {
   //   };
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [address, setAddress] = useState('');
-  const [location, setLocation] = useState<any>(null);
+  const [editPhone, setEditPhone] = useState<any>(false);
 
   useEffect(() => {
     const getAddressFromCoordinates = async (latitude: any, longitude: any) => {
@@ -157,8 +159,6 @@ const SettingsSection = () => {
       return null;
     }
   };
-  const [permissionStatus, setPermissionStatus] = useState<any>(null);
-  const [error, setError] = useState<any>(null);
 
   const logoutUserButton = async () => {
     try {
@@ -220,52 +220,67 @@ const SettingsSection = () => {
                   flexDirection: 'row',
                   justifyContent: 'space-between',
                 }}>
-                <View style={{width: 20}}></View>
+                <View style={{width: 32}}></View>
                 <Text style={styles.textName}>{item.title}</Text>
-                {item.title === 'Language I Know' ? (
+                {item.title === 'Phone Number' ||
+                item.title === 'Language I Know' ? (
                   <EditTextIC
+                    style={{marginEnd: 8}}
                     onPress={() => {
-                      if (item.title === 'Location') {
-                        // showPermissionPopup();
+                      if (item.title === 'Phone Number') {
+                        setEditPhone(true);
                       } else {
                         handleModal(item);
                       }
                     }}
                   />
                 ) : (
-                  <View style={{width: 20}} />
+                  <View style={{width: 32}} />
                 )}
               </View>
               <View style={styles.line} />
               <View>
-                <View
-                  style={styles.textField}
-                  // disabled={index === 1 || index === 0}
-                  // onPress={() => {
-                  //   if (item.title === 'Location') {
-                  //     showPermissionPopup();
-                  //   } else {
-                  //     handleModal(item);
-                  //   }
-                  // }}
-                >
-                  {index === 0 ? (
-                    <PhoneIC />
-                  ) : index === 1 ? (
-                    <EmailIC />
-                  ) : index === 2 ? (
-                    <LocationIC />
-                  ) : (
-                    ''
-                  )}
-                  <Text
-                    style={{
-                      fontFamily: 'Sansation-Regular',
-                      textAlign: 'center',
-                    }}>
-                    {item.name}
-                  </Text>
-                </View>
+                {index === 0 && editPhone ? (
+                  <View style={styles.textField}>
+                    {/* <PhoneInput
+                      name={phone}
+                      control={control}
+                      label="Phone Number"
+                      showError={Boolean(errors?.phone)}
+                      errors={Boolean(errors?.phone)}
+                      callingCode={callingCode}
+                      setCallingCode={setCallingCode}
+                    /> */}
+                    <Pressable
+                      onPress={() => setEditPhone(false)}
+                      style={{
+                        backgroundColor: 'lightgreen',
+                        padding: 4,
+                        borderRadius: 6,
+                      }}>
+                      <Text>Done</Text>
+                    </Pressable>
+                  </View>
+                ) : (
+                  <View style={styles.textField}>
+                    {index === 0 ? (
+                      <PhoneIC />
+                    ) : index === 1 ? (
+                      <EmailIC />
+                    ) : index === 2 ? (
+                      <LocationIC />
+                    ) : (
+                      ''
+                    )}
+                    <Text
+                      style={{
+                        fontFamily: 'Sansation-Regular',
+                        textAlign: 'center',
+                      }}>
+                      {item.name}
+                    </Text>
+                  </View>
+                )}
               </View>
             </View>
           ))}

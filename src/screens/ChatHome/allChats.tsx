@@ -256,6 +256,7 @@ const ChatSection = () => {
               <Ionicons name="search-outline" size={20} />
               <TextInput
                 placeholder="Search"
+                placeholderTextColor={'gray'}
                 onChangeText={handleSearchChange}
                 value={search}
                 style={styles.input}

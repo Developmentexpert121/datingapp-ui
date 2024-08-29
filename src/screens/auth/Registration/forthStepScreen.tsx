@@ -77,7 +77,7 @@ const ForthStepScreen = ({
         'Let`s be Friends',
         'Coffee Date',
         'Date at Night',
-        'Being Watcher',
+        'Beinge Watcher',
         'Creatives',
         'Sporty',
         'Music Lover',

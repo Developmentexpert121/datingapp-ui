@@ -64,12 +64,12 @@ const CustomDatePicker = ({
 
   const handleConfirm = (selectedDate: any) => {
     const selectedDateTime = new Date(selectedDate);
-    const minDate = moment().subtract(56, 'years').toDate();
+    const minDate = moment().subtract(65, 'years').toDate();
     const maxDate = moment().subtract(18, 'years').toDate();
 
     // Validate the selected date
     if (selectedDateTime < minDate) {
-      setDateError('Date must be within the past 56 years');
+      setDateError('Date must be within the past 65 years');
     } else if (selectedDateTime > maxDate) {
       setDateError('Date must be within the last 18 years');
     } else {
@@ -109,7 +109,7 @@ const CustomDatePicker = ({
             mode="date"
             onConfirm={handleConfirm}
             onCancel={hideDatePicker}
-            // minimumDate={moment().subtract(56, 'years').toDate()}
+            // minimumDate={moment().subtract(65, 'years').toDate()}
             // maximumDate={moment().subtract(18, 'years').toDate()}
           />
           <Label

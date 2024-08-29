@@ -165,7 +165,7 @@ const HomeScreen = () => {
       .then((res: any) => {
         const [lowStr, highStr] = res?.data?.ageRange
           ? res?.data?.ageRange?.split(' ')
-          : '18 56'.split(' ');
+          : '18 65'.split(' ');
         const lowValue = parseInt(lowStr);
         const highValue = parseInt(highStr);
 
@@ -185,10 +185,11 @@ const HomeScreen = () => {
             showIn: res.data.showInDistance,
             distance: parseInt(res.data.distance),
             low: lowValue ?? 18,
-            high: highValue ?? 56,
+            high: highValue ?? 65,
             checkedRelationShip: res.data.partnerType,
             page: newPage,
-            viewedUsers: JSON.stringify(viewedUsers),
+            viewedUsers:
+              newPage === 1 ? JSON.stringify([]) : JSON.stringify(viewedUsers),
           }),
         )
           .unwrap()
@@ -206,7 +207,7 @@ const HomeScreen = () => {
   const BackPressed = () => {
     const [lowStr, highStr] = profileData?.ageRange
       ? profileData?.ageRange?.split(' ')
-      : '18 56'.split(' ');
+      : '18 65'.split(' ');
     const lowValue = parseInt(lowStr);
     const highValue = parseInt(highStr);
     setFilterData({
@@ -229,6 +230,7 @@ const HomeScreen = () => {
 
   const onPressApply = () => {
     setNoProfilesLoader(true);
+    setViewedUsers([]);
     dispatch(SetNewFilter({id: profileData._id, data: filterData}))
       .unwrap()
       .then((res: any) => {

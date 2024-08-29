@@ -297,7 +297,7 @@ const FilterSection = ({filterData, setSelectedFilterData}: any) => {
           <RangeSlider
             style={[styles.slider, {marginVertical: 14}]}
             min={18}
-            max={56}
+            max={65}
             low={filterData.low}
             high={filterData.high}
             step={1}

@@ -14,7 +14,7 @@ const ExploreHome = (Data: any) => {
     (state: any) => state?.Auth?.data?.profileData,
   );
   const [low, setLow] = useState<number>(18);
-  const [high, setHigh] = useState<number>(56);
+  const [high, setHigh] = useState<number>(65);
   const [showIn, setShowIn] = useState(false);
   const [distance, setDistance] = useState(50);
   const [currentIndex, setCurrentIndex] = useState(0);
