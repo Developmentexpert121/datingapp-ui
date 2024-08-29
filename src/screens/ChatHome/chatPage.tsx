@@ -8,16 +8,15 @@ import {
   TouchableOpacity,
   TextInput,
   KeyboardAvoidingView,
-  TouchableWithoutFeedback,
   Keyboard,
   ActivityIndicator,
   ScrollView,
   Alert,
   Platform,
+  FlatList,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {Avatar} from 'react-native-elements';
 import {RootState, useAppDispatch, useAppSelector} from '../../store/store';
 import {
@@ -42,7 +41,6 @@ import {
 import Modal from 'react-native-modal';
 import Label from '../../components/Label';
 import MainButton from '../../components/ButtonComponent/MainButton';
-// const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 
 const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 
@@ -72,6 +70,7 @@ const ChatPage = ({
   );
   const [inputMessage, setInputMessage] = useState('');
   const [chatMessages, setChatMessages] = useState<any>([]);
+  console.log('------------', chatMessages);
   const [messageCount, setMessageCount] = useState(0);
   const [limit, setLimit] = useState(10);
   const [skip, setSkip] = useState(0);
@@ -278,6 +277,13 @@ const ChatPage = ({
     }
   };
 
+  const formatTime = (timestamp: any) => {
+    const date = new Date(timestamp);
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    return `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+  };
+
   return (
     <>
       <KeyboardAvoidingView
@@ -377,61 +383,61 @@ const ChatPage = ({
             </View>
           </View>
           {/* center */}
-          <View style={{marginTop: 10, flex: 1, borderWidth: 0}}>
-            <ScrollView
+          <View style={{marginTop: 10, flex: 1}}>
+            {isLoading && <LoadingIndicator />}
+            <FlatList
+              data={chatMessages}
+              // style={{flex: 1}}
+              //@ts-ignore
               ref={scrollViewRef}
+              contentContainerStyle={{flexGrow: 1}}
               onContentSizeChange={() => {
                 if (scrollViewRef?.current) {
                   scrollViewRef?.current?.scrollToEnd({animated: true});
                 }
               }}
-              onScroll={handleScroll}>
-              <View style={{flexGrow: 1}} />
-              {isLoading && <LoadingIndicator />}
-              {/*  */}
-              {chatMessages?.map((messageItem: any, index: any) => {
-                const isTextMessage = !messageItem.uri;
+              onScroll={handleScroll}
+              renderItem={({item, index}) => {
+                const isTextMessage = !item?.uri;
                 const isAuthMessage =
-                  messageItem.receiver === user?._id ||
-                  messageItem.sender === user?._id;
+                  item?.receiver === user?._id || item?.sender === user?._id;
+
                 return (
-                  <>
+                  <View style={{borderWidth: 0}}>
                     {isAuthMessage && (
                       <View
                         key={index}
                         style={{
                           flexDirection: 'row',
                           alignSelf:
-                            messageItem?.sender === profileData?._id
+                            item.sender === profileData?._id
                               ? 'flex-end'
                               : 'flex-start',
                           margin: 10,
                           marginBottom: 12,
                           alignItems: 'baseline',
                         }}>
-                        {/* Reciver Image */}
-                        {isAuthMessage &&
-                          messageItem?.sender !== profileData?._id && (
-                            <View
-                              style={{
-                                alignSelf: 'flex-end',
-                                marginBottom: 'auto',
-                              }}>
-                              <Image
-                                source={{
-                                  uri: user?.profilePic?.split(',')[0],
-                                }}
-                                style={styles.circularImage}
-                              />
-                            </View>
-                          )}
+                        {/* Receiver Image */}
+                        {isAuthMessage && item.sender !== profileData?._id && (
+                          <View
+                            style={{
+                              alignSelf: 'flex-end',
+                              marginBottom: 'auto',
+                            }}>
+                            <Image
+                              source={{
+                                uri: user?.profilePic?.split(',')[0],
+                              }}
+                              style={styles.circularImage}
+                            />
+                          </View>
+                        )}
 
                         {/* Messages */}
-
                         <View
                           style={{
                             backgroundColor:
-                              messageItem?.sender === profileData?._id
+                              item.sender === profileData?._id
                                 ? '#AC25AC'
                                 : '#D9D9D9',
                             padding: 10,
@@ -439,25 +445,25 @@ const ChatPage = ({
                             borderRadius: 8,
                             maxWidth: 260,
                             borderBottomRightRadius:
-                              messageItem?.sender === profileData?._id ? 0 : 8,
+                              item.sender === profileData?._id ? 0 : 8,
                             borderBottomLeftRadius:
-                              messageItem?.sender === profileData?._id ? 8 : 0,
+                              item.sender === profileData?._id ? 8 : 0,
                           }}>
                           {isTextMessage && isAuthMessage ? (
                             <Text
                               style={{
                                 color:
-                                  messageItem?.sender === profileData?._id
+                                  item.sender === profileData?._id
                                     ? 'white'
                                     : 'black',
                               }}>
-                              {messageItem?.message}
+                              {item.message}
                             </Text>
                           ) : (
                             isAuthMessage && (
                               <View>
                                 <Image
-                                  source={{uri: messageItem.uri}}
+                                  source={{uri: item.uri}}
                                   style={[
                                     styles.sharedImage,
                                     {position: 'relative'},
@@ -476,7 +482,7 @@ const ChatPage = ({
                                   }}>
                                   <TouchableOpacity
                                     onPress={() =>
-                                      saveImageToGallery(messageItem.uri)
+                                      saveImageToGallery(item.uri)
                                     }>
                                     <Image
                                       source={require('../../assets/images/download.png')}
@@ -491,10 +497,22 @@ const ChatPage = ({
                               </View>
                             )
                           )}
+                          {/* Display timestamp */}
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              color:
+                                item.sender === profileData?._id
+                                  ? 'white'
+                                  : 'black',
+                              marginTop: 5,
+                            }}>
+                            {formatTime(item.timestamp)}
+                          </Text>
                         </View>
 
-                        {/*  Sender Image*/}
-                        {messageItem?.sender === profileData?._id && (
+                        {/* Sender Image */}
+                        {item.sender === profileData?._id && (
                           <View
                             style={{
                               alignSelf: 'flex-end',
@@ -510,12 +528,11 @@ const ChatPage = ({
                         )}
                       </View>
                     )}
-                  </>
+                  </View>
                 );
-              })}
-            </ScrollView>
+              }}
+            />
           </View>
-
           {/* footer */}
           {user?.deactivate === false && user?.isBlocked === false ? (
             <View style={[styles.inputView]}>
@@ -554,6 +571,7 @@ const ChatPage = ({
           )}
         </View>
       </KeyboardAvoidingView>
+      {/* Modal */}
       <Modal
         style={{backgroundColor: 'transparent', margin: 0}}
         isVisible={modalOpen}
@@ -627,7 +645,6 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 4,
     alignItems: 'center',
-    // borderWidth: 1,
   },
   circularImage: {
     width: 20,
@@ -674,9 +691,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   textstyle: {
-    // width: "50%",
     fontSize: 18,
-    // fontWeight: "400",
     lineHeight: 36,
     color: '#071731',
     textAlign: 'center',
@@ -684,7 +699,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   modalstyle: {
-    // minHeight: 230,
     width: '90%',
     backgroundColor: '#FFF',
     borderRadius: 10,
@@ -696,7 +710,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    // position: 'absolute',
     zIndex: 4,
   },
 });

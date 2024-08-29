@@ -53,39 +53,6 @@ const App = () => {
       });
     });
 
-    // Background notification handling
-    messaging().setBackgroundMessageHandler(async (remoteMessage: any) => {
-      console.log('Message handled in the background!', remoteMessage);
-
-      // Handle notification data when app is in background
-      if (remoteMessage?.data?.screen) {
-        if (remoteMessage.data.screen === 'VideoCallRedirect') {
-          await dispatch(
-            videoCallUser({user: JSON.parse(remoteMessage.data.userData)}),
-          );
-        }
-        navigationRef.current?.navigate(remoteMessage.data.screen);
-      }
-    });
-
-    // Handle notification when app is opened from a killed state
-    messaging()
-      .getInitialNotification()
-      .then(async (remoteMessage: any) => {
-        if (remoteMessage) {
-          console.log('App opened from a killed state!', remoteMessage);
-
-          if (remoteMessage?.data?.screen) {
-            await dispatch(initialRouteSetter(remoteMessage.data.screen));
-            if (remoteMessage.data.screen === 'VideoCallRedirect') {
-              await dispatch(
-                videoCallUser({user: JSON.parse(remoteMessage.data.userData)}),
-              );
-            }
-          }
-        }
-      });
-
     return () => unsubscribe();
   }, []);
 

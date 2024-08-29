@@ -476,8 +476,6 @@ export const likedMe = createAsyncThunk(
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
       } else {
-        // console.log(error.response);
-        console.log('------------------');
         throw error;
       }
     }
@@ -501,8 +499,6 @@ export const getUserDataOnId: any = createAsyncThunk(
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
       } else {
-        // console.log(error.response);
-        console.log('------------------');
         throw error;
       }
     }

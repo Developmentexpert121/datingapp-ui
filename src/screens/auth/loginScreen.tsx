@@ -49,33 +49,6 @@ const LoginScreen = () => {
     password: false,
   });
 
-  // const [keyboardHeight] = useState(new Animated.Value(0));
-
-  // useEffect(() => {
-  //   const keyboardWillShow = Keyboard.addListener('keyboardWillShow', event => {
-  //     Animated.timing(keyboardHeight, {
-  //       duration: event.duration,
-  //       toValue: event.endCoordinates.height,
-  //       useNativeDriver: false,
-  //     }).start();
-  //   });
-
-  //   const keyboardWillHide = Keyboard.addListener('keyboardWillHide', event => {
-  //     Animated.timing(keyboardHeight, {
-  //       duration: event.duration,
-  //       toValue: 0,
-  //       useNativeDriver: false,
-  //     }).start();
-  //   });
-
-  //   return () => {
-  //     keyboardWillShow.remove();
-  //     keyboardWillHide.remove();
-  //   };
-  // }, []);
-
-  // const [deviceToken, setDeviceToken] = useState<any>(null);
-
   const onSubmit = async (data: LoginForm) => {
     let deviceToken = await getLocalStroage('deviceToken');
     const requestData = {
@@ -155,8 +128,7 @@ const LoginScreen = () => {
           contentContainerStyle={styles.scrollViewContent}
           keyboardShouldPersistTaps="handled"
           enableOnAndroid={true}
-          pagingEnabled
-          // extraHeight={Platform.select({android: 200})}
+          // enableAutomaticScroll={false}
           extraScrollHeight={Platform.OS === 'android' ? -hp(40) : 0}>
           <View style={styles.container}>
             <View style={styles.imageContainer}>
@@ -195,6 +167,8 @@ const LoginScreen = () => {
                     style={{
                       fontFamily: 'Sansation-Regular',
                       fontSize: hp(2),
+                      paddingVertical: hp(1),
+                      paddingHorizontal: wp(2.5),
                     }}
                     value={formData.email}
                     onChangeText={value =>
@@ -213,7 +187,6 @@ const LoginScreen = () => {
                 {errors.email && (
                   <Text style={styles.errorText}>Invalid email</Text>
                 )}
-
                 <View
                   style={[
                     styles.passwordView,
@@ -229,6 +202,8 @@ const LoginScreen = () => {
                       fontFamily: 'Sansation-Regular',
                       fontSize: hp(2),
                       width: wp(65),
+                      paddingVertical: hp(1),
+                      paddingHorizontal: wp(2.5),
                     }}
                     placeholder="Enter Your Password"
                     placeholderTextColor={Colors.darkText}
@@ -239,6 +214,7 @@ const LoginScreen = () => {
                     secureTextEntry={!isPasswordVisible}
                   />
                   <TouchableOpacity
+                    style={{marginRight: wp(2.5)}}
                     onPress={() => {
                       setIsPasswordVisible(prev => !prev);
                     }}>
@@ -368,16 +344,16 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.onPrimary,
     borderWidth: wp(0.5),
     borderRadius: wp(2.5),
-    height: hp(6),
-    paddingHorizontal: wp(2.5),
+    // height: hp(6),
+    // paddingHorizontal: wp(2.5),
     justifyContent: 'center',
   },
   passwordView: {
     backgroundColor: Colors.onPrimary,
     borderWidth: wp(0.5),
     borderRadius: wp(2.5),
-    height: hp(6),
-    paddingHorizontal: wp(2.5),
+    // height: hp(6),
+    // paddingHorizontal: wp(2.5),
     marginTop: hp(0.5),
     alignItems: 'center',
     flexDirection: 'row',

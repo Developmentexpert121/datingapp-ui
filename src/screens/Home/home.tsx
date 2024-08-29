@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Alert, BackHandler} from 'react-native';
 import HeaderComponent from '../../components/Dashboard/header/header';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {
@@ -61,6 +61,26 @@ const HomeScreen = () => {
   const initialRouteValue = useAppSelector(
     (state: any) => state.ActivityLoader.initialRouteValue,
   );
+
+  useEffect(() => {
+    const backAction = () => {
+      console.log('activeScreen ', activeScreen);
+      if (activeScreen != 'HOME') {
+        setActiveScreen('HOME');
+        BackPressed();
+        return true;
+      } else {
+        return false;
+      }
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, [activeScreen]);
 
   useEffect(() => {
     fetchNewData(1);
@@ -139,7 +159,7 @@ const HomeScreen = () => {
   }, [onlineUsers]);
 
   const fetchNewData = (newPage: any) => {
-    console.log('0000000000000000', newPage);
+    // console.log('0000000000000000', newPage);
     setActiveScreen('HOME');
     setNoProfilesLoader(true);
     dispatch(ProfileData())
@@ -175,7 +195,7 @@ const HomeScreen = () => {
         )
           .unwrap()
           .then((response: any) => {
-            console.log('======', response.currentPage);
+            // console.log('======', response.currentPage);
             setData(response.users);
             setNoProfilesLoader(false);
           });
