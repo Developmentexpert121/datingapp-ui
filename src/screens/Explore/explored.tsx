@@ -32,7 +32,7 @@ const ExploredScreen = () => {
     },
     {
       id: '4',
-      name: 'Being Watcher',
+      name: 'Beinge Watcher',
       imageUrl: require('../../assets/images/movies.png'),
     },
     {
