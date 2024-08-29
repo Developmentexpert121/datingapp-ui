@@ -50,7 +50,6 @@ const LocationCheckComponent = () => {
       })
       .catch(error => {
         const {code, message} = error;
-        // console.log('code ', code, 'message ', message);
         dispatch(SetLocation(undefined));
         setLoader(false);
         if (message == 'Authorization denied') {

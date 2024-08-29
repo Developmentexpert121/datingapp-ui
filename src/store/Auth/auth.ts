@@ -20,11 +20,9 @@ interface authData {
 export const ProfileData: any = createAsyncThunk(
   'auth/ProfileData',
   async () => {
-    // console.log('first');
     try {
       const response: any = await http.get(`/user/profile`);
       if (response.status === 200) {
-        // console.log('Profile data api hit ----------');
         await AsyncStorage.setItem(
           'profileData',
           JSON.stringify(response.data),
@@ -421,7 +419,7 @@ export const likedAUser = createAsyncThunk(
         return response.data;
       }
     } catch (error: any) {
-      console.log('yyyyyyyyyyyyyyyyyy', error.response.status);
+      console.error('likedAUser', error.response.status);
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
       } else if (error.response.status === 403) {
@@ -828,6 +826,7 @@ export const blockAUser = createAsyncThunk(
 export const UnBlockAUser = createAsyncThunk(
   'auth/likedAUser',
   async (data: any, {dispatch}: any) => {
+    // console.log('.......', data);
     try {
       const response = await http.post('/user/unBlockUser', data);
       if (response.status === 200) {

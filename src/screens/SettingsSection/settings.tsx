@@ -68,7 +68,6 @@ const SettingsSection = () => {
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-  // console.log('_____________', profileData);
 
   const dispatch: any = useAppDispatch();
   const navigation: any = useNavigation();
@@ -160,58 +159,6 @@ const SettingsSection = () => {
   };
   const [permissionStatus, setPermissionStatus] = useState<any>(null);
   const [error, setError] = useState<any>(null);
-
-  // const getLocationAndRegister = () => {
-  //   Geolocation.getCurrentPosition(
-  //     position => {
-  //       const {latitude, longitude} = position.coords;
-  //       // console.log('latitude:', latitude);
-  //       // console.log('Longitude:', longitude);
-  //       setLoader(false);
-  //       setPermissionStatus('granted');
-  //       dispatch(
-  //         updateProfileData({
-  //           field: 'location',
-  //           value: {latitude, longitude},
-  //           id: getUserId(),
-  //         }),
-  //       ).then(() => setLocation({latitude, longitude}));
-
-  //       reset();
-  //     },
-  //     err => {
-  //       console.error('Error fetching location: 44444', err);
-  //       setLoader(false);
-  //       setError(err.message);
-  //       setPermissionStatus('denied');
-  //     },
-  //     {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}, // Increased timeout to 30000ms (30 seconds)
-  //   );
-  // };
-
-  // const requestLocationPermission = () => {
-  //   Geolocation.requestAuthorization();
-  //   getLocationAndRegister();
-  //   setLoader(true);
-  // };
-
-  // const showPermissionPopup = () => {
-  //   Alert.alert(
-  //     'Location Permission',
-  //     'This app needs access to your location to provide the service.',
-  //     [
-  //       {
-  //         text: 'Cancel',
-  //         onPress: () => {
-  //           setPermissionStatus('denied');
-  //           reset();
-  //         },
-  //         style: 'cancel',
-  //       },
-  //       {text: 'Allow', onPress: () => requestLocationPermission()},
-  //     ],
-  //   );
-  // };
 
   const logoutUserButton = async () => {
     try {

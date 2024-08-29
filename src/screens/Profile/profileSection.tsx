@@ -36,7 +36,6 @@ const ProfileSection: React.FC = () => {
   const profileData = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-  // console.log('@@@@@@@@@@@@@@@@@@@@@@');
   const dispatch: any = useAppDispatch();
   const [profileCompletion, setProfileCompletion] = useState(0);
   const navigation = useNavigation();

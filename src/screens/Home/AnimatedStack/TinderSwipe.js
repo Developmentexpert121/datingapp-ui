@@ -40,7 +40,6 @@ const TinderSwipe = ({
   const isUserOnline = showOnlineUser?.includes(currentUser) || false;
 
   const [isSuperLikeAnimating, setIsSuperLikeAnimating] = useState(false);
-  // console.log('isSuperLikeAnimating.....', isSuperLikeAnimating);
 
   useEffect(() => {
     if (currentIndex === data.length) {
@@ -55,18 +54,6 @@ const TinderSwipe = ({
     onMoveShouldSetPanResponder: () => true,
     onPanResponderMove: (_, {dx, dy}) => {
       swipe.setValue({x: dx, y: dy});
-      // console.log('swipe ', swipe);
-      // const angleInRadians = Math.atan2(dy, dx);
-      // const angleInDegrees = (angleInRadians * 180) / Math.PI;
-      // const absoluteAngle = Math.abs(angleInDegrees);
-      // console.log(
-      //   'absoluteAngle:-',
-      //   absoluteAngle.toFixed(2),
-      //   '   dx:-',
-      //   dx.toFixed(2),
-      //   '  dy:-',
-      //   dy.toFixed(2),
-      // );
     },
     onPanResponderRelease: (_, {dx, dy}) => {
       const directionX = Math.sign(dx);
@@ -103,7 +90,6 @@ const TinderSwipe = ({
     )
       .unwrap()
       .then(res => {
-        // console.log('awdawdssssss', res);
         if (res.success === true) {
           setData(prevState => prevState.slice(1));
           removeCard();
@@ -131,13 +117,11 @@ const TinderSwipe = ({
     )
       .unwrap()
       .then(res => {
-        // console.log('awdawd', res.success);
         if (res.success === true) {
           setData(prevState => prevState.slice(1));
           removeCard();
           const targetX = hiddenTranslateX;
           translateX.value = withSpring(targetX);
-          // console.log('translateX.value ', translateX.value);
           setTimeout(() => {
             const updatedUsers = [...data];
             updatedUsers.splice(currentIndex, 1);
@@ -178,7 +162,6 @@ const TinderSwipe = ({
   // Like..........
   const handleChoiceHeart = useCallback(
     direction => {
-      // console.log('Directyion ===>', direction);
       Animated.timing(swipe.x, {
         toValue: direction * width * 1.5,
         duration: 500,

@@ -47,7 +47,6 @@ const LikedScreen = () => {
   };
 
   const goToUserProfile = async (user: any) => {
-    console.log(user);
     await dispatch(videoCallUser({user: user, page: 'Liked'}));
     navigation.navigate('userProfile');
   };

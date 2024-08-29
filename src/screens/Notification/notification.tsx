@@ -108,8 +108,6 @@ const NotificationScreen = () => {
   };
 
   const renderNotificationItem = ({item}: any) => {
-    // const user = allUsers.find((u: any) => u._id === item.senderUserId);
-    // console.log('first', user);
     return (
       <View style={styles.notificationItem}>
         <View style={{alignSelf: 'flex-start'}}>

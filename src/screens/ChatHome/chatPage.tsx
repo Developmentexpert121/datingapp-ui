@@ -41,6 +41,7 @@ import {
 import Modal from 'react-native-modal';
 import Label from '../../components/Label';
 import MainButton from '../../components/ButtonComponent/MainButton';
+import SmallLoader from '../../components/Loader/SmallLoader';
 
 const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 
@@ -70,7 +71,6 @@ const ChatPage = ({
   );
   const [inputMessage, setInputMessage] = useState('');
   const [chatMessages, setChatMessages] = useState<any>([]);
-  console.log('------------', chatMessages);
   const [messageCount, setMessageCount] = useState(0);
   const [limit, setLimit] = useState(10);
   const [skip, setSkip] = useState(0);
@@ -80,6 +80,8 @@ const ChatPage = ({
   const [reason, setReason] = useState('');
 
   const scrollViewRef = useRef<ScrollView>(null);
+  console.log('111111');
+
   const isUserOnline: any = showOnlineUser?.includes(user?._id) || false;
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -102,8 +104,8 @@ const ChatPage = ({
   }, []);
 
   useEffect(() => {
-    if (scrollViewRef.current) {
-      scrollViewRef.current.scrollToEnd({animated: true});
+    if (scrollViewRef?.current) {
+      scrollViewRef?.current?.scrollToEnd({animated: true});
     }
   }, [scrollViewRef]);
 
@@ -117,7 +119,6 @@ const ChatPage = ({
         setChatMessages((prevMessages: any) => [...prevMessages, msg]);
       }
     });
-
     return () => {
       socket.off('chat message');
     };
@@ -183,6 +184,7 @@ const ChatPage = ({
   }, [inputMessage, profileData, user]);
 
   const handleScroll = ({nativeEvent}: any) => {
+    console.log('!!!!!!!!!!!!!!');
     if (nativeEvent.contentOffset.y === 0 && messageCount === limit) {
       setIsLoading(true);
       setSkip(prevSkip => prevSkip + limit);
@@ -191,7 +193,7 @@ const ChatPage = ({
 
   const LoadingIndicator = () => (
     <View style={styles.loadingContainer}>
-      <ActivityIndicator size="large" color="#AC25AC" />
+      <SmallLoader />
     </View>
   );
 
@@ -353,6 +355,11 @@ const ChatPage = ({
             </Pressable>
             <View style={{flexDirection: 'row', marginEnd: 10, width: '25%'}}>
               <TouchableOpacity
+                disabled={
+                  user?.deactivate === false && user?.isBlocked === false
+                    ? false
+                    : true
+                }
                 onPress={
                   profileData?.plan === 'Free'
                     ? () => {
@@ -373,6 +380,11 @@ const ChatPage = ({
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
+                disabled={
+                  user?.deactivate === false && user?.isBlocked === false
+                    ? false
+                    : true
+                }
                 onPress={
                   profileData?.plan === 'Free'
                     ? () => {
@@ -413,16 +425,15 @@ const ChatPage = ({
                 }
               }}
               onScroll={handleScroll}
-              keyExtractor={(item, index) => item.timestamp + index}
+              keyExtractor={(item, index) => item?.timestamp + index}
               renderItem={({item, index}) => {
                 const isTextMessage = !item?.uri;
                 const isAuthMessage =
                   item?.receiver === user?._id || item?.sender === user?._id;
-
-                const currentMessageDate = getFormattedDate(item.timestamp);
+                const currentMessageDate = getFormattedDate(item?.timestamp);
                 const previousMessageDate =
                   index > 0
-                    ? getFormattedDate(chatMessages[index - 1].timestamp)
+                    ? getFormattedDate(chatMessages[index - 1]?.timestamp)
                     : null;
 
                 const shouldDisplayDate =
@@ -448,7 +459,7 @@ const ChatPage = ({
                         style={{
                           flexDirection: 'row',
                           alignSelf:
-                            item.sender === profileData?._id
+                            item?.sender === profileData?._id
                               ? 'flex-end'
                               : 'flex-start',
                           margin: 10,
@@ -495,7 +506,7 @@ const ChatPage = ({
                                     ? 'white'
                                     : 'black',
                               }}>
-                              {item.message}
+                              {item?.message}
                             </Text>
                           ) : (
                             isAuthMessage && (
@@ -520,7 +531,7 @@ const ChatPage = ({
                                   }}>
                                   <TouchableOpacity
                                     onPress={() =>
-                                      saveImageToGallery(item.uri)
+                                      saveImageToGallery(item?.uri)
                                     }>
                                     <Image
                                       source={require('../../assets/images/download.png')}
@@ -540,17 +551,18 @@ const ChatPage = ({
                             style={{
                               fontSize: 12,
                               color:
-                                item.sender === profileData?._id
+                                item?.sender === profileData?._id
                                   ? 'white'
                                   : 'black',
                               marginTop: 5,
+                              textAlign: 'right',
                             }}>
-                            {formatTime(item.timestamp)}
+                            {formatTime(item?.timestamp)}
                           </Text>
                         </View>
 
                         {/* Sender Image */}
-                        {item.sender === profileData?._id && (
+                        {item?.sender === profileData?._id && (
                           <View
                             style={{
                               alignSelf: 'flex-end',
