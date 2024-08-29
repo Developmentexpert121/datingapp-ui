@@ -57,6 +57,9 @@ const HomeScreen = () => {
   const [reason, setReason] = useState('');
   const [filterData, setFilterData] = useState({});
   const [page, setPage] = useState(1);
+  const [viewedUsers, setViewedUsers] = useState<any>([]);
+
+  console.log(viewedUsers);
 
   const initialRouteValue = useAppSelector(
     (state: any) => state.ActivityLoader.initialRouteValue,
@@ -191,10 +194,16 @@ const HomeScreen = () => {
             high: highValue ?? 56,
             checkedRelationShip: res.data.partnerType,
             page: newPage,
+            viewedUsers: JSON.stringify(viewedUsers),
           }),
         )
           .unwrap()
           .then((response: any) => {
+            const newUsers = response.users;
+            // Filter out already viewed users
+            const uniqueUsers = newUsers.map((user: any) => user._id);
+            setViewedUsers((prev: any) => [...prev, ...uniqueUsers]);
+
             // console.log('======', response.currentPage);
             setData(response.users);
             setNoProfilesLoader(false);
