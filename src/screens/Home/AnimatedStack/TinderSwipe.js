@@ -102,7 +102,7 @@ const TinderSwipe = ({
           }, 1000);
         } else {
           removeCard();
-          setModalOpen(true);
+          // setModalOpen(true);
           setReason('like');
         }
       });
@@ -129,7 +129,7 @@ const TinderSwipe = ({
           }, 1000);
         } else {
           removeCard();
-          setModalOpen(true);
+          // setModalOpen(true);
           setReason('superLike');
         }
       });
