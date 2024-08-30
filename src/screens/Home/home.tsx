@@ -59,8 +59,6 @@ const HomeScreen = () => {
   const [page, setPage] = useState(1);
   const [viewedUsers, setViewedUsers] = useState<any>([]);
 
-  console.log(viewedUsers);
-
   const initialRouteValue = useAppSelector(
     (state: any) => state.ActivityLoader.initialRouteValue,
   );
@@ -163,7 +161,7 @@ const HomeScreen = () => {
 
   const fetchNewData = (newPage: any) => {
     // console.log('0000000000000000', newPage);
-    console.log('-=-=-=-=-=-=-', viewedUsers);
+
     setActiveScreen('HOME');
     setNoProfilesLoader(true);
     dispatch(ProfileData())

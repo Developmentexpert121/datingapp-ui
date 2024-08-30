@@ -36,20 +36,18 @@ import {StreamVideoRN} from '@stream-io/video-react-native-sdk';
 import PhoneInput from '../../components/AppTextInput/PhoneInput';
 
 interface UpdateForm {
-  name: string;
-  email: string;
-  password: string;
-  gender: string;
+  phone: string;
 }
 const defaultValues = {
-  name: '',
-  email: '',
-  password: '',
-  gender: '',
+  phone: '',
 };
 
 const schema = yup.object().shape({
-  // gender: yup.string().required('gender is required'),
+  phone: yup
+    .string()
+    .matches(/^[0-9]+$/, 'Phone must contain only digits')
+    .min(8, 'Phone must be at least 8 digits long')
+    .required('Phone is required'),
 });
 
 const getUserId = async () => {
@@ -78,6 +76,7 @@ const SettingsSection = () => {
   const [title, setTitle] = useState<string>('');
   const [values, setValues] = useState<string>('');
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [callingCode, setCallingCode] = useState('+91');
   const [actionType, setActionType] = useState<string | null>(null);
   useEffect(() => {
     GoogleSignin.configure({
@@ -87,8 +86,26 @@ const SettingsSection = () => {
     });
   }, []);
 
+  const onSubmit: any = async (data: UpdateForm) => {
+    let payload = {
+      countryCode: callingCode,
+      number: data.phone,
+    };
+    await dispatch(
+      updateProfileData({
+        field: 'phone',
+        value: payload,
+        id: getUserId(),
+      }),
+    )
+      .unwrap()
+      .then(() => setEditPhone(false));
+  };
+
   const {
+    control,
     reset,
+    handleSubmit,
     formState: {errors},
   } = useForm<UpdateForm>({
     defaultValues,
@@ -97,6 +114,7 @@ const SettingsSection = () => {
   //   const handleSliderChange = (value:any) => {
   //     setDistance(value);
   //   };
+
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [address, setAddress] = useState('');
   const [editPhone, setEditPhone] = useState<any>(false);
@@ -223,8 +241,18 @@ const SettingsSection = () => {
                 }}>
                 <View style={{width: 32}}></View>
                 <Text style={styles.textName}>{item.title}</Text>
-                {item.title === 'Phone Number' ||
-                item.title === 'Language I Know' ? (
+                {index === 0 && !editPhone && item.title === 'Phone Number' ? (
+                  <EditTextIC
+                    style={{marginEnd: 8}}
+                    onPress={() => {
+                      if (item.title === 'Phone Number') {
+                        setEditPhone(true);
+                      } else {
+                        handleModal(item);
+                      }
+                    }}
+                  />
+                ) : item.title === 'Language I Know' ? (
                   <EditTextIC
                     style={{marginEnd: 8}}
                     onPress={() => {
@@ -242,24 +270,30 @@ const SettingsSection = () => {
               <View style={styles.line} />
               <View>
                 {index === 0 && editPhone ? (
-                  <View style={styles.textField}>
-                    {/* <PhoneInput
-                      name={phone}
+                  <View style={styles.textFieldPhone}>
+                    <PhoneInput
+                      name="phone"
                       control={control}
                       label="Phone Number"
                       showError={Boolean(errors?.phone)}
                       errors={Boolean(errors?.phone)}
                       callingCode={callingCode}
                       setCallingCode={setCallingCode}
-                    /> */}
+                      inComponent="Settings"
+                    />
                     <Pressable
-                      onPress={() => setEditPhone(false)}
+                      onPress={
+                        handleSubmit(onSubmit)
+                        // setEditPhone(false);
+                      }
                       style={{
                         backgroundColor: 'lightgreen',
                         padding: 4,
                         borderRadius: 6,
+                        borderWidth: 1,
+                        borderColor: 'gray',
                       }}>
-                      <Text>Done</Text>
+                      <Text style={{color: 'black'}}>Done</Text>
                     </Pressable>
                   </View>
                 ) : (
@@ -396,6 +430,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     columnGap: 6,
-    paddingHorizontal: 20,
+    paddingHorizontal: 24,
+  },
+  textFieldPhone: {
+    flex: 0,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    columnGap: 6,
   },
 });
