@@ -564,7 +564,7 @@ const ChatPage = ({
 
                               marginLeft:
                                 item?.sender === profileData?._id ? 0 : 12,
-                              // marginTop: 2,
+                              marginTop: 5,
                             }}>
                             {formatTime(item?.timestamp)}
                           </Text>
