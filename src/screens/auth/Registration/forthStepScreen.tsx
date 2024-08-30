@@ -188,18 +188,20 @@ const ForthStepScreen = ({
                             setStepFourErrors(false);
                           }
                         }}>
-                        <Text
-                          style={[
-                            styles.textItem,
-                            // Apply styling if the text is selected
-                            value.find(
-                              (habit: any) =>
-                                habit.id === item.id &&
-                                habit.optionSelected.includes(text),
-                            ) && {color: '#AC25AC', borderColor: '#AC25AC'},
-                          ]}>
-                          {text}
-                        </Text>
+                        <View style={styles.viewItem}>
+                          <Text
+                            style={[
+                              styles.textItem,
+                              // Apply styling if the text is selected
+                              value.find(
+                                (habit: any) =>
+                                  habit.id === item.id &&
+                                  habit.optionSelected.includes(text),
+                              ) && {color: '#AC25AC', borderColor: '#AC25AC'},
+                            ]}>
+                            {text}
+                          </Text>
+                        </View>
                       </TouchableOpacity>
                     ))}
                   </View>
@@ -263,6 +265,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Sansation-Regular',
     color: '#545454',
     fontSize: 12,
+  },
+  viewItem: {
     borderColor: '#ABABAB',
     borderWidth: 1,
     borderRadius: 14,

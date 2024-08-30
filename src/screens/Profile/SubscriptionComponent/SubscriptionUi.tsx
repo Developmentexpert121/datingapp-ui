@@ -19,6 +19,10 @@ import {LockIC, UnlockIC} from '../../../assets/svgs';
 import {useNavigation} from '@react-navigation/native';
 import {useAppSelector} from '../../../store/store';
 import {Button} from 'react-native-elements';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
 
 const {width} = Dimensions.get('window');
 const eightyPercentWidth = width * 0.84;
@@ -130,8 +134,8 @@ const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {
         style={styles.box}>
         <Text style={styles.boxTitle}>{item.title}</Text>
         <Text style={styles.boxDescription}>{item.description}</Text>
-        <TouchableOpacity onPress={onPress}>
-          <Text style={styles.upgradeButton}>Upgrade from {item.price}</Text>
+        <TouchableOpacity onPress={onPress} style={styles.upgradeButtonfrom}>
+          <Text>Upgrade from {item.price}</Text>
         </TouchableOpacity>
       </LinearGradient>
     ) : (
@@ -154,7 +158,7 @@ const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {
         </Text>
         {profileData.plan.productId !== 'PremiumPlus' && (
           <Pressable
-            style={styles.upgradeButton}
+            style={styles.upgradeButtonPlan}
             onPress={() => navigation.navigate('Subscriptions')}>
             <Text style={styles.upgradeButtonText}>Upgrade Plan</Text>
           </Pressable>
@@ -270,7 +274,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 28,
     marginHorizontal: 30,
-    marginBottom: 5,
+    marginVertical: 10,
     width: eightyPercentWidth,
     shadowColor: '#000',
     shadowOffset: {
@@ -294,17 +298,30 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Sansation-Regular',
   },
-  upgradeButton: {
+  upgradeButtonPlan: {
     alignSelf: 'center',
     color: 'black',
-    backgroundColor: '#AC25AC',
-    fontFamily: 'Sansation-Regular',
+    backgroundColor: 'green',
     marginTop: 16,
     marginBottom: 6,
     fontSize: 14,
-    borderRadius: 30,
-    paddingHorizontal: 20,
-    paddingVertical: 4,
+    borderRadius: hp(3),
+    paddingHorizontal: wp(8),
+    paddingVertical: hp(0.5),
+    overflow: 'hidden',
+  },
+
+  upgradeButtonfrom: {
+    alignSelf: 'center',
+    color: 'black',
+    backgroundColor: 'red',
+    marginTop: 16,
+    marginBottom: 6,
+    fontSize: 14,
+    borderRadius: hp(3),
+    paddingHorizontal: wp(8),
+    paddingVertical: hp(0.5),
+    overflow: 'hidden',
   },
   dotsContainer: {
     flexDirection: 'row',

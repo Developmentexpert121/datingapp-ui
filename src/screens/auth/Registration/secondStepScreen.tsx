@@ -9,6 +9,10 @@ import {
   InrestPartnerIC,
   InrestShortIC,
 } from '../../../assets/svgs';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
 
 const SecondStepScreen = ({partnerType, control, errors}: any) => {
   const avatars = [
@@ -104,16 +108,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   avatarItem: {
-    height: 90,
-    width: 90,
+    height: wp(24),
+    width: wp(24),
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 25,
+    marginBottom: hp(2),
     backgroundColor: '#E8E8E8',
-    borderRadius: 45,
+    borderRadius: wp(12),
     borderWidth: 2,
     borderColor: 'transparent',
-    margin: 2,
+    margin: wp(0.5),
   },
   avatarImage: {
     width: 32,

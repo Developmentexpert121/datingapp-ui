@@ -69,7 +69,7 @@ http.interceptors.response.use(
     const {response} = error;
     if (response && response.status === 403) {
       // Check for specific error message
-      if (response.data.message === 'Invalid device token') {
+      if (response.data.message === 'Invalid device token from backend') {
         console.log('Logging out user due to 403 error', response.data.message);
         EventRegister.emit('LogOut');
       }

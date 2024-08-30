@@ -276,7 +276,7 @@ const SubscriptionsScreen = ({navigation}) => {
                       You are Subscribed to this plan!
                     </Text>
                     <TouchableOpacity
-                      style={[styles.button, {backgroundColor: '#0071bc'}]}
+                      style={[styles.button, {backgroundColor: 'green'}]}
                       onPress={() => navigation.navigate('Home')}>
                       <Text style={styles.buttonText}>Continue to App</Text>
                     </TouchableOpacity>

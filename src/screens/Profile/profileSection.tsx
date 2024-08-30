@@ -81,7 +81,7 @@ const ProfileSection: React.FC = () => {
   }, [profileData]);
 
   const date = new Date(profileData.plan.transactionDate);
-  console.log(date.toString());
+  // console.log(date.toString());
 
   console.log(profileData.plan.productId);
 
