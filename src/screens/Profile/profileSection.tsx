@@ -81,9 +81,6 @@ const ProfileSection: React.FC = () => {
   }, [profileData]);
 
   const date = new Date(profileData.plan.transactionDate);
-  // console.log(date.toString());
-
-  console.log(profileData.plan.productId);
 
   const profileImage = profileData?.profilePic?.split(',')[0];
 

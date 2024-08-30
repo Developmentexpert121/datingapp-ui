@@ -80,7 +80,7 @@ const SettingsSection = () => {
   useEffect(() => {
     GoogleSignin.configure({
       webClientId:
-        '151623051367-b882b5sufigjbholkehodmi9ccn4hv6m.apps.googleusercontent.com', // From Google Developer Console
+        '151623051367-b882b5sufigjbholkehodmi9ccn4hv6m.apps.googleusercontent.com',
       offlineAccess: true,
     });
   }, []);
@@ -194,7 +194,6 @@ const SettingsSection = () => {
         return;
       }
       const isSignedIn = await GoogleSignin.isSignedIn();
-      console.log('User is signed in:', isSignedIn);
 
       if (isSignedIn) {
         await GoogleSignin.signOut();
@@ -211,7 +210,6 @@ const SettingsSection = () => {
     dispatch(deleteUser({senderId: profileData._id}))
       .unwrap()
       .then(async (res: any) => {
-        console.log('Delete User res', res);
         logoutUserButton();
       });
     //
@@ -220,7 +218,6 @@ const SettingsSection = () => {
     dispatch(deactivateUser({userId: profileData?._id}))
       .unwrap()
       .then(async (res: any) => {
-        console.log('Delete User res', res);
         logoutUserButton();
       });
   };
@@ -228,7 +225,7 @@ const SettingsSection = () => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <CommonBackbutton title="Settings" />
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>Account Settings</Text>
         {dataArr &&
           dataArr.map((item, index) => (
@@ -286,10 +283,11 @@ const SettingsSection = () => {
                         // setEditPhone(false);
                       }
                       style={{
-                        backgroundColor: 'lightgreen',
-                        padding: 4,
+                        backgroundColor: '#AC25AC',
+                        paddingHorizontal: 10,
+                        paddingVertical: 5,
                         borderRadius: 6,
-                        borderWidth: 1,
+                        // borderWidth: 1,
                         borderColor: 'gray',
                       }}>
                       <Text style={{color: 'black'}}>Done</Text>
@@ -318,15 +316,18 @@ const SettingsSection = () => {
               </View>
             </View>
           ))}
-        <TouchableOpacity
-          style={styles.boxContainer}
-          onPress={() => {
-            navigation.navigate('ResetPassword');
-          }}>
-          <Text style={[styles.textName, {color: '#AC25AC'}]}>
-            Reset Password
-          </Text>
-        </TouchableOpacity>
+        {!profileData?.googleId && !profileData?.appleId && (
+          <TouchableOpacity
+            style={styles.boxContainer}
+            onPress={() => {
+              navigation.navigate('ResetPassword');
+            }}>
+            <Text style={[styles.textName, {color: '#AC25AC'}]}>
+              Reset Password
+            </Text>
+          </TouchableOpacity>
+        )}
+
         {/* Logout */}
         <TouchableOpacity
           style={styles.boxContainer}

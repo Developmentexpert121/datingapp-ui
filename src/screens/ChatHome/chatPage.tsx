@@ -79,7 +79,6 @@ const ChatPage = ({
   const [reason, setReason] = useState('');
 
   const scrollViewRef = useRef<ScrollView>(null);
-  // console.log('111111');
 
   const isUserOnline: any = showOnlineUser?.includes(user?._id) || false;
 
@@ -462,10 +461,9 @@ const ChatPage = ({
                               ? 'flex-end'
                               : 'flex-start',
                           marginHorizontal: 10,
-                          marginVertical: 1,
+                          marginVertical: 5,
                           // marginBottom: 12,
                           alignItems: 'baseline',
-                          borderWidth: 2,
                         }}>
                         {/* Receiver Image */}
                         {isAuthMessage && item?.sender !== profileData?._id && (
@@ -499,7 +497,6 @@ const ChatPage = ({
                                 item?.sender === profileData?._id ? 0 : 8,
                               borderBottomLeftRadius:
                                 item?.sender === profileData?._id ? 8 : 0,
-                              // borderWidth: 1,
                             }}>
                             {isTextMessage && isAuthMessage ? (
                               <Text

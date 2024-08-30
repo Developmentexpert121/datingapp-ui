@@ -90,7 +90,6 @@ const updatePhoneNumber = ({
               style={{
                 modal: {
                   height: '80%',
-                  // backgroundColor: 'red'
                 },
               }}
               lang={'en'}

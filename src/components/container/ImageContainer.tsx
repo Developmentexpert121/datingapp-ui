@@ -100,7 +100,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   image: {
-    // backgroundColor:"red",
     position: 'absolute',
     opacity: 0.7,
     width: Dimensions.get('screen').width,

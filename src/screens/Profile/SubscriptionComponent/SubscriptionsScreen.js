@@ -129,7 +129,6 @@ const SubscriptionsScreen = ({navigation}) => {
           ],
         }),
       });
-      console.log('1111111111111111');
       dispatch(
         verifyReceipt({
           platform: itemm?.length > 0 ? 'android' : 'ios',
