@@ -44,6 +44,7 @@ import {PermissionsAndroid, Platform, SafeAreaView, View} from 'react-native';
 import filterSection from '../screens/FilterSection/filterSection';
 import NotificationScreen from '../screens/Notification/notification';
 import userProfile from '../screens/UserProfile/userProfile';
+import ResetPassword from '../screens/ResetPassword/resetPassword';
 
 const Stack = createNativeStackNavigator();
 
@@ -302,6 +303,10 @@ const Root = () => {
             component={VideoCallRedirect}
           />
           <AfterLoginStack.Screen name="userProfile" component={userProfile} />
+          <AfterLoginStack.Screen
+            name="ResetPassword"
+            component={ResetPassword}
+          />
         </AfterLoginStack.Navigator>
       );
     }

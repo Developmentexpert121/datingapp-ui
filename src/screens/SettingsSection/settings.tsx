@@ -319,6 +319,15 @@ const SettingsSection = () => {
               </View>
             </View>
           ))}
+        <TouchableOpacity
+          style={styles.boxContainer}
+          onPress={() => {
+            navigation.navigate('ResetPassword');
+          }}>
+          <Text style={[styles.textName, {color: '#AC25AC'}]}>
+            Reset Password
+          </Text>
+        </TouchableOpacity>
         {/* Logout */}
         <TouchableOpacity
           style={styles.boxContainer}

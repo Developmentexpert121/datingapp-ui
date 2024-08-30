@@ -905,6 +905,25 @@ export const rejectUser = createAsyncThunk(
   },
 );
 
+export const resetPasswordSettings: any = createAsyncThunk(
+  'auth/resetPasswordSettings',
+  async (data: any, {dispatch}: any) => {
+    try {
+      const response = await http.post('/user/resetPasswordSettings', data);
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error: any) {
+      console.log('error filterUpdate', error);
+      if (error.response && error.response.status === 400) {
+        return {error: 'Bad Request'};
+      } else {
+        throw error;
+      }
+    }
+  },
+);
+
 export const cancelLoginWithGoogle: any = createAsyncThunk(
   'activityLoader/cancelLoginWithGoogle',
   async (data: any) => {
