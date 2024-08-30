@@ -22,12 +22,13 @@ const Root = () => (
 
 setPushConfig();
 
-notifee.onBackgroundEvent((message)=>{
-  console.log('==========================================')
-  console.log('notiification in for ground')
-  console.log('==========================================')
+// messaging().onNotificationOpenedApp((message)=>{
+//   console.log('Messagee' , message)
+// })
 
-})
+
+
+
 
 // messaging().setBackgroundMessageHandler(async (remoteMessage) => {
 //   console.log('Message handled in the background!', remoteMessage);
@@ -35,12 +36,12 @@ notifee.onBackgroundEvent((message)=>{
 
 
 //   if (remoteMessage?.data?.type.includes('call')) {
-//     // Call notifications are handled by the SDK internally
+//     setPushConfig();
 //     console.log('type =>' ,remoteMessage?.data?.type )
-//     return;
 //   }
 
-  // Handle notification data when app is in background
+
+  // // Handle notification data when app is in background
   // if (remoteMessage?.data?.screen) {
   //   if (remoteMessage.data.screen === 'VideoCallRedirect') {
   //     // await dispatch(
@@ -52,7 +53,7 @@ notifee.onBackgroundEvent((message)=>{
   //   console.log('background Notification')
   //   // setPushConfig();
   // }
-  // console.log('background Notification')
+//   console.log('background Notification')
 // });
 
 
@@ -94,18 +95,18 @@ AppRegistry.registerComponent(appName, () => Root);
     //     if (remoteMessage) {
     //       console.log('App opened from a killed state!', remoteMessage);
 
-    //       if (remoteMessage?.data?.screen) {
-    //         await dispatch(initialRouteSetter(remoteMessage.data.screen));
-    //         if (remoteMessage.data.screen === 'VideoCallRedirect') {
-    //           await dispatch(
-    //             videoCallUser({user: JSON.parse(remoteMessage.data.userData)}),
-    //           );
-    //         }
+    //       // if (remoteMessage?.data?.screen) {
+    //       //   await dispatch(initialRouteSetter(remoteMessage.data.screen));
+    //       //   if (remoteMessage.data.screen === 'VideoCallRedirect') {
+    //       //     await dispatch(
+    //       //       videoCallUser({user: JSON.parse(remoteMessage.data.userData)}),
+    //       //     );
+    //         // }
     //       }else{
     //         console.log('kill state notification')
     //         setPushConfig();
     //       }
-    //     }
+    //     // }
     //   });
 
 
