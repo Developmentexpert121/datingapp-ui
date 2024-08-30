@@ -24,7 +24,6 @@ import {useDispatch} from 'react-redux';
 import {
   getUserDataOnId,
   likedAUser,
-  likedMe,
   rejectUser,
   superLiked,
 } from '../../store/Auth/auth';

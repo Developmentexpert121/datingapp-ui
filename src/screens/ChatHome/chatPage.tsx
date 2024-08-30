@@ -71,7 +71,7 @@ const ChatPage = ({
   const [inputMessage, setInputMessage] = useState('');
   const [chatMessages, setChatMessages] = useState<any>([]);
   const [messageCount, setMessageCount] = useState(0);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(20);
   const [skip, setSkip] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
@@ -82,11 +82,31 @@ const ChatPage = ({
   // console.log('111111');
 
   const isUserOnline: any = showOnlineUser?.includes(user?._id) || false;
+
   useEffect(() => {
     if (scrollViewRef.current && chatMessages.length) {
       scrollViewRef.current.scrollToEnd({animated: true});
     }
-  }, [chatMessages]);
+  }, []);
+
+  useEffect(() => {
+    if (scrollViewRef?.current) {
+      scrollViewRef?.current?.scrollToEnd({animated: true});
+    }
+  }, []);
+
+  const handleScroll = ({nativeEvent}: any) => {
+    if (nativeEvent.contentOffset.y === 0 && messageCount === limit) {
+      setIsLoading(true);
+      setSkip(prevSkip => prevSkip + limit);
+    }
+  };
+
+  const LoadingIndicator = () => (
+    <View style={styles.loadingContainer}>
+      <SmallLoader />
+    </View>
+  );
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -101,7 +121,6 @@ const ChatPage = ({
         setIsKeyboardVisible(false);
       },
     );
-
     return () => {
       keyboardDidShowListener.remove();
       keyboardDidHideListener.remove();
@@ -109,18 +128,8 @@ const ChatPage = ({
   }, []);
 
   useEffect(() => {
-    if (scrollViewRef?.current) {
-      scrollViewRef?.current?.scrollToEnd({animated: true});
-    }
-  }, [scrollViewRef]);
-
-  useEffect(() => {
     socket.on('chat message', msg => {
-      if (
-        msg.receiver === profileData?._id &&
-        msg.sender === user?._id
-        // (msg.sender === profileData?._id && msg.receiver === user?._id)
-      ) {
+      if (msg.receiver === profileData?._id && msg.sender === user?._id) {
         setChatMessages((prevMessages: any) => [...prevMessages, msg]);
       }
     });
@@ -187,20 +196,6 @@ const ChatPage = ({
       setInputMessage('');
     }
   }, [inputMessage, profileData, user]);
-
-  const handleScroll = ({nativeEvent}: any) => {
-    console.log('!!!!!!!!!!!!!!');
-    if (nativeEvent.contentOffset.y === 0 && messageCount === limit) {
-      setIsLoading(true);
-      setSkip(prevSkip => prevSkip + limit);
-    }
-  };
-
-  const LoadingIndicator = () => (
-    <View style={styles.loadingContainer}>
-      <SmallLoader />
-    </View>
-  );
 
   const handleMediaSelection = async () => {
     const options: ImageLibraryOptions = {
@@ -428,7 +423,7 @@ const ChatPage = ({
                   scrollViewRef?.current?.scrollToEnd({animated: true});
                 }
               }}
-              onScroll={handleScroll}
+              // onScroll={handleScroll}
               keyExtractor={(item, index) => item?.timestamp + index}
               renderItem={({item, index}) => {
                 const isTextMessage = !item?.uri;
@@ -466,9 +461,11 @@ const ChatPage = ({
                             item?.sender === profileData?._id
                               ? 'flex-end'
                               : 'flex-start',
-                          margin: 10,
-                          marginBottom: 12,
+                          marginHorizontal: 10,
+                          marginVertical: 1,
+                          // marginBottom: 12,
                           alignItems: 'baseline',
+                          borderWidth: 2,
                         }}>
                         {/* Receiver Image */}
                         {isAuthMessage && item?.sender !== profileData?._id && (
@@ -502,6 +499,7 @@ const ChatPage = ({
                                 item?.sender === profileData?._id ? 0 : 8,
                               borderBottomLeftRadius:
                                 item?.sender === profileData?._id ? 8 : 0,
+                              // borderWidth: 1,
                             }}>
                             {isTextMessage && isAuthMessage ? (
                               <Text
@@ -569,7 +567,7 @@ const ChatPage = ({
 
                               marginLeft:
                                 item?.sender === profileData?._id ? 0 : 12,
-                              marginTop: 5,
+                              // marginTop: 2,
                             }}>
                             {formatTime(item?.timestamp)}
                           </Text>

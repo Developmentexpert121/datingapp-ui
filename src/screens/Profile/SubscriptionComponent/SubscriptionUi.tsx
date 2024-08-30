@@ -52,6 +52,7 @@ const dataType = [
 ];
 
 const data2 = [
+  // Basic
   {
     id: 1,
     service: 'See who likes you',
@@ -59,50 +60,53 @@ const data2 = [
   },
   {
     id: 2,
-    service: 'Priority likes',
+    service: '50 Likes',
     presentIn: 0,
   },
   {
     id: 3,
-    service: 'Unlimited likes',
+    service: '3 Super Likes',
     presentIn: 0,
   },
   {
     id: 4,
-    service: 'Control who you see',
+    service: 'Access to Chat',
     presentIn: 0,
   },
-  {id: 5, service: 'Access to chat', presentIn: 1},
+  // Premium
+  {id: 5, service: 'Unlimited Likes', presentIn: 1},
   {
     id: 6,
-    service: 'Access to advanced search filters',
+    service: '6 Super Likes',
     presentIn: 1,
   },
   {
     id: 7,
-    service: 'Checkout who likes you',
+    service: 'Acces to Audio call',
     presentIn: 1,
   },
+  // Premium Plus
   {
     id: 8,
-    service: 'Access to audio call',
-    presentIn: 1,
+    service: 'Access to Video call',
+    presentIn: 2,
   },
-  {
-    id: 9,
-    service: 'Unlimited Super Likes',
-    presentIn: 1,
-  },
-  {
-    id: 10,
-    service: 'Control who sees you',
-    presentIn: 1,
-  },
-  {id: 11, service: 'Top picks', presentIn: 2},
-  {id: 12, service: 'Live streaming', presentIn: 2},
-  {id: 13, service: 'Video call access', presentIn: 2},
-  {id: 14, service: 'Message before matching.', presentIn: 2},
-  {id: 15, service: 'Hide ads', presentIn: 2},
+  // *******
+  // {
+  //   id: 9,
+  //   service: 'Unlimited Super Likes',
+  //   presentIn: 1,
+  // },
+  // {
+  //   id: 10,
+  //   service: 'Control who sees you',
+  //   presentIn: 1,
+  // },
+  // {id: 11, service: 'Top picks', presentIn: 2},
+  // {id: 12, service: 'Live streaming', presentIn: 2},
+  // {id: 13, service: 'Video call access', presentIn: 2},
+  // {id: 14, service: 'Message before matching.', presentIn: 2},
+  // {id: 15, service: 'Hide ads', presentIn: 2},
 ];
 
 const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {

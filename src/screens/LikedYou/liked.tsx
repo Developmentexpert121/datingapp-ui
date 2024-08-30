@@ -8,15 +8,13 @@ import {
   StyleSheet,
   Dimensions,
   SafeAreaView,
-  TouchableOpacity,
-  ActivityIndicator,
   Pressable,
 } from 'react-native';
 import CommonBackbutton from '../../components/commonBackbutton/BackButton';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import LinearGradient from 'react-native-linear-gradient';
 import {videoCallUser} from '../../store/Activity/activity';
-import {likedAUser, likedMe, superLiked} from '../../store/Auth/auth';
+import {likedMe} from '../../store/Auth/auth';
 import {BlurView} from '@react-native-community/blur';
 import Loader from '../../components/Loader/Loader';
 import {SuperLikeIC} from '../../assets/svgs';
@@ -123,7 +121,7 @@ const LikedScreen = () => {
         <View style={styles.listContainer}>
           <FlatList
             showsVerticalScrollIndicator={false}
-            data={likeData}
+            data={likeData.reverse()}
             renderItem={renderGridItem}
             keyExtractor={item => item._id}
             numColumns={2}
