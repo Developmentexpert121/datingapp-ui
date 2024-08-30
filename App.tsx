@@ -37,18 +37,18 @@ const App = () => {
       });
 
       // Handle notification press in the foreground
-      notifee.onForegroundEvent(async ({type, detail}) => {
-        if (type === EventType.PRESS) {
-          if (remoteMessage?.data?.screen) {
-            if (remoteMessage.data.screen === 'VideoCallRedirect') {
-              await dispatch(
-                videoCallUser({user: JSON.parse(remoteMessage.data.userData)}),
-              );
-            }
-            navigationRef.current?.navigate(remoteMessage.data.screen);
-          }
-        }
-      });
+      // notifee.onForegroundEvent(async ({type, detail}) => {
+      //   if (type === EventType.PRESS) {
+      //     if (remoteMessage?.data?.screen) {
+      //       if (remoteMessage.data.screen === 'VideoCallRedirect') {
+      //         await dispatch(
+      //           videoCallUser({user: JSON.parse(remoteMessage.data.userData)}),
+      //         );
+      //       }
+      //       navigationRef.current?.navigate(remoteMessage.data.screen);
+      //     }
+      //   }
+      // });
     });
 
     return () => unsubscribe();

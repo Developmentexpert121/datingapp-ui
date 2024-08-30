@@ -34,6 +34,7 @@ interface Iprops {
   control?: any;
   callingCode?: any;
   setCallingCode?: any;
+  inComponent?: any;
 }
 const PhoneInput = ({
   name,
@@ -45,6 +46,7 @@ const PhoneInput = ({
   errors,
   callingCode,
   setCallingCode,
+  inComponent,
 }: Iprops) => {
   const [show, setShow] = useState<boolean>(false);
   const [countryFlag, setCountryFlag] = useState(
@@ -59,11 +61,15 @@ const PhoneInput = ({
       defaultValue=""
       render={({field: {onChange, onBlur, value}}) => (
         <View style={styles.container}>
-          <Label text={label} style={[styles.label]} />
+          {inComponent !== 'Settings' && (
+            <Label text={label} style={[styles.label]} />
+          )}
+
           <View
             style={[
               // {
               styles.inputView,
+              {marginTop: inComponent === 'Settings' ? 0 : 10},
               hasError
                 ? styles.errorBorder
                 : {borderWidth: 1, borderColor: 'rgba(0, 0, 0, 0.2)'},
@@ -131,7 +137,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 15,
     borderWidth: 1,
-    marginTop: 10,
   },
   label: {
     fontSize: 20,

@@ -44,6 +44,7 @@ import {PermissionsAndroid, Platform, SafeAreaView, View} from 'react-native';
 import filterSection from '../screens/FilterSection/filterSection';
 import NotificationScreen from '../screens/Notification/notification';
 import userProfile from '../screens/UserProfile/userProfile';
+import ResetPassword from '../screens/ResetPassword/resetPassword';
 
 const Stack = createNativeStackNavigator();
 
@@ -133,17 +134,16 @@ const Root = () => {
           };
 
           const token = await tokenProvider();
-
           const userMain = {
             id: userdata.id,
             name: userdata.name,
-            image: userdata.image,
+            image: userdata.image.split(',')[0],
           };
 
           const myClient = new StreamVideoClient({
             apiKey,
             user: userMain,
-            tokenProvider: () => token,
+            tokenProvider: token,
           });
           setClient(myClient);
         } catch (error) {
@@ -159,7 +159,6 @@ const Root = () => {
       return () => {
         // Cleanup: disconnect the client when the component unmounts or userdata changes
         if (client) {
-          console.log('Stream Logout Hit');
           client.disconnectUser();
           setClient(null);
         }
@@ -299,6 +298,10 @@ const Root = () => {
             component={VideoCallRedirect}
           />
           <AfterLoginStack.Screen name="userProfile" component={userProfile} />
+          <AfterLoginStack.Screen
+            name="ResetPassword"
+            component={ResetPassword}
+          />
         </AfterLoginStack.Navigator>
       );
     }

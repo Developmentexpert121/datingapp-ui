@@ -55,7 +55,7 @@ export default function MyOutgoingCallUI({call, callEnded}: any) {
             <View style={styles.listView}>
               {membersToShow.reverse().map((res, index) => {
                 return (
-                  <View style={styles.userView}>
+                  <View style={styles.userView} key={res?.name}>
                     {/* <Image
                       source={
                         res?.image
