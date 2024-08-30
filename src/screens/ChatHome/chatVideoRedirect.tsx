@@ -1,59 +1,13 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {SafeAreaView, StyleSheet, View} from 'react-native';
 import {
-  BlockedUserEvent,
   Call,
   CallAcceptedEvent,
-  CallCreatedEvent,
-  CallDeletedEvent,
   CallEndedEvent,
-  CallHLSBroadcastingFailedEvent,
-  CallHLSBroadcastingStartedEvent,
-  CallHLSBroadcastingStoppedEvent,
-  CallLiveStartedEvent,
-  CallMemberAddedEvent,
-  CallMemberRemovedEvent,
-  CallMemberUpdatedEvent,
-  CallMemberUpdatedPermissionEvent,
-  CallMissedEvent,
-  CallNotificationEvent,
-  CallReactionEvent,
-  CallRecordingFailedEvent,
-  CallRecordingReadyEvent,
-  CallRecordingStartedEvent,
-  CallRecordingStoppedEvent,
   CallRejectedEvent,
-  CallRingEvent,
   CallSessionEndedEvent,
-  CallSessionParticipantJoinedEvent,
   CallSessionParticipantLeftEvent,
-  CallSessionStartedEvent,
-  CallTranscriptionFailedEvent,
-  CallTranscriptionReadyEvent,
-  CallTranscriptionStartedEvent,
-  CallTranscriptionStoppedEvent,
-  CallUpdatedEvent,
-  CallUserMutedEvent,
-  ClosedCaptionEvent,
-  ConnectedEvent,
-  ConnectionErrorEvent,
-  CustomVideoEvent,
-  HealthCheckEvent,
   OwnCapability,
-  PermissionRequestEvent,
-  StreamVideo,
-  StreamVideoClient,
-  UnblockedUserEvent,
-  UpdatedCallPermissionsEvent,
-  useCallStateHooks,
-  UserBannedEvent,
-  UserDeactivatedEvent,
-  UserDeletedEvent,
-  UserMutedEvent,
-  UserPresenceChangedEvent,
-  UserReactivatedEvent,
-  UserUnbannedEvent,
-  UserUpdatedEvent,
   useStreamVideoClient,
 } from '@stream-io/video-react-native-sdk';
 import {useAppDispatch, useAppSelector} from '../../store/store';
@@ -69,7 +23,6 @@ const VideoCallRedirect = () => {
     (state: any) => state?.Auth?.data?.profileData,
   );
   const callId: any = uuid.v4();
-  const [onlineUsers, setOnlineUsers] = useState<any>([]);
   const [enableCamera, setEnableCamera] = useState<boolean>(true);
   const [enableCamera1, setEnableCamera1] = useState<boolean>(false);
   const [activeScreen, setActiveScreen] = useState('home');

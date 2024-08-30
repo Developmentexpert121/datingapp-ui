@@ -158,7 +158,6 @@ const Root = () => {
       return () => {
         // Cleanup: disconnect the client when the component unmounts or userdata changes
         if (client) {
-          console.log('Stream Logout Hit');
           client.disconnectUser();
           setClient(null);
         }
