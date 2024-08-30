@@ -68,11 +68,7 @@ const VideoCallRedirect = () => {
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
   );
-
-  console.log('Steam client data on chat screen:', !!client);
-
   const callId: any = uuid.v4();
-
   const [onlineUsers, setOnlineUsers] = useState<any>([]);
   const [enableCamera, setEnableCamera] = useState<boolean>(true);
   const [enableCamera1, setEnableCamera1] = useState<boolean>(false);
@@ -121,7 +117,6 @@ const VideoCallRedirect = () => {
       setActiveScreen('call-screen');
 
       let callTimeout = setTimeout(() => {
-        console.log('No response within 18 seconds, ending call.');
         myCall
           .endCall()
           .then(handleCallEnd)

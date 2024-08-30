@@ -102,13 +102,9 @@ const LoginHomeScreen = () => {
   };
   // Google Login
   const handleGoogleLogin = async () => {
-    console.log('Called');
     setLoader(true);
     const isSignedIn = await GoogleSignin.isSignedIn();
-    console.log('User is signed in:', isSignedIn);
-
     if (isSignedIn) {
-      console.log('logout hit');
       await GoogleSignin.signOut();
     }
     try {
@@ -116,7 +112,6 @@ const LoginHomeScreen = () => {
       if (userInfo) {
         // Extract the email and id from the user info
         const {email, id, name, photo} = userInfo;
-        console.log('Google Login data  ==1> ', userInfo);
         dispatch(
           userProfileDataChange({
             key: 'email',
@@ -137,7 +132,6 @@ const LoginHomeScreen = () => {
 
         dispatch(GoogleLogin({...loginPayload}))
           .then(async (response: any) => {
-            console.log('Google login api response ==>', response.payload);
             if (response?.payload?.redirect === 'Steps') {
               await navigation.navigate('Register');
             } else if (response?.payload?.redirect === 'Dashboard') {
@@ -180,7 +174,7 @@ const LoginHomeScreen = () => {
       }
     } catch (error) {
       // Handle any errors that occur during the Google login process
-      console.log('Error logging in with Google:', error);
+      console.error('Error logging in with Google:', error);
       setLoader(false);
     }
   };
@@ -188,8 +182,6 @@ const LoginHomeScreen = () => {
   const handleAppleLogin = async () => {
     // Check if the platform is iOS
     if (Platform.OS === 'ios') {
-      console.log('Apple login initiated');
-
       try {
         // Call the function to handle Apple button press and get user info
         const userInfo: any = await onAppleButtonPress();

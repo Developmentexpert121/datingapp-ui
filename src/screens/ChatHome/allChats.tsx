@@ -91,7 +91,6 @@ const ChatSection = () => {
 
       return () => {
         clearInterval(intervalId);
-        console.log('chat clear Interval hit');
       }; // Clear interval on blur
     }, [dispatch, profileData._id]),
   );

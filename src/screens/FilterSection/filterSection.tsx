@@ -78,17 +78,6 @@ const FilterSection = ({filterData, setSelectedFilterData}: any) => {
     (state: any) => state?.Auth?.data?.profileData,
   );
   const [loader, setLoader] = useState<boolean>(false);
-  // const [CurrentFilterData, setCurrentFilterData] = useState<UserPreferences>({
-  //   checkedInterests: '',
-  //   checkedRelationShip: '',
-  //   distance: 0,
-  //   high: 0,
-  //   low: 0,
-  //   showIn: false,
-  // });
-
-  // console.log(CurrentFilterData);
-  //
   const {
     control,
     formState: {errors},
@@ -96,22 +85,6 @@ const FilterSection = ({filterData, setSelectedFilterData}: any) => {
     defaultValues,
     resolver: yupResolver<any>(schema),
   });
-
-  // useEffect(() => {
-  //   setSelectedFilterData(CurrentFilterData);
-  // }, [CurrentFilterData]);
-
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     setCurrentFilterData(filterData);
-  //     return () => {
-  //       console.log('Return Filter', CurrentFilterData);
-  //     };
-  //   }, []),
-  // );
-
-  // console.log('filterData==>', filterData);
-
   const RelationShip = [
     {
       id: '1',
@@ -149,16 +122,7 @@ const FilterSection = ({filterData, setSelectedFilterData}: any) => {
       ...prev,
       distance: value,
     }));
-    // dispatch(
-    //   updateProfileData({
-    //     field: 'distance',
-    //     value: value,
-    //     id: getUserId(),
-    //   }),
-    // );
   };
-
-  // console.log('CurrentFilterData', filterData);
 
   const renderThumb = useCallback(() => <Thumb />, []);
   const renderRail = useCallback(() => <Rail />, []);
@@ -175,166 +139,7 @@ const FilterSection = ({filterData, setSelectedFilterData}: any) => {
       ...prev,
       high: newHigh,
     }));
-    // dispatch(
-    //   updateProfileData({
-    //     field: 'ageRange',
-    //     value: `${newLow} ${newHigh}`,
-    //     id: getUserId(),
-    //   }),
-    // );
   };
-
-  // const getLocationAndRegister = () => {
-  //   if (!isLocationEnabled) {
-  //     if (Platform.OS === 'android') {
-  //       Alert.alert(
-  //         'Location Services Disabled',
-  //         'Please enable location services in your device settings.',
-  //         [
-  //           {
-  //             text: 'Cancel',
-  //             style: 'cancel',
-  //           },
-  //           {
-  //             text: 'Open Settings',
-  //             onPress: () => {
-  //               Linking.sendIntent('android.settings.LOCATION_SOURCE_SETTINGS');
-  //             },
-  //           },
-  //         ],
-  //       );
-  //     } else if (Platform.OS === 'ios') {
-  //       Alert.alert(
-  //         'Location Services Disabled',
-  //         'Please enable location services in your device settings.',
-  //         [
-  //           {
-  //             text: 'Cancel',
-  //             style: 'cancel',
-  //           },
-  //           {
-  //             text: 'Open Settings',
-  //             onPress: () => {
-  //               Linking.openURL('App-Prefs:Privacy&path=LOCATION');
-  //             },
-  //           },
-  //         ],
-  //       );
-  //     }
-  //     return;
-  //   }
-
-  //   dispatch(
-  //     updateProfileData({
-  //       field: 'showInDistance',
-  //       value: !showIn,
-  //       id: getUserId(),
-  //     }),
-  //   ).then(() => setShowIn(!showIn));
-
-  //   Geolocation.getCurrentPosition(
-  //     async position => {
-  //       const {latitude, longitude} = position.coords;
-  //       // console.log('latitude:', latitude);
-  //       // console.log('Longitude:', longitude);
-  //       const userId = await getUserId();
-  //       setLoader(false);
-  //       if (userId) {
-  //         dispatch(
-  //           updateProfileData({
-  //             field: 'location',
-  //             value: {latitude, longitude},
-  //             id: userId,
-  //           }),
-  //         );
-  //       }
-  //     },
-
-  //     err => {
-  //       console.error('Error fetching location:22222', err);
-  //       setLoader(false);
-  //     },
-  //     {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}, // Increased timeout to 30000ms (30 seconds)
-  //   );
-  // };
-
-  // const checkLocationPermission = async () => {
-  //   try {
-  //     const permission =
-  //       Platform.OS === 'ios'
-  //         ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
-  //         : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION;
-  //     const result = await check(permission);
-
-  //     switch (result) {
-  //       case RESULTS.UNAVAILABLE:
-  //         console.log('This feature is not available on this device');
-  //         break;
-  //       case RESULTS.DENIED:
-  //         console.log(
-  //           'The permission has not been requested / is denied but requestable',
-  //         );
-  //         requestLocationPermission();
-  //         break;
-  //       case RESULTS.GRANTED:
-  //         console.log('The permission is granted');
-
-  //         Geolocation.requestAuthorization();
-  //         getLocationAndRegister();
-  //         setLoader(true);
-  //         break;
-  //       case RESULTS.BLOCKED:
-  //         console.log('The permission is denied and not requestable anymore');
-  //         showSettingsAlert();
-  //         break;
-  //     }
-  //   } catch (error) {
-  //     console.error('Failed to check permission:', error);
-  //   }
-  // };
-
-  // const showSettingsAlert = () => {
-  //   Alert.alert(
-  //     'Location Permission',
-  //     'The app needs location access to provide this feature. Please go to the app settings and enable location permissions.',
-  //     [
-  //       {
-  //         text: 'Cancel',
-  //         onPress: () => {},
-  //         style: 'cancel',
-  //       },
-  //       {
-  //         text: 'Open Settings',
-  //         onPress: () => {
-  //           Linking.openSettings();
-  //         },
-  //       },
-  //     ],
-  //   );
-  // };
-
-  // const requestLocationPermission = async () => {
-  //   const permission =
-  //     Platform.OS === 'ios'
-  //       ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
-  //       : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION;
-  //   const result = await request(permission);
-
-  //   if (result === RESULTS.GRANTED) {
-  //     Geolocation.requestAuthorization();
-  //     getLocationAndRegister();
-  //     setLoader(true);
-  //     dispatch(
-  //       updateProfileData({
-  //         field: 'showInDistance',
-  //         value: !showIn,
-  //         id: getUserId(),
-  //       }),
-  //     ).then(() => setShowIn(!showIn));
-  //   } else if (result === RESULTS.BLOCKED) {
-  //     showSettingsAlert();
-  //   }
-  // };
 
   return (
     <View>

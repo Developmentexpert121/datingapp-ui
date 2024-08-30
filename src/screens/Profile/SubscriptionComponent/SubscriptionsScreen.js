@@ -61,10 +61,6 @@ const SubscriptionsScreen = ({navigation}) => {
 
   const [loading, setLoading] = useState(true);
   const [loadingSubscriptions, setLoadingSubscriptions] = useState(true);
-
-  // console.log('subscriptions....', subscriptions);
-  // console.log('requestSubscription.....', requestSubscription);
-
   const handleGetSubscriptions = async () => {
     try {
       setLoadingSubscriptions(true); // Show loader
@@ -81,7 +77,6 @@ const SubscriptionsScreen = ({navigation}) => {
   };
 
   const [showSubscriptions, setShowSubscriptions] = useState([]);
-  // console.log('///////////////////////', showSubscriptions);
 
   useEffect(() => {
     if (subscriptions && isIos) {
@@ -123,19 +118,6 @@ const SubscriptionsScreen = ({navigation}) => {
 
   const handleBuySubscription = async product => {
     try {
-      // console.log('!!!!!!!!!1', itemm);
-      // console.log('!!!!!!!!!2', product?.productId);
-      // console.log('!!!!!!!!!3', product.subscriptionOfferDetails[0].offerToken);
-      // console.log('Product Details:4', product);
-      // console.log('Product ID:5', product?.productId);
-      // console.log(
-      //   'Subscription Offer Details:6',
-      //   product?.subscriptionOfferDetails,
-      // );
-      // console.log(
-      //   'Offer Token:7',
-      //   product?.subscriptionOfferDetails?.[0]?.offerToken,
-      // );
       let itemm = await requestSubscription({
         sku: product?.productId,
         ...(product?.subscriptionOfferDetails?.[0]?.offerToken && {

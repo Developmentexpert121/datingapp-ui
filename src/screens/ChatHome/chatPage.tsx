@@ -9,7 +9,6 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Keyboard,
-  ActivityIndicator,
   ScrollView,
   Alert,
   Platform,
@@ -41,6 +40,7 @@ import {
 import Modal from 'react-native-modal';
 import Label from '../../components/Label';
 import MainButton from '../../components/ButtonComponent/MainButton';
+import SmallLoader from '../../components/Loader/SmallLoader';
 
 const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 
@@ -70,7 +70,6 @@ const ChatPage = ({
   );
   const [inputMessage, setInputMessage] = useState('');
   const [chatMessages, setChatMessages] = useState<any>([]);
-  // console.log('------------', chatMessages);
   const [messageCount, setMessageCount] = useState(0);
   const [limit, setLimit] = useState(10);
   const [skip, setSkip] = useState(0);
@@ -80,7 +79,15 @@ const ChatPage = ({
   const [reason, setReason] = useState('');
 
   const scrollViewRef = useRef<ScrollView>(null);
+  // console.log('111111');
+
   const isUserOnline: any = showOnlineUser?.includes(user?._id) || false;
+  useEffect(() => {
+    if (scrollViewRef.current && chatMessages.length) {
+      scrollViewRef.current.scrollToEnd({animated: true});
+    }
+  }, [chatMessages]);
+
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
@@ -102,8 +109,8 @@ const ChatPage = ({
   }, []);
 
   useEffect(() => {
-    if (scrollViewRef.current) {
-      scrollViewRef.current.scrollToEnd({animated: true});
+    if (scrollViewRef?.current) {
+      scrollViewRef?.current?.scrollToEnd({animated: true});
     }
   }, [scrollViewRef]);
 
@@ -117,7 +124,6 @@ const ChatPage = ({
         setChatMessages((prevMessages: any) => [...prevMessages, msg]);
       }
     });
-
     return () => {
       socket.off('chat message');
     };
@@ -183,6 +189,7 @@ const ChatPage = ({
   }, [inputMessage, profileData, user]);
 
   const handleScroll = ({nativeEvent}: any) => {
+    console.log('!!!!!!!!!!!!!!');
     if (nativeEvent.contentOffset.y === 0 && messageCount === limit) {
       setIsLoading(true);
       setSkip(prevSkip => prevSkip + limit);
@@ -191,7 +198,7 @@ const ChatPage = ({
 
   const LoadingIndicator = () => (
     <View style={styles.loadingContainer}>
-      <ActivityIndicator size="large" color="#AC25AC" />
+      <SmallLoader />
     </View>
   );
 
@@ -283,6 +290,23 @@ const ChatPage = ({
     const minutes = date.getMinutes();
     return `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
   };
+  const getFormattedDate = (timestamp: string) => {
+    const messageDate = new Date(timestamp);
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+
+    const isToday = messageDate.toDateString() === today.toDateString();
+    const isYesterday = messageDate.toDateString() === yesterday.toDateString();
+
+    if (isToday) {
+      return 'Today';
+    } else if (isYesterday) {
+      return 'Yesterday';
+    } else {
+      return messageDate.toLocaleDateString();
+    }
+  };
 
   return (
     <>
@@ -300,7 +324,6 @@ const ChatPage = ({
                 flexDirection: 'row',
                 paddingStart: 10,
                 alignItems: 'center',
-                borderWidth: 0,
               }}
               onPress={() => {
                 navigation.navigate('userProfile');
@@ -336,6 +359,11 @@ const ChatPage = ({
             </Pressable>
             <View style={{flexDirection: 'row', marginEnd: 10, width: '25%'}}>
               <TouchableOpacity
+                disabled={
+                  user?.deactivate === false && user?.isBlocked === false
+                    ? false
+                    : true
+                }
                 onPress={
                   profileData?.plan === 'Free'
                     ? () => {
@@ -356,6 +384,11 @@ const ChatPage = ({
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
+                disabled={
+                  user?.deactivate === false && user?.isBlocked === false
+                    ? false
+                    : true
+                }
                 onPress={
                   profileData?.plan === 'Free'
                     ? () => {
@@ -387,7 +420,6 @@ const ChatPage = ({
             {isLoading && <LoadingIndicator />}
             <FlatList
               data={chatMessages}
-              // style={{flex: 1}}
               //@ts-ignore
               ref={scrollViewRef}
               contentContainerStyle={{flexGrow: 1}}
@@ -397,20 +429,41 @@ const ChatPage = ({
                 }
               }}
               onScroll={handleScroll}
+              keyExtractor={(item, index) => item?.timestamp + index}
               renderItem={({item, index}) => {
                 const isTextMessage = !item?.uri;
                 const isAuthMessage =
                   item?.receiver === user?._id || item?.sender === user?._id;
+                const currentMessageDate = getFormattedDate(item?.timestamp);
+                const previousMessageDate =
+                  index > 0
+                    ? getFormattedDate(chatMessages[index - 1]?.timestamp)
+                    : null;
+
+                const shouldDisplayDate =
+                  index === 0 || currentMessageDate !== previousMessageDate;
 
                 return (
-                  <View style={{borderWidth: 0}}>
+                  <View style={{}}>
+                    {shouldDisplayDate && (
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          color: 'gray',
+                          marginVertical: 10,
+                          fontSize: 14,
+                        }}>
+                        {currentMessageDate}
+                      </Text>
+                    )}
+
                     {isAuthMessage && (
                       <View
                         key={index}
                         style={{
                           flexDirection: 'row',
                           alignSelf:
-                            item.sender === profileData?._id
+                            item?.sender === profileData?._id
                               ? 'flex-end'
                               : 'flex-start',
                           margin: 10,
@@ -418,7 +471,7 @@ const ChatPage = ({
                           alignItems: 'baseline',
                         }}>
                         {/* Receiver Image */}
-                        {isAuthMessage && item.sender !== profileData?._id && (
+                        {isAuthMessage && item?.sender !== profileData?._id && (
                           <View
                             style={{
                               alignSelf: 'flex-end',
@@ -434,85 +487,96 @@ const ChatPage = ({
                         )}
 
                         {/* Messages */}
-                        <View
-                          style={{
-                            backgroundColor:
-                              item.sender === profileData?._id
-                                ? '#AC25AC'
-                                : '#D9D9D9',
-                            padding: 10,
-                            marginHorizontal: 10,
-                            borderRadius: 8,
-                            maxWidth: 260,
-                            borderBottomRightRadius:
-                              item.sender === profileData?._id ? 0 : 8,
-                            borderBottomLeftRadius:
-                              item.sender === profileData?._id ? 8 : 0,
-                          }}>
-                          {isTextMessage && isAuthMessage ? (
-                            <Text
-                              style={{
-                                color:
-                                  item.sender === profileData?._id
-                                    ? 'white'
-                                    : 'black',
-                              }}>
-                              {item.message}
-                            </Text>
-                          ) : (
-                            isAuthMessage && (
-                              <View>
-                                <Image
-                                  source={{uri: item.uri}}
-                                  style={[
-                                    styles.sharedImage,
-                                    {position: 'relative'},
-                                  ]}
-                                />
-                                <View
-                                  style={{
-                                    backgroundColor: 'white',
-                                    alignSelf: 'flex-start',
-                                    padding: 2,
-                                    borderRadius: 4,
-                                    position: 'absolute',
-                                    top: 0,
-                                    right: 0,
-                                    margin: 4,
-                                  }}>
-                                  <TouchableOpacity
-                                    onPress={() =>
-                                      saveImageToGallery(item.uri)
-                                    }>
-                                    <Image
-                                      source={require('../../assets/images/download.png')}
-                                      style={{
-                                        resizeMode: 'contain',
-                                        height: hp(2),
-                                        width: wp(4),
-                                      }}
-                                    />
-                                  </TouchableOpacity>
+                        <View style={{borderWidth: 0}}>
+                          <View
+                            style={{
+                              backgroundColor:
+                                item?.sender === profileData?._id
+                                  ? '#AC25AC'
+                                  : '#D9D9D9',
+                              padding: 10,
+                              marginHorizontal: 10,
+                              borderRadius: 8,
+                              maxWidth: 260,
+                              borderBottomRightRadius:
+                                item?.sender === profileData?._id ? 0 : 8,
+                              borderBottomLeftRadius:
+                                item?.sender === profileData?._id ? 8 : 0,
+                            }}>
+                            {isTextMessage && isAuthMessage ? (
+                              <Text
+                                style={{
+                                  color:
+                                    item?.sender === profileData?._id
+                                      ? 'white'
+                                      : 'black',
+                                }}>
+                                {item?.message}
+                              </Text>
+                            ) : (
+                              isAuthMessage && (
+                                <View>
+                                  <Image
+                                    source={{uri: item?.uri}}
+                                    style={[
+                                      styles.sharedImage,
+                                      {position: 'relative'},
+                                    ]}
+                                  />
+                                  <View
+                                    style={{
+                                      backgroundColor: 'white',
+                                      alignSelf: 'flex-start',
+                                      padding: 2,
+                                      borderRadius: 4,
+                                      position: 'absolute',
+                                      top: 0,
+                                      right: 0,
+                                      margin: 4,
+                                    }}>
+                                    <TouchableOpacity
+                                      onPress={() =>
+                                        saveImageToGallery(item?.uri)
+                                      }>
+                                      <Image
+                                        source={require('../../assets/images/download.png')}
+                                        style={{
+                                          resizeMode: 'contain',
+                                          height: hp(2),
+                                          width: wp(4),
+                                        }}
+                                      />
+                                    </TouchableOpacity>
+                                  </View>
                                 </View>
-                              </View>
-                            )
-                          )}
+                              )
+                            )}
+                          </View>
                           {/* Display timestamp */}
                           <Text
                             style={{
                               fontSize: 12,
                               color:
-                                item.sender === profileData?._id
-                                  ? 'white'
+                                item?.sender === profileData?._id
+                                  ? 'black'
                                   : 'black',
+                              textAlign:
+                                item?.sender === profileData?._id
+                                  ? 'right'
+                                  : 'left',
+                              marginRight:
+                                item?.sender === profileData?._id ? 12 : 0,
+
+                              marginLeft:
+                                item?.sender === profileData?._id ? 0 : 12,
                               marginTop: 5,
                             }}>
-                            {formatTime(item.timestamp)}
+                            {formatTime(item?.timestamp)}
                           </Text>
                         </View>
 
                         {/* Sender Image */}
-                        {item.sender === profileData?._id && (
+                        {item?.sender === profileData?._id && (
                           <View
                             style={{
                               alignSelf: 'flex-end',

@@ -65,7 +65,6 @@ const HomeScreen = () => {
 
   useEffect(() => {
     const backAction = () => {
-      console.log('activeScreen ', activeScreen);
       if (activeScreen != 'HOME') {
         setActiveScreen('HOME');
         BackPressed();
@@ -88,7 +87,6 @@ const HomeScreen = () => {
   }, []);
 
   useEffect(() => {
-    // console.log('-------->>', data.length, 'page ', page);
     if (currentIndex === data.length && !noProfilesLoader) {
       // Check if at the end of the current data
       setPage(prevPage => {
@@ -160,8 +158,6 @@ const HomeScreen = () => {
   }, [onlineUsers]);
 
   const fetchNewData = (newPage: any) => {
-    // console.log('0000000000000000', newPage);
-
     setActiveScreen('HOME');
     setNoProfilesLoader(true);
     dispatch(ProfileData())
@@ -182,7 +178,6 @@ const HomeScreen = () => {
           high: highValue,
         });
 
-        // console.log(' res.data.?.partnerType', res.data.partnerType);
         dispatch(
           getAllUsers({
             userId: res.data._id,
@@ -203,8 +198,6 @@ const HomeScreen = () => {
             // Filter out already viewed users
             const uniqueUsers = newUsers.map((user: any) => user._id);
             setViewedUsers((prev: any) => [...prev, ...uniqueUsers]);
-
-            // console.log('======', response.currentPage);
             setData(response.users);
             setNoProfilesLoader(false);
           });
@@ -217,8 +210,6 @@ const HomeScreen = () => {
       : '18 65'.split(' ');
     const lowValue = parseInt(lowStr);
     const highValue = parseInt(highStr);
-
-    console.log(lowStr, '  ', highStr);
     setFilterData({
       showInDistance: profileData.showInDistance,
       distance: parseInt(profileData.distance),
@@ -240,14 +231,9 @@ const HomeScreen = () => {
   const onPressApply = () => {
     setNoProfilesLoader(true);
     setViewedUsers([]);
-    console.log('latest filter ====++>', {
-      id: profileData._id,
-      data: filterData,
-    });
     dispatch(SetNewFilter({id: profileData._id, data: filterData}))
       .unwrap()
       .then((res: any) => {
-        console.log('AppFilter response  ==>', res);
         setPage(1);
         fetchNewData(1);
       });

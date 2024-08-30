@@ -39,8 +39,6 @@ const App = () => {
       // Handle notification press in the foreground
       notifee.onForegroundEvent(async ({type, detail}) => {
         if (type === EventType.PRESS) {
-          console.log('User tapped the notification in the foreground');
-
           if (remoteMessage?.data?.screen) {
             if (remoteMessage.data.screen === 'VideoCallRedirect') {
               await dispatch(

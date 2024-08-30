@@ -114,7 +114,6 @@ const Root = () => {
           const token = await messaging().getToken();
           await setLocalStorage('deviceToken', token);
         } else {
-          console.log('Authorization status:', authStatus);
         }
       } catch (error) {
         console.error('Error requesting permission:', error);
@@ -172,7 +171,6 @@ const Root = () => {
   useEffect(() => {
     // Register the event listener
     const eventListener: any = EventRegister.addEventListener('LogOut', () => {
-      console.log('user Logout Hit');
       logoutUserButton();
     });
 
@@ -258,7 +256,6 @@ const Root = () => {
         setIncomingCall(null);
       }
     }, [calls]);
-    // console.log('Incoming call ==>', !!incomingCall);
     if (currentScreen != 'Home' && incomingCall) {
       const endCall = () => {
         setCurrentScreen('Home');

@@ -71,9 +71,6 @@ const SeventhStepScreen = ({
         PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES,
         PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
       ]);
-
-      console.log('----------------------', granted);
-
       if (
         granted['android.permission.READ_MEDIA_IMAGES'] ===
           PermissionsAndroid.RESULTS.GRANTED ||
@@ -102,9 +99,6 @@ const SeventhStepScreen = ({
     try {
       const cameraPermission = await request(PERMISSIONS.IOS.CAMERA);
       const photoPermission = await request(PERMISSIONS.IOS.PHOTO_LIBRARY);
-
-      console.log(cameraPermission, '===-----=====', photoPermission);
-
       if (cameraPermission === 'granted' && photoPermission === 'granted') {
         return true;
       } else if (

@@ -221,24 +221,6 @@ const RegisterScreen = () => {
     } else {
       console.log('Authorization status:', authStatus);
     }
-    // try {
-    //   const authStatus = await messaging().requestPermission({
-    //     sound: true,
-    //     alert: true,
-    //     badge: true,
-    //   });
-    //   const enabled =
-    //     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-    //     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-    //   if (enabled) {
-    //     const token = await messaging().getToken();
-    //     setDeviceToken(token);
-    //   } else {
-    //     console.log('Authorization status:', authStatus);
-    //   }
-    // } catch (error) {
-    //   console.error('Error requesting permission:', error);
-    // }
   };
 
   const dispatch: any = useAppDispatch();
@@ -308,12 +290,6 @@ const RegisterScreen = () => {
       timeout: 60000,
     })
       .then(location => {
-        // console.log(
-        //   'latitude- ',
-        //   location.latitude,
-        //   ' longitude- ',
-        //   location.longitude,
-        // );
         setLoader(false);
         dispatch(
           SetLocation({
@@ -423,14 +399,11 @@ const RegisterScreen = () => {
           dispatch(activityLoaderStarted());
           let token: string = response?.token;
           setLocalStorage('token', token);
-          // console.log('..............', token);
           await AsyncStorage.setItem(
             'authToken',
             JSON.stringify(response?.token),
           );
           await AsyncStorage.setItem('userId', JSON.stringify(response?._id));
-
-          // console.log('dfj', response?._id);
           dispatch(ProfileData());
           // If sign-up is successful, call the function to handle the navigation
           handleNavigation(response);
@@ -464,7 +437,6 @@ const RegisterScreen = () => {
   //******************************************** */
 
   const onSubmit: any = async (data: RegisterForm) => {
-    console.log('data.habits1[3].optionSelected.length');
     if (steps === 4 && data.habits1.length !== 5) {
       setStepFourErrors(true);
       return;
@@ -639,7 +611,6 @@ const RegisterScreen = () => {
               {steps !== 8 ? (
                 <Ionicons
                   onPress={() => {
-                    console.log('CAlled');
                     if (steps === 1) {
                       // Only reset isEmailVerified flag if going back from step 1 to step 0
                       setIsEmailVerified(false);
