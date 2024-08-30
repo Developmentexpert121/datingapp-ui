@@ -133,17 +133,16 @@ const Root = () => {
           };
 
           const token = await tokenProvider();
-
           const userMain = {
             id: userdata.id,
             name: userdata.name,
-            image: userdata.image,
+            image: userdata.image.split(',')[0],
           };
 
           const myClient = new StreamVideoClient({
             apiKey,
             user: userMain,
-            tokenProvider: () => token,
+            tokenProvider: token,
           });
           setClient(myClient);
         } catch (error) {

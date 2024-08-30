@@ -189,7 +189,7 @@ const ChatPage = ({
   }, [inputMessage, profileData, user]);
 
   const handleScroll = ({nativeEvent}: any) => {
-    console.log('!!!!!!!!!!!!!!');
+    // console.log('!!!!!!!!!!!!!!');
     if (nativeEvent.contentOffset.y === 0 && messageCount === limit) {
       setIsLoading(true);
       setSkip(prevSkip => prevSkip + limit);

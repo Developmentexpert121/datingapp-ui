@@ -9,8 +9,7 @@ import http from '../services/http/http-common';
 
 const getTokenForUser = async (userId: any) => {
   try {
-    const response = await http.post(`/user/stream-chat/token`, userId);
-
+    const response = await http.post(`/user/stream-chat/token`, {id :userId});
     if (response.status === 200) {
       return response.data;
     }
@@ -64,29 +63,29 @@ export function setPushConfig() {
     createStreamVideoClient: async () => {
       // note that since the method is async,
       // you can call your server to get the user data or token or retrieve from offline storage.
-      const profileData: any = await AsyncStorage.getItem('profileData');
-
+      const allProfileData: any = await AsyncStorage.getItem('profileData');
+      const  profileData = JSON.parse(allProfileData);
       if (!profileData) return undefined;
       const apiKey = '48e74nbgz5az';
       const tokenProvider = async () => {
-        const token = await getTokenForUser(profileData?._id).then(
+        const token = await getTokenForUser(profileData?.data?._id).then(
           auth => auth?.token,
         );
         return token;
       };
 
       const token = await tokenProvider();
-
+      
       const userMain = {
-        id: profileData?._id,
-        name: profileData?.name,
-        image: profileData?.profilePic,
+        id: profileData?.data?._id,
+        name: profileData?.data?.name,
+        image: profileData?.data?.profilePic.split(',')[0],
       };
 
       return new StreamVideoClient({
         apiKey,
         user: userMain,
-        tokenProvider: () => token,
+        tokenProvider: token,
       });
     },
   });
