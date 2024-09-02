@@ -76,7 +76,7 @@ const VideoCallRedirect = () => {
           .catch((err: any) => {
             console.error('Failed to end the call', err);
           });
-      }, 16000);
+      }, 31000);
 
       myCall.on('call.accepted', (event: CallAcceptedEvent) => {
         console.log('call.accepted triggered', 'event');
