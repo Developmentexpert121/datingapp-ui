@@ -1115,7 +1115,7 @@ PODS:
     - FBSDKGamingServicesKit (~> 17.0.0)
     - FBSDKShareKit (~> 17.0.0)
     - React-Core
-  - react-native-geolocation (3.3.0):
+  - react-native-geolocation (3.4.0):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1138,7 +1138,7 @@ PODS:
     - React-Core
   - react-native-version-check (3.4.7):
     - React-Core
-  - react-native-webview (13.12.0):
+  - react-native-webview (13.12.1):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1798,7 +1798,7 @@ SPEC CHECKSUMS:
   react-native-cameraroll: be7f4a2910860f15b821efecc4c6469d605ac7bc
   react-native-config: 8f7283449bbb048902f4e764affbbf24504454af
   react-native-fbsdk-next: 84746ea062dc3b1a422154d7674ba4c5836b6d82
-  react-native-geolocation: e50b98fa3c6ad907154470e4302c82e9a59013df
+  react-native-geolocation: 633b52797a5b8a20306aa17e863e41704fb07f25
   react-native-image-picker: fefff630cfa3ee6a809f6ac6569981f4a34e0050
   react-native-image-resizer: d9fb629a867335bdc13230ac2a58702bb8c8828f
   react-native-netinfo: 48c5f79a84fbc3ba1d28a8b0d04adeda72885fa8
@@ -1807,7 +1807,7 @@ SPEC CHECKSUMS:
   react-native-simple-toast: 1f1cc551d419bc0ab05dcb0136554006c274789d
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   react-native-version-check: 6cd36aad4e30b8e3216747e3b4ddeb09e0647af8
-  react-native-webview: 3a174dde07a6a94c37d425174fae688e4457c307
+  react-native-webview: f93bbf9386a6bd06d8035af48b000f7ba3509229
   React-nativeconfig: a8685fce6d0ffbb77b1fe983895dbbc7bfe949ad
   React-NativeModulesApple: 63accd5672e433f187e4c35ce61641f2b303098c
   React-perflogger: 5ffc4d6ccb74eaac7b8b2867e58a447232483d6d

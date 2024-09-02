@@ -97,25 +97,11 @@ const HomeScreen = () => {
     }
   }, [currentIndex, data.length]);
 
-  useEffect(() => {
-    if (initialRouteValue) {
-      const timer = setTimeout(() => {
-        navigation.navigate(initialRouteValue);
-      }, 2000); // 2 seconds delay
-
-      return () => clearTimeout(timer);
-    }
-  }, [initialRouteValue]);
-
   const location: any = useAppSelector(
     (state: any) => state?.Auth?.data?.location,
   );
 
-  // useEffect(() => {
-  //   fetchNewData();
-  // }, []);
   useEffect(() => {
-    // fetchNewData();
     if (location?.latitude) {
       dispatch(
         updateProfileData({
@@ -128,10 +114,10 @@ const HomeScreen = () => {
   }, []);
 
   useEffect(() => {
-    socket.emit('user_connected', profileData?._id);
+    console.log('profileData?._id ', profileData?._id);
     socket.on('connect', () => {
       console.log('App Connected from server');
-      socket.emit('user_connected', profileData?._id);
+      // socket.emit('user_connected', profileData?._id);
     });
 
     socket.on('user_online', users => {
@@ -145,6 +131,9 @@ const HomeScreen = () => {
     socket.on('disconnect', () => {
       console.log('App Disconnected from server');
     });
+
+    socket.emit('user_connected', profileData?._id);
+
     return () => {
       socket.off('connect');
       socket.off('user_online');

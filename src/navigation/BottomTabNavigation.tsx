@@ -1,5 +1,5 @@
 import {Platform} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {
@@ -20,6 +20,11 @@ import ChatSection from '../screens/ChatHome/allChats';
 import FilterSection from '../screens/FilterSection/filterSection';
 import ProfileSection from '../screens/Profile/profileSection';
 import HomeScreen from '../screens/Home/home';
+import notifee, {AndroidImportance, EventType} from '@notifee/react-native';
+import messaging from '@react-native-firebase/messaging';
+import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {videoCallUser} from '../store/Activity/activity';
 
 export type HomeStackParamList = {
   HomeScreen: undefined;
@@ -42,6 +47,79 @@ const Tab = createBottomTabNavigator<BottomTabParamList>();
 const HStack = createNativeStackNavigator<HomeStackParamList>();
 const NStack = createNativeStackNavigator<ChatStackParamList>();
 const HomeStack = () => {
+  const navigation = useNavigation<any>();
+  const dispatch = useDispatch<any>();
+  useEffect(() => {
+    // Foreground notification handling
+    const unsubscribe = messaging().onMessage(async (remoteMessage: any) => {
+      console.log('Foreground Notification', !!remoteMessage?.notification);
+      if (remoteMessage?.notification) {
+        const channelId = await notifee.createChannel({
+          id: 'default',
+          name: 'Default Channel',
+          importance: AndroidImportance.HIGH, // Set importance to high
+        });
+
+        // Display the notification
+        await notifee.displayNotification({
+          title: remoteMessage?.notification?.title || 'Notification',
+          body:
+            remoteMessage?.notification?.body ||
+            'You have received a new notification',
+          android: {
+            channelId,
+          },
+        });
+      }
+
+      // Handle notification press in the foreground
+      notifee.onForegroundEvent(async ({type, detail}) => {
+        if (type === EventType.PRESS) {
+          if (remoteMessage?.data?.screen === 'LikedScreen') {
+            navigation.navigate(remoteMessage?.data?.screen);
+          }
+          if (remoteMessage?.data?.screen === 'VideoCallRedirect') {
+            await dispatch(
+              videoCallUser({user: JSON.parse(remoteMessage.data.userData)}),
+            );
+            navigation.navigate(remoteMessage.data.screen);
+          }
+          // navigationRef.current?.navigate(remoteMessage.data.screen);
+        }
+      });
+    });
+
+    messaging().onNotificationOpenedApp(async (remoteMessage: any) => {
+      console.log('background Notification', !!remoteMessage?.notification);
+      if (remoteMessage?.data?.screen === 'LikedScreen') {
+        navigation.navigate(remoteMessage?.data?.screen);
+      }
+      if (remoteMessage?.data?.screen === 'VideoCallRedirect') {
+        await dispatch(
+          videoCallUser({user: JSON.parse(remoteMessage.data.userData)}),
+        );
+        navigation.navigate(remoteMessage.data.screen);
+      }
+    });
+    // for killed states
+    messaging()
+      .getInitialNotification()
+      .then(async (remoteMessage: any) => {
+        console.log('killState Notification', !!remoteMessage?.notification);
+        if (remoteMessage?.data?.screen === 'LikedScreen') {
+          navigation.navigate(remoteMessage?.data?.screen);
+        }
+        if (remoteMessage?.data?.screen === 'VideoCallRedirect') {
+          await dispatch(
+            videoCallUser({user: JSON.parse(remoteMessage.data.userData)}),
+          );
+          navigation.navigate(remoteMessage.data.screen);
+        }
+      });
+
+    return () => unsubscribe();
+  }, []);
+
   return (
     <HStack.Navigator screenOptions={{headerShown: false}}>
       <HStack.Screen name="HomeScreen" component={HomeScreen} />
