@@ -154,8 +154,6 @@ const SeventhStepScreen = ({
     if (Platform.OS === 'android') {
       const hasPermission: any = await requestPermissions();
 
-      console.log('-----', hasPermission);
-
       if (!hasPermission) {
         console.warn('Permissions not granted.');
         return;

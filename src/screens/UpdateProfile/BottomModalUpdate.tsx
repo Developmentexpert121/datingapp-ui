@@ -167,7 +167,6 @@ const BottomModalUpdate = ({isOpen, onClose, title, value}: any) => {
   );
 
   const toggleChip = (interest: string) => {
-    console.log(interest);
     if (title === 'Education') {
       return setEducation(interest);
     }

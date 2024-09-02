@@ -1,8 +1,11 @@
 import React, {useState} from 'react';
 import {
   Image,
+  KeyboardAvoidingView,
   Modal,
+  Platform,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -98,98 +101,109 @@ const ResetPassword = () => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1, alignItems: 'center'}}>
-      <View style={styles.topView}>
-        <BackIC onPress={() => navigation.goBack()} />
-        <Text style={styles.headerLabel}>Reset Password</Text>
-        <View style={styles.blankview}></View>
-      </View>
-
-      <View
-        style={{
-          flex: 1,
-          width: '100%',
-          alignItems: 'center',
-          // justifyContent: 'center',
-        }}>
-        <Image
-          source={require('../../assets/images/LoginTop.png')}
-          style={{height: 150, width: 150, top: 10}}
-        />
-        <View style={styles.container}>
-          <Text style={styles.label}>Current Password*</Text>
-          <AppTextInputEmail
-            placeholder="********"
-            name="currentPassword"
-            control={control}
-            errors={Boolean(errors?.currentPassword)}
-            autoCapitalize="none"
-          />
-          {errors.currentPassword && (
-            <Text style={styles.errorText}>
-              {errors.currentPassword.message}
-            </Text>
-          )}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{flex: 1}}>
+      <SafeAreaView style={{flex: 1, alignItems: 'center'}}>
+        <View style={styles.topView}>
+          <BackIC onPress={() => navigation.goBack()} />
+          <Text style={styles.headerLabel}>Change Password</Text>
+          <View style={styles.blankview}></View>
         </View>
-        <View style={styles.container}>
-          <Text style={styles.label}>New Password*</Text>
-          <AppTextInputEmail
-            placeholder="********"
-            name="newPassword"
-            control={control}
-            errors={Boolean(errors?.newPassword)}
-            autoCapitalize="none"
-          />
-          {errors.newPassword && (
-            <Text style={styles.errorText}>{errors.newPassword.message}</Text>
-          )}
-        </View>
-        <View style={styles.container}>
-          <Text style={styles.label}>Confirm New Password*</Text>
-          <AppTextInputEmail
-            placeholder="********"
-            name="confirmNewPassword"
-            control={control}
-            errors={Boolean(errors?.confirmNewPassword)}
-            autoCapitalize="none"
-          />
-          {errors.confirmNewPassword && (
-            <Text style={styles.errorText}>
-              {errors.confirmNewPassword.message}
-            </Text>
-          )}
-        </View>
-        <MainButton
-          buttonStyle={{width: '90%'}}
-          ButtonName={'Next'}
-          onPress={handleSubmit(onSubmit)}
-        />
-      </View>
-
-      {loader && <Loader />}
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={visible}
-        onRequestClose={() => setVisible(false)}>
-        <View style={styles.modalContainer}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>{message}</Text>
-            <TouchableOpacity
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => {
-                if (message === 'Password reset successfully!') {
-                  navigation.navigate('ProfileSection');
-                } else {
-                  setVisible(false);
-                }
-              }}>
-              <Text style={styles.buttonCancel}>Cancel</Text>
-            </TouchableOpacity>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{
+            flex: 1,
+            width: '100%',
+          }}>
+          <View
+            style={{
+              flex: 1,
+              width: '100%',
+              alignItems: 'center',
+              // justifyContent: 'center',
+            }}>
+            <Image
+              source={require('../../assets/images/LoginTop.png')}
+              style={{height: 150, width: 150, top: 10}}
+            />
+            <View style={styles.container}>
+              <Text style={styles.label}>Current Password*</Text>
+              <AppTextInputEmail
+                placeholder="********"
+                name="currentPassword"
+                control={control}
+                errors={Boolean(errors?.currentPassword)}
+                autoCapitalize="none"
+              />
+              {errors.currentPassword && (
+                <Text style={styles.errorText}>
+                  {errors.currentPassword.message}
+                </Text>
+              )}
+            </View>
+            <View style={styles.container}>
+              <Text style={styles.label}>New Password*</Text>
+              <AppTextInputEmail
+                placeholder="********"
+                name="newPassword"
+                control={control}
+                errors={Boolean(errors?.newPassword)}
+                autoCapitalize="none"
+              />
+              {errors.newPassword && (
+                <Text style={styles.errorText}>
+                  {errors.newPassword.message}
+                </Text>
+              )}
+            </View>
+            <View style={styles.container}>
+              <Text style={styles.label}>Confirm New Password*</Text>
+              <AppTextInputEmail
+                placeholder="********"
+                name="confirmNewPassword"
+                control={control}
+                errors={Boolean(errors?.confirmNewPassword)}
+                autoCapitalize="none"
+              />
+              {errors.confirmNewPassword && (
+                <Text style={styles.errorText}>
+                  {errors.confirmNewPassword.message}
+                </Text>
+              )}
+            </View>
+            <MainButton
+              buttonStyle={{width: '90%'}}
+              ButtonName={'Next'}
+              onPress={handleSubmit(onSubmit)}
+            />
           </View>
-        </View>
-      </Modal>
-    </SafeAreaView>
+        </ScrollView>
+        {loader && <Loader />}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={visible}
+          onRequestClose={() => setVisible(false)}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>{message}</Text>
+              <TouchableOpacity
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => {
+                  if (message === 'Password reset successfully!') {
+                    navigation.navigate('ProfileSection');
+                  } else {
+                    setVisible(false);
+                  }
+                }}>
+                <Text style={styles.buttonCancel}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
 

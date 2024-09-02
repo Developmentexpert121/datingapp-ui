@@ -47,9 +47,7 @@ export const setAuthData: any = createAsyncThunk(
       const userIdRes = JSON.parse(userId);
       const profileRes = JSON.parse(profileData);
 
-      // console.log('test()((()()()', userIdRes, authTokenRes);
       if (userIdRes && authTokenRes) {
-        // console.log('Go to profile data api ---->');
         dispatch(ProfileData());
       }
       return {token: authTokenRes, userId: userIdRes, profileRes: profileRes};
@@ -152,7 +150,6 @@ export const LoginSignIn = createAsyncThunk(
             },
           }),
         );
-        // console.log(response?.data, 'loginData---->>>>');
         return response.data;
       }
     } catch (error: any) {
