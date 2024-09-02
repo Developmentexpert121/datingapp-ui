@@ -58,7 +58,7 @@ export default function MyIncomingCallUI({call, userName, callEnded}: any) {
             <View style={styles.listView}>
               {membersToShow.map((res, index) => {
                 return (
-                  <View style={styles.userView}>
+                  <View style={styles.userView} key={res?.name}>
                     {/* <Image
                       source={
                         res?.image

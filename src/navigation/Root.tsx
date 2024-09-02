@@ -45,7 +45,6 @@ import filterSection from '../screens/FilterSection/filterSection';
 import NotificationScreen from '../screens/Notification/notification';
 import userProfile from '../screens/UserProfile/userProfile';
 import ResetPassword from '../screens/ResetPassword/resetPassword';
-import {videoCallUser} from '../store/Activity/activity';
 import {useNavigation} from '@react-navigation/native';
 
 const Stack = createNativeStackNavigator();
@@ -76,6 +75,8 @@ const Root = () => {
     (state: any) => state?.Auth?.data?.userData,
   );
 
+  console.log('User Data on starting app =>', userdata);
+
   GoogleSignin.configure({
     webClientId:
       '151623051367-b882b5sufigjbholkehodmi9ccn4hv6m.apps.googleusercontent.com', // From Google Developer Console
@@ -87,12 +88,17 @@ const Root = () => {
   }, [userid]);
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      SplashScreen.hide();
-      requestUserPermission();
-    }, 1000);
+    // const timeoutId = setTimeout(() => {
+    SplashScreen.hide();
+    requestUserPermission();
+    // }, 1000);
+    const eventListener: any = EventRegister.addEventListener('LogOut', () => {
+      logoutUserButton();
+    });
+
     return () => {
-      clearTimeout(timeoutId);
+      // clearTimeout(timeoutId);
+      EventRegister.removeEventListener(eventListener);
     };
   }, []);
 
@@ -125,7 +131,7 @@ const Root = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log('inside fetch Data');
+      // console.log('inside fetch Data');
       if (!client) {
         try {
           const apiKey = '48e74nbgz5az';
@@ -148,7 +154,7 @@ const Root = () => {
             user: userMain,
             tokenProvider: token,
           });
-          console.log('myClient', !!client, client);
+          console.log('myClient', !!myClient);
           setClient(myClient);
         } catch (error) {
           console.error('Error connecting to Stream Video Client:', error);
@@ -163,25 +169,13 @@ const Root = () => {
       return () => {
         // Cleanup: disconnect the client when the component unmounts or userdata changes
         if (client) {
-          console.log('return client disconnect');
+          // console.log('return client disconnect');
           client.disconnectUser();
           setClient(null);
         }
       };
     }
   }, [userdata]); // Ensure 'client' is included in the dependency array
-
-  useEffect(() => {
-    // Register the event listener
-    const eventListener: any = EventRegister.addEventListener('LogOut', () => {
-      logoutUserButton();
-    });
-
-    // Clean up the event listener on component unmount
-    return () => {
-      EventRegister.removeEventListener(eventListener);
-    };
-  }, []);
 
   const logoutUserButton = async () => {
     try {
@@ -213,7 +207,7 @@ const Root = () => {
     }
   };
 
-  const authTokenRemove: any = async () => {
+  const authTokenRemove = async () => {
     try {
       await AsyncStorage.removeItem('authToken');
       await AsyncStorage.removeItem('userId');
@@ -252,9 +246,9 @@ const Root = () => {
           !call.isCreatedByMe &&
           call.state.callingState === CallingState.RINGING,
       );
-      console.log('incomingCalls', incomingCall, currentScreen);
+      console.log('incomingCalls', !!incomingCall);
+      console.log('currentScreen', currentScreen);
       if (!!filteredIncomingCalls) {
-        console.log('inside IF', !!filteredIncomingCalls);
         if (filteredIncomingCalls.length > 0) {
           setIncomingCall(filteredIncomingCalls[0]);
           setCurrentScreen('Calling');
@@ -266,12 +260,11 @@ const Root = () => {
     }, [calls]);
 
     const endCall = () => {
-      console.log('call ended');
+      // console.log('call ended');
       setCurrentScreen('Home');
     };
 
     if (currentScreen === 'Calling' && !!incomingCall) {
-      console.log('iffff');
       return (
         <SafeAreaView style={{flex: 1}}>
           <StreamCall call={incomingCall}>
@@ -280,7 +273,6 @@ const Root = () => {
         </SafeAreaView>
       );
     } else {
-      console.log('elseeee');
       return (
         <AfterLoginStack.Navigator
           screenOptions={{headerShown: false}}
@@ -327,18 +319,17 @@ const Root = () => {
     useEffect(() => {
       // for background
       messaging().onNotificationOpenedApp(message => {
-        navigation.navigate('UpdateProfile');
-        console.log('Messagee background', message);
+        // navigation.navigate('UpdateProfile');
+        // console.log('Message background', message);
       });
       // for killed state
       messaging()
         .getInitialNotification()
         .then((remoteMessage: any) => {
-          console.log('Messagee', remoteMessage);
+          // console.log('Message killState', remoteMessage);
 
           if (remoteMessage?.data?.screen === 'VideoCallRedirect') {
-            console.log('Messageeaaaaaa', remoteMessage);
-
+            // console.log('Message', remoteMessage);
             // dispatch(
             //   videoCallUser({user: JSON.parse(remoteMessage.data.userData)}),
             // );
