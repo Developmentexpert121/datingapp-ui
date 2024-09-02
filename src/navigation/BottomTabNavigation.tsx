@@ -78,7 +78,7 @@ const HomeStack = () => {
           if (remoteMessage?.data?.screen === 'LikedScreen') {
             navigation.navigate(remoteMessage?.data?.screen);
           }
-          if (remoteMessage.data.screen === 'VideoCallRedirect') {
+          if (remoteMessage?.data?.screen === 'VideoCallRedirect') {
             await dispatch(
               videoCallUser({user: JSON.parse(remoteMessage.data.userData)}),
             );
@@ -94,7 +94,7 @@ const HomeStack = () => {
       if (remoteMessage?.data?.screen === 'LikedScreen') {
         navigation.navigate(remoteMessage?.data?.screen);
       }
-      if (remoteMessage.data.screen === 'VideoCallRedirect') {
+      if (remoteMessage?.data?.screen === 'VideoCallRedirect') {
         await dispatch(
           videoCallUser({user: JSON.parse(remoteMessage.data.userData)}),
         );
@@ -109,7 +109,7 @@ const HomeStack = () => {
         if (remoteMessage?.data?.screen === 'LikedScreen') {
           navigation.navigate(remoteMessage?.data?.screen);
         }
-        if (remoteMessage.data.screen === 'VideoCallRedirect') {
+        if (remoteMessage?.data?.screen === 'VideoCallRedirect') {
           await dispatch(
             videoCallUser({user: JSON.parse(remoteMessage.data.userData)}),
           );
