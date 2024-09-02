@@ -46,6 +46,7 @@ import NotificationScreen from '../screens/Notification/notification';
 import userProfile from '../screens/UserProfile/userProfile';
 import ResetPassword from '../screens/ResetPassword/resetPassword';
 import {useNavigation} from '@react-navigation/native';
+import notifee, {AndroidImportance, EventType} from '@notifee/react-native';
 
 const Stack = createNativeStackNavigator();
 
@@ -70,12 +71,11 @@ const Root = () => {
   const AfterLoginStack = createNativeStackNavigator();
   const BeforeLoginStack = createNativeStackNavigator();
   const Dispatch = useDispatch<any>();
+  const navigation = useNavigation<any>();
   const [client, setClient] = useState<StreamVideoClient | null>(null);
   const userdata: any = useAppSelector(
     (state: any) => state?.Auth?.data?.userData,
   );
-
-  console.log('User Data on starting app =>', userdata);
 
   GoogleSignin.configure({
     webClientId:
@@ -246,8 +246,8 @@ const Root = () => {
           !call.isCreatedByMe &&
           call.state.callingState === CallingState.RINGING,
       );
-      console.log('incomingCalls', !!incomingCall);
-      console.log('currentScreen', currentScreen);
+      // console.log('incomingCalls', !!incomingCall);
+      // console.log('currentScreen', currentScreen);
       if (!!filteredIncomingCalls) {
         if (filteredIncomingCalls.length > 0) {
           setIncomingCall(filteredIncomingCalls[0]);
@@ -315,28 +315,6 @@ const Root = () => {
   };
 
   const AfterLogin = () => {
-    const navigation = useNavigation();
-    useEffect(() => {
-      // for background
-      messaging().onNotificationOpenedApp(message => {
-        // navigation.navigate('UpdateProfile');
-        // console.log('Message background', message);
-      });
-      // for killed state
-      messaging()
-        .getInitialNotification()
-        .then((remoteMessage: any) => {
-          // console.log('Message killState', remoteMessage);
-
-          if (remoteMessage?.data?.screen === 'VideoCallRedirect') {
-            // console.log('Message', remoteMessage);
-            // dispatch(
-            //   videoCallUser({user: JSON.parse(remoteMessage.data.userData)}),
-            // );
-          }
-        });
-    }, []);
-
     if (!client) {
       return <Loader />;
     }

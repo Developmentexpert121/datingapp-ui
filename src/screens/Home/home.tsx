@@ -97,25 +97,11 @@ const HomeScreen = () => {
     }
   }, [currentIndex, data.length]);
 
-  useEffect(() => {
-    if (initialRouteValue) {
-      const timer = setTimeout(() => {
-        navigation.navigate(initialRouteValue);
-      }, 2000); // 2 seconds delay
-
-      return () => clearTimeout(timer);
-    }
-  }, [initialRouteValue]);
-
   const location: any = useAppSelector(
     (state: any) => state?.Auth?.data?.location,
   );
 
-  // useEffect(() => {
-  //   fetchNewData();
-  // }, []);
   useEffect(() => {
-    // fetchNewData();
     if (location?.latitude) {
       dispatch(
         updateProfileData({
@@ -125,9 +111,6 @@ const HomeScreen = () => {
         }),
       );
     }
-  }, []);
-
-  useEffect(() => {
     socket.emit('user_connected', profileData?._id);
     socket.on('connect', () => {
       console.log('App Connected from server');

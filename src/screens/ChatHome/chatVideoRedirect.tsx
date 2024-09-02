@@ -44,9 +44,7 @@ const VideoCallRedirect = () => {
       );
       await myCall
         .getOrCreate({
-          // create: true,
           ring: true,
-          // notify: true,
           data: {
             members: [
               {

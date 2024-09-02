@@ -32,11 +32,14 @@ const VideoCallInterface = ({
         call.isCreatedByMe === true &&
         call.state.callingState === CallingState.RINGING,
     );
-    if (outgoingCalls) {
-      setOutgoingCall(outgoingCalls[0] || null);
-      setCurrentScreen('Calling');
-    } else {
-      setOutgoingCall(null);
+
+    if (!!outgoingCalls) {
+      if (outgoingCalls.length > 0) {
+        setOutgoingCall(outgoingCalls[0]);
+        setCurrentScreen('Calling');
+      } else {
+        setOutgoingCall(null);
+      }
     }
   }, [calls]);
 
@@ -46,7 +49,7 @@ const VideoCallInterface = ({
 
   return (
     <SafeAreaView style={styles.containerMain}>
-      {currentScreen != 'Home' && outgoingCall ? (
+      {currentScreen === 'Calling' && !!outgoingCall ? (
         <StreamCall call={outgoingCall}>
           <MyOutgoingCallUI call={outgoingCall} callEnded={endCall} />
         </StreamCall>
