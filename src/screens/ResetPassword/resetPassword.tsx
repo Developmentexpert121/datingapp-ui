@@ -22,7 +22,10 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {useDispatch} from 'react-redux';
 import {resetPasswordSettings} from '../../store/Auth/auth';
 import {useAppSelector} from '../../store/store';
-
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
 interface RegisterForm {
   currentPassword: string;
   newPassword: string;
@@ -77,6 +80,7 @@ const ResetPassword = () => {
     formState: {errors},
   } = useForm<RegisterForm>({
     defaultValues,
+    //@ts-ignore
     resolver: yupResolver(schema),
   });
 
@@ -100,9 +104,37 @@ const ResetPassword = () => {
       });
   };
 
+  const modal = () => {
+    return (
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={visible}
+        onRequestClose={() => setVisible(false)}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>{message}</Text>
+            <TouchableOpacity
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => {
+                if (message === 'Password reset successfully!') {
+                  navigation.navigate('ProfileSection');
+                } else {
+                  setVisible(false);
+                }
+              }}>
+              <Text style={styles.buttonCancel}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    );
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? undefined : hp(3)}
       style={{flex: 1}}>
       <SafeAreaView style={{flex: 1, alignItems: 'center'}}>
         <View style={styles.topView}>
@@ -125,7 +157,13 @@ const ResetPassword = () => {
             }}>
             <Image
               source={require('../../assets/images/LoginTop.png')}
-              style={{height: 150, width: 150, top: 10}}
+              style={{
+                height: hp(20),
+                width: wp(40),
+                resizeMode: 'contain',
+                marginTop: hp(3),
+                marginBottom: hp(2),
+              }}
             />
             <View style={styles.container}>
               <Text style={styles.label}>Current Password*</Text>
@@ -172,6 +210,8 @@ const ResetPassword = () => {
                 </Text>
               )}
             </View>
+          </View>
+          <View style={{marginTop: hp(2)}}>
             <MainButton
               buttonStyle={{width: '90%'}}
               ButtonName={'Next'}
@@ -180,28 +220,7 @@ const ResetPassword = () => {
           </View>
         </ScrollView>
         {loader && <Loader />}
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={visible}
-          onRequestClose={() => setVisible(false)}>
-          <View style={styles.modalContainer}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>{message}</Text>
-              <TouchableOpacity
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => {
-                  if (message === 'Password reset successfully!') {
-                    navigation.navigate('ProfileSection');
-                  } else {
-                    setVisible(false);
-                  }
-                }}>
-                <Text style={styles.buttonCancel}>Cancel</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
+        {modal()}
       </SafeAreaView>
     </KeyboardAvoidingView>
   );

@@ -1054,7 +1054,7 @@ const Auth: any = createSlice({
       })
       // ProfileData
       .addCase(ProfileData.fulfilled, (state, action) => {
-        state.data.profileData = action.payload.data;
+        state.data.profileData = action.payload?.data;
         state.loading = false;
         state.authLoading = false;
         if (!state.data.userData) {
