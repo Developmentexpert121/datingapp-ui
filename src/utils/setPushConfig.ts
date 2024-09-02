@@ -40,7 +40,9 @@ export function setPushConfig() {
         // This will ensure that the notification will appear on-top-of applications.
         importance: AndroidImportance.HIGH,
         // optional: if you dont pass a sound, default ringtone will be used
-        // sound: <your sound url>
+        // sound:'default',
+        sound:'ring',
+        vibration:true
       },
       // configure the functions to create the texts shown in the notification
       // for incoming calls in Android.
