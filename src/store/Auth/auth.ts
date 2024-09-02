@@ -407,7 +407,7 @@ export const updateProfileData = createAsyncThunk(
 export const likedAUser = createAsyncThunk(
   'auth/likedAUser',
   async (data: any, {dispatch, rejectWithValue}: any) => {
-    // console.log('.........dsfgvadlfghads', data);
+    console.log('.........dsfgvadlfghads', data);
     try {
       const response = await http.post('/user/likeUser', data);
       // console.log('res------>>>>>', response);
@@ -792,7 +792,7 @@ export const videoCallToken = createAsyncThunk(
         return response.data;
       }
     } catch (error: any) {
-      console.log('videoCallToken', error);
+      console.error('videoCallToken', error);
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
       } else {

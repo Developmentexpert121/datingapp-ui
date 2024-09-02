@@ -71,7 +71,7 @@ const ChatPage = ({
   const [inputMessage, setInputMessage] = useState('');
   const [chatMessages, setChatMessages] = useState<any>([]);
   const [messageCount, setMessageCount] = useState(0);
-  const [limit, setLimit] = useState(20);
+  const [limit, setLimit] = useState(30);
   const [skip, setSkip] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
@@ -82,18 +82,6 @@ const ChatPage = ({
 
   const isUserOnline: any = showOnlineUser?.includes(user?._id) || false;
 
-  useEffect(() => {
-    if (scrollViewRef.current && chatMessages.length) {
-      scrollViewRef.current.scrollToEnd({animated: true});
-    }
-  }, []);
-
-  useEffect(() => {
-    if (scrollViewRef?.current) {
-      scrollViewRef?.current?.scrollToEnd({animated: true});
-    }
-  }, []);
-
   const handleScroll = ({nativeEvent}: any) => {
     if (nativeEvent.contentOffset.y === 0 && messageCount === limit) {
       setIsLoading(true);
@@ -101,30 +89,30 @@ const ChatPage = ({
     }
   };
 
-  const LoadingIndicator = () => (
-    <View style={styles.loadingContainer}>
-      <SmallLoader />
-    </View>
-  );
-
   useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      () => {
-        setIsKeyboardVisible(true);
-      },
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      () => {
-        setIsKeyboardVisible(false);
-      },
-    );
-    return () => {
-      keyboardDidShowListener.remove();
-      keyboardDidHideListener.remove();
-    };
+    if (scrollViewRef.current && chatMessages.length) {
+      scrollViewRef.current.scrollToEnd({animated: true});
+    }
   }, []);
+
+  // useEffect(() => {
+  //   const keyboardDidShowListener = Keyboard.addListener(
+  //     'keyboardDidShow',
+  //     () => {
+  //       setIsKeyboardVisible(true);
+  //     },
+  //   );
+  //   const keyboardDidHideListener = Keyboard.addListener(
+  //     'keyboardDidHide',
+  //     () => {
+  //       setIsKeyboardVisible(false);
+  //     },
+  //   );
+  //   return () => {
+  //     keyboardDidShowListener.remove();
+  //     keyboardDidHideListener.remove();
+  //   };
+  // }, []);
 
   useEffect(() => {
     socket.on('chat message', msg => {
@@ -411,7 +399,11 @@ const ChatPage = ({
           </View>
           {/* center */}
           <View style={{marginTop: 10, flex: 1}}>
-            {isLoading && <LoadingIndicator />}
+            {isLoading && (
+              <View style={styles.loadingContainer}>
+                <SmallLoader />
+              </View>
+            )}
             <FlatList
               data={chatMessages}
               //@ts-ignore
@@ -422,7 +414,7 @@ const ChatPage = ({
                   scrollViewRef?.current?.scrollToEnd({animated: true});
                 }
               }}
-              // onScroll={handleScroll}
+              onScroll={handleScroll}
               keyExtractor={(item, index) => item?.timestamp + index}
               renderItem={({item, index}) => {
                 const isTextMessage = !item?.uri;
