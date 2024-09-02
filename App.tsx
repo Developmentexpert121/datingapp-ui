@@ -9,8 +9,18 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import LocationCheckComponent from './src/components/location/location';
 import {Provider} from 'react-redux';
 import store from './src/store/store';
+import {Text, TextInput} from 'react-native';
 
 const App = () => {
+  //@ts-ignore
+  Text.defaultProps = Text.defaultProps || {};
+  //@ts-ignore
+  Text.defaultProps.allowFontScaling = false;
+  //@ts-ignore
+  TextInput.defaultProps = TextInput.defaultProps || {};
+  //@ts-ignore
+  TextInput.defaultProps.allowFontScaling = false;
+
   return (
     <SafeAreaProvider style={{flex: 1}}>
       <Provider store={store}>
