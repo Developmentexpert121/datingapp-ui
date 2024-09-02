@@ -11,8 +11,6 @@ import {
 import {ListItem, Avatar} from 'react-native-elements';
 import CommonBackbutton from '../../components/commonBackbutton/BackButton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {
@@ -161,11 +159,6 @@ const ChatSection = () => {
       <ListItem
         containerStyle={styles.listItemContainer}
         onPress={() => goToChatWith(item)}
-        // onPress={
-        //   profileData?.plan === 'Free'
-        //     ? () => navigation.navigate('UpdateProfileScreen')
-        //     : () => goToChatWith(item)
-        // }
         onLongPress={() => handleLongPress(item)}>
         <View style={{width: '15%'}}>
           {item.profilePic ? (
@@ -311,13 +304,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     width: '100%',
     flexDirection: 'row',
-  },
-  search: {
-    borderWidth: 1,
-    borderRadius: 20,
-    marginHorizontal: 20,
-    height: 40,
-    fontSize: 20,
   },
   containerSearch: {
     flexDirection: 'row',

@@ -41,6 +41,7 @@ import Modal from 'react-native-modal';
 import Label from '../../components/Label';
 import MainButton from '../../components/ButtonComponent/MainButton';
 import SmallLoader from '../../components/Loader/SmallLoader';
+import ImageView from 'react-native-image-viewing';
 
 const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 
@@ -77,6 +78,8 @@ const ChatPage = ({
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [reason, setReason] = useState('');
+  const [isImageModalVisible, setImageModalVisible] = useState(false);
+  const [selectedImageUri, setSelectedImageUri] = useState<string>('');
 
   const scrollViewRef = useRef<ScrollView>(null);
 
@@ -268,10 +271,22 @@ const ChatPage = ({
 
   const formatTime = (timestamp: any) => {
     const date = new Date(timestamp);
-    const hours = date.getHours();
+    let hours = date.getHours();
     const minutes = date.getMinutes();
-    return `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+
+    // Determine AM or PM
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+
+    // Convert 24-hour format to 12-hour format
+    hours = hours % 12;
+    hours = hours ? hours : 12; // If hours = 0, set it to 12
+
+    // Format the time with leading zeros for minutes
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+    return `${hours}:${formattedMinutes} ${ampm}`;
   };
+
   const getFormattedDate = (timestamp: string) => {
     const messageDate = new Date(timestamp);
     const today = new Date();
@@ -300,45 +315,59 @@ const ChatPage = ({
         <View style={{flex: 1}}>
           {/* header */}
           <View style={styles.container}>
-            <Pressable
+            <View
               style={{
                 width: '72%',
                 flexDirection: 'row',
                 paddingStart: 10,
                 alignItems: 'center',
-              }}
-              onPress={() => {
-                navigation.navigate('userProfile');
               }}>
               <View style={styles.backPress}>
                 <Ionicons
                   onPress={() => navigation.goBack()}
                   style={styles.backPressIcon}
                   name="chevron-back-outline"
-                  size={30}
+                  size={33}
                 />
               </View>
-              <Avatar
-                source={{uri: user?.profilePic?.split(',')[0]}}
-                rounded
-                size={50}
-              />
-              <View style={{flexDirection: 'column', flex: 1}}>
-                <Text numberOfLines={1} style={styles.stepsText}>
-                  {user?.name}
-                </Text>
-                <Text
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('userProfile');
+                }}
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                }}>
+                <Avatar
+                  source={{uri: user?.profilePic?.split(',')[0]}}
+                  rounded
+                  size={50}
+                />
+                <View
                   style={{
-                    fontSize: 16,
-                    fontFamily: 'Sansation-Regular',
-                    marginStart: 12,
-                    // color: '#6D6D6D',
-                    color: isUserOnline ? 'green' : '#6D6D6D',
+                    justifyContent: 'center',
                   }}>
-                  {isUserOnline ? 'Online' : 'Offline'}
-                </Text>
-              </View>
-            </Pressable>
+                  <View>
+                    <Text
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                      style={styles.stepsText}>
+                      {user?.name}
+                    </Text>
+                  </View>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontFamily: 'Sansation-Regular',
+                      marginStart: 12,
+                      // color: '#6D6D6D',
+                      color: isUserOnline ? 'green' : '#6D6D6D',
+                    }}>
+                    {isUserOnline ? 'Online' : 'Offline'}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
             <View style={{flexDirection: 'row', marginEnd: 10, width: '25%'}}>
               <TouchableOpacity
                 disabled={
@@ -502,7 +531,12 @@ const ChatPage = ({
                               </Text>
                             ) : (
                               isAuthMessage && (
-                                <View>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    setSelectedImageUri(item?.uri); // Set the selected image URI
+                                    setImageModalVisible(true); // Show the modal
+                                  }}
+                                  style={{borderWidth: 0}}>
                                   <Image
                                     source={{uri: item?.uri}}
                                     style={[
@@ -535,7 +569,7 @@ const ChatPage = ({
                                       />
                                     </TouchableOpacity>
                                   </View>
-                                </View>
+                                </TouchableOpacity>
                               )
                             )}
                           </View>
@@ -604,7 +638,10 @@ const ChatPage = ({
                 </TouchableOpacity>
               </View>
               <TouchableOpacity style={styles.sendButton}>
-                <SendIC onPress={handleSendMessage} />
+                <SendIC
+                  onPress={handleSendMessage}
+                  disabled={inputMessage.trim().length === 0}
+                />
               </TouchableOpacity>
             </View>
           ) : (
@@ -622,7 +659,7 @@ const ChatPage = ({
           )}
         </View>
       </KeyboardAvoidingView>
-      {/* Modal */}
+      {/* Modal Subscription */}
       <Modal
         style={{backgroundColor: 'transparent', margin: 0}}
         isVisible={modalOpen}
@@ -669,6 +706,16 @@ const ChatPage = ({
           </View>
         </View>
       </Modal>
+
+      {/* Modal Image */}
+      <ImageView
+        images={[{uri: selectedImageUri}]}
+        imageIndex={0}
+        doubleTapToZoomEnabled={true}
+        animationType={'none'}
+        visible={isImageModalVisible}
+        onRequestClose={() => setImageModalVisible(false)}
+      />
     </>
   );
 };

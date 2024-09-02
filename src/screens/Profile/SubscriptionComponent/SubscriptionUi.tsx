@@ -91,22 +91,6 @@ const data2 = [
     service: 'Access to Video call',
     presentIn: 2,
   },
-  // *******
-  // {
-  //   id: 9,
-  //   service: 'Unlimited Super Likes',
-  //   presentIn: 1,
-  // },
-  // {
-  //   id: 10,
-  //   service: 'Control who sees you',
-  //   presentIn: 1,
-  // },
-  // {id: 11, service: 'Top picks', presentIn: 2},
-  // {id: 12, service: 'Live streaming', presentIn: 2},
-  // {id: 13, service: 'Video call access', presentIn: 2},
-  // {id: 14, service: 'Message before matching.', presentIn: 2},
-  // {id: 15, service: 'Hide ads', presentIn: 2},
 ];
 
 const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {
@@ -363,21 +347,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Sansation-Regular',
     color: 'black',
     fontSize: 16,
-  },
-  container: {
-    padding: 20,
-    backgroundColor: '#FFF',
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 3,
-    marginHorizontal: 20,
-    marginTop: 20,
   },
   currentPlanText: {
     fontSize: 18,
