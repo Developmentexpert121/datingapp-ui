@@ -6,6 +6,7 @@ import {AndroidImportance} from '@notifee/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {staticNavigate} from './staticNavigation';
 import http from '../services/http/http-common';
+import messaging from '@react-native-firebase/messaging';
 
 const getTokenForUser = async (userId: any) => {
   try {
@@ -51,7 +52,7 @@ export function setPushConfig() {
     },
     // add the callback to be executed a call is accepted, used for navigation
     navigateAcceptCall: () => {
-      // staticNavigate({name: 'AfterLogin', params: undefined});
+      staticNavigate({name: 'AfterLogin', params: undefined});
     },
     // add the callback to be executed when a notification is tapped,
     // but the user did not press accept or decline, used for navigation
@@ -82,7 +83,7 @@ export function setPushConfig() {
         image: profileData?.data?.profilePic.split(',')[0],
       };
 
-      return new StreamVideoClient({
+      return StreamVideoClient.getOrCreateInstance({
         apiKey,
         user: userMain,
         tokenProvider: token,

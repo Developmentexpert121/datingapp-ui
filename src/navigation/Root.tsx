@@ -45,6 +45,8 @@ import filterSection from '../screens/FilterSection/filterSection';
 import NotificationScreen from '../screens/Notification/notification';
 import userProfile from '../screens/UserProfile/userProfile';
 import ResetPassword from '../screens/ResetPassword/resetPassword';
+import {videoCallUser} from '../store/Activity/activity';
+import {useNavigation} from '@react-navigation/native';
 
 const Stack = createNativeStackNavigator();
 
@@ -123,6 +125,7 @@ const Root = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log('inside fetch Data');
       if (!client) {
         try {
           const apiKey = '48e74nbgz5az';
@@ -140,11 +143,12 @@ const Root = () => {
             image: userdata.image.split(',')[0],
           };
 
-          const myClient = new StreamVideoClient({
+          const myClient = StreamVideoClient.getOrCreateInstance({
             apiKey,
             user: userMain,
             tokenProvider: token,
           });
+          console.log('myClient', !!client, client);
           setClient(myClient);
         } catch (error) {
           console.error('Error connecting to Stream Video Client:', error);
@@ -159,6 +163,7 @@ const Root = () => {
       return () => {
         // Cleanup: disconnect the client when the component unmounts or userdata changes
         if (client) {
+          console.log('return client disconnect');
           client.disconnectUser();
           setClient(null);
         }
@@ -242,22 +247,31 @@ const Root = () => {
     const [currentScreen, setCurrentScreen] = useState('Home');
 
     useEffect(() => {
-      const incomingCalls = calls.filter(
+      const filteredIncomingCalls = calls.filter(
         call =>
           !call.isCreatedByMe &&
           call.state.callingState === CallingState.RINGING,
       );
-      if (incomingCalls) {
-        setIncomingCall(incomingCalls[0] || null);
-        setCurrentScreen('Calling');
-      } else {
-        setIncomingCall(null);
+      console.log('incomingCalls', incomingCall, currentScreen);
+      if (!!filteredIncomingCalls) {
+        console.log('inside IF', !!filteredIncomingCalls);
+        if (filteredIncomingCalls.length > 0) {
+          setIncomingCall(filteredIncomingCalls[0]);
+          setCurrentScreen('Calling');
+        } else {
+          setIncomingCall(null);
+          setCurrentScreen('Home');
+        }
       }
     }, [calls]);
-    if (currentScreen != 'Home' && incomingCall) {
-      const endCall = () => {
-        setCurrentScreen('Home');
-      };
+
+    const endCall = () => {
+      console.log('call ended');
+      setCurrentScreen('Home');
+    };
+
+    if (currentScreen === 'Calling' && !!incomingCall) {
+      console.log('iffff');
       return (
         <SafeAreaView style={{flex: 1}}>
           <StreamCall call={incomingCall}>
@@ -266,6 +280,7 @@ const Root = () => {
         </SafeAreaView>
       );
     } else {
+      console.log('elseeee');
       return (
         <AfterLoginStack.Navigator
           screenOptions={{headerShown: false}}
@@ -308,6 +323,29 @@ const Root = () => {
   };
 
   const AfterLogin = () => {
+    const navigation = useNavigation();
+    useEffect(() => {
+      // for background
+      messaging().onNotificationOpenedApp(message => {
+        navigation.navigate('UpdateProfile');
+        console.log('Messagee background', message);
+      });
+      // for killed state
+      messaging()
+        .getInitialNotification()
+        .then((remoteMessage: any) => {
+          console.log('Messagee', remoteMessage);
+
+          if (remoteMessage?.data?.screen === 'VideoCallRedirect') {
+            console.log('Messageeaaaaaa', remoteMessage);
+
+            // dispatch(
+            //   videoCallUser({user: JSON.parse(remoteMessage.data.userData)}),
+            // );
+          }
+        });
+    }, []);
+
     if (!client) {
       return <Loader />;
     }
