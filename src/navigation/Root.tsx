@@ -92,6 +92,9 @@ const Root = () => {
     SplashScreen.hide();
     requestUserPermission();
     // }, 1000);
+  }, []);
+
+  useEffect(() => {
     const eventListener: any = EventRegister.addEventListener('LogOut', () => {
       logoutUserButton();
     });

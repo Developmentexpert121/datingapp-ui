@@ -298,7 +298,7 @@ const TinderSwipe = ({
                   <Ionicons name="location-sharp" size={20} color="#AC25AC" />
                   <Text
                     style={{fontFamily: 'Sansation-Regular', color: 'black'}}>
-                    {profileData.location && data[currentIndex]?.location
+                    {profileData?.location && data[currentIndex]?.location
                       ? `${Math.round(
                           calculateDistance(
                             profileData.location.latitude,
