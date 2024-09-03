@@ -45,7 +45,6 @@ const TinderSwipe = ({
     if (currentIndex === data.length) {
       setCurrentIndex(0);
     }
-    setNextIndex(currentIndex + 1);
   }, [currentIndex, data.length, setCurrentIndex]);
 
   const swipe = useRef(new Animated.ValueXY()).current;
@@ -82,66 +81,72 @@ const TinderSwipe = ({
   });
 
   const onSwipeRight = async () => {
-    await dispatch(
-      likedAUser({
-        likerId: profileData?._id,
-        userIdBeingLiked: data[currentIndex]?._id,
-      }),
-    )
-      .unwrap()
-      .then(res => {
-        if (res.success === true) {
-          setData(prevState => prevState.slice(1));
-          removeCard();
-          const targetX = hiddenTranslateX;
-          translateX.value = withSpring(targetX);
-          setTimeout(() => {
-            const updatedUsers = [...data];
-            updatedUsers.splice(currentIndex, 1);
-            setData(updatedUsers);
-          }, 1000);
-        } else {
-          removeCard();
-          // setModalOpen(true);
-          setReason('like');
-        }
-      });
+    const previousData = [...data]; // Store previous state
+    setData(prevState => prevState.slice(1)); // Show next card
+    // setLoader(true); // Show loader
+    try {
+      const res = await dispatch(
+        likedAUser({
+          likerId: profileData?._id,
+          userIdBeingLiked: data[currentIndex]?._id,
+        }),
+      ).unwrap();
+
+      if (res.success === true) {
+        recenterCard();
+      } else {
+        recenterCard();
+        setModalOpen(true);
+        setData(previousData);
+        setReason('like');
+      }
+    } catch (error) {
+      recenterCard();
+      setModalOpen(true);
+      setData(previousData);
+      setReason('like');
+    } finally {
+      setLoader(false);
+    }
   };
 
   const onSwipeTop = async () => {
-    await dispatch(
-      superLiked({
-        likerId: profileData?._id,
-        userIdBeingLiked: data[currentIndex]?._id,
-      }),
-    )
-      .unwrap()
-      .then(res => {
-        if (res.success === true) {
-          setData(prevState => prevState.slice(1));
-          removeCard();
-          const targetX = hiddenTranslateX;
-          translateX.value = withSpring(targetX);
-          setTimeout(() => {
-            const updatedUsers = [...data];
-            updatedUsers.splice(currentIndex, 1);
-            setData(updatedUsers);
-          }, 1000);
-        } else {
-          removeCard();
-          // setModalOpen(true);
-          setReason('superLike');
-        }
-      });
+    const previousData = [...data]; // Store previous state
+    setData(prevState => prevState.slice(1)); // Show next card
+    // setLoader(true); // Show loader
+    try {
+      const res = await dispatch(
+        superLiked({
+          likerId: profileData?._id,
+          userIdBeingLiked: data[currentIndex]?._id,
+        }),
+      ).unwrap();
+
+      if (res.success === true) {
+        recenterCard();
+      } else {
+        recenterCard();
+        setModalOpen(true);
+        setData(previousData);
+        setReason('superLike');
+      }
+    } catch (error) {
+      recenterCard();
+      setModalOpen(true);
+      setData(previousData);
+      setReason('superLike');
+    } finally {
+      setLoader(false);
+    }
   };
 
   // ######################
   const onSwipeLeft = async () => {
     setData(prevState => prevState.slice(1));
-    removeCard();
+    recenterCard();
     // Implement your logic here if needed
   };
-  const removeCard = useCallback(() => {
+  const recenterCard = useCallback(() => {
     swipe.setValue({x: 0, y: 0});
     setIsSuperLikeAnimating(false);
   }, [swipe]);
@@ -154,10 +159,10 @@ const TinderSwipe = ({
         useNativeDriver: true,
       }).start(() => {
         setData(prevState => prevState.slice(1));
-        removeCard();
+        recenterCard();
       });
     },
-    [removeCard, swipe.x],
+    [recenterCard, swipe.x],
   );
   // Like..........
   const handleChoiceHeart = useCallback(
@@ -169,12 +174,13 @@ const TinderSwipe = ({
       }).start(() => {
         if (direction > 0) {
           onSwipeRight();
+          recenterCard();
         } else {
           onSwipeLeft();
         }
       });
     },
-    [removeCard, swipe.x, onSwipeRight, onSwipeLeft],
+    [recenterCard, swipe.x, onSwipeRight, onSwipeLeft],
   );
   // SuperLike.............
   const handleChoiceSuperLike = useCallback(() => {
@@ -186,8 +192,9 @@ const TinderSwipe = ({
       useNativeDriver: true,
     }).start(() => {
       onSwipeTop();
+      recenterCard();
     });
-  }, [removeCard, swipe.y, onSwipeTop, isSuperLikeAnimating]);
+  }, [recenterCard, swipe.y, onSwipeTop, isSuperLikeAnimating]);
 
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
     const R = 3958.8; // Earth radius in miles
