@@ -177,6 +177,7 @@ const TinderSwipe = ({
           recenterCard();
         } else {
           onSwipeLeft();
+          recenterCard();
         }
       });
     },
