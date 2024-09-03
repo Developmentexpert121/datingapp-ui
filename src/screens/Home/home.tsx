@@ -149,8 +149,6 @@ const HomeScreen = () => {
     dispatch(onlineUser(onlineUsers));
   }, [onlineUsers]);
 
-  console.log('ytytytytytytyy', totalSuperLikesPossible);
-
   const fetchNewData = (newPage: any) => {
     setActiveScreen('HOME');
     setNoProfilesLoader(true);
