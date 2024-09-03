@@ -29,6 +29,10 @@ const TinderSwipe = ({
   noProfilesLoader,
   setModalOpen,
   setReason,
+  setTotalLikesPossible,
+  totalLikesPossible,
+  setTotalSuperLikesPossible,
+  totalSuperLikesPossible,
 }) => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
@@ -80,63 +84,137 @@ const TinderSwipe = ({
     },
   });
 
+  const checkLikeLimitReached = previousData => {
+    let limitReached = false;
+
+    if (profileData.plan === 'Free' && totalLikesPossible > 19) {
+      recenterCard();
+      setModalOpen(true);
+      setReason('like');
+      setData(previousData);
+      limitReached = true;
+    } else if (
+      profileData.plan.productId === 'Basic' &&
+      totalLikesPossible > 49
+    ) {
+      recenterCard();
+      setModalOpen(true);
+      setReason('like');
+      setData(previousData);
+      limitReached = true;
+    } else {
+      setTotalLikesPossible(prev => prev + 1);
+    }
+
+    return limitReached;
+  };
+
   const onSwipeRight = async () => {
     const previousData = [...data]; // Store previous state
-    setData(prevState => prevState.slice(1)); // Show next card
-    // setLoader(true); // Show loader
-    try {
-      const res = await dispatch(
-        likedAUser({
-          likerId: profileData?._id,
-          userIdBeingLiked: data[currentIndex]?._id,
-        }),
-      ).unwrap();
+    const isLimitReached = checkLikeLimitReached(previousData);
+    if (!isLimitReached) {
+      setData(prevState => prevState.slice(1)); // Show next card
 
-      if (res.success === true) {
-        recenterCard();
-      } else {
+      try {
+        const res = await dispatch(
+          likedAUser({
+            likerId: profileData?._id,
+            userIdBeingLiked: data[currentIndex]?._id,
+          }),
+        ).unwrap();
+
+        if (res.success === true) {
+          recenterCard();
+        } else {
+          recenterCard();
+          setModalOpen(true);
+          setData(previousData);
+          setReason('like');
+        }
+      } catch (error) {
         recenterCard();
         setModalOpen(true);
         setData(previousData);
         setReason('like');
+      } finally {
+        setLoader(false);
       }
-    } catch (error) {
+    }
+  };
+
+  const checkSuperLikeLimitReached = previousData => {
+    let limitReached = false;
+
+    if (profileData.plan === 'Free' && totalSuperLikesPossible > 0) {
       recenterCard();
       setModalOpen(true);
+      setReason('superLike');
       setData(previousData);
-      setReason('like');
-    } finally {
-      setLoader(false);
+      limitReached = true;
+    } else if (
+      profileData.plan.productId === 'Basic' &&
+      totalSuperLikesPossible > 2
+    ) {
+      recenterCard();
+      setModalOpen(true);
+      setReason('superLike');
+      setData(previousData);
+      limitReached = true;
+    } else if (
+      profileData.plan.productId === 'Premium' &&
+      totalSuperLikesPossible > 5
+    ) {
+      recenterCard();
+      setModalOpen(true);
+      setReason('superLike');
+      setData(previousData);
+      limitReached = true;
+    } else if (
+      profileData.plan.productId === 'PremiumPlus' &&
+      totalSuperLikesPossible > 9
+    ) {
+      recenterCard();
+      setModalOpen(true);
+      setReason('superLike');
+      setData(previousData);
+      limitReached = true;
+    } else {
+      setTotalSuperLikesPossible(prev => prev + 1);
     }
+
+    return limitReached;
   };
 
   const onSwipeTop = async () => {
     const previousData = [...data]; // Store previous state
-    setData(prevState => prevState.slice(1)); // Show next card
-    // setLoader(true); // Show loader
-    try {
-      const res = await dispatch(
-        superLiked({
-          likerId: profileData?._id,
-          userIdBeingLiked: data[currentIndex]?._id,
-        }),
-      ).unwrap();
+    const isLimitReached = checkSuperLikeLimitReached(previousData);
+    if (!isLimitReached) {
+      setData(prevState => prevState.slice(1)); // Show next card
+      // setLoader(true); // Show loader
+      try {
+        const res = await dispatch(
+          superLiked({
+            likerId: profileData?._id,
+            userIdBeingLiked: data[currentIndex]?._id,
+          }),
+        ).unwrap();
 
-      if (res.success === true) {
-        recenterCard();
-      } else {
+        if (res.success === true) {
+          recenterCard();
+        } else {
+          recenterCard();
+          setModalOpen(true);
+          setData(previousData);
+          setReason('superLike');
+        }
+      } catch (error) {
         recenterCard();
         setModalOpen(true);
         setData(previousData);
         setReason('superLike');
+      } finally {
+        setLoader(false);
       }
-    } catch (error) {
-      recenterCard();
-      setModalOpen(true);
-      setData(previousData);
-      setReason('superLike');
-    } finally {
-      setLoader(false);
     }
   };
 

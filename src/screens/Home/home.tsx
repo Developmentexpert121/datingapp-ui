@@ -58,6 +58,9 @@ const HomeScreen = () => {
   const [filterData, setFilterData] = useState({});
   const [page, setPage] = useState(1);
   const [viewedUsers, setViewedUsers] = useState<any>([]);
+  const [totalLikesPossible, setTotalLikesPossible] = useState<any>(0);
+  const [totalSuperLikesPossible, setTotalSuperLikesPossible] =
+    useState<any>(0);
 
   const initialRouteValue = useAppSelector(
     (state: any) => state.ActivityLoader.initialRouteValue,
@@ -146,6 +149,8 @@ const HomeScreen = () => {
     dispatch(onlineUser(onlineUsers));
   }, [onlineUsers]);
 
+  console.log('ytytytytytytyy', totalSuperLikesPossible);
+
   const fetchNewData = (newPage: any) => {
     setActiveScreen('HOME');
     setNoProfilesLoader(true);
@@ -158,6 +163,26 @@ const HomeScreen = () => {
         const lowValue = parseInt(lowStr);
         const highValue = parseInt(highStr);
 
+        const getLastKeyValuePair = (obj: any) => {
+          const entries = Object.entries(obj); // Convert to array of [key, value]
+          return entries[entries.length - 1]; // Get the last element
+        };
+        const isEmptyObject = (obj: any) => Object.keys(obj).length === 0;
+
+        const [lastKey, lastValue] = getLastKeyValuePair(
+          !isEmptyObject(res.data?.totalLikedToday)
+            ? res.data?.totalLikedToday
+            : {'0': 0},
+        );
+
+        const [lastKeySuper, lastValueSuper] = getLastKeyValuePair(
+          !isEmptyObject(res.data?.totalSuperLikedToday)
+            ? res.data?.totalSuperLikedToday
+            : {'0': 0},
+        );
+
+        setTotalLikesPossible(lastValue); // Outputs: "2024-09-03", 21
+        setTotalSuperLikesPossible(lastValueSuper);
         setFilterData({
           showInDistance: res.data.showInDistance,
           distance: parseInt(res.data.distance),
@@ -272,6 +297,10 @@ const HomeScreen = () => {
             profileData={profileData}
             setModalOpen={setModalOpen}
             setReason={setReason}
+            setTotalLikesPossible={setTotalLikesPossible}
+            totalLikesPossible={totalLikesPossible}
+            setTotalSuperLikesPossible={setTotalSuperLikesPossible}
+            totalSuperLikesPossible={totalSuperLikesPossible}
           />
         </View>
       ) : activeScreen === 'Filters' ? (
