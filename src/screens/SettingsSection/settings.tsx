@@ -113,9 +113,6 @@ const SettingsSection = () => {
     defaultValues,
     resolver: yupResolver<any>(schema),
   });
-  //   const handleSliderChange = (value:any) => {
-  //     setDistance(value);
-  //   };
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [address, setAddress] = useState('');
@@ -159,10 +156,6 @@ const SettingsSection = () => {
 
   const closeDrawer = () => {
     setIsDrawerOpen(false);
-    // setPhone({
-    //   countryCode: callingCode,
-    //   number: data.phone,
-    // });
   };
 
   const handleModal = (item: any) => {

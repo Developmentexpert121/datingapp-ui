@@ -113,12 +113,12 @@ const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {
     item.title !== profileData.plan.productId ? (
       <LinearGradient
         colors={[
-          item.title === 'Premium' ? '#AC25AC' : '#101010',
-          item.title === 'Premium' ? '#FF4FFF' : '#494949',
-          item.title === 'Premium' ? '#AC25AC' : '#101010',
+          '#AC25AC',
+          '#FF4FFF',
+          // item.title === 'Premium' ? '#AC25AC' : '#101010',
         ]}
         start={{x: 0, y: 0.5}}
-        end={{x: 1, y: 0.5}}
+        end={{x: 1, y: 0.8}}
         style={styles.box}>
         <Text style={styles.boxTitle}>{item.title}</Text>
         <Text style={styles.boxDescription}>{item.description}</Text>
@@ -128,9 +128,10 @@ const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {
       </LinearGradient>
     ) : (
       <LinearGradient
-        colors={['#FFFFFF', '#FFEFBA', '#FFD700', '#FFC107']}
+        colors={['#AC25AC', '#FF4FFF']}
+        // colors={['#FFFFFF', '#FFEFBA', '#FFD700', '#FFC107']}
         start={{x: 0, y: 0.5}}
-        end={{x: 0.5, y: 3}}
+        end={{x: 1, y: 0.8}}
         style={styles.box}>
         <View style={{width: '100%'}}>
           <Text style={styles.currentPlanText}>
@@ -301,7 +302,7 @@ const styles = StyleSheet.create({
   upgradeButtonfrom: {
     alignSelf: 'center',
     color: 'black',
-    backgroundColor: '#AC25AC',
+    backgroundColor: '#F99A21',
     marginTop: 16,
     marginBottom: 6,
     fontSize: 14,
@@ -350,24 +351,24 @@ const styles = StyleSheet.create({
   },
   currentPlanText: {
     fontSize: 18,
-    color: '#333',
+    color: '#fff',
     fontFamily: 'Sansation-Bold',
     marginBottom: 10,
     flexDirection: 'row',
     textAlign: 'center',
   },
   planName: {
-    color: '#AC25AC',
+    color: '#F99A21',
   },
   planDetailText: {
     fontSize: 16,
-    color: '#666',
+    color: '#fff',
     fontFamily: 'Sansation-Regular',
     marginBottom: 20,
     textAlign: 'center',
   },
   planDate: {
-    color: '#AC25AC',
+    color: '#fff',
   },
 
   upgradeButtonText: {
