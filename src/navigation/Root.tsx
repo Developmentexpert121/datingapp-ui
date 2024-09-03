@@ -46,7 +46,9 @@ import NotificationScreen from '../screens/Notification/notification';
 import userProfile from '../screens/UserProfile/userProfile';
 import ResetPassword from '../screens/ResetPassword/resetPassword';
 import {useNavigation} from '@react-navigation/native';
-import notifee, {AndroidImportance, EventType} from '@notifee/react-native';
+import {io} from 'socket.io-client';
+
+const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 
 const Stack = createNativeStackNavigator();
 
@@ -178,12 +180,13 @@ const Root = () => {
   }, [userdata]); // Ensure 'client' is included in the dependency array
 
   const logoutUserButton = async () => {
+    const userId = await getUserId();
     try {
       dispatch(
         updateProfileData({
           field: 'authToken',
           value: '',
-          id: getUserId(),
+          id: userId,
         }),
       );
       dispatch(cancelLoginWithGoogle());
@@ -197,10 +200,15 @@ const Root = () => {
       if (isSignedIn) {
         await GoogleSignin.signOut();
       }
+      socket.on('disconnect', () => {
+        console.log('App Disconnected from server');
+      });
+      socket.emit('user_connected', userId);
+      socket.emit('user_disconnected', userId); // Notify the server if necessary
+      socket.disconnect();
       await authTokenRemove();
       dispatch(setModal());
       dispatch(updateAuthentication());
-
       await StreamVideoRN.onPushLogout();
     } catch (error) {
       console.error('errorLogoutUserButton', error);
@@ -246,8 +254,6 @@ const Root = () => {
           !call.isCreatedByMe &&
           call.state.callingState === CallingState.RINGING,
       );
-      // console.log('incomingCalls', !!incomingCall);
-      // console.log('currentScreen', currentScreen);
       if (!!filteredIncomingCalls) {
         if (filteredIncomingCalls.length > 0) {
           setIncomingCall(filteredIncomingCalls[0]);

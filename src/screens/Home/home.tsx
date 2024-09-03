@@ -114,7 +114,7 @@ const HomeScreen = () => {
   }, []);
 
   useEffect(() => {
-    console.log('profileData?._id ', profileData?._id);
+    // console.log('profileData?._id ', profileData?._id);
     socket.on('connect', () => {
       console.log('App Connected from server');
       // socket.emit('user_connected', profileData?._id);

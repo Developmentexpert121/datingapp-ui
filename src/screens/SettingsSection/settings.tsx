@@ -34,6 +34,9 @@ import GlobalModal from '../../components/Modals/GlobalModal';
 import ConfirmModal from '../../components/Modals/ConfirmModal';
 import {StreamVideoRN} from '@stream-io/video-react-native-sdk';
 import PhoneInput from '../../components/AppTextInput/PhoneInput';
+import {io} from 'socket.io-client';
+
+const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 
 interface UpdateForm {
   phone: string;
@@ -198,7 +201,16 @@ const SettingsSection = () => {
       if (isSignedIn) {
         await GoogleSignin.signOut();
       }
-      // dispatch(logoutUser({senderId: profileData._id}));
+
+      // Call the socket disconnect when logging out
+      socket.on('disconnect', () => {
+        console.log('App Disconnected from server');
+      });
+      socket.emit('user_connected', profileData?._id);
+      socket.emit('user_disconnected', profileData?._id); // Notify the server if necessary
+      socket.disconnect(); // Disconnect socket
+
+      // Dispatch logout action and remove auth tokens
       await authTokenRemove();
       dispatch(updateAuthentication());
       await StreamVideoRN.onPushLogout();
@@ -206,6 +218,7 @@ const SettingsSection = () => {
       console.error('errorLogoutUserButton', error);
     }
   };
+  // delete ************
   const deleteUserButton = async () => {
     dispatch(deleteUser({senderId: profileData._id}))
       .unwrap()
@@ -214,6 +227,7 @@ const SettingsSection = () => {
       });
     //
   };
+  // deactivate *********
   const deactivateUserButton = async () => {
     dispatch(deactivateUser({userId: profileData?._id}))
       .unwrap()

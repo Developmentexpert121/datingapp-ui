@@ -37,7 +37,9 @@ const TinderSwipe = ({
   const [currentUser, setCurrentUser] = useState();
 
   const {showOnlineUser} = useAppSelector(state => state.authSliceState);
-  const isUserOnline = showOnlineUser?.includes(currentUser) || false;
+
+  const isUserOnline =
+    showOnlineUser?.includes(data[currentIndex]?._id) || false;
 
   const [isSuperLikeAnimating, setIsSuperLikeAnimating] = useState(false);
 
@@ -222,6 +224,7 @@ const TinderSwipe = ({
     3: require('../../../assets/images/abroad.png'),
     4: require('../../../assets/images/moon.png'),
   };
+
   return (
     <View style={{flex: 1}}>
       <View
