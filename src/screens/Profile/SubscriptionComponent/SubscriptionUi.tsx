@@ -51,48 +51,6 @@ const dataType = [
   },
 ];
 
-const data2 = [
-  // Basic
-  {
-    id: 1,
-    service: 'See who likes you',
-    presentIn: 0,
-  },
-  {
-    id: 2,
-    service: '50 Likes',
-    presentIn: 0,
-  },
-  {
-    id: 3,
-    service: '3 Super Likes',
-    presentIn: 0,
-  },
-  {
-    id: 4,
-    service: 'Access to Chat',
-    presentIn: 0,
-  },
-  // Premium
-  {id: 5, service: 'Unlimited Likes', presentIn: 1},
-  {
-    id: 6,
-    service: '6 Super Likes',
-    presentIn: 1,
-  },
-  {
-    id: 7,
-    service: 'Acces to Audio call',
-    presentIn: 1,
-  },
-  // Premium Plus
-  {
-    id: 8,
-    service: 'Access to Video call',
-    presentIn: 2,
-  },
-];
-
 const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {
   const profileData: any = useAppSelector(
     (state: any) => state?.Auth?.data?.profileData,
@@ -101,6 +59,49 @@ const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {
   const navigation = useNavigation();
   const [activeDot, setActiveDot] = useState(0);
   const [currentPlanId, setCurrentPlanId] = useState(0);
+
+  const data2 = [
+    // Basic
+    {
+      id: 1,
+      service: 'See who likes you',
+      presentIn: 0,
+    },
+    {
+      id: 2,
+      service: currentPlanId === 0 ? '50 Likes' : 'Unlimited Likes',
+      presentIn: 0,
+    },
+    {
+      id: 3,
+      service:
+        currentPlanId === 0
+          ? '3 Super Likes'
+          : currentPlanId === 1
+          ? '6 Super Likes'
+          : currentPlanId === 2 && '10 Super Likes',
+      presentIn: 0,
+    },
+    {
+      id: 4,
+      service: 'Access to Chat',
+      presentIn: 0,
+    },
+    // Premium
+    {
+      id: 5,
+      service: 'Acces to Audio call',
+      presentIn: 1,
+    },
+    // Premium Plus
+    {
+      id: 6,
+      service: 'Access to Video call',
+      presentIn: 2,
+    },
+  ];
+
+  console.log(currentPlanId);
 
   const flatListRef: any = useRef(null);
 
