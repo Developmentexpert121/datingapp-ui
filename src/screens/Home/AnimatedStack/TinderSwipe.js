@@ -235,7 +235,7 @@ const TinderSwipe = ({
     direction => {
       Animated.timing(swipe.x, {
         toValue: direction * width * 1.5,
-        duration: 500,
+        duration: 800,
         useNativeDriver: true,
       }).start(() => {
         setData(prevState => prevState.slice(1));
@@ -249,7 +249,7 @@ const TinderSwipe = ({
     direction => {
       Animated.timing(swipe.x, {
         toValue: direction * width * 1.5,
-        duration: 500,
+        duration: 800,
         useNativeDriver: true,
       }).start(() => {
         if (direction > 0) {
@@ -269,7 +269,7 @@ const TinderSwipe = ({
     setIsSuperLikeAnimating(true);
     Animated.timing(swipe.y, {
       toValue: -height,
-      duration: 500,
+      duration: 800,
       useNativeDriver: true,
     }).start(() => {
       onSwipeTop();
