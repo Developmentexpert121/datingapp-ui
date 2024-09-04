@@ -288,7 +288,6 @@ const HomeScreen = () => {
         <View style={styles.pageContainer2}>
           <TinderSwipe
             data={data}
-            noProfilesLoader={noProfilesLoader}
             setData={setData}
             currentIndex={currentIndex}
             setCurrentIndex={setCurrentIndex}

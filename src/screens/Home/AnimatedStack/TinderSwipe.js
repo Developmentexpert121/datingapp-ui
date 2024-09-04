@@ -26,7 +26,6 @@ const TinderSwipe = ({
   setCurrentIndex,
   profileData,
   setData,
-  noProfilesLoader,
   setModalOpen,
   setReason,
   setTotalLikesPossible,
