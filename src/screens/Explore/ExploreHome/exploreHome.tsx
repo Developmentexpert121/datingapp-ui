@@ -1,11 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, SafeAreaView, ActivityIndicator} from 'react-native';
+import {View, StyleSheet, SafeAreaView} from 'react-native';
 import {useAppDispatch, useAppSelector} from '../../../store/store';
 import {getAllUsers, ProfileData} from '../../../store/Auth/auth';
 import BackButton from '../../../components/commonBackbutton/BackButton';
 import TinderSwipe from '../../Home/AnimatedStack/TinderSwipe';
 import Loader from '../../../components/Loader/Loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Label from '../../../components/Label';
+import MainButton from '../../../components/ButtonComponent/MainButton';
+import {useNavigation} from '@react-navigation/native';
+import Modal from 'react-native-modal';
 
 const ExploreHome = (Data: any) => {
   const {name}: any = Data.route.params || {};
@@ -21,6 +25,13 @@ const ExploreHome = (Data: any) => {
   const [viewedUsers, setViewedUsers] = useState<any>([]);
   const [page, setPage] = useState(1);
   const [endReached, setEndReached] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [reason, setReason] = useState('');
+  const [totalLikesPossible, setTotalLikesPossible] = useState<any>(0);
+  const [totalSuperLikesPossible, setTotalSuperLikesPossible] =
+    useState<any>(0);
+
+  const navigation = useNavigation<any>();
 
   const getUserId = async () => {
     try {
@@ -57,6 +68,26 @@ const ExploreHome = (Data: any) => {
             distance: parseInt(res.data.distance) || 50,
             checkedRelationShip: res.data.partnerType,
           });
+          const getLastKeyValuePair = (obj: any) => {
+            const entries = Object.entries(obj); // Convert to array of [key, value]
+            return entries[entries.length - 1]; // Get the last element
+          };
+          const isEmptyObject = (obj: any) => Object.keys(obj).length === 0;
+
+          const [lastKey, lastValue] = getLastKeyValuePair(
+            !isEmptyObject(res.data?.totalLikedToday)
+              ? res.data?.totalLikedToday
+              : {'0': 0},
+          );
+
+          const [lastKeySuper, lastValueSuper] = getLastKeyValuePair(
+            !isEmptyObject(res.data?.totalSuperLikedToday)
+              ? res.data?.totalSuperLikedToday
+              : {'0': 0},
+          );
+
+          setTotalLikesPossible(lastValue); // Outputs: "2024-09-03", 21
+          setTotalSuperLikesPossible(lastValueSuper);
           fetchNewData();
         });
     }
@@ -116,8 +147,58 @@ const ExploreHome = (Data: any) => {
           currentIndex={currentIndex}
           setCurrentIndex={setCurrentIndex}
           profileData={profileData}
+          setModalOpen={setModalOpen}
+          setReason={setReason}
+          setTotalLikesPossible={setTotalLikesPossible}
+          totalLikesPossible={totalLikesPossible}
+          setTotalSuperLikesPossible={setTotalSuperLikesPossible}
+          totalSuperLikesPossible={totalSuperLikesPossible}
         />
       </View>
+      <Modal
+        style={{backgroundColor: 'transparent', margin: 0}}
+        isVisible={modalOpen}
+        animationIn="slideInDown"
+        animationOut="slideOutDown"
+        animationInTiming={600}
+        animationOutTiming={1000}
+        backdropTransitionInTiming={600}
+        backdropTransitionOutTiming={1000}>
+        <View style={styles.modal}>
+          <View style={styles.modalstyle}>
+            <Label
+              text={`You have reached your daily limit of ${
+                reason === 'like'
+                  ? 'Likes'
+                  : reason === 'superLike' && 'Super Likes'
+              }. To get more, Subscribe to a bigger plan!`}
+              style={styles.textstyle}
+            />
+
+            <MainButton
+              style={{
+                width: '85%',
+                marginTop: 30,
+              }}
+              ButtonName="Subscribe!"
+              onPress={() => {
+                navigation.navigate('ProfileSection');
+                setModalOpen(false);
+              }}
+            />
+            <MainButton
+              style={{
+                width: '85%',
+                marginTop: 30,
+              }}
+              ButtonName="Cancel"
+              onPress={() => {
+                setModalOpen(false);
+              }}
+            />
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -140,6 +221,32 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#ededed',
+  },
+  modalstyle: {
+    // minHeight: 230,
+    width: '90%',
+    backgroundColor: '#FFF',
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: 20,
+  },
+  modal: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    // position: 'absolute',
+    zIndex: 4,
+  },
+  textstyle: {
+    // width: "50%",
+    fontSize: 18,
+    // fontWeight: "400",
+    lineHeight: 36,
+    color: '#071731',
+    textAlign: 'center',
+    paddingHorizontal: 30,
+    marginTop: 20,
   },
 });
 
