@@ -547,7 +547,7 @@ const ChatPage = ({
                 }>
                 <View style={styles.editIcon}>
                   <Image
-                    source={require('../../assets/images/Phone.png/')}
+                    source={require('../../assets/images/Phone.png')}
                     style={{height: 40, width: 40}}
                   />
                 </View>
@@ -577,7 +577,7 @@ const ChatPage = ({
                 }>
                 <View style={styles.editIcon}>
                   <Image
-                    source={require('../../assets/images/Video.png/')}
+                    source={require('../../assets/images/Video.png')}
                     style={{height: 40, width: 40}}
                   />
                 </View>
