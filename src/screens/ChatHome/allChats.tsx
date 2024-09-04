@@ -244,25 +244,44 @@ const ChatSection = () => {
         {initialLoading ? (
           <Loader />
         ) : (
-          <>
-            <View style={styles.containerSearch}>
-              <Ionicons name="search-outline" size={20} />
-              <TextInput
-                placeholder="Search"
-                placeholderTextColor={'gray'}
-                onChangeText={handleSearchChange}
-                value={search}
-                style={styles.input}
-              />
-            </View>
-            <Text style={styles.msgs}>Messages</Text>
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              data={filteredData}
-              keyExtractor={(item, index) => item._id || index.toString()}
-              renderItem={renderItem}
-            />
-          </>
+          <View style={{flex: 1}}>
+            {filteredData ? (
+              <View>
+                <View style={styles.containerSearch}>
+                  <Ionicons name="search-outline" size={20} />
+                  <TextInput
+                    placeholder="Search"
+                    placeholderTextColor={'gray'}
+                    onChangeText={handleSearchChange}
+                    value={search}
+                    style={styles.input}
+                  />
+                </View>
+                <Text style={styles.msgs}>Messages</Text>
+                <FlatList
+                  showsVerticalScrollIndicator={false}
+                  data={filteredData}
+                  keyExtractor={(item, index) => item._id || index.toString()}
+                  renderItem={renderItem}
+                />
+              </View>
+            ) : (
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    color: '#000',
+                    fontSize: hp(2.2),
+                  }}>
+                  No users found
+                </Text>
+              </View>
+            )}
+          </View>
         )}
       </View>
 

@@ -101,7 +101,7 @@ const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {
     },
   ];
 
-  console.log(currentPlanId);
+  // console.log(currentPlanId);
 
   const flatListRef: any = useRef(null);
 
@@ -189,8 +189,6 @@ const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {
       Linking.openURL('https://play.google.com/store/account/subscriptions');
     }
   };
-
-  console.log('data2 ', data2);
 
   return (
     <SafeAreaView style={{flex: 1}}>
