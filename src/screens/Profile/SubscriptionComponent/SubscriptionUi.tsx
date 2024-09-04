@@ -90,7 +90,7 @@ const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {
     // Premium
     {
       id: 5,
-      service: 'Acces to Audio call',
+      service: 'Access to Audio call',
       presentIn: 1,
     },
     // Premium Plus
