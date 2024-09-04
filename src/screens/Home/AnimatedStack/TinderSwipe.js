@@ -235,7 +235,7 @@ const TinderSwipe = ({
     direction => {
       Animated.timing(swipe.x, {
         toValue: direction * width * 1.5,
-        duration: 800,
+        // duration: 800,
         useNativeDriver: true,
       }).start(() => {
         setData(prevState => prevState.slice(1));
@@ -249,7 +249,7 @@ const TinderSwipe = ({
     direction => {
       Animated.timing(swipe.x, {
         toValue: direction * width * 1.5,
-        duration: 800,
+        // duration: 800,
         useNativeDriver: true,
       }).start(() => {
         if (direction > 0) {
@@ -269,7 +269,7 @@ const TinderSwipe = ({
     setIsSuperLikeAnimating(true);
     Animated.timing(swipe.y, {
       toValue: -height,
-      duration: 800,
+      // duration: 800,
       useNativeDriver: true,
     }).start(() => {
       onSwipeTop();
@@ -449,7 +449,6 @@ const TinderSwipe = ({
                 <View style={styles.container}>
                   {data[currentIndex]?.habits2?.map((item, index) => {
                     const imagePath = habits2[item.id];
-
                     return (
                       <View key={item.id} style={styles.item}>
                         {imagePath && (
