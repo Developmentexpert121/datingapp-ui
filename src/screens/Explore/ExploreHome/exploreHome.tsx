@@ -43,7 +43,7 @@ const ExploreHome = (Data: any) => {
       setLoading(true);
       fetchNewData();
     }
-  }, [data.length]);
+  }, [data.length, page]);
 
   useEffect(() => {
     getUserId();
