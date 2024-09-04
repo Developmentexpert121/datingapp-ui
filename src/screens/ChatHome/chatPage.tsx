@@ -176,7 +176,7 @@ const ChatPage = ({
       const newMessage = {
         sender: profileData?._id,
         receiver: user?._id,
-        message: inputMessage,
+        message: inputMessage.trim(),
         timestamp: new Date().toISOString(),
       };
       socket.emit('chat message', newMessage);
@@ -322,7 +322,7 @@ const ChatPage = ({
 
     const shouldDisplayDate = currentMessageDate !== previousMessageDate;
     return (
-      <View style={{}}>
+      <View>
         {shouldDisplayDate && (
           <Text
             style={{
@@ -383,6 +383,7 @@ const ChatPage = ({
                     style={{
                       color:
                         item?.sender === profileData?._id ? 'white' : 'black',
+                      fontSize: hp(1.8),
                     }}>
                     {item?.message}
                   </Text>
@@ -428,14 +429,14 @@ const ChatPage = ({
               {/* Display timestamp */}
               <Text
                 style={{
-                  fontSize: 12,
+                  fontSize: hp(1),
                   color: item?.sender === profileData?._id ? 'black' : 'black',
                   textAlign:
                     item?.sender === profileData?._id ? 'right' : 'left',
                   marginRight: item?.sender === profileData?._id ? 12 : 0,
 
                   marginLeft: item?.sender === profileData?._id ? 0 : 12,
-                  marginTop: 5,
+                  marginTop: hp(0.5),
                 }}>
                 {formatTime(item?.timestamp)}
               </Text>
@@ -584,7 +585,11 @@ const ChatPage = ({
             </View>
           </View>
           {/* center */}
-          <View style={{marginTop: 10, flex: 1}}>
+          <View
+            style={{
+              // marginTop: 10,
+              flex: 1,
+            }}>
             {isLoading && (
               <View style={styles.loadingContainer}>
                 <SmallLoader />
@@ -626,15 +631,20 @@ const ChatPage = ({
                 <TouchableOpacity onPress={handleMediaSelection}>
                   <Image
                     source={require('../../assets/images/documentUpload.png')}
-                    style={{height: 40, width: 40, alignSelf: 'center'}}
+                    style={{
+                      height: 40,
+                      width: 40,
+                      alignSelf: 'center',
+                      transform: [{rotate: '30deg'}],
+                    }}
                   />
                 </TouchableOpacity>
               </View>
-              <TouchableOpacity style={styles.sendButton}>
-                <SendIC
-                  onPress={handleSendMessage}
-                  disabled={inputMessage.trim().length === 0}
-                />
+              <TouchableOpacity
+                style={styles.sendButton}
+                onPress={handleSendMessage}
+                disabled={inputMessage.trim().length === 0}>
+                <SendIC style={{transform: [{rotate: '45deg'}]}} />
               </TouchableOpacity>
             </View>
           ) : (

@@ -1166,6 +1166,7 @@ const Auth: any = createSlice({
         state.data.profileData = null;
         state.data.isProfileDataPresenr = false;
         state.userID = null;
+        state.data.userData={};
         // state.data.allUsers = [];
         // state.data.allNotifications = [];
       })
