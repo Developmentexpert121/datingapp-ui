@@ -168,7 +168,7 @@ const Root = () => {
     };
 
     // Only proceed if userdata is available
-    if (userdata) {
+    if (userdata?.id) {
       fetchData();
 
       return () => {
