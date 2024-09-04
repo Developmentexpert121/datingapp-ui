@@ -36,10 +36,7 @@ const ExploreHome = (Data: any) => {
   };
 
   useEffect(() => {
-    console.log('-5-');
-
     if (!endReached && data.length == 0 && userData?.checkedInterests) {
-      console.log('-6-', page);
       setLoading(true);
       fetchNewData();
     }
@@ -50,7 +47,6 @@ const ExploreHome = (Data: any) => {
   }, []);
 
   useEffect(() => {
-    console.log('-1-', !userData?.checkedInterests);
     if (!userData?.checkedInterests) {
       dispatch(ProfileData())
         .unwrap()
@@ -61,8 +57,6 @@ const ExploreHome = (Data: any) => {
             distance: parseInt(res.data.distance) || 50,
             checkedRelationShip: res.data.partnerType,
           });
-          console.log('-2-');
-
           fetchNewData();
         });
     }
@@ -73,11 +67,7 @@ const ExploreHome = (Data: any) => {
   }, [userData]);
 
   const fetchNewData = () => {
-    console.log('-3-');
-
     if (userId != '') {
-      console.log('-4-', page);
-      console.log(viewedUsers);
       dispatch(
         getAllUsers({
           userId: userId,
@@ -91,9 +81,7 @@ const ExploreHome = (Data: any) => {
       )
         .unwrap()
         .then(async (response: any) => {
-          console.log('-7-');
           const newUsers = response.users;
-          console.log('response ', newUsers.length);
           const filteredData = await newUsers.filter((item: any) => {
             return item?.habits1[4]?.optionSelected[0] == name;
           });
@@ -103,14 +91,11 @@ const ExploreHome = (Data: any) => {
           setLoading(false);
           setPage(prev => prev + 1);
           if (newUsers.length < 10) {
-            console.log('End Reached');
             setEndReached(true);
           }
         });
     }
   };
-
-  console.log('DAtalength  ', data.length);
 
   if (loading) {
     // Show loader while loading is true
