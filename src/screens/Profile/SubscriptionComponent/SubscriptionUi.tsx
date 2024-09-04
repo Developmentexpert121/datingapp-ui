@@ -189,6 +189,8 @@ const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {
     }
   };
 
+  console.log('data2 ', data2);
+
   return (
     <SafeAreaView style={{flex: 1}}>
       {/* {profileData.plan === 'Free' ? ( */}
@@ -207,8 +209,10 @@ const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {
             onScroll={event => {
               const offsetX = event.nativeEvent.contentOffset.x;
               const index = Math.floor(offsetX / eightyPercentWidth);
-              setActiveDot(index);
-              setCurrentPlanId(dataType[index]?.id);
+              if (index >= 0) {
+                setActiveDot(index);
+                setCurrentPlanId(dataType[index]?.id);
+              }
             }}
           />
           <View style={styles.dotsContainer}>
