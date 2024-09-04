@@ -1115,7 +1115,7 @@ PODS:
     - FBSDKGamingServicesKit (~> 17.0.0)
     - FBSDKShareKit (~> 17.0.0)
     - React-Core
-  - react-native-geolocation (3.3.0):
+  - react-native-geolocation (3.4.0):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1138,7 +1138,7 @@ PODS:
     - React-Core
   - react-native-version-check (3.4.7):
     - React-Core
-  - react-native-webview (13.12.0):
+  - react-native-webview (13.12.1):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1798,7 +1798,7 @@ SPEC CHECKSUMS:
   react-native-cameraroll: be7f4a2910860f15b821efecc4c6469d605ac7bc
   react-native-config: 8f7283449bbb048902f4e764affbbf24504454af
   react-native-fbsdk-next: 84746ea062dc3b1a422154d7674ba4c5836b6d82
-  react-native-geolocation: e50b98fa3c6ad907154470e4302c82e9a59013df
+  react-native-geolocation: 633b52797a5b8a20306aa17e863e41704fb07f25
   react-native-image-picker: fefff630cfa3ee6a809f6ac6569981f4a34e0050
   react-native-image-resizer: d9fb629a867335bdc13230ac2a58702bb8c8828f
   react-native-netinfo: 48c5f79a84fbc3ba1d28a8b0d04adeda72885fa8
@@ -1807,7 +1807,7 @@ SPEC CHECKSUMS:
   react-native-simple-toast: 1f1cc551d419bc0ab05dcb0136554006c274789d
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   react-native-version-check: 6cd36aad4e30b8e3216747e3b4ddeb09e0647af8
-  react-native-webview: 3a174dde07a6a94c37d425174fae688e4457c307
+  react-native-webview: f93bbf9386a6bd06d8035af48b000f7ba3509229
   React-nativeconfig: a8685fce6d0ffbb77b1fe983895dbbc7bfe949ad
   React-NativeModulesApple: 63accd5672e433f187e4c35ce61641f2b303098c
   React-perflogger: 5ffc4d6ccb74eaac7b8b2867e58a447232483d6d
@@ -1848,7 +1848,7 @@ SPEC CHECKSUMS:
   RNIap: 17583f958d35788a87948e94072ff6edd3580497
   RNImageCropPicker: 771e2ca319d2cf92e04ebf334ece892ee9a6728f
   RNNotifee: 8e2d3df3f0e9ce8f5d1fe4c967431138190b6175
-  RNPermissions: fbf830fb531d663a6daa1369f4c624317018bd64
+  RNPermissions: 0935a7825d22a087688f72dd14e051de7977739c
   RNReanimated: 630fc29e26e1956609c717dd2c24530c32d95b1a
   RNScreens: 6113407d16024819b62abc541506510da9038f48
   RNSVG: 5da7a24f31968ec74f0b091e3440080f347e279b
@@ -1861,6 +1861,6 @@ SPEC CHECKSUMS:
   TOCropViewController: 80b8985ad794298fb69d3341de183f33d1853654
   Yoga: 4f53dc50008d626fa679c7a1cb4bed898f8c0bde
 
-PODFILE CHECKSUM: 770d0082fe3ca38d9b251f4c7fc87f33e2c643cc
+PODFILE CHECKSUM: d424b6e0166f44bf90ed6bb9ecd39409f2e2a7f4
 
 COCOAPODS: 1.15.2
