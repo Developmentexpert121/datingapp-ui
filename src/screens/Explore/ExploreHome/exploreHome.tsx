@@ -10,6 +10,7 @@ import Label from '../../../components/Label';
 import MainButton from '../../../components/ButtonComponent/MainButton';
 import {useNavigation} from '@react-navigation/native';
 import Modal from 'react-native-modal';
+import {getCurrentDate} from '../../../utils/helper';
 
 const ExploreHome = (Data: any) => {
   const {name}: any = Data.route.params || {};
@@ -86,8 +87,17 @@ const ExploreHome = (Data: any) => {
               : {'0': 0},
           );
 
-          setTotalLikesPossible(lastValue); // Outputs: "2024-09-03", 21
-          setTotalSuperLikesPossible(lastValueSuper);
+          if (lastKey == getCurrentDate()) {
+            setTotalLikesPossible(lastValue);
+          } else {
+            setTotalLikesPossible(0);
+          }
+
+          if (lastKeySuper == getCurrentDate()) {
+            setTotalSuperLikesPossible(lastValueSuper);
+          } else {
+            setTotalSuperLikesPossible(0);
+          }
           fetchNewData();
         });
     }

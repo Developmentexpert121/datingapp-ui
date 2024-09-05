@@ -25,6 +25,7 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {getCurrentDate} from '../../utils/helper';
 
 const getUserId = async () => {
   try {
@@ -179,8 +180,18 @@ const HomeScreen = () => {
             : {'0': 0},
         );
 
-        setTotalLikesPossible(lastValue); // Outputs: "2024-09-03", 21
-        setTotalSuperLikesPossible(lastValueSuper);
+        if (lastKey == getCurrentDate()) {
+          setTotalLikesPossible(lastValue);
+        } else {
+          setTotalLikesPossible(0);
+        }
+
+        if (lastKeySuper == getCurrentDate()) {
+          setTotalSuperLikesPossible(lastValueSuper);
+        } else {
+          setTotalSuperLikesPossible(0);
+        }
+
         setFilterData({
           showInDistance: res.data.showInDistance,
           distance: parseInt(res.data.distance),

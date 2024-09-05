@@ -232,8 +232,10 @@ const TinderSwipe = ({
   // Nope..............
   const handleChoiceCross = useCallback(
     direction => {
+      
+
       Animated.timing(swipe.x, {
-        toValue: direction * width * 1.5,
+        toValue: direction * width * 1.1,
         // duration: 800,
         useNativeDriver: true,
       }).start(() => {
@@ -247,7 +249,7 @@ const TinderSwipe = ({
   const handleChoiceHeart = useCallback(
     direction => {
       Animated.timing(swipe.x, {
-        toValue: direction * width * 1.5,
+        toValue: direction * width * 1.1,
         // duration: 800,
         useNativeDriver: true,
       }).start(() => {
