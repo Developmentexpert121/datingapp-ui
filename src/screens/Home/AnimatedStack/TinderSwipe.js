@@ -88,15 +88,11 @@ const TinderSwipe = ({
   const checkLikeLimitReached = previousData => {
     let limitReached = false;
 
-    if (profileData.plan === 'Free' && totalLikesPossible > 19) {
-      recenterCard();
-      setModalOpen(true);
-      setReason('like');
-      setData(previousData);
-      limitReached = true;
-    } else if (
-      profileData.plan.productId === 'Basic' &&
-      totalLikesPossible > 49
+    if (
+      (profileData.plan === 'Free' &&
+        totalLikesPossible > 19) ||
+      (profileData.plan.productId === 'Basic' &&
+        totalLikesPossible > 49)
     ) {
       recenterCard();
       setModalOpen(true);
@@ -146,33 +142,15 @@ const TinderSwipe = ({
   const checkSuperLikeLimitReached = previousData => {
     let limitReached = false;
 
-    if (profileData.plan === 'Free' && totalSuperLikesPossible > 0) {
-      recenterCard();
-      setModalOpen(true);
-      setReason('superLike');
-      setData(previousData);
-      limitReached = true;
-    } else if (
-      profileData.plan.productId === 'Basic' &&
-      totalSuperLikesPossible > 2
-    ) {
-      recenterCard();
-      setModalOpen(true);
-      setReason('superLike');
-      setData(previousData);
-      limitReached = true;
-    } else if (
-      profileData.plan.productId === 'Premium' &&
-      totalSuperLikesPossible > 5
-    ) {
-      recenterCard();
-      setModalOpen(true);
-      setReason('superLike');
-      setData(previousData);
-      limitReached = true;
-    } else if (
-      profileData.plan.productId === 'PremiumPlus' &&
-      totalSuperLikesPossible > 9
+    if (
+      (profileData.plan === 'Free' &&
+        totalSuperLikesPossible > 0) ||
+      (profileData.plan.productId === 'Basic' &&
+        totalSuperLikesPossible > 2) ||
+      (profileData.plan.productId === 'Premium' &&
+        totalSuperLikesPossible > 5) ||
+      (profileData.plan.productId === 'PremiumPlus' &&
+        totalSuperLikesPossible > 9)
     ) {
       recenterCard();
       setModalOpen(true);
@@ -232,8 +210,6 @@ const TinderSwipe = ({
   // Nope..............
   const handleChoiceCross = useCallback(
     direction => {
-      
-
       Animated.timing(swipe.x, {
         toValue: direction * width * 1.1,
         // duration: 800,
@@ -354,7 +330,21 @@ const TinderSwipe = ({
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
-                    handleChoiceSuperLike();
+                    if (
+                      (profileData.plan === 'Free' &&
+                        totalSuperLikesPossible > 0) ||
+                      (profileData.plan.productId === 'Basic' &&
+                        totalSuperLikesPossible > 2) ||
+                      (profileData.plan.productId === 'Premium' &&
+                        totalSuperLikesPossible > 5) ||
+                      (profileData.plan.productId === 'PremiumPlus' &&
+                        totalSuperLikesPossible > 9)
+                    ) {
+                      setReason('superLike');
+                      setModalOpen(true);
+                    } else {
+                      handleChoiceSuperLike();
+                    }
                   }}>
                   <Image
                     source={require('../../../assets/images/Star.png')}
@@ -363,7 +353,17 @@ const TinderSwipe = ({
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
-                    handleChoiceHeart(1);
+                    if (
+                      (profileData.plan === 'Free' &&
+                        totalLikesPossible > 19) ||
+                      (profileData.plan.productId === 'Basic' &&
+                        totalLikesPossible > 49)
+                    ) {
+                      setReason('like');
+                      setModalOpen(true);
+                    } else {
+                      handleChoiceHeart(1);
+                    }
                   }}>
                   <Image
                     source={require('../../../assets/images/Heart.png')}

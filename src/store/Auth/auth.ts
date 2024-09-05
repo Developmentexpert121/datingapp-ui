@@ -416,7 +416,7 @@ export const likedAUser = createAsyncThunk(
         return response.data;
       }
     } catch (error: any) {
-      console.error('errorlikedAUser', error.response);
+      // console.error('errorlikedAUser', error.response);
       if (error.response && error.response.status === 400) {
         return {error: 'Bad Request'};
       } else if (error.response.status === 403) {
