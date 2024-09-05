@@ -136,8 +136,8 @@ const LoginHomeScreen = () => {
               await navigation.navigate('Register');
             } else if (response?.payload?.redirect === 'Dashboard') {
               dispatch(activityLoaderStarted());
-              let token: string = response?.payload?.token;
-              setLocalStorage('token', token);
+              // let token: string = response?.payload?.token;
+              // setLocalStorage('token', token);
               await AsyncStorage.setItem(
                 'authToken',
                 JSON.stringify(response?.payload?.token),
@@ -205,8 +205,8 @@ const LoginHomeScreen = () => {
                   await navigation.navigate('Register');
                 } else if (response?.payload?.redirect === 'Dashboard') {
                   dispatch(activityLoaderStarted());
-                  let token: string = response?.payload?.token;
-                  setLocalStorage('token', token);
+                  // let token: string = response?.payload?.token;
+                  // setLocalStorage('token', token);
                   await AsyncStorage.setItem(
                     'authToken',
                     JSON.stringify(response?.payload?.token),

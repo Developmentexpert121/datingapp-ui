@@ -63,10 +63,10 @@ export const GoogleLogin = createAsyncThunk(
   async (data: any, {dispatch}: any) => {
     try {
       // dispatch(activityLoaderStarted());
-      console.log('google login data ==>', data);
+      // console.log('google login data ==>', data);
       const response: any = await http.post('/auth/loginwithgoogle', data);
       if (response.status === 200) {
-        console.log('Api google response ==>', JSON.stringify(response.data));
+        // console.log('Api google response ==>', JSON.stringify(response.data));
         // return {...response.data, userid: data.socialId};
         return response.data;
       }
@@ -1057,7 +1057,7 @@ const Auth: any = createSlice({
         state.data.profileData = action.payload?.data;
         state.loading = false;
         state.authLoading = false;
-        if (!state.data.userData) {
+        if (!state.data.userData?.id) {
           state.data.userData = {
             id: action.payload.data._id,
             name: action.payload.data.name,
