@@ -261,6 +261,7 @@ const ChatSection = () => {
                 <FlatList
                   showsVerticalScrollIndicator={false}
                   data={filteredData}
+                  contentContainerStyle={{paddingBottom: hp(11)}}
                   keyExtractor={(item, index) => item._id || index.toString()}
                   renderItem={renderItem}
                 />
