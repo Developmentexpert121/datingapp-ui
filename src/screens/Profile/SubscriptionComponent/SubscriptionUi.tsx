@@ -139,6 +139,16 @@ const SubscriptionUi: React.FC = ({premium, item, onPress}: any) => {
             Your current plan is{' '}
             <Text style={styles.planName}>{profileData.plan.productId}</Text>
           </Text>
+          <Text
+            style={{
+              alignSelf: 'center',
+              fontWeight: 'bold',
+              fontSize: hp(1.8),
+              color: '#F99A21',
+              marginVertical: hp(0.25),
+            }}>
+            {item.price}
+          </Text>
         </View>
         <Text style={styles.planDetailText}>
           Plan bought on{' '}
@@ -356,7 +366,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#fff',
     fontFamily: 'Sansation-Bold',
-    marginBottom: 10,
+    // marginBottom: 10,
     flexDirection: 'row',
     textAlign: 'center',
   },
