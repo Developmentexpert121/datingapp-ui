@@ -245,7 +245,7 @@ const ChatSection = () => {
           <Loader />
         ) : (
           <View style={{flex: 1}}>
-            {filteredData ? (
+            {filteredData.length ? (
               <View>
                 <View style={styles.containerSearch}>
                   <Ionicons name="search-outline" size={20} />
