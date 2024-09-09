@@ -111,8 +111,6 @@ const LocationCheckComponent: React.FC<LocationCheckComponentProps> = ({
     Alert.alert(title, message, buttons);
   };
 
-  console.log('location +>', location);
-
   return location?.latitude ? (
     <>{children}</>
   ) : (

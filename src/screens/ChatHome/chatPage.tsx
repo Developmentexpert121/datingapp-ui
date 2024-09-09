@@ -187,7 +187,7 @@ const ChatPage = ({
         sendAMessage({
           senderId: profileData?._id,
           receiverId: user?._id,
-          message: inputMessage,
+          message: inputMessage.trim(),
         }),
       );
       setInputMessage('');
