@@ -20,7 +20,6 @@ import {
 } from '../store/Auth/auth';
 import BottomTabNavigation from './BottomTabNavigation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import SplashScreen from 'react-native-splash-screen';
 import ForgotPassword from '../screens/auth/forgotPassword';
 import NewPassword from '../screens/auth/newPassword';
 import Subscriptions from '../screens/Profile/SubscriptionComponent/SubscriptionsScreen';
@@ -91,7 +90,7 @@ const Root = () => {
 
   useEffect(() => {
     // const timeoutId = setTimeout(() => {
-    SplashScreen.hide();
+
     requestUserPermission();
     // }, 1000);
   }, []);

@@ -19,6 +19,7 @@ import MainButton from '../ButtonComponent/MainButton';
 import {useDispatch} from 'react-redux';
 import {SetLocation} from '../../store/Auth/auth';
 import {useAppSelector} from '../../store/store';
+import SplashScreen from 'react-native-splash-screen';
 
 interface LocationCheckComponentProps {
   children: ReactNode;
@@ -36,6 +37,7 @@ const LocationCheckComponent: React.FC<LocationCheckComponentProps> = ({
 
   useEffect(() => {
     getLocation();
+    SplashScreen.hide();
   }, []);
 
   const getLocation = () => {
@@ -109,7 +111,9 @@ const LocationCheckComponent: React.FC<LocationCheckComponentProps> = ({
     Alert.alert(title, message, buttons);
   };
 
-  return location ? (
+  console.log('location +>', location);
+
+  return location?.latitude ? (
     <>{children}</>
   ) : (
     <SafeAreaView style={style.container}>
