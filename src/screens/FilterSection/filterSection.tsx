@@ -28,6 +28,7 @@ import Loader from '../../components/Loader/Loader';
 import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
 import DeviceInfo from 'react-native-device-info';
 import {useFocusEffect} from '@react-navigation/native';
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 interface UserPreferences {
   checkedInterests: string; // "Everyone"
@@ -143,7 +144,10 @@ const FilterSection = ({filterData, setSelectedFilterData}: any) => {
 
   return (
     <View>
-      <ScrollView style={{marginTop: 10}} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={{marginTop: hp(3)}}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{paddingBottom: hp(10)}}>
         {/* Distance Preference */}
         <View style={styles.boxContainer}>
           <View style={styles.distance}>
@@ -367,62 +371,6 @@ const FilterSection = ({filterData, setSelectedFilterData}: any) => {
             </View>
           ))}
         </View>
-
-        {/* Gender */}
-        {/* <View style={styles.boxContainer}>
-        <Text style={styles.textName}>Gender</Text>
-        <View style={styles.line} />
-        {options.map(item => (
-          <View key={item.value} style={styles.radio}>
-            <Controller
-              name={'gender'}
-              control={control}
-              defaultValue="Everyone"
-              render={() => (
-                <View
-                  style={{
-                    flex: 1,
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                  }}>
-                  <Text
-                    style={[
-                      {
-                        color: errors?.gender ? 'red' : 'black',
-                        fontFamily: 'Sansation-Regular',
-                        paddingBottom: 8,
-                      },
-                    ]}>
-                    {item.label}
-                  </Text>
-                  <TouchableOpacity
-                    onPress={() => {
-                      setChecked(item.label);
-                      dispatch(
-                        updateProfileData({
-                          field: 'gender',
-                          value: item.label,
-                          id: getUserId(),
-                        }),
-                      );
-                    }}>
-                    <Ionicons
-                      name={
-                        checked === item.label
-                          ? 'radio-button-on'
-                          : 'radio-button-off'
-                      }
-                      size={25}
-                      color="#AC25AC"
-                    />
-                  </TouchableOpacity>
-                </View>
-              )}
-            />
-          </View>
-        ))}
-      </View> */}
         {loader && <Loader />}
       </ScrollView>
     </View>
