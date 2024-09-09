@@ -10,6 +10,7 @@ import {
   Alert,
   StatusBar,
   Linking,
+  BackHandler,
 } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import * as yup from 'yup';
@@ -194,6 +195,29 @@ const RegisterScreen = () => {
   const [stepFiveErrors, setStepFiveErrors] = useState(false);
   const [deviceToken, setDeviceToken] = useState<any>(null);
   const [uploadError, setUploadError] = useState<boolean>(false);
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
+
+  console.log(isEmailVerified);
+  useEffect(() => {
+    const backAction = () => {
+      if (steps > 0) {
+        if (steps === 1) {
+          setIsEmailVerified(false);
+        }
+        setSteps(prev => prev - 1);
+        return true;
+      } else {
+        return false;
+      }
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, [steps]);
 
   const clearState = () => {
     setSelectedCountry(null);
@@ -226,7 +250,6 @@ const RegisterScreen = () => {
   const dispatch: any = useAppDispatch();
 
   // Introduce a state variable to track whether email has been verified
-  const [isEmailVerified, setIsEmailVerified] = useState(false);
   const loginwithgoogle: any = useAppSelector(
     (state: any) => state?.Auth?.data?.loginwithgoogle,
   );
@@ -612,7 +635,6 @@ const RegisterScreen = () => {
                 <Ionicons
                   onPress={() => {
                     if (steps === 1) {
-                      // Only reset isEmailVerified flag if going back from step 1 to step 0
                       setIsEmailVerified(false);
                     }
                     setSteps(prev => prev - 1);
