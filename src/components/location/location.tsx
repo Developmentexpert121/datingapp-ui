@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {ReactNode, useEffect, useState} from 'react';
 import {
   Alert,
   Platform,
@@ -20,9 +20,14 @@ import {useDispatch} from 'react-redux';
 import {SetLocation} from '../../store/Auth/auth';
 import {useAppSelector} from '../../store/store';
 
-const LocationCheckComponent = () => {
+interface LocationCheckComponentProps {
+  children: ReactNode;
+}
+
+const LocationCheckComponent: React.FC<LocationCheckComponentProps> = ({
+  children,
+}) => {
   const dispatch = useDispatch<any>();
-  // const [location, setLocation] = useState<Location | undefined>();
   const [loader, setLoader] = useState(true);
   const [errorType, setErrorType] = useState('');
   const location: any = useAppSelector(
@@ -104,7 +109,9 @@ const LocationCheckComponent = () => {
     Alert.alert(title, message, buttons);
   };
 
-  return location ? null : (
+  return location ? (
+    <>{children}</>
+  ) : (
     <SafeAreaView style={style.container}>
       {loader ? (
         <Loader />

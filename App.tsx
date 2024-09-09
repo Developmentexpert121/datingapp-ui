@@ -24,12 +24,13 @@ const App = () => {
   return (
     <SafeAreaProvider style={{flex: 1}}>
       <Provider store={store}>
-        <LocationCheckComponent />
-        <NavigationContainer ref={navigationRef}>
-          <Root />
-          <GlobalModal />
-          <InternetModal />
-        </NavigationContainer>
+        <LocationCheckComponent>
+          <NavigationContainer ref={navigationRef}>
+            <Root />
+            <GlobalModal />
+            <InternetModal />
+          </NavigationContainer>
+        </LocationCheckComponent>
       </Provider>
     </SafeAreaProvider>
   );

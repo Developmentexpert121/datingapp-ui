@@ -106,16 +106,21 @@ const HomeScreen = () => {
   );
 
   useEffect(() => {
+    UpdateLocation();
+  }, []);
+
+  const UpdateLocation = async () => {
     if (location?.latitude) {
+      const id = await getUserId();
       dispatch(
         updateProfileData({
           field: 'location',
           value: {latitude: location.latitude, longitude: location.longitude},
-          id: getUserId(),
+          id: id,
         }),
       );
     }
-  }, []);
+  };
 
   useEffect(() => {
     // console.log('profileData?._id ', profileData?._id);

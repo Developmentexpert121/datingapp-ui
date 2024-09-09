@@ -197,7 +197,6 @@ const RegisterScreen = () => {
   const [uploadError, setUploadError] = useState<boolean>(false);
   const [isEmailVerified, setIsEmailVerified] = useState(false);
 
-  console.log(isEmailVerified);
   useEffect(() => {
     const backAction = () => {
       if (steps > 0) {
