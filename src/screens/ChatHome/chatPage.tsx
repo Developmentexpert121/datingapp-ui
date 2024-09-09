@@ -42,6 +42,7 @@ import Label from '../../components/Label';
 import MainButton from '../../components/ButtonComponent/MainButton';
 import SmallLoader from '../../components/Loader/SmallLoader';
 import ImageView from 'react-native-image-viewing';
+import Loader from '../../components/Loader/Loader';
 
 const socket = io('https://datingapp-api-9d1ff64158e0.herokuapp.com');
 
@@ -81,6 +82,7 @@ const ChatPage = ({
   const [isImageModalVisible, setImageModalVisible] = useState(false);
   const [selectedImageUri, setSelectedImageUri] = useState<string>('');
   const [endReached, setEndReached] = useState(false);
+  const [mediaLoader, setMediaLoader] = useState(false);
 
   const scrollViewRef = useRef<ScrollView>(null);
 
@@ -193,14 +195,18 @@ const ChatPage = ({
   }, [inputMessage, profileData, user]);
 
   const handleMediaSelection = async () => {
+    setMediaLoader(true);
     const options: ImageLibraryOptions = {
-      mediaType: 'mixed',
+      mediaType: 'photo',
     };
 
     launchImageLibrary(options, async response => {
+      console.log('response =>  ', response);
       if (response.didCancel) {
+        setMediaLoader(false);
       } else if (response.errorCode) {
         console.error('ImagePicker Error: ', response.errorMessage);
+        setMediaLoader(false);
       } else if (response.assets && response.assets.length > 0) {
         const asset = response.assets[0];
         const formData = new FormData();
@@ -243,6 +249,7 @@ const ChatPage = ({
         timestamp: new Date().toISOString(),
       }),
     );
+    setMediaLoader(false);
   };
 
   const saveImageToGallery = async (url: string) => {
@@ -471,6 +478,12 @@ const ChatPage = ({
         //@ts-ignore
         behavior={Platform.OS == 'ios' ? 'padding' : 'undefined'}>
         <View style={{flex: 1}}>
+          {mediaLoader && (
+            <View style={styles.loaderView}>
+              <Loader color="rgba(255,255,255,0.5)" />
+            </View>
+          )}
+
           {/* header */}
           <View style={styles.container}>
             <View
@@ -812,5 +825,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 4,
+  },
+  loaderView: {
+    zIndex: 10,
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+    justifyContent: 'center',
+    alignContent: 'center',
   },
 });
