@@ -88,6 +88,10 @@ const SettingsSection = () => {
     });
   }, []);
 
+  const location: any = useAppSelector(
+    (state: any) => state?.Auth?.data?.location,
+  );
+
   const onSubmit: any = async (data: UpdateForm) => {
     let payload = {
       countryCode: callingCode,
@@ -133,11 +137,10 @@ const SettingsSection = () => {
     };
 
     // Usage
-    getAddressFromCoordinates(
-      profileData?.location?.latitude,
-      profileData?.location?.longitude,
-    ).then(address => setAddress(address));
-  }, [profileData?.location?.latitude, profileData?.location?.longitude]);
+    getAddressFromCoordinates(location.latitude, location.longitude).then(
+      address => setAddress(address),
+    );
+  }, []);
 
   const dataArr = [
     {
